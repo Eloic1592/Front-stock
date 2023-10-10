@@ -1,8 +1,8 @@
-Create database Maintenance;
-Create role Maintenance login password 'Maintenance';
-Alter database Maintenance owner to Maintenance;
-\c Maintenance Maintenance
-Maintenance
+Create database maintenance;
+Create role maintenance login password 'maintenance';
+Alter database maintenance owner to maintenance;
+\c maintenance maintenance
+maintenance
 
 -- Suppression des tables
 DO $$ DECLARE
