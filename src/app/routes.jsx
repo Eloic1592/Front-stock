@@ -31,10 +31,10 @@ const routes = [
       {
         path: '/dashboard/default',
         element: <Analytics />,
-        auth: authRoles.admin
+        auth: authRoles.admindefault
       },
 
-      // e-chart rooute
+      // // e-chart rooute
       {
         path: '/charts/echarts',
         element: <AppEchart />,

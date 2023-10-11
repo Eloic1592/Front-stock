@@ -17,7 +17,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
 }));
 
 const ForgotPasswordRoot = styled(JustifyBox)(() => ({
-  background: '#1A2038',
+  background: '#00a65a',
   minHeight: '100vh !important',
   '& .card': {
     maxWidth: 800,
@@ -56,13 +56,13 @@ const ForgotPassword = () => {
                   sx={{ mb: 3, width: '100%' }}
                 />
 
-                <Button fullWidth variant="contained" color="primary" type="submit">
+                <Button fullWidth variant="contained" color="secondary" type="submit">
                   Reset Password
                 </Button>
 
                 <Button
                   fullWidth
-                  color="primary"
+                  color="default"
                   variant="outlined"
                   onClick={() => navigate(-1)}
                   sx={{ mt: 2 }}

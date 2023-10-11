@@ -33,7 +33,7 @@ const NotFound = () => {
         <IMG src="/assets/images/illustrations/404.svg" alt="" />
 
         <Button
-          color="primary"
+          color="secondary"
           variant="contained"
           sx={{ textTransform: 'capitalize' }}
           onClick={() => navigate(-1)}

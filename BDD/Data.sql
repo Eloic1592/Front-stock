@@ -1,3 +1,13 @@
+
+-- Admin
+insert into admin(nom,prenom,email,mdp) values ('admin','admin','admin@gmail.com','admin');
+
+
+-- Technicien
+insert into technicien(nom,prenom,code,email,mdp) values ('TECH-1','TECH-1','TECH-1','tech1@gmail.com','technicien1');
+
+
+
 -- Table  materiel
 Insert into materiel(materiel) values('ordinateur'),('imprimante'),('serveur'),('stockage'),('reseau');
 

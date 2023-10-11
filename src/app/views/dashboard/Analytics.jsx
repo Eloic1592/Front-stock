@@ -3,9 +3,9 @@ import { Fragment } from 'react';
 import Campaigns from './shared/Campaigns';
 import DoughnutChart from './shared/Doughnut';
 import RowCards from './shared/RowCards';
-import StatCards from './shared/StatCards';
+// import StatCards from './shared/StatCards';
 import StatCards2 from './shared/StatCards2';
-import TopSellingTable from './shared/TopSellingTable';
+// import TopSellingTable from './shared/TopSellingTable';
 import UpgradeCard from './shared/UpgradeCard';
 
 const ContentBox = styled('div')(({ theme }) => ({
@@ -41,8 +41,8 @@ const Analytics = () => {
       <ContentBox className="analytics">
         <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
-            <StatCards />
-            <TopSellingTable />
+            {/* <StatCards />
+            <TopSellingTable /> */}
             <StatCards2 />
 
             <H4>Ongoing Projects</H4>

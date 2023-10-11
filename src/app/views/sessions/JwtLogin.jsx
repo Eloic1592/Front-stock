@@ -1,11 +1,12 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Checkbox, Grid, TextField } from '@mui/material';
-import { Box, styled, useTheme } from '@mui/material';
-import { Paragraph } from 'app/components/Typography';
+import { Card, Grid, TextField } from '@mui/material';
+import { Box, styled } from '@mui/material';
+// import { Paragraph } from 'app/components/Typography';
+// import { SimpleCard } from 'app/components';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -20,22 +21,21 @@ const ContentBox = styled(Box)(() => ({
 }));
 
 const JWTRoot = styled(JustifyBox)(() => ({
-  background: '#1A2038',
+  background: '#00a65a',
   minHeight: '100% !important',
   '& .card': {
     maxWidth: 800,
     minHeight: 400,
     margin: '1rem',
     display: 'flex',
-    borderRadius: 12,
     alignItems: 'center'
   }
 }));
 
 // inital login credentials
 const initialValues = {
-  email: 'jason@ui-lib.com',
-  password: 'dummyPass',
+  email: 'admin@gmail.com',
+  password: 'admin',
   remember: true
 };
 
@@ -48,7 +48,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const JwtLogin = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -75,6 +75,9 @@ const JwtLogin = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
+            <div>
+            <h2>Connexion-Administrateur</h2>
+            </div>
             <ContentBox>
               <Formik
                 onSubmit={handleFormSubmit}
@@ -103,7 +106,7 @@ const JwtLogin = () => {
                       size="small"
                       name="password"
                       type="password"
-                      label="Password"
+                      label="Mot de passe"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.password}
@@ -113,7 +116,7 @@ const JwtLogin = () => {
                       sx={{ mb: 1.5 }}
                     />
 
-                    <FlexBox justifyContent="space-between">
+                    {/* <FlexBox justifyContent="space-between">
                       <FlexBox gap={1}>
                         <Checkbox
                           size="small"
@@ -123,28 +126,28 @@ const JwtLogin = () => {
                           sx={{ padding: 0 }}
                         />
 
-                        <Paragraph>Remember Me</Paragraph>
+                        <Paragraph>Se souvenir de moi</Paragraph>
                       </FlexBox>
 
                       <NavLink
                         to="/session/forgot-password"
                         style={{ color: theme.palette.primary.main }}
                       >
-                        Forgot password?
+                        Mot de passe oublie?
                       </NavLink>
-                    </FlexBox>
+                    </FlexBox> */}
 
                     <LoadingButton
                       type="submit"
-                      color="primary"
+                      color="secondary"
                       loading={loading}
                       variant="contained"
                       sx={{ my: 2 }}
                     >
-                      Login
+                      Connexion
                     </LoadingButton>
 
-                    <Paragraph>
+                    {/* <Paragraph>
                       Don't have an account?
                       <NavLink
                         to="/session/signup"
@@ -152,7 +155,7 @@ const JwtLogin = () => {
                       >
                         Register
                       </NavLink>
-                    </Paragraph>
+                    </Paragraph> */}
                   </form>
                 )}
               </Formik>

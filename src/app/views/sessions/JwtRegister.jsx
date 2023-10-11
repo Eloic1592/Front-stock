@@ -20,7 +20,7 @@ const ContentBox = styled(JustifyBox)(() => ({
 }));
 
 const JWTRegister = styled(JustifyBox)(() => ({
-  background: '#1A2038',
+  background: '#00a65a',
   minHeight: '100vh !important',
   '& .card': {
     maxWidth: 800,
@@ -150,7 +150,7 @@ const JwtRegister = () => {
 
                     <LoadingButton
                       type="submit"
-                      color="primary"
+                      color="default"
                       loading={loading}
                       variant="contained"
                       sx={{ mb: 2, mt: 3 }}

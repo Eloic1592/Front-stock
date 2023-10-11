@@ -6,20 +6,20 @@ const Campaigns = () => {
   return (
     <Box>
       <SimpleCard title="Campaigns">
-        <Small color="text.secondary">Today</Small>
+        <Small color="text.secondary">Aujourd'hui</Small>
         <MatxProgressBar value={75} color="primary" text="Google (102k)" />
         <MatxProgressBar value={45} color="secondary" text="Twitter (40k)" />
         <MatxProgressBar value={75} color="primary" text="Tensor (80k)" />
 
         <Small color="text.secondary" display="block" pt={4}>
-          Yesterday
+          Hier
         </Small>
         <MatxProgressBar value={75} color="primary" text="Google (102k)" />
         <MatxProgressBar value={45} color="secondary" text="Twitter (40k)" />
         <MatxProgressBar value={75} color="primary" text="Tensor (80k)" />
 
         <Small color="text.secondary" display="block" pt={4}>
-          Yesterday
+        Hier
         </Small>
         <MatxProgressBar value={75} color="primary" text="Google (102k)" />
         <MatxProgressBar value={45} color="secondary" text="Twitter (40k)" />
