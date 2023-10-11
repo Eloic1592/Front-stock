@@ -42,8 +42,8 @@ const initialValues = {
 // form field validation schema
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(1, 'Password must be 6 character length')
-    .required('Password is required!'),
+    .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
+    .required('Mot de passe requis!'),
     code: Yup.string()
     .matches(/TECH-/, 'Le code doit contenir "TECH-"')
     .required('Le code est requis!')
@@ -141,7 +141,7 @@ const JwtLogin = () => {
 
                     <LoadingButton
                       type="submit"
-                      color="secondary"
+                      color="primary"
                       loading={loading}
                       variant="contained"
                       sx={{ my: 2 }}

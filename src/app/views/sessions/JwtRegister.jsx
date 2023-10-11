@@ -1,4 +1,4 @@
-import { useTheme } from '@emotion/react';
+// import { useTheme } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
 import { Card, Checkbox, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
@@ -6,7 +6,9 @@ import { Paragraph } from 'app/components/Typography';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+// import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -34,6 +36,9 @@ const JWTRegister = styled(JustifyBox)(() => ({
 
 // inital login credentials
 const initialValues = {
+  nom:'',
+  prenom:'',
+  code:'',
   email: '',
   password: '',
   username: '',
@@ -43,13 +48,17 @@ const initialValues = {
 // form field validation schema
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, 'Password must be 6 character length')
-    .required('Password is required!'),
-  email: Yup.string().email('Invalid Email address').required('Email is required!')
+    .min(6, 'Le mot de passe doit contenir au moins 1 caractere!')
+    .required('Mot de passe requis!'),
+  email: Yup.string().email('email invalide').required('un email est requis!'),
+  nom: Yup.string().required('nom requis'),
+  prenom: Yup.string().required('prenom requis'),
+  code: Yup.string().matches(/TECH-/, 'Le code doit contenir "TECH-"').required('code requis!'),
+
 });
 
 const JwtRegister = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   const { register } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -94,17 +103,47 @@ const JwtRegister = () => {
                       fullWidth
                       size="small"
                       type="text"
-                      name="username"
-                      label="Username"
+                      name="nom"
+                      label="Votre nom"
                       variant="outlined"
                       onBlur={handleBlur}
-                      value={values.username}
+                      value={values.nom}
                       onChange={handleChange}
-                      helperText={touched.username && errors.username}
-                      error={Boolean(errors.username && touched.username)}
+                      helperText={touched.nom && errors.nom}
+                      error={Boolean(errors.nom && touched.nom)}
+                      sx={{ mb: 3 }}
+                    />
+                                        
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="text"
+                      name="prenom"
+                      label="Votre prenom"
+                      variant="outlined"
+                      onBlur={handleBlur}
+                      value={values.prenom}
+                      onChange={handleChange}
+                      helperText={touched.prenom && errors.prenom}
+                      error={Boolean(errors.prenom && touched.prenom)}
                       sx={{ mb: 3 }}
                     />
 
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="text"
+                      name="code"
+                      label="code technicien"
+                      variant="outlined"
+                      onBlur={handleBlur}
+                      value={values.code}
+                      onChange={handleChange}
+                      helperText={touched.code && errors.code}
+                      error={Boolean(errors.code && touched.code)}
+                      sx={{ mb: 3 }}
+                    />
+                                        
                     <TextField
                       fullWidth
                       size="small"
@@ -119,12 +158,13 @@ const JwtRegister = () => {
                       error={Boolean(errors.email && touched.email)}
                       sx={{ mb: 3 }}
                     />
+
                     <TextField
                       fullWidth
                       size="small"
                       name="password"
                       type="password"
-                      label="Password"
+                      label="Mot de passe"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.password}
@@ -150,23 +190,23 @@ const JwtRegister = () => {
 
                     <LoadingButton
                       type="submit"
-                      color="default"
+                      color="primary"
                       loading={loading}
                       variant="contained"
                       sx={{ mb: 2, mt: 3 }}
                     >
-                      Regiser
+                      Enregistrer
                     </LoadingButton>
 
-                    <Paragraph>
+                    {/* <Paragraph>
                       Already have an account?
                       <NavLink
                         to="/session/signin"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
+                        style={{ color: theme.palette.secondary.main, marginLeft: 5 }}
                       >
                         Login
                       </NavLink>
-                    </Paragraph>
+                    </Paragraph> */}
                   </form>
                 )}
               </Formik>
