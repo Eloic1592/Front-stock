@@ -106,7 +106,7 @@ Create table intervention(
     idtache int not null references tache(id),
     identretien int not null references entretien(id),
     entretien TEXT NOT NULL,
-    date_int current_timestamp default current_timestamp,
+    date_int timestamp default current_timestamp,
     etat int not null default 0
 );
 
