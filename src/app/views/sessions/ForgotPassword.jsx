@@ -56,13 +56,13 @@ const ForgotPassword = () => {
                   sx={{ mb: 3, width: '100%' }}
                 />
 
-                <Button fullWidth variant="contained" color="secondary" type="submit">
+                <Button fullWidth variant="contained" color="primary" type="submit">
                   Reset Password
                 </Button>
 
                 <Button
                   fullWidth
-                  color="default"
+                  color="primary"
                   variant="outlined"
                   onClick={() => navigate(-1)}
                   sx={{ mt: 2 }}
