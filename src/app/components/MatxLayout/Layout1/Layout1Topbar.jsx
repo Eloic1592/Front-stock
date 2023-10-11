@@ -148,8 +148,8 @@ const Layout1Topbar = () => {
           >
             <StyledItem>
               <Link to="/">
-                <Icon> home </Icon>
-                <Span> Home </Span>
+                <Icon> power </Icon>
+                <Span> Deconnexion </Span>
               </Link>
             </StyledItem>
 
