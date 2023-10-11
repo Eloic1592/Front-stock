@@ -44,7 +44,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(1, 'Password must be 6 character length')
     .required('Password is required!'),
-  email: Yup.string().email('Invalid Email address').required('Email is required!')
+  email: Yup.string().email('Invalid code ').required('code is required!')
 });
 
 const JwtLogin = () => {
@@ -76,7 +76,7 @@ const JwtLogin = () => {
 
           <Grid item sm={6} xs={12}>
             <div>
-            <h2>Connexion-Administrateur</h2>
+            <h2>Connexion-Technicien</h2>
             </div>
             <ContentBox>
               <Formik
@@ -89,9 +89,9 @@ const JwtLogin = () => {
                     <TextField
                       fullWidth
                       size="small"
-                      type="email"
-                      name="email"
-                      label="Email"
+                      type="code"
+                      name="code"
+                      label="code"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.email}
