@@ -110,6 +110,40 @@ Create table intervention(
     etat int not null default 0
 );
 
+-- Conversation 
+Create table conversation(
+    id  serial primary key,
+    idtache int not null references tache(id),
+    idtechnicien int not null references technicien(id),
+    idutilisateur int not null references utilisateur(id),
+    description TEXT DEFAULT NULL,
+    date_envoi timestamp default current_timestamp,
+    etat int not null default 0
+);
+
+-- Photo pour la conversation
+Create Table photo(
+    id serial primary key,
+    idconversation int not null references conversation(id),
+    idtechnicien int not null references technicien(id),
+    idutilisateur int not null references utilisateur(id),
+    photo TEXT default NULL,
+    date_envoi timestamp default current_timestamp,
+    etat int not null default 0
+);
+
+-- Lien pour la conversation
+Create table lien(
+    id serial primary key,
+    idconversation int not null references conversation(id),
+    idtechnicien int not null references technicien(id),
+    idutilisateur int not null references utilisateur(id),
+    lien TEXT default null,
+    date_envoi timestamp default current_timestamp,
+    etat int not null default 0
+);
+
+
 
 -- Tache achevee
 Create table tache_acheve(
