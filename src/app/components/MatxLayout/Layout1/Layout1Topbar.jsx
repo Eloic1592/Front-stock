@@ -4,7 +4,7 @@ import {
   Avatar,
   Hidden,
   Icon,
-  IconButton,
+  // IconButton,
   MenuItem,
   useMediaQuery,
   Box,
@@ -23,9 +23,9 @@ import { Span } from '../../Typography';
 import NotificationBar from '../../NotificationBar/NotificationBar';
 import ShoppingCart from '../../ShoppingCart';
 
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.text.primary
-}));
+// const StyledIconButton = styled(IconButton)(({ theme }) => ({
+//   color: theme.palette.text.primary
+// }));
 
 const TopbarRoot = styled('div')({
   top: 0,
@@ -76,37 +76,37 @@ const StyledItem = styled(MenuItem)(({ theme }) => ({
   '& span': { marginRight: '10px', color: theme.palette.text.primary }
 }));
 
-const IconBox = styled('div')(({ theme }) => ({
-  display: 'inherit',
-  [theme.breakpoints.down('md')]: { display: 'none !important' }
-}));
+// const IconBox = styled('div')(({ theme }) => ({
+//   display: 'inherit',
+//   [theme.breakpoints.down('md')]: { display: 'none !important' }
+// }));
 
 const Layout1Topbar = () => {
   const theme = useTheme();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
-  const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
+  // const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const updateSidebarMode = (sidebarSettings) => {
     updateSettings({ layout1Settings: { leftSidebar: { ...sidebarSettings } } });
   };
 
-  const handleSidebarToggle = () => {
-    let { layout1Settings } = settings;
-    let mode;
-    if (isMdScreen) {
-      mode = layout1Settings.leftSidebar.mode === 'close' ? 'mobile' : 'close';
-    } else {
-      mode = layout1Settings.leftSidebar.mode === 'full' ? 'close' : 'full';
-    }
-    updateSidebarMode({ mode });
-  };
+  // const handleSidebarToggle = () => {
+  //   let { layout1Settings } = settings;
+  //   let mode;
+  //   if (isMdScreen) {
+  //     mode = layout1Settings.leftSidebar.mode === 'close' ? 'mobile' : 'close';
+  //   } else {
+  //     mode = layout1Settings.leftSidebar.mode === 'full' ? 'close' : 'full';
+  //   }
+  //   updateSidebarMode({ mode });
+  // };
 
   return (
     <TopbarRoot>
       <TopbarContainer>
         <Box display="flex">
-          <StyledIconButton onClick={handleSidebarToggle}>
+          {/* <StyledIconButton onClick={handleSidebarToggle}>
             <Icon>menu</Icon>
           </StyledIconButton>
 
@@ -122,7 +122,7 @@ const Layout1Topbar = () => {
             <StyledIconButton>
               <Icon>star_outline</Icon>
             </StyledIconButton>
-          </IconBox>
+          </IconBox> */}
         </Box>
 
         <Box display="flex" alignItems="center">
@@ -146,28 +146,22 @@ const Layout1Topbar = () => {
               </UserMenu>
             }
           >
-            <StyledItem>
-              <Link to="/">
-                <Icon> power </Icon>
-                <Span> Deconnexion </Span>
-              </Link>
-            </StyledItem>
 
             <StyledItem>
               <Link to="/page-layouts/user-profile">
                 <Icon> person </Icon>
-                <Span> Profile </Span>
+                <Span> Profil </Span>
               </Link>
             </StyledItem>
 
-            <StyledItem>
+            {/* <StyledItem>
               <Icon> settings </Icon>
               <Span> Settings </Span>
-            </StyledItem>
+            </StyledItem> */}
 
             <StyledItem onClick={logout}>
               <Icon> power_settings_new </Icon>
-              <Span> Logout </Span>
+              <Span> Deconnexion </Span>
             </StyledItem>
           </MatxMenu>
         </Box>
