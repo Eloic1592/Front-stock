@@ -54,6 +54,17 @@ Create table type_utilisateur(
     etat int not null default 0
 );
 
+Create table utilisateur(
+    id serial primary key,
+    nom varchar(100) not null,
+    prenom varchar(100) not null,
+    email varchar(100) not null,
+    idtype_utilisateur int not null references type_utilisateur(id),
+    mdp varchar(100) not null,
+    etat int not null default 0
+);
+
+
 -- Materiels
 Create table materiel(
     id serial primary key,
