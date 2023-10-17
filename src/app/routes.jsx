@@ -12,6 +12,7 @@ const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
 const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
 const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
 const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
+const Listeentretien = Loadable(lazy(() => import('app/views/dashboard/Listeentretien')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
@@ -40,6 +41,12 @@ const routes = [
         path: '/charts/echarts',
         element: <AppEchart />,
         auth: authRoles.editor
+      },
+      // listeentretien route
+      {
+        path: '/dashboard/listeentretien',
+        element: <Listeentretien />,
+        auth: authRoles.admindefault
       }
     ]
   },
@@ -50,6 +57,8 @@ const routes = [
   { path: '/session/signup', element: <JwtRegister /> },
   { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/session/signin-tech', element: < JwtLoginTech/> },
+
+  { path: '/dashboard/listeentretien', element: < Listeentretien/> },
 
   { path: '/', element: <Navigate to="dashboard/default" /> },
   { path: '*', element: <NotFound /> }

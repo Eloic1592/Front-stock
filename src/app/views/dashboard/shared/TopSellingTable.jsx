@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
 
+
 const CardHeader = styled(Box)(() => ({
   display: 'flex',
   paddingLeft: '24px',
@@ -60,6 +61,8 @@ const TopSellingTable = () => {
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;
   const bgSecondary = palette.secondary.main;
+
+  
 
   return (
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
@@ -162,5 +165,6 @@ const productList = [
     available: 5,
   },
 ];
+
 
 export default TopSellingTable;

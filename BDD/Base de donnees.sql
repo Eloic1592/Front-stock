@@ -93,7 +93,6 @@ Create table entretien(
 -- Plainte
 Create table plainte(
     id serial primary key,
-    identretien int not null references entretien (id),
     description TEXT DEFAULT NULL,
     date_depot timestamp default current_timestamp,
     etat int not null default 0
@@ -136,6 +135,7 @@ Create table conversation(
 Create Table photo(
     id serial primary key,
     idconversation int not null references conversation(id),
+    idtechnicien int not null references technicien(id),
     idtechnicien int not null references technicien(id),
     idutilisateur int not null references utilisateur(id),
     photo TEXT default NULL,

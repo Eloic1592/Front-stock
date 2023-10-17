@@ -1,7 +1,6 @@
 import {
   Box,
-  Icon,
-  IconButton,
+
   styled,
   Table,
   TableBody,
@@ -22,75 +21,9 @@ const StyledTable = styled(Table)(() => ({
   },
 }));
 
-const subscribarList = [
-  {
-    name: "john doe",
-    date: "18 january, 2019",
-    amount: 1000,
-    status: "close",
-    company: "ABC Fintech LTD.",
-  },
-  {
-    name: "kessy bryan",
-    date: "10 january, 2019",
-    amount: 9000,
-    status: "open",
-    company: "My Fintech LTD.",
-  },
-  {
-    name: "kessy bryan",
-    date: "10 january, 2019",
-    amount: 9000,
-    status: "open",
-    company: "My Fintech LTD.",
-  },
-  {
-    name: "james cassegne",
-    date: "8 january, 2019",
-    amount: 5000,
-    status: "close",
-    company: "Collboy Tech LTD.",
-  },
-  {
-    name: "lucy brown",
-    date: "1 january, 2019",
-    amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
-  {
-    name: "lucy brown",
-    date: "1 january, 2019",
-    amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
-  {
-    name: "lucy brown",
-    date: "1 january, 2019",
-    amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
-  {
-    name: "lucy brown",
-    date: "1 january, 2019",
-    amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
-  {
-    name: "lucy brown",
-    date: "1 january, 2019",
-    amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
-];
-
-const PaginationTable = () => {
+const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -106,29 +39,23 @@ const PaginationTable = () => {
       <StyledTable>
         <TableHead>
           <TableRow>
-            <TableCell align="left">Name</TableCell>
-            <TableCell align="center">Company</TableCell>
-            <TableCell align="center">Start Date</TableCell>
-            <TableCell align="center">Status</TableCell>
-            <TableCell align="center">Amount</TableCell>
-            <TableCell align="right">Action</TableCell>
+            {columns.map((column, index) => (
+              <TableCell key={index} align={column.align || "left"}>
+                {column.label}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {subscribarList
+          {data
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((subscriber, index) => (
+            .map((row, index) => (
               <TableRow key={index}>
-                <TableCell align="left">{subscriber.name}</TableCell>
-                <TableCell align="center">{subscriber.company}</TableCell>
-                <TableCell align="center">{subscriber.date}</TableCell>
-                <TableCell align="center">{subscriber.status}</TableCell>
-                <TableCell align="center">${subscriber.amount}</TableCell>
-                <TableCell align="right">
-                  <IconButton>
-                    <Icon color="error">close</Icon>
-                  </IconButton>
-                </TableCell>
+                {columns.map((column, index) => (
+                  <TableCell key={index} align={column.align || "left"}>
+                    {column.render ? column.render(row) : row[column.field]}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
         </TableBody>
@@ -139,9 +66,9 @@ const PaginationTable = () => {
         page={page}
         component="div"
         rowsPerPage={rowsPerPage}
-        count={subscribarList.length}
+        count={data.length}
         onPageChange={handleChangePage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={rowsPerPageOptions}
         onRowsPerPageChange={handleChangeRowsPerPage}
         nextIconButtonProps={{ "aria-label": "Next Page" }}
         backIconButtonProps={{ "aria-label": "Previous Page" }}
