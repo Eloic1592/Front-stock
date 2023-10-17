@@ -13,13 +13,6 @@ select d.*,t.nom,t.prenom from disponibilite d join technicien t on t.id=d.idtec
 
 
 -- A faire cette apres-midi
-select * from technicien;
-
-select * from suggestion;
-
-select * from historique;
-
-select * from type_entretien;
 
 -- Vue
 Tache,Intervention,tache_acheve,tache_prioritaires

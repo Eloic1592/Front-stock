@@ -41,16 +41,16 @@ const Analytics = () => {
       <ContentBox className="analytics">
         <Grid container spacing={3}>
           <Grid item lg={8} md={8} sm={12} xs={12}>
-            {/* <StatCards />
+            <StatCards />
             <TopSellingTable />
-            <StatCards2 /> */}
+            <StatCards2 />
 
-            {/* <H4>Mety Projects</H4>
-            <RowCards /> */}
+            <H4>Mety Projects</H4>
+            <RowCards />
           </Grid>
 
           <Grid item lg={4} md={4} sm={12} xs={12}>
-            {/* <Card sx={{ px: 3, py: 2, mb: 3 }}>
+            <Card sx={{ px: 3, py: 2, mb: 3 }}>
               <Title>Traffic Sources</Title>
               <SubTitle>Last 30 days</SubTitle>
 
@@ -58,10 +58,10 @@ const Analytics = () => {
                 height="300px"
                 color={[palette.primary.dark, palette.primary.main, palette.primary.light]}
               />
-            </Card> */}
+            </Card>
 
-            {/* <UpgradeCard />
-            <Campaigns /> */}
+            <UpgradeCard />
+            <Campaigns />
           </Grid>
         </Grid>
       </ContentBox>

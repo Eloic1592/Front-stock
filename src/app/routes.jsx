@@ -12,7 +12,17 @@ const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
 const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
 const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
 const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
+
+// Entretien
 const Listeentretien = Loadable(lazy(() => import('app/views/dashboard/Listeentretien')));
+// Materiel
+const Listemateriel = Loadable(lazy(() => import('app/views/dashboard/Listemateriel')));
+
+// Type entretien
+const ListeTypeEntretien = Loadable(lazy(() => import('app/views/dashboard/ListeTypeEntretien')));
+
+// Technicien
+const ListeTechnicien = Loadable(lazy(() => import('app/views/dashboard/ListeTechnicien')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
@@ -47,7 +57,22 @@ const routes = [
         path: '/dashboard/listeentretien',
         element: <Listeentretien />,
         auth: authRoles.admindefault
-      }
+      },
+      {
+        path: '/dashboard/listemateriel',
+        element: <Listemateriel />,
+        auth: authRoles.admindefault
+      },
+      {
+        path: '/dashboard/listetypeentretien',
+        element: <ListeTypeEntretien />,
+        auth: authRoles.admindefault
+      },
+      {
+        path: '/dashboard/listetechnicien',
+        element: <ListeTechnicien />,
+        auth: authRoles.admindefault
+      },
     ]
   },
 
@@ -59,6 +84,9 @@ const routes = [
   { path: '/session/signin-tech', element: < JwtLoginTech/> },
 
   { path: '/dashboard/listeentretien', element: < Listeentretien/> },
+  { path: '/dashboard/listemateriel', element: < Listemateriel/> },
+  { path: '/dashboard/listetypeentretien', element: < ListeTypeEntretien/> },
+  { path: '/dashboard/listetechnicien', element: < ListeTechnicien/> },
 
   { path: '/', element: <Navigate to="dashboard/default" /> },
   { path: '*', element: <NotFound /> }

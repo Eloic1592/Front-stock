@@ -18,18 +18,23 @@ const Container = styled("div")(({ theme }) => ({
 
   
 const Listeentretien = () => {
+
+   // Data
+  const listeentretien = useData('getallventretien');
+
+  // Colonne
   const colonne = [
-    { label: "Name", field: "name" },
-    { label: "Company", field: "company" },
-    { label: "Start Date", field: "date" },
-    // ... Ajoutez d'autres colonnes si nécessaire
+    { label: "ID", field: "id", render: (listeentretien) => `${listeentretien.id}` },
+    { label: "Type entretien", field: "type entretien", render: (listeentretien) => `${listeentretien.typeEntretien}` },    
+    { label: "Entretien", field: "entretien", render: (listeentretien) => `${listeentretien.entretien}` },
+    { label: "materiel", field: "materiel", render: (listeentretien) => `${listeentretien.materiel}` },
+    { label: "etat", field: "etat", render: (listeentretien) => `${listeentretien.etat}` },      // ... Ajoutez d'autres colonnes si nécessaire
   ];
-    const listeentretien = useData('getallentretien');
-  
+ 
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Material", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
         <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listeentretien} />

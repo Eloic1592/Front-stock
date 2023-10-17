@@ -3,6 +3,9 @@ export const navigations = [
   { name: 'Listes des requetes', iconText: 'SI', path: '/session/signin' },
   { name: 'Calendrier', iconText: 'SI', path: '/session/signin' },
   { name: 'Listes des entretiens', iconText: 'SI', path: '/dashboard/listeentretien' },
+  { name: 'Listes des materiel', iconText: 'SI', path: '/dashboard/listemateriel' },
+  { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/dashboard/listetypeentretien' },
+  { name: 'Listes des techniciens', iconText: 'SI', path: '/dashboard/listetechnicien' },
   {
     name: 'Taches',
     icon: 'arrows-right',
@@ -19,7 +22,7 @@ export const navigations = [
     badge: { value: '30+', color: 'secondary' },
     children: [
       // { name: 'Auto Complete', path: '/material/autocomplete', iconText: 'A' },
-      // { name: 'Buttons', path: '/material/buttons', iconText: 'B' },
+      { name: 'Buttons', path: '/material/buttons', iconText: 'B' },
       // { name: 'Checkbox', path: '/material/checkbox', iconText: 'C' },
       // { name: 'Dialog', path: '/material/dialog', iconText: 'D' },
       // { name: 'Expansion Panel', path: '/material/expansion-panel', iconText: 'E' },
@@ -31,7 +34,7 @@ export const navigations = [
       // { name: 'Switch', path: '/material/switch', iconText: 'S' },
       // { name: 'Slider', path: '/material/slider', iconText: 'S' },
       // { name: 'Snackbar', path: '/material/snackbar', iconText: 'S' },
-      { name: 'Table', path: '/material/table', iconText: 'T' }
+      // { name: 'Table', path: '/material/table', iconText: 'T' }
     ]
   },
   // {
