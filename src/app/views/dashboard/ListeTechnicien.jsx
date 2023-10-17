@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
@@ -16,6 +16,15 @@ const Container = styled("div")(({ theme }) => ({
   }));
 
 
+  const handleEdit = (id) => {
+    // Mettez ici votre logique pour l'édition
+    alert(`Mety`+id);
+  };
+  
+  const handleDelete = (id) => {
+    // Mettez ici votre logique pour la suppression
+    alert(`Mety`+id);  
+  };
   
 const ListeTechnicien = () => {
 
@@ -27,13 +36,23 @@ const ListeTechnicien = () => {
     { label: "ID", field: "id", render: (listetechnicien) => `${listetechnicien.id}` },
     { label: "Nom", field: "type entretien", render: (listetechnicien) => `${listetechnicien.nom}` },    
     { label: "prenom", field: "type entretien", render: (listetechnicien) => `${listetechnicien.prenom}` },    
-    { label: "etat", field: "etat", render: (listetechnicien) => `${listetechnicien.etat}` },      // ... Ajoutez d'autres colonnes si nécessaire
+    { label: "etat", field: "etat", render: (listetechnicien) => `${listetechnicien.etat}` },
+    { label: "Actions", render: () => (
+      <div>
+      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listetechnicien.id)}>
+          <Icon>edit_icon</Icon>
+      </IconButton>
+      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listetechnicien.id)}>
+          <Icon>delete</Icon>
+      </IconButton>
+      </div>
+    )},        // ... Ajoutez d'autres colonnes si nécessaire
   ];
  
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetechnicien} />

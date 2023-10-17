@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
@@ -16,6 +16,15 @@ const Container = styled("div")(({ theme }) => ({
   }));
 
 
+  const handleEdit = (id) => {
+    // Mettez ici votre logique pour l'édition
+    alert(`Mety`+id);
+  };
+  
+  const handleDelete = (id) => {
+    // Mettez ici votre logique pour la suppression
+    alert(`Mety`+id);  
+  };
   
 const Listemateriel = () => {
 
@@ -26,7 +35,17 @@ const Listemateriel = () => {
   const colonne = [
     { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
     { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "etat", field: "etat", render: (listemateriel) => `${listemateriel.etat}` },      // ... Ajoutez d'autres colonnes si nécessaire
+    { label: "etat", field: "etat", render: (listemateriel) => `${listemateriel.etat}` }, 
+    { label: "Actions", render: () => (
+      <div>
+      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listemateriel.id)}>
+          <Icon>edit_icon</Icon>
+      </IconButton>
+      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listemateriel.id)}>
+          <Icon>delete</Icon>
+      </IconButton>
+      </div>
+    )},     // ... Ajoutez d'autres colonnes si nécessaire
   ];
  
     return (
