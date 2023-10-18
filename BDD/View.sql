@@ -11,8 +11,20 @@ Create or replace view v_dispo as
 select d.*,t.nom,t.prenom from disponibilite d join technicien t on t.id=d.idtechnicien;
 
 
+-- View tache
+Drop view v_tache;
+Create or replace view v_tache as 
+select t.id as idtache, e.entretien,te.prenom,p.description,t.etat from tache t join entretien e on t.identretien=e.id join technicien te on te.id=t.idtechnicien join plainte p on p.id=t.idplainte;
 
--- A faire cette apres-midi
+-- View intervention
+Drop view v_intervention;
+Create or replace view v_intervention as 
+select i.id as idinter,i.date_int,i.entretien as intervention,e.entretien,t.designation from intervention i join tache t on i.idtache=t.id join entretien e on i.identretien=e.id;
+
 
 -- Vue
-Tache,Intervention,tache_acheve,tache_prioritaires
+
+Tache,
+Intervention,
+tache_acheve,
+tache_prioritaires
