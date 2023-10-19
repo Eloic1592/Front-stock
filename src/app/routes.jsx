@@ -24,6 +24,12 @@ const ListeTypeEntretien = Loadable(lazy(() => import('app/views/dashboard/Liste
 // Technicien
 const ListeTechnicien = Loadable(lazy(() => import('app/views/dashboard/ListeTechnicien')));
 
+// Tache
+const Listetache = Loadable(lazy(() => import('app/views/dashboard/Listetache')));
+
+// Disponibilite
+const Listedispo  = Loadable(lazy(() => import('app/views/dashboard/Listedispo')));
+
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
@@ -73,6 +79,16 @@ const routes = [
         element: <ListeTechnicien />,
         auth: authRoles.admindefault
       },
+      {
+        path: '/dashboard/listetaches',
+        element: <Listetache />,
+        auth: authRoles.admindefault
+      },
+      {
+        path: '/dashboard/listedispo',
+        element: <Listedispo />,
+        auth: authRoles.admindefault
+      },
     ]
   },
 
@@ -87,6 +103,8 @@ const routes = [
   { path: '/dashboard/listemateriel', element: < Listemateriel/> },
   { path: '/dashboard/listetypeentretien', element: < ListeTypeEntretien/> },
   { path: '/dashboard/listetechnicien', element: < ListeTechnicien/> },
+  { path: '/dashboard/listetaches', element: < Listetache/> },
+  { path: '/dashboard/listedispo', element: < Listedispo/> },
 
   { path: '/', element: <Navigate to="dashboard/default" /> },
   { path: '*', element: <NotFound /> }

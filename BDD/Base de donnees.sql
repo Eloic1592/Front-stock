@@ -25,225 +25,318 @@ BEGIN
 END $$;
 
 -- Admin
-Create table admin(
-    id serial primary key,
+CREATE TABLE admin (
+    id serial PRIMARY KEY,
     nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
-    email TEXT not null,
-    mdp TEXT NOT null
+    email TEXT NOT NULL,
+    mdp TEXT NOT NULL
 );
 
 -- Technicien
-Create table technicien(
-    id serial primary key,
-    nom Text NOT NULL,
+CREATE TABLE technicien (
+    id serial PRIMARY KEY,
+    nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
-    code varchar(50) not null,
-    email text not null,
+    code varchar(50) NOT NULL,
+    email text NOT NULL,
     mdp text NOT NULL,
-    etat int not null default 0
+    etat int NOT NULL DEFAULT 0
 );
--- Utilisateur
---   La page d'accueil de l'utilisateur est par default le formulaire de deposition  de plainte.
---  La raison pour l'accueil il n'y a pas  de login pour les utilisateurs
 
 -- Utilisateur
-Create table type_utilisateur(
-    id serial primary key,
-    type_utilisateur text not null,
-    etat int not null default 0
+CREATE TABLE type_utilisateur (
+    id serial PRIMARY KEY,
+    type_utilisateur text NOT NULL,
+    etat int NOT NULL DEFAULT 0
 );
 
-Create table utilisateur(
-    id serial primary key,
-    nom varchar(100) not null,
-    prenom varchar(100) not null,
-    email varchar(100) not null,
-    idtype_utilisateur int not null references type_utilisateur(id),
-    mdp varchar(100) not null,
-    etat int not null default 0
+CREATE TABLE utilisateur (
+    id serial PRIMARY KEY,
+    nom varchar(100) NOT NULL,
+    prenom varchar(100) NOT NULL,
+    dtn date NOT NULL,
+    code TEXT DEFAULT NULL,
+    email varchar(100) NOT NULL,
+    mdp varchar(100) NOT NULL,
+    idtype_utilisateur int NOT NULL REFERENCES type_utilisateur(id),
+    etat int NOT NULL DEFAULT 0
 );
 
+-- Salle
+CREATE TABLE salle (
+    id serial NOT NULL PRIMARY KEY,
+    salle TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
 
 -- Materiels
-Create table materiel(
-    id serial primary key,
-    materiel text not null,
-    etat int not null default 0
+CREATE TABLE materiel (
+    id serial PRIMARY KEY,
+    materiel text NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Plainte
+CREATE TABLE plainte (
+    id serial PRIMARY KEY,
+    date_depot timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE plainte_individuel (
+    id serial PRIMARY KEY,
+    idplainte int NOT NULL REFERENCES plainte(id),
+    idutilisateur int NOT NULL REFERENCES utilisateur(id),
+    description text DEFAULT NULL,
+    idmateriel int NOT NULL REFERENCES materiel(id),
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE plainte_salle (
+    id serial PRIMARY KEY,
+    idplainte int NOT NULL REFERENCES plainte(id),
+    idsalle int NOT NULL REFERENCES salle(id),
+    description text DEFAULT NULL,
+    idmateriel int NOT NULL REFERENCES materiel(id),
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE fichier_pl (
+    id serial PRIMARY KEY,
+    idplainte int NOT NULL REFERENCES plainte(id),
+    date_envoi timestamp DEFAULT current_timestamp,
+    fichier TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE video_pl (
+    id serial PRIMARY KEY,
+    idplainte int NOT NULL REFERENCES plainte(id),
+    date_envoi timestamp DEFAULT current_timestamp,
+    URL TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Conversation
+CREATE TABLE conversation (
+    id serial PRIMARY KEY,
+    text text DEFAULT NULL,
+    idutilisateur int NOT NULL REFERENCES utilisateur(id),
+    idtechnicien int NOT NULL REFERENCES technicien(id),
+    date_envoi timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE fichier_con (
+    id serial PRIMARY KEY,
+    idcon int NOT NULL REFERENCES conversation(id),
+    date_envoi timestamp DEFAULT current_timestamp,
+    fichier TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE video_con (
+    id serial PRIMARY KEY,
+    idcon int NOT NULL REFERENCES conversation(id),
+    date_envoi timestamp DEFAULT current_timestamp,
+    URL TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE archivage (
+    id serial PRIMARY KEY,
+    idcon int NOT NULL REFERENCES conversation(id),
+    date timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Tache a faire
+CREATE TABLE tache (
+    id serial PRIMARY KEY,
+    idplainte int NOT NULL REFERENCES plainte(id),
+    date_tache timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE tache_tech (
+    id serial PRIMARY KEY,
+    idtache int NOT NULL REFERENCES tache(id),
+    idtechnicien int NOT NULL REFERENCES technicien(id),
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE tache_acheve (
+    id serial PRIMARY KEY,
+    idtache int NOT NULL REFERENCES tache(id),
+    date_fin timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE tache_prioritaires (
+    id serial PRIMARY KEY,
+    idtache int NOT NULL REFERENCES tache(id),
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Achat
+CREATE TABLE achat (
+    id serial PRIMARY KEY,
+    date_achat timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
+);
+
+CREATE TABLE achat_materiel (
+    id serial PRIMARY KEY,
+    designation TEXT NOT NULL,
+    quantite decimal(15,2) DEFAULT 0.0,
+    prixunitaire decimal(15,2) DEFAULT 0.0,
+    idachat int NOT NULL REFERENCES achat(id),
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Disponibilite de technicien
+CREATE TABLE disponibilite (
+    id serial PRIMARY KEY,
+    idtechnicien int NOT NULL REFERENCES technicien(id),
+    date_debut timestamp DEFAULT current_timestamp,
+    date_fin timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
 );
 
 -- Type entretien
-Create table type_entretien(
-    id serial primary key,
-    type_entretien text not null,
-    etat int not null default 0
+CREATE TABLE type_entretien (
+    id serial PRIMARY KEY,
+    type_entretien text NOT NULL,
+    etat int NOT NULL DEFAULT 0
 );
-
 
 -- Entretien
-Create table entretien(
-    id  serial primary key,
-    idtype_entretien int not null references type_entretien(id),
-    idmateriel int not null references materiel(id),
+CREATE TABLE entretien (
+    id serial PRIMARY KEY,
+    idtype_entretien int NOT NULL REFERENCES type_entretien(id),
+    idmateriel int NOT NULL REFERENCES materiel(id),
     entretien TEXT NOT NULL,
-    etat int not null default 0
+    etat int NOT NULL DEFAULT 0
 );
-
-
--- Plainte
-Create table plainte(
-    id serial primary key,
-    description TEXT DEFAULT NULL,
-    date_depot timestamp default current_timestamp,
-    etat int not null default 0
-);
--- Tache a faire
-
-Create table tache(
-    id serial primary key,
-    idplainte  int not null references plainte(id),
-    idtechnicien int not null references technicien(id),
-    identretien int not null references entretien(id),
-    designation TEXT default NULL,
-    date_tache timestamp default current_timestamp,
-    etat int not null default 0
-);
-
 
 -- Intervention par rapport a la tache
-Create table intervention(
-    id  serial primary key,
-    idtache int not null references tache(id),
-    identretien int not null references entretien(id),
-    entretien TEXT NOT NULL,
-    date_int timestamp default current_timestamp,
-    etat int not null default 0
+CREATE TABLE intervention (
+    id serial PRIMARY KEY,
+    idtache int NOT NULL REFERENCES tache(id),
+    etat int NOT NULL DEFAULT 0
 );
 
--- Conversation 
-Create table conversation(
-    id  serial primary key,
-    idtache int not null references tache(id),
-    idtechnicien int not null references technicien(id),
-    idutilisateur int not null references utilisateur(id),
-    description TEXT DEFAULT NULL,
-    date_envoi timestamp default current_timestamp,
-    etat int not null default 0
-);
-
--- Photo pour la conversation
-Create Table photo(
-    id serial primary key,
-    idconversation int not null references conversation(id),
-    idtechnicien int not null references technicien(id),
-    idtechnicien int not null references technicien(id),
-    idutilisateur int not null references utilisateur(id),
-    photo TEXT default NULL,
-    date_envoi timestamp default current_timestamp,
-    etat int not null default 0
-);
-
--- Lien pour la conversation
-Create table lien(
-    id serial primary key,
-    idconversation int not null references conversation(id),
-    idtechnicien int not null references technicien(id),
-    idutilisateur int not null references utilisateur(id),
-    lien TEXT default null,
-    date_envoi timestamp default current_timestamp,
-    etat int not null default 0
-);
-
-
-
--- Tache achevee
-Create table tache_acheve(
-    id serial primary key,
-    idtache int not null references tache(id),
-    date_fin timestamp default current_timestamp,
-    etat int not null default 0
-);
-
--- 
-
-
--- Taches prioritaires
-Create table tache_prioritaires(
-    id serial primary key,
-    idtache int not null references tache(id),
-    etat int not null default 0
+CREATE TABLE intervention_details (
+    id serial PRIMARY KEY,
+    idintervention int NOT NULL REFERENCES intervention(id),
+    etat int NOT NULL DEFAULT 0
 );
 
 -- Historique recherche
-Create table historique(
-    id serial primary key,
-    mot_cle TEXT not null,
+CREATE TABLE historique (
+    id serial PRIMARY KEY,
+    mot_cle TEXT NOT NULL,
     historique TEXT,
-    date_historique timestamp default current_timestamp,
-    etat int not null default 0
+    date_historique timestamp DEFAULT current_timestamp,
+    etat int NOT NULL DEFAULT 0
 );
-
-
--- Disponibilite de technicien
-Create table disponibilite(
-    id serial primary key,
-    idtechnicien int not null references technicien(id),
-    date_debut timestamp default current_timestamp,
-    date_fin timestamp default current_timestamp,
-    etat int not null default 0
-);
-
 
 -- Reponse en tant que suggestion
-Create table suggestion(
-    id serial primary key not null,
-    solution TEXT not null,
-    etat int not null default 0
+CREATE TABLE question (
+    id serial PRIMARY KEY NOT NULL,
+    question TEXT NOT NULL,
+    reponse TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
 );
+
+
 
 
 
 -- Select 
--- Table admin
+-- Admin
 SELECT * FROM admin;
 
--- Table technicien
+-- Technicien
 SELECT * FROM technicien;
 
--- Table materiel
+-- Utilisateur
+SELECT * FROM type_utilisateur;
+SELECT * FROM utilisateur;
+
+-- Salle
+SELECT * FROM salle;
+
+-- Materiels
 SELECT * FROM materiel;
 
--- Table type_entretien
-SELECT * FROM type_entretien;
+-- Plainte
+SELECT * FROM plainte;
 
--- Table entretien
-SELECT * FROM entretien;
+-- Plainte Individuelle
+SELECT * FROM plainte_individuel;
 
--- Table taches
+-- Plainte Salle
+SELECT * FROM plainte_salle;
+
+-- Fichier Plainte
+SELECT * FROM fichier_pl;
+
+-- Video Plainte
+SELECT * FROM video_pl;
+
+-- Conversation
+SELECT * FROM conversation;
+
+-- Fichier Conversation
+SELECT * FROM fichier_con;
+
+-- Video Conversation
+SELECT * FROM video_con;
+
+-- Archivage
+SELECT * FROM archivage;
+
+-- Tache
 SELECT * FROM tache;
 
--- Table tache_acheve
+-- Tache Technicien
+SELECT * FROM tache_tech;
+
+-- Tache Achevée
 SELECT * FROM tache_acheve;
 
--- Table tache_prioritaires
+-- Tache Prioritaires
 SELECT * FROM tache_prioritaires;
 
--- Table historique
-SELECT * FROM historique;
+-- Achat
+SELECT * FROM achat;
 
--- Table disponibilite
+-- Achat Materiel
+SELECT * FROM achat_materiel;
+
+-- Disponibilite de Technicien
 SELECT * FROM disponibilite;
 
--- Statistiques:Vue
+-- Type Entretien
+SELECT * FROM type_entretien;
 
--- Vue
--- Probleme materiel
-Create or replace view probleme_mat as
-select pm.id as idprobleme,m.nom,pm.description,pm.date_envoi,concat(u.nom,u.prenom) from materiel m join probleme_materiel pm on pm.idmateriel=m.id join utilisateur u on u.id=pm.idutilisateur ;
+-- Entretien
+SELECT * FROM entretien;
 
--- Probleme salle
-Create or replace view probleme_sal as
-select pm.id as idprobleme,pm.description,pm.date_envoi,s.nom from salle s join probleme_sal pm on pm.idsalle=s.id join utilisateur u on u.id=pm.idutilisateur;
+-- Intervention
+SELECT * FROM intervention;
+
+-- Intervention Détails
+SELECT * FROM intervention_details;
+
+-- Historique Recherche
+SELECT * FROM historique;
+
+-- Questions
+SELECT * FROM question;
+
 
 
 
