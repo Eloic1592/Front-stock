@@ -18,6 +18,10 @@ export const navigations = [
     ]
   },
 
+  { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
+  { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },
+
+
   {
     name: 'Components',
     icon: 'favorite',

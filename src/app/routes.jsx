@@ -30,6 +30,15 @@ const Listetache = Loadable(lazy(() => import('app/views/dashboard/Listetache'))
 // Disponibilite
 const Listedispo  = Loadable(lazy(() => import('app/views/dashboard/Listedispo')));
 
+// Connexion
+const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
+
+// Connexion Utilisateur
+const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
+
+const Register  = Loadable(lazy(() => import('app/views/user/Register')));
+
+
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
@@ -105,6 +114,15 @@ const routes = [
   { path: '/dashboard/listetechnicien', element: < ListeTechnicien/> },
   { path: '/dashboard/listetaches', element: < Listetache/> },
   { path: '/dashboard/listedispo', element: < Listedispo/> },
+
+  // Admin
+  { path: '/admin/connexion', element: < LoginAdmin/> },
+
+  // Utilisateur
+  { path: '/user/connexion', element: < LoginUser/> },
+  
+  { path: '/user/register', element: < Register/> },
+
 
   { path: '/', element: <Navigate to="dashboard/default" /> },
   { path: '*', element: <NotFound /> }

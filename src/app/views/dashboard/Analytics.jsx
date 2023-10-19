@@ -1,12 +1,12 @@
 import { Card, Grid, styled, useTheme } from '@mui/material';
 import { Fragment } from 'react';
-import Campaigns from './shared/Campaigns';
-import DoughnutChart from './shared/Doughnut';
-import RowCards from './shared/RowCards';
-import StatCards from './shared/StatCards';
-import StatCards2 from './shared/StatCards2';
-import TopSellingTable from './shared/TopSellingTable';
-import UpgradeCard from './shared/UpgradeCard';
+import Campaigns from 'app/views/shared/Campaigns';
+import DoughnutChart from 'app/views/shared/Doughnut';
+import RowCards from 'app/views/shared/RowCards';
+import StatCards from 'app/views/shared/StatCards';
+import StatCards2 from 'app/views/shared/StatCards2';
+import TopSellingTable from 'app/views/shared/TopSellingTable';
+import UpgradeCard from 'app/views/shared/UpgradeCard';
 
 const ContentBox = styled('div')(({ theme }) => ({
   margin: '30px',
