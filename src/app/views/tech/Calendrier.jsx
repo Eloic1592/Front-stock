@@ -1,34 +1,32 @@
 import React from 'react';
 import { Box,Card, Grid,styled} from '@mui/material';
+import Button from '@mui/material/Button';
 import { Breadcrumb} from "app/components";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Fragment } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
 import {frenchTranslations} from 'app/views/frenchtransalations';
+import moment from 'moment';
 
 const localizer = momentLocalizer(moment);
+// Jours de la semaine en fr
+localizer.daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
-// const localizer = momentLocalizer(moment); // Assurez-vous d'importer moment
 const ContentBox = styled('div')(({ theme }) => ({
     margin: '30px',
     [theme.breakpoints.down('sm')]: { margin: '16px' },
   }));
-  
+
+const NewagendaBouton = () => (
+    <Button variant="contained" color="primary">
+      Nouvel evenement
+    </Button>
+  );
+
   
 const Calendrier = () => {
 
-  const frenchDayNames = [
-    'Dimanche',
-    'Lundi',
-    'Mardi',
-    'Mercredi',
-    'Jeudi',
-    'Vendredi',
-    'Samedi'
-  ];
-
-  return (
+ return (
     <Fragment>
       <ContentBox className="analytics">
         <Grid container spacing={6}>
@@ -38,8 +36,13 @@ const Calendrier = () => {
                 <Breadcrumb routeSegments={[{ name: "Agenda" }]} />
               </Box>
             </Card>
-            <div>
+            <br/>
+            <p>
+              <NewagendaBouton/>
+            </p>
               <h1>Calendrier des disponibilités</h1>
+
+              <div>             
               <Calendar
                 localizer={localizer}
                 events={[
@@ -54,13 +57,6 @@ const Calendrier = () => {
                 endAccessor="end"
                 style={{ height: 500 }} // Ajustez la hauteur selon vos préférences
                 messages={frenchTranslations}
-                dayPropGetter={date => ({
-                  className: '',
-                  style: {
-                    textAlign: 'center'
-                  },
-                  'data-tooltip': frenchDayNames[date.getDay()] // Utilisez les noms des jours en français
-                })}
               />
             </div>
           </Grid>
