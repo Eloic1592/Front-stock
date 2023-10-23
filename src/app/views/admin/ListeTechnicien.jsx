@@ -2,7 +2,7 @@ import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-
+import Button from '@mui/material/Button';
 
 
 
@@ -25,6 +25,13 @@ const Container = styled("div")(({ theme }) => ({
     // Mettez ici votre logique pour la suppression
     alert(`Mety`+id);  
   };
+
+  const NewBouton = () => (
+    <Button variant="contained" color="primary">
+            Nouveau Technicien
+    </Button>
+  );
+
   
 const ListeTechnicien = () => {
 
@@ -54,6 +61,9 @@ const ListeTechnicien = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
+          <p>
+            <NewBouton/>
+          </p>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetechnicien} />
         </SimpleCard>

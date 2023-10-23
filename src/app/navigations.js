@@ -9,10 +9,10 @@ export const navigations = [
     icon: 'arrows-right',
     children: [
       { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
-      { name: 'Listes des entretiens', iconText: 'SI', path: '/dashboard/listeentretien' },
-      { name: 'Listes des materiel', iconText: 'SI', path: '/dashboard/listemateriel' },
-      { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/dashboard/listetypeentretien' },
-      { name: 'Listes des techniciens', iconText: 'SI', path: '/dashboard/listetechnicien' },
+      { name: 'Listes des entretiens', iconText: 'SI', path: '/admin/listeentretien' },
+      { name: 'Listes des materiel', iconText: 'SI', path: '/admin/listemateriel' },
+      { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
+      { name: 'Listes des techniciens', iconText: 'SI', path: '/admin/listetechnicien' },
       { name: 'Calendrier des techniciens', iconText: 'SI', path: '/admin/calendriertech' },
     ]
   },

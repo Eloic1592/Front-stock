@@ -2,7 +2,7 @@ import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-
+import Button from '@mui/material/Button';
 
 
 
@@ -25,26 +25,30 @@ const Container = styled("div")(({ theme }) => ({
     // Mettez ici votre logique pour la suppression
     alert(`Mety`+id);  
   };
-
+  const NewBouton = () => (
+    <Button variant="contained" color="primary">
+      Nouvel type d'entretien
+    </Button>
+  );
   
-const Listedispo = () => {
+const Listeentretien = () => {
 
    // Data
-  const listedispo = useData('getallvdisponibilite');
+  const listeentretien = useData('getallventretien');
 
   // Colonne
   const colonne = [
-    { label: "ID", field: "id", render: (listedispo) => `${listedispo.id}` },
-    { label: "Responsable", field: "Responsable", render: (listedispo) => `${listedispo.nom+' '+listedispo.prenom}` },    
-    { label: "date debut", field: "date debut", render: (listedispo) => `${listedispo.date_debut}` },
-    { label: "date fin", field: "date fin", render: (listedispo) => `${listedispo.date_fin}` },
-    { label: "etat", field: "etat", render: (listedispo) => `${listedispo.etat}` },  
+    { label: "ID", field: "id", render: (listeentretien) => `${listeentretien.id}` },
+    { label: "Type entretien", field: "type entretien", render: (listeentretien) => `${listeentretien.typeEntretien}` },    
+    { label: "Entretien", field: "entretien", render: (listeentretien) => `${listeentretien.entretien}` },
+    { label: "materiel", field: "materiel", render: (listeentretien) => `${listeentretien.materiel}` },
+    { label: "etat", field: "etat", render: (listeentretien) => `${listeentretien.etat}` },  
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listedispo.id)}>
+      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listeentretien.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listedispo.id)}>
+      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listeentretien.id)}>
           <Icon>delete</Icon>
       </IconButton>
       </div>
@@ -56,11 +60,14 @@ const Listedispo = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
+          <p>
+            <NewBouton/>
+          </p>
         <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listedispo} />
+        <PaginationTable columns={colonne} data={listeentretien} />
         </SimpleCard>
       </Container>
     );
   };
   
-export default Listedispo;
+export default Listeentretien;

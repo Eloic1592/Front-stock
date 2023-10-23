@@ -1,8 +1,14 @@
 import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
+import Button from '@mui/material/Button';
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-
+import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { useState } from 'react';
 
 
 
@@ -25,11 +31,17 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
-  
-const ListeTypeEntretien = () => {
 
-   // Data
-  const listetentretien = useData('gettypeentretien');
+  
+  
+  
+  const ListeTypeEntretien = () => {
+    
+    // Data
+    const listetentretien = useData('gettypeentretien');
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
   // Colonne
   const colonne = [
@@ -53,6 +65,36 @@ const ListeTypeEntretien = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Type_entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
+          <p>
+           <Button variant="contained" onClick={handleClickOpen} color="primary">
+             Nouveau type d'entretien
+           </Button>
+           </p>
+              <Box>
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Nouveau type d'entretien</DialogTitle>
+                 <DialogContent>
+                   <TextField
+                     fullWidth
+                     autoFocus
+                     id="name"
+                     type="email"
+                     margin="dense"
+                     label="Email Address"
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Cancel
+                   </Button>
+
+                   <Button onClick={handleClose} color="primary">
+                     Subscribe
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetentretien} />
         </SimpleCard>

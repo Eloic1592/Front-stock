@@ -5,7 +5,6 @@ import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 
 
 
-
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
     [theme.breakpoints.down("sm")]: { margin: "16px" },
@@ -27,24 +26,24 @@ const Container = styled("div")(({ theme }) => ({
   };
 
   
-const Listeentretien = () => {
+const Listedispo = () => {
 
    // Data
-  const listeentretien = useData('getallventretien');
+  const listedispo = useData('getallvdisponibilite');
 
   // Colonne
   const colonne = [
-    { label: "ID", field: "id", render: (listeentretien) => `${listeentretien.id}` },
-    { label: "Type entretien", field: "type entretien", render: (listeentretien) => `${listeentretien.typeEntretien}` },    
-    { label: "Entretien", field: "entretien", render: (listeentretien) => `${listeentretien.entretien}` },
-    { label: "materiel", field: "materiel", render: (listeentretien) => `${listeentretien.materiel}` },
-    { label: "etat", field: "etat", render: (listeentretien) => `${listeentretien.etat}` },  
+    { label: "ID", field: "id", render: (listedispo) => `${listedispo.id}` },
+    { label: "Responsable", field: "Responsable", render: (listedispo) => `${listedispo.nom+' '+listedispo.prenom}` },    
+    { label: "date debut", field: "date debut", render: (listedispo) => `${listedispo.date_debut}` },
+    { label: "date fin", field: "date fin", render: (listedispo) => `${listedispo.date_fin}` },
+    { label: "etat", field: "etat", render: (listedispo) => `${listedispo.etat}` },  
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listeentretien.id)}>
+      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listedispo.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listeentretien.id)}>
+      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listedispo.id)}>
           <Icon>delete</Icon>
       </IconButton>
       </div>
@@ -57,10 +56,10 @@ const Listeentretien = () => {
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
         <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listeentretien} />
+        <PaginationTable columns={colonne} data={listedispo} />
         </SimpleCard>
       </Container>
     );
   };
   
-export default Listeentretien;
+export default Listedispo;
