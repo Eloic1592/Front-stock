@@ -3,12 +3,14 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import Button from '@mui/material/Button';
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { useState } from 'react';
+
+
 
 
 
@@ -78,19 +80,21 @@ const Container = styled("div")(({ theme }) => ({
                      fullWidth
                      autoFocus
                      id="name"
-                     type="email"
+                     type="text"
                      margin="dense"
-                     label="Email Address"
+                     label="Type entretien"
+                     name="type_entretien"
                    />
+
                  </DialogContent>
 
                  <DialogActions>
                    <Button variant="outlined" color="secondary" onClick={handleClose}>
-                     Cancel
+                     Annuler
                    </Button>
 
                    <Button onClick={handleClose} color="primary">
-                     Subscribe
+                     Valider
                    </Button>
                  </DialogActions>
                </Dialog>

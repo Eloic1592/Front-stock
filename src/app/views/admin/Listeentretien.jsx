@@ -1,10 +1,15 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Icon, IconButton,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-
-
+import { useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -14,6 +19,11 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
+
+const AutoComplete = styled(Autocomplete)(() => ({
+  width: 300,
+  marginBottom: '16px',
+}));
 
 
   const handleEdit = (id) => {
@@ -25,16 +35,15 @@ const Container = styled("div")(({ theme }) => ({
     // Mettez ici votre logique pour la suppression
     alert(`Mety`+id);  
   };
-  const NewBouton = () => (
-    <Button variant="contained" color="primary">
-      Nouvel type d'entretien
-    </Button>
-  );
   
 const Listeentretien = () => {
 
    // Data
   const listeentretien = useData('getallventretien');
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const filter = createFilterOptions();
 
   // Colonne
   const colonne = [
@@ -61,8 +70,43 @@ const Listeentretien = () => {
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
           <p>
-            <NewBouton/>
+           <Button variant="contained" onClick={handleClickOpen} color="primary">
+             Nouvel entretien
+           </Button>
           </p>
+          <Box>
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Nouvel entretien</DialogTitle>
+                 <DialogContent>
+                   <TextField
+                     fullWidth
+                     autoFocus
+                     id="entretien"
+                     type="text"
+                     margin="dense"
+                     label="Entretien"
+                     name="entretien"
+                   />
+                   <AutoComplete
+                      // options={}
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
+                    )}
+                  />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Annuler
+                   </Button>
+
+                   <Button onClick={handleClose} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
         <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listeentretien} />
         </SimpleCard>
