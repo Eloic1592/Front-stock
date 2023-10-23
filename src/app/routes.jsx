@@ -24,24 +24,34 @@ const ListeTypeEntretien = Loadable(lazy(() => import('app/views/dashboard/Liste
 // Technicien
 const ListeTechnicien = Loadable(lazy(() => import('app/views/dashboard/ListeTechnicien')));
 
-// Tache
-const Listetache = Loadable(lazy(() => import('app/views/dashboard/Listetache')));
 
 // Disponibilite
 const Listedispo  = Loadable(lazy(() => import('app/views/dashboard/Listedispo')));
 
-// Connexion
+// Connexion Admin
 const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
+
+const Calendriertech  = Loadable(lazy(() => import('app/views/admin/Calendriertech')));
+
+const Listetacheadmin = Loadable(lazy(() => import('app/views/admin/Listetache')));
+
 
 // Connexion Utilisateur
 const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
 
 const Register  = Loadable(lazy(() => import('app/views/user/Register')));
 
+const Accueiluser = Loadable(lazy(() => import('app/views/user/Accueil')));
+
+
 // Connexion technicien
 const LoginTech  = Loadable(lazy(() => import('app/views/tech/Logintech')));
 
 const Calendrier  = Loadable(lazy(() => import('app/views/tech/Calendrier')));
+
+const Listetache = Loadable(lazy(() => import('app/views/tech/Listetache')));
+
+
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
@@ -49,7 +59,7 @@ const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart
 // const Analytics = Loadable(lazy(() => import('app/views/user/Analytics')));
 // Acceuil user
 
-const Accueiluser = Loadable(lazy(() => import('app/views/user/Accueil')));
+
 
 const routes = [
   {
@@ -90,7 +100,7 @@ const routes = [
         auth: authRoles.admindefault
       },
       {
-        path: '/dashboard/listetaches',
+        path: '/tech/listetaches',
         element: <Listetache />,
         auth: authRoles.admindefault
       },
@@ -105,9 +115,23 @@ const routes = [
         element: <Accueiluser />,
         auth: authRoles.admindefault
       },
+
+
       {
         path: '/tech/calendrier',
         element: <Calendrier />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/calendriertech',
+        element: <Calendriertech />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/tacheadmin',
+        element: <Listetacheadmin />,
         auth: authRoles.admindefault
       },
 
@@ -125,21 +149,29 @@ const routes = [
   { path: '/dashboard/listemateriel', element: < Listemateriel/> },
   { path: '/dashboard/listetypeentretien', element: < ListeTypeEntretien/> },
   { path: '/dashboard/listetechnicien', element: < ListeTechnicien/> },
-  { path: '/dashboard/listetaches', element: < Listetache/> },
   { path: '/dashboard/listedispo', element: < Listedispo/> },
 
   // Admin
   { path: '/admin/connexion', element: < LoginAdmin/> },
+
+  { path: '/admin/calendriertech', element: < Calendriertech/> },
+
+  { path: '/admin/tacheadmin', element: < Listetacheadmin/> },
+
 
   // Utilisateur
   { path: '/user/connexion', element: < LoginUser/> },
 
   { path: '/user/register', element: < Register/> },
 
+
   // Technicien
   { path: '/tech/connexion', element: < LoginTech/> },
 
   { path: '/tech/calendrier', element: < Calendrier/> },
+
+  { path: '/tech/listetaches', element: < Listetache/> },
+
 
   { path: '/', element: <Navigate to="tech/calendrier" /> },
   { path: '*', element: <NotFound /> }

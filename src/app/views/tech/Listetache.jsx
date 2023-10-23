@@ -39,16 +39,7 @@ const Listetache = () => {
     { label: "prenom", field: "prenom", render: (listetache) => `${listetache.prenom}` },
     { label: "description", field: "description", render: (listetache) => `${listetache.description}` },
     { label: "etat", field: "etat", render: (listetache) => `${listetache.etat}` },  
-    { label: "Actions", render: () => (
-      <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listetache.idtache)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listetache.idtache)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </div>
-    )},    // ... Ajoutez d'autres colonnes si nécessaire
+    // ... Ajoutez d'autres colonnes si nécessaire
   ];
  
     return (
@@ -56,7 +47,7 @@ const Listetache = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
-        <SimpleCard title="Liste des entretiens">
+        <SimpleCard title="Liste des taches">
         <PaginationTable columns={colonne} data={listetache} />
         </SimpleCard>
       </Container>

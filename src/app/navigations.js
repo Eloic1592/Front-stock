@@ -1,28 +1,43 @@
 export const navigations = [
-  // { name: 'Listes des requetes', iconText: 'SI', path: '/session/signin' },
-  // { name: 'Calendrier', iconText: 'SI', path: '/session/signin' },
-  { name: 'Listes des entretiens', iconText: 'SI', path: '/dashboard/listeentretien' },
-  { name: 'Listes des materiel', iconText: 'SI', path: '/dashboard/listemateriel' },
-  { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/dashboard/listetypeentretien' },
-  { name: 'Listes des techniciens', iconText: 'SI', path: '/dashboard/listetechnicien' },
-  { name: 'Listes des taches', iconText: 'SI', path: '/dashboard/listetaches' },
-  { name: 'Disponibilite techniciens', iconText: 'SI', path: '/dashboard/listedispo' },
-  { name: 'Calendrier', iconText: 'SI', path: '/tech/calendrier' },
+
+
+  
+
+
   {
-    name: 'Taches',
+    name: 'Administrateur',
     icon: 'arrows-right',
     children: [
-      { name: 'Taches acheves', iconText: 'SI', path: '/session/signin' },
-      { name: 'Taches archives', iconText: 'SU', path: '/session/signup' },
-      { name: 'Taches a faire', iconText: 'SU', path: '/session/signup' },
+      { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
+      { name: 'Listes des entretiens', iconText: 'SI', path: '/dashboard/listeentretien' },
+      { name: 'Listes des materiel', iconText: 'SI', path: '/dashboard/listemateriel' },
+      { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/dashboard/listetypeentretien' },
+      { name: 'Listes des techniciens', iconText: 'SI', path: '/dashboard/listetechnicien' },
+      { name: 'Calendrier des techniciens', iconText: 'SI', path: '/admin/calendriertech' },
     ]
   },
 
-  { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
-  { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },  
-  { name: 'Accueil', iconText: 'SI',path: '/user/accueil' },
+  {
+    name:'Technicien',
+    icon: 'arrows-right',
+    children: [
+      { name: 'Connexion Technicien', iconText: 'SI', path: '/tech/connexion' },
+      { name: 'Calendrier', iconText: 'SI', path: '/tech/calendrier' },
+      { name: 'Listes des taches', iconText: 'SI', path: '/tech/listetaches' },
 
-  { name: 'Connexion Technicien', iconText: 'SI', path: '/tech/connexion' },
+
+    ]
+  },
+
+  {
+    name:'Utilisateur',
+    icon: 'arrows-right',
+    children: [
+    { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },  
+    { name: 'Accueil', iconText: 'SI',path: '/user/accueil' },
+    { name: 'Enregistrement', iconText: 'SI',path: '/session/signup' },
+    ]
+  },
 
 
   {
