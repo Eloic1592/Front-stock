@@ -224,6 +224,25 @@ export const themeColors = {
       text: textDark,
     },
   },
+  itutheme: {
+    palette: {
+      type: 'dark',
+      primary: {
+        main: '#00a65a',
+        contrastText: '#ffffff',
+      },
+      secondary: {
+        main: '#ff9e43',
+        contrastText: textLight.primary,
+      },
+      error: errorColor,
+      text: textDark,
+      background: {
+        paper: '#fff',
+        default:'#fafafa',
+      },
+    },
+  },
 };
 
 export const themeShadows = [
