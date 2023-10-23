@@ -5,6 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Fragment } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import {frenchTranslations} from 'app/views/frenchtransalations';
 
 const localizer = momentLocalizer(moment);
 
@@ -16,29 +17,7 @@ const ContentBox = styled('div')(({ theme }) => ({
   
   
 const Calendrier = () => {
-  const frenchTranslations = {
-    today: "Aujourd'hui",
-    previous: "Précédent",
-    next: "Suivant",
-    month: "Mois",
-    week: "Semaine",
-    day: "Jour",
-    agenda: "Agenda",
-    date: "Date",
-    time: "Heure",
-    event: "Événement",
-    allDay: "Toute la journée",
-    noEventsInRange: "Aucun événement à afficher",
-    Sun:'Dimanche',
-    Mon:'Lundi',
-    Tue:'Mardi',
-    Wed:'Mercredi',
-    Thu:'Jeudi',
-    Fri:'Vendredi',
-    Sat:'Samedi',
-    dayFormat: (date, culture, localizer) =>
-    localizer.format(date, "dddd", culture) 
-  };
+
   const frenchDayNames = [
     'Dimanche',
     'Lundi',
@@ -60,7 +39,7 @@ const Calendrier = () => {
               </Box>
             </Card>
             <div>
-              <h1>Calendrier des disponibilites</h1>
+              <h1>Calendrier des disponibilités</h1>
               <Calendar
                 localizer={localizer}
                 events={[
