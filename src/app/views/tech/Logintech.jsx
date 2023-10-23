@@ -1,8 +1,8 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import { useTheme } from '@emotion/react';
-import { NavLink, useNavigate } from 'react-router-dom';
+// import { useTheme } from '@emotion/react';
+import {  useNavigate } from 'react-router-dom';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -40,12 +40,14 @@ const initialValues = {
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
-  password: Yup.string().required('Mot de passe requis!'),
-  code: Yup.string().required('code  requis!')
+  password: Yup.string()
+    .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
+    .required('Mot de passe requis'),
+code: Yup.string().email('Adresse email invalide').required('Adresse email requis!')
 });
 
-const LoginUser = () => {
-  const theme = useTheme();
+const LoginTech = () => {
+//  const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +75,7 @@ const LoginUser = () => {
 
           <Grid item sm={6} xs={12}>
             <div>
-            <h2>Connexion-Utilisateur</h2>
+            <h2>Connexion-Technicien</h2>
             </div>
             <ContentBox>
               <Formik
@@ -86,9 +88,9 @@ const LoginUser = () => {
                     <TextField
                       fullWidth
                       size="small"
-                      type="tex"
+                      type="text"
                       name="code"
-                      label="ETU"
+                      label="code"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.code}
@@ -122,7 +124,7 @@ const LoginUser = () => {
                       Connexion
                     </LoadingButton>
 
-                    <NavLink to="/user/register" style={{ color: theme.palette.primary.main }}>
+                    {/* <NavLink to="/user/register" style={{ color: theme.palette.primary.main }}>
                       <LoadingButton
                         type="submit"
                         color="secondary"
@@ -132,7 +134,7 @@ const LoginUser = () => {
                       >
                         S'inscrire
                       </LoadingButton>
-                    </NavLink>
+                    </NavLink> */}
 
                     {/* <FlexBox justifyContent="space-between">
                       <FlexBox gap={1}>
@@ -169,4 +171,4 @@ const LoginUser = () => {
   );
 };
 
-export default LoginUser;
+export default LoginTech;

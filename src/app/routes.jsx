@@ -38,12 +38,18 @@ const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
 
 const Register  = Loadable(lazy(() => import('app/views/user/Register')));
 
+// Connexion technicien
+const LoginTech  = Loadable(lazy(() => import('app/views/tech/Logintech')));
 
+const Calendrier  = Loadable(lazy(() => import('app/views/tech/Calendrier')));
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
 // dashboard page
-const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
+// const Analytics = Loadable(lazy(() => import('app/views/user/Analytics')));
+// Acceuil user
+
+const Accueiluser = Loadable(lazy(() => import('app/views/user/Accueil')));
 
 const routes = [
   {
@@ -55,11 +61,6 @@ const routes = [
     children: [
       ...materialRoutes,
       // dashboard route
-      {
-        path: '/dashboard/default',
-        element: <Analytics />,
-        auth: authRoles.admindefault
-      },
 
       // // e-chart rooute
       {
@@ -98,6 +99,18 @@ const routes = [
         element: <Listedispo />,
         auth: authRoles.admindefault
       },
+
+      {
+        path: '/user/accueil',
+        element: <Accueiluser />,
+        auth: authRoles.admindefault
+      },
+      {
+        path: '/tech/calendrier',
+        element: <Calendrier />,
+        auth: authRoles.admindefault
+      },
+
     ]
   },
 
@@ -120,11 +133,15 @@ const routes = [
 
   // Utilisateur
   { path: '/user/connexion', element: < LoginUser/> },
-  
+
   { path: '/user/register', element: < Register/> },
 
+  // Technicien
+  { path: '/tech/connexion', element: < LoginTech/> },
 
-  { path: '/', element: <Navigate to="dashboard/default" /> },
+  { path: '/tech/calendrier', element: < Calendrier/> },
+
+  { path: '/', element: <Navigate to="tech/calendrier" /> },
   { path: '*', element: <NotFound /> }
 ];
 

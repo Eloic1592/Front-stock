@@ -1,8 +1,8 @@
 // import { useTheme } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
-import { Card, Checkbox, Grid, TextField } from '@mui/material';
+import { Card,Grid, TextField,Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import { Paragraph } from 'app/components/Typography';
+// import { Paragraph } from 'app/components/Typography';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -53,15 +53,28 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
-  code: Yup.string().matches(/TECH-/, 'Le code doit contenir "TECH-"').required('code requis!'),
 
 });
+
+
+
 
 const JwtRegister = () => {
   // const theme = useTheme();
   const { register } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+
+  const handleSelectRadio = (event) => {
+    setSelectedValue(event.target.value);
+    if (selectedValue === "1") {
+      document.getElementById("code").type  = "text";
+    } else {
+      document.getElementById("code").type  = "hidden";
+    }
+  };
+
 
   const handleFormSubmit = (values) => {
     setLoading(true);
@@ -92,6 +105,9 @@ const JwtRegister = () => {
 
           <Grid item sm={6} xs={12}>
             <Box p={4} height="100%">
+          <div>
+            <h2>Inscription-utilisateur</h2>
+            </div>
               <Formik
                 onSubmit={handleFormSubmit}
                 initialValues={initialValues}
@@ -129,21 +145,37 @@ const JwtRegister = () => {
                       sx={{ mb: 3 }}
                     />
 
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="text"
-                      name="code"
-                      label="code technicien"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      value={values.code}
-                      onChange={handleChange}
-                      helperText={touched.code && errors.code}
-                      error={Boolean(errors.code && touched.code)}
-                      sx={{ mb: 3 }}
-                    />
-                                        
+                    <div>
+                      <RadioGroup
+                        aria-label="options"
+                        name="options"
+                        value={selectedValue}
+                        onChange={handleSelectRadio}
+                      >
+                        <Box display="flex" flexDirection="row">
+                          <FormControlLabel value="1" control={<Radio />} label="Etudiant" select/>
+                          <FormControlLabel value="2" control={<Radio />} label="Professeur" />
+                          <FormControlLabel value="3" control={<Radio />} label="Autres" />
+                        </Box>
+                      </RadioGroup>
+
+                      <TextField
+                        fullWidth
+                        size="small"
+                        type={selectedValue === "1" ? "text" : "hidden"}
+                        name="code"
+                        id="code"
+                        label={selectedValue === "1" ? "code" : " "}
+                        placeholder="Numero Etudiant: ETU0000----"
+                        onBlur={handleBlur}
+                        value={values.code}
+                        onChange={handleChange}
+                        helperText={touched.code && errors.code}
+                        error={Boolean(errors.code && touched.code)}
+                        sx={{ mb: 3 }}
+                      />
+                    </div>
+
                     <TextField
                       fullWidth
                       size="small"
@@ -173,21 +205,6 @@ const JwtRegister = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 2 }}
                     />
-
-                    <FlexBox gap={1} alignItems="center">
-                      <Checkbox
-                        size="small"
-                        name="remember"
-                        onChange={handleChange}
-                        checked={values.remember}
-                        sx={{ padding: 0 }}
-                      />
-
-                      <Paragraph fontSize={13}>
-                        I have read and agree to the terms of service.
-                      </Paragraph>
-                    </FlexBox>
-
                     <LoadingButton
                       type="submit"
                       color="primary"

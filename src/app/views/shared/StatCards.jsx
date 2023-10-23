@@ -1,5 +1,6 @@
 import { Box, Card, Grid, Icon, IconButton, styled, Tooltip } from '@mui/material';
 import { Small } from 'app/components/Typography';
+import { NavLink} from 'react-router-dom'
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -27,35 +28,28 @@ const Heading = styled('h6')(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
-const StatCards = () => {
-  const cardList = [
-    { name: 'New Leads', amount: 3050, icon: 'group' },
-    { name: 'This week Sales', amount: '$80,500', icon: 'attach_money' },
-    { name: 'Inventory Status', amount: '8.5% Stock Surplus', icon: 'store' },
-    { name: 'Orders to deliver', amount: '305 Orders', icon: 'shopping_cart' },
-  ];
-
+const StatCards = ({nameSet,labelName,iconName,TooltipName,indexNumber,url}) => {
   return (
-    <Grid container spacing={3} sx={{ mb: '24px' }}>
-      {cardList.map((item, index) => (
-        <Grid item xs={12} md={6} key={index}>
-          <StyledCard elevation={6}>
-            <ContentBox>
-              <Icon className="icon">{item.icon}</Icon>
-              <Box ml="12px">
-                <Small>{item.name}</Small>
-                <Heading>{item.amount}</Heading>
-              </Box>
-            </ContentBox>
+    <Grid container spacing={6} sx={{ mb: '24px' }}>
+      <Grid item xs={12} md={6} key={indexNumber}>
+        <StyledCard elevation={6}>
+          <ContentBox>
+            <Icon className="icon">{iconName}</Icon>
+            <Box ml="12px">
+              <Small>{nameSet}</Small>
+              <Heading>{labelName}</Heading>
+            </Box>
+          </ContentBox>
 
-            <Tooltip title="View Details" placement="top">
+          <Tooltip title={TooltipName} placement="top">
               <IconButton>
-                <Icon>arrow_right_alt</Icon>
+                <NavLink to={url} >
+                   <Icon>arrow_right_alt</Icon>
+                 </NavLink>
               </IconButton>
             </Tooltip>
-          </StyledCard>
-        </Grid>
-      ))}
+        </StyledCard>
+      </Grid>
     </Grid>
   );
 };

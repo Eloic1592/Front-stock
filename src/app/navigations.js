@@ -1,13 +1,13 @@
 export const navigations = [
-  { name: 'Tableau de bord', path: '/dashboard/default', icon: 'dashboard' },
-  { name: 'Listes des requetes', iconText: 'SI', path: '/session/signin' },
-  { name: 'Calendrier', iconText: 'SI', path: '/session/signin' },
+  // { name: 'Listes des requetes', iconText: 'SI', path: '/session/signin' },
+  // { name: 'Calendrier', iconText: 'SI', path: '/session/signin' },
   { name: 'Listes des entretiens', iconText: 'SI', path: '/dashboard/listeentretien' },
   { name: 'Listes des materiel', iconText: 'SI', path: '/dashboard/listemateriel' },
   { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/dashboard/listetypeentretien' },
   { name: 'Listes des techniciens', iconText: 'SI', path: '/dashboard/listetechnicien' },
   { name: 'Listes des taches', iconText: 'SI', path: '/dashboard/listetaches' },
   { name: 'Disponibilite techniciens', iconText: 'SI', path: '/dashboard/listedispo' },
+  { name: 'Calendrier', iconText: 'SI', path: '/tech/calendrier' },
   {
     name: 'Taches',
     icon: 'arrows-right',
@@ -19,7 +19,10 @@ export const navigations = [
   },
 
   { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
-  { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },
+  { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },  
+  { name: 'Accueil', iconText: 'SI',path: '/user/accueil' },
+
+  { name: 'Connexion Technicien', iconText: 'SI', path: '/tech/connexion' },
 
 
   {
@@ -27,7 +30,7 @@ export const navigations = [
     icon: 'favorite',
     badge: { value: '30+', color: 'secondary' },
     children: [
-      // { name: 'Auto Complete', path: '/material/autocomplete', iconText: 'A' },
+      { name: 'Auto Complete', path: '/material/autocomplete', iconText: 'A' },
       { name: 'Buttons', path: '/material/buttons', iconText: 'B' },
       { name: 'Checkbox', path: '/material/checkbox', iconText: 'C' },
       { name: 'Dialog', path: '/material/dialog', iconText: 'D' },
@@ -43,10 +46,10 @@ export const navigations = [
       // { name: 'Table', path: '/material/table', iconText: 'T' }
     ]
   },
-  // {
-  //   name: 'Charts',
-  //   icon: 'trending_up',
-  //   children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }]
-  // },
+  {
+    name: 'Charts',
+    icon: 'trending_up',
+    children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }]
+  },
 
 ];
