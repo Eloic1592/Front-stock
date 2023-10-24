@@ -1,12 +1,11 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField } from "@mui/material";
+import { LoadingButton } from '@mui/lab';
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import { useState,useEffect } from 'react';
-import SimpleForm from 'app/views/material-kit/forms/SimpleForm';
 
 
-const Container = styled("div")(({ theme }) => ({
+  const Container = styled("div")(({ theme }) => ({
     margin: "30px",
     [theme.breakpoints.down("sm")]: { margin: "16px" },
     "& .breadcrumb": {
@@ -25,6 +24,14 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
+  const handleSubmit = (event) => {
+    // console.log("submitted");
+    // console.log(event);
+  };
+  const handleChange = (event) => {
+    // console.log("submitted");
+    // console.log(event);
+  };
 
 
 
@@ -63,7 +70,39 @@ const ListeTechnicien = () => {
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
         <SimpleCard title="Rechercher un technicien">
-        <SimpleForm/>       
+        <form /* onSubmit={this.handleSubmit}*/>
+        <TextField
+           fullWidth
+           size="small"
+           type="tex"
+           name="code"
+           label="ETU"
+           variant="outlined"
+          //  value={values.code}
+           onChange={handleChange}
+           sx={{ mb: 3 }}
+         />
+        <TextField
+           fullWidth
+           size="small"
+           type="tex"
+           name="code"
+           label="ETU"
+           variant="outlined"
+          //  value={values.code}
+           onChange={handleChange}
+           sx={{ lg: 6 }}
+         />
+        <LoadingButton
+          type="submit"
+          color="primary"
+          // loading={loading}
+          variant="contained"
+          sx={{ lg: 6 }} // Tu peux ajuster ce paramètre pour l'espacement vertical
+        >
+          Rechercher
+        </LoadingButton>
+      </form>
         </SimpleCard>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetechnicien} />
