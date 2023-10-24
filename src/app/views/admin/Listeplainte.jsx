@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Autocomplete} from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem, FormControl, InputLabel} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
@@ -30,23 +30,35 @@ const Container = styled("div")(({ theme }) => ({
 
   const handleChange = (event) => {
 
-  };
+    };
+
 
   
 const Listeplainte = () => {
 
    // Data
   const listesalle = useData('getallsalle');
-  const suggestions = [
-    { label: 'Tech1' },
-    { label: 'Tech2' },
-    { label: 'Tech3' },
 
-  ];
-  const choix = [
-    { label: 'Individuel' },
-    { label: 'Salle' },
-  ];
+
+  const [selectedOption, setSelectedOption] = useState('1');
+  const [suggestions, setSuggestions] = useState([]);
+
+  
+    const handleChoixChange  = (event,newValue) => {
+    setSelectedOption(event.target.value);
+    if(newValue.value =='1'){
+        setSuggestions([
+            { label: 'Suggestion A', value: 'suggestionA' },
+            { label: 'Suggestion B', value: 'suggestionB' },
+          ]);
+    }else{
+        setSuggestions([
+            { label: 'Suggestion X', value: 'SuggestionX' },
+            { label: 'Suggestion Y', value: 'suggestionY' },
+          ]);
+    }
+  };
+
 
   // Colonne
   const colonne = [
@@ -73,16 +85,16 @@ const Listeplainte = () => {
              <SimpleCard title="Rechercher une plainte" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <AutoComplete
-              options={choix}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <TextField {...params} label="Type" variant="outlined" fullWidth />
-              )}
-              name="idutilisateur"
-              id="idutilisateur"
-              defaultValue={choix[0]}             
-              />
+            <Select
+               labelId="select-label"
+               value={selectedOption}
+               onChange={handleChoixChange}
+                >
+               <MenuItem value="1">Individuel</MenuItem>
+               <MenuItem value="2">Salle</MenuItem>
+            </Select>
+
+
             <AutoComplete
               options={suggestions}
               getOptionLabel={(option) => option.label}
@@ -91,6 +103,7 @@ const Listeplainte = () => {
               )}
               name="idutilisateur"
               id="idutilisateur"
+            
             />
             <AutoComplete
               options={suggestions}
