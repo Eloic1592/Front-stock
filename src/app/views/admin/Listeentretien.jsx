@@ -1,11 +1,10 @@
-import { Box, styled,Icon, IconButton,Autocomplete } from "@mui/material";
+import { Box, styled,Icon, IconButton,Autocomplete,TextField } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -25,8 +24,6 @@ const AutoComplete = styled(Autocomplete)(() => ({
 }));
 
 
-
-
   const handleEdit = (id) => {
     // Mettez ici votre logique pour l'édition
     alert(`Mety`+id);
@@ -35,6 +32,10 @@ const AutoComplete = styled(Autocomplete)(() => ({
   const handleDelete = (id) => {
     // Mettez ici votre logique pour la suppression
     alert(`Mety`+id);  
+  };
+
+  const handleChange = (event) => {
+
   };
   
 const Listeentretien = () => {
@@ -127,6 +128,44 @@ const Listeentretien = () => {
                  </DialogActions>
                </Dialog>
              </Box>
+             <SimpleCard title="Recherche un genre d'entretien" sx={{ marginBottom: '16px' }}>        
+              <form /* onSubmit={this.handleSubmit}*/>
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="entretien"
+               label=" Genre d'entretien"
+               variant="outlined"
+               // value={values.code}
+               onChange={handleChange}
+               sx={{ mb: 3 }}
+             />
+             <AutoComplete
+              options={suggestions}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
+              )}
+              name="idtype_entretien"
+              id="idtype_entretien"
+            />
+             <AutoComplete
+              options={suggestions}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <TextField {...params} label="Materiel" variant="outlined" fullWidth />
+              )}
+              name="idmateriel"
+              id="idmateriel"
+            />  
+
+            </div>
+            </form>
+              </SimpleCard>
+                <p></p>
+                <p></p>
         <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listeentretien} />
         </SimpleCard>
