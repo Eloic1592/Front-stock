@@ -28,10 +28,6 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
-  const handleChange = (event) => {
-
-    };
-
 
   
 const Listeplainte = () => {
@@ -43,14 +39,14 @@ const Listeplainte = () => {
    // Data
   const listesalle = useData('getallsalle');
 
-
   const [selectedOption, setSelectedOption] = useState('1');
   const [suggestions, setSuggestions] = useState([]);
-  const [autoCompleteProps, setAutoCompleteProps] = useState({
-    name: 'idutilisateur',
-    id: 'idutilisateur',
-    label: 'utilisateur',
-  });
+  const [autoCompleteProps, setAutoCompleteProps] = useState({});
+  const [selectedDate, setSelectedDate] = useState('1');
+
+  const handleChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
   
   const handleChoixChange = (event) => {
     const selectedValue = event.target.value;
@@ -72,6 +68,7 @@ const Listeplainte = () => {
 
 
     }
+
 
   };
 
@@ -111,6 +108,7 @@ const Listeplainte = () => {
 
 
             <AutoComplete
+              fullWidth
               options={suggestions}
               getOptionLabel={(option) => option.label}
               renderInput={(params) => (
@@ -121,6 +119,7 @@ const Listeplainte = () => {
             />
             
             <AutoComplete
+              fullWidth
               options={suggestions}
               getOptionLabel={(option) => option.label}
               renderInput={(params) => (
@@ -129,16 +128,16 @@ const Listeplainte = () => {
               name="idmateriel"
               id="idmateriel"
             />
-            <TextField
-               fullWidth
-               size="small"
-               type="date"
-               name="date_envoi"
-                variant="outlined"
-               // value={values.code}
+            <Select
+               labelId="select-label"
+               value={selectedDate}
                onChange={handleChange}
-               sx={{ mb: 3 }}
-            />
+                >
+               <MenuItem value="1">Aujourd'hui</MenuItem>
+               <MenuItem value="2"> Non Acheves</MenuItem>
+               <MenuItem value="3">Prioritaires</MenuItem>
+
+            </Select>
             </div>
             </form>
               </SimpleCard>

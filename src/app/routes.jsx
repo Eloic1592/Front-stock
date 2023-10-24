@@ -51,6 +51,7 @@ const Calendrier  = Loadable(lazy(() => import('app/views/tech/Calendrier')));
 
 const Listetache = Loadable(lazy(() => import('app/views/tech/Listetache')));
 
+const Listeplaintetech = Loadable(lazy(() => import('app/views/tech/Listeplainte')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
@@ -144,6 +145,13 @@ const routes = [
         path: '/admin/listeplainte',
         element: <Listeplainte />,
         auth: authRoles.admindefault
+
+        
+      },
+      {
+      path: '/tech/listeplainte',
+      element: <Listeplaintetech />,
+      auth: authRoles.admindefault
       },
     ]
   },
@@ -181,6 +189,8 @@ const routes = [
   { path: '/tech/calendrier', element: < Calendrier/> },
 
   { path: '/tech/listetaches', element: < Listetache/> },
+
+  { path: '/tech/listeplainte', element: < Listeplaintetech/> },
 
 
   { path: '/', element: <Navigate to="tech/calendrier" /> },
