@@ -2,8 +2,8 @@ import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import Button from '@mui/material/Button';
-
+import { useState,useEffect } from 'react';
+import SimpleForm from 'app/views/material-kit/forms/SimpleForm';
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -15,7 +15,6 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-
   const handleEdit = (id) => {
     // Mettez ici votre logique pour l'édition
     alert(`Mety`+id);
@@ -26,17 +25,19 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
-  const NewBouton = () => (
-    <Button variant="contained" color="primary">
-            Nouveau Technicien
-    </Button>
-  );
 
-  
+
+
 const ListeTechnicien = () => {
 
-   // Data
-  const listetechnicien = useData('gettechnicien');
+   // Data  
+   const listetechnicien = useData('gettechnicien');
+
+   const initialValues = {
+    username: 'JohnDoe',
+    firstName: 'John',
+    // ...ajoutez d'autres valeurs initiales
+  };
 
   // Colonne
   const colonne = [
@@ -61,9 +62,9 @@ const ListeTechnicien = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
-          <p>
-            <NewBouton/>
-          </p>
+        <SimpleCard title="Rechercher un technicien">
+        <SimpleForm/>       
+        </SimpleCard>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetechnicien} />
         </SimpleCard>

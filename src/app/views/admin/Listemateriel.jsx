@@ -1,10 +1,14 @@
 import { Box, styled,Icon, IconButton } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
+import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-
-
+import Dialog from '@mui/material/Dialog';
+import TextField from '@mui/material/TextField';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -26,15 +30,13 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
-  const NewBouton = () => (
-    <Button variant="contained" color="primary">
-      Nouveau type de materiel
-    </Button>
-  );
 const Listemateriel = () => {
 
    // Data
   const listemateriel = useData('getallmateriel');
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // Colonne
   const colonne = [
@@ -58,9 +60,37 @@ const Listemateriel = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Materiel", path: "/material" }, { name: "Table" }]} />
         </Box>
-          <p>
-            <NewBouton/>
+        <p>
+           <Button variant="contained" onClick={handleClickOpen} color="primary">
+             Nouveau materiel
+           </Button>
           </p>
+          <Box>
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+                 <DialogContent>
+                  <TextField
+                     fullWidth
+                     autoFocus
+                     id="materiel"
+                     type="text"
+                     margin="dense"
+                     label="materiel"
+                     name="materiel"
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Annuler
+                   </Button>
+
+                   <Button onClick={handleClose} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
         <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listemateriel} />
         </SimpleCard>

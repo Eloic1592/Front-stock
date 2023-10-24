@@ -27,7 +27,7 @@ const Accueil = () => {
               <StatCards 
                  nameSet="Logiciel" 
                  labelName="Logiciel" 
-                 iconName="laptop" 
+                 iconName="desktop_windows" 
                  TooltipName="Probleme logiciel et installation" 
                  key={1}
                 url="user/logiciel/"
@@ -36,7 +36,7 @@ const Accueil = () => {
               <StatCards 
                  nameSet="Materiel" 
                  labelName="Materiel" 
-                 iconName="settings" 
+                 iconName="build" 
                  TooltipName="Probleme Materiel" 
                  key={2}
                 url="user/materiel/"
@@ -53,7 +53,7 @@ const Accueil = () => {
               <StatCards 
                  nameSet="Demande" 
                  labelName=" Autre Demande" 
-                 iconName="create" 
+                 iconName="dehaze" 
                  TooltipName="Pour les demandes speciales" 
                  key={4}
                  url="user/autre"
@@ -62,7 +62,7 @@ const Accueil = () => {
               <StatCards 
                  nameSet="Conversation" 
                  labelName="Conversation" 
-                 iconName="person" 
+                 iconName="question_answer" 
                  TooltipName="Discussion" 
                   key={5}
                   url="user/discussion"

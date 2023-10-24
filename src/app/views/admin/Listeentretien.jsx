@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { createFilterOptions } from '@mui/material/Autocomplete';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -24,6 +23,8 @@ const AutoComplete = styled(Autocomplete)(() => ({
   width: 300,
   marginBottom: '16px',
 }));
+
+
 
 
   const handleEdit = (id) => {
@@ -43,7 +44,15 @@ const Listeentretien = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const filter = createFilterOptions();
+  const suggestions = [
+    { label: 'Afghanistan' },
+    { label: 'Aland Islands' },
+    { label: 'Albania' },
+    { label: 'Algeria' },
+    { label: 'American Samoa' },
+    { label: 'Andorra' },
+    { label: 'Angola' },
+  ];
 
   // Colonne
   const colonne = [
@@ -78,7 +87,25 @@ const Listeentretien = () => {
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Nouvel entretien</DialogTitle>
                  <DialogContent>
-                   <TextField
+                   <AutoComplete
+                     options={suggestions}
+                     getOptionLabel={(option) => option.label}
+                     renderInput={(params) => (
+                       <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
+                     )}
+                     name="idtype_entretien"
+                     id="idtype_entretien"
+                   />
+                    <AutoComplete
+                     options={suggestions}
+                     getOptionLabel={(option) => option.label}
+                     renderInput={(params) => (
+                       <TextField {...params} label="Materiel" variant="outlined" fullWidth />
+                     )}
+                     name="idmateriel"
+                     id="idmateriel"
+                   />
+                  <TextField
                      fullWidth
                      autoFocus
                      id="entretien"
@@ -87,13 +114,6 @@ const Listeentretien = () => {
                      label="Entretien"
                      name="entretien"
                    />
-                   <AutoComplete
-                      // options={}
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Combo box" variant="outlined" fullWidth />
-                    )}
-                  />
                  </DialogContent>
 
                  <DialogActions>

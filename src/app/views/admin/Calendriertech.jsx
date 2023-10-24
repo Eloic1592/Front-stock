@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box,Card, Grid,styled} from '@mui/material';
-import Button from '@mui/material/Button';
 import { Breadcrumb} from "app/components";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Fragment,useState } from 'react';
@@ -20,6 +19,16 @@ const Calendriertech = () => {
     const [events, setEvents] = useState([
         {
           title: "Indisponibilite tech",
+          start: new Date(),
+          end: new Date(),
+        },
+        {
+          title: "Rendez-vous client",
+          start: new Date(),
+          end: new Date(),
+        },
+        {
+          title: "Rendez-vous client",
           start: new Date(),
           end: new Date(),
         },
