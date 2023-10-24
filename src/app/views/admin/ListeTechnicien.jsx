@@ -1,5 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField } from "@mui/material";
-import { LoadingButton } from '@mui/lab';
+import { Box, styled,Icon, IconButton,TextField} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
@@ -25,12 +24,10 @@ import PaginationTable from "app/views/material-kit/tables/PaginationTable";
   };
 
   const handleSubmit = (event) => {
-    // console.log("submitted");
-    // console.log(event);
+
   };
   const handleChange = (event) => {
-    // console.log("submitted");
-    // console.log(event);
+
   };
 
 
@@ -69,41 +66,36 @@ const ListeTechnicien = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
-        <SimpleCard title="Rechercher un technicien">
+        <SimpleCard title="Rechercher un technicien" sx={{ marginBottom: '16px' }}>        
         <form /* onSubmit={this.handleSubmit}*/>
+        <div style={{ display: 'flex', gap: '16px' }}>
         <TextField
-           fullWidth
-           size="small"
-           type="tex"
-           name="code"
-           label="ETU"
-           variant="outlined"
-          //  value={values.code}
-           onChange={handleChange}
-           sx={{ mb: 3 }}
-         />
-        <TextField
-           fullWidth
-           size="small"
-           type="tex"
-           name="code"
-           label="ETU"
-           variant="outlined"
-          //  value={values.code}
-           onChange={handleChange}
-           sx={{ lg: 6 }}
-         />
-        <LoadingButton
-          type="submit"
-          color="primary"
-          // loading={loading}
-          variant="contained"
-          sx={{ lg: 6 }} // Tu peux ajuster ce paramètre pour l'espacement vertical
-        >
-          Rechercher
-        </LoadingButton>
+         fullWidth
+         size="small"
+         type="text"
+         name="nom"
+         label="Nom"
+         variant="outlined"
+         // value={values.code}
+         onChange={handleChange}
+         sx={{ mb: 3 }}
+       />
+      <TextField
+        fullWidth
+        size="small"
+        type="text"
+        name="prenom"
+        label="Prenom"
+        variant="outlined"
+        // value={values.code}
+        onChange={handleChange}
+        sx={{ mb: 3 }}
+      />
+      </div>
       </form>
         </SimpleCard>
+          <p></p>
+          <p></p>
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetechnicien} />
         </SimpleCard>

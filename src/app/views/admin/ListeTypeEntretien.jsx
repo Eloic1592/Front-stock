@@ -1,11 +1,10 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import Button from '@mui/material/Button';
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -33,7 +32,9 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
+  const handleChange = (event) => {
 
+  };
   
   
   
@@ -99,6 +100,26 @@ const Container = styled("div")(({ theme }) => ({
                  </DialogActions>
                </Dialog>
              </Box>
+             <SimpleCard title="Rechercher un type d'entretien" sx={{ marginBottom: '16px' }}>        
+              <form /* onSubmit={this.handleSubmit}*/>
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="type_entretien"
+               label="Type d'entretien"
+               variant="outlined"
+               // value={values.code}
+               onChange={handleChange}
+               sx={{ mb: 3 }}
+             />
+            </div>
+            </form>
+              </SimpleCard>
+                <p></p>
+                <p></p>
+
         <SimpleCard title="Liste des types d' entretiens">
         <PaginationTable columns={colonne} data={listetentretien} />
         </SimpleCard>

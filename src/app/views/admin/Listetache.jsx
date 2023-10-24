@@ -1,6 +1,7 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
+import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 
 
@@ -15,6 +16,10 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
+  const AutoComplete = styled(Autocomplete)(() => ({
+    width: 300,
+    marginBottom: '16px',
+  }));
 
   const handleEdit = (idtache) => {
     // Mettez ici votre logique pour l'édition
@@ -26,8 +31,20 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+idtache);  
   };
 
+  const handleSubmit = (event) => {
+
+  };
+  const handleChange = (event) => {
+
+  };
   
 const Listetache = () => {
+  const suggestions = [
+    { label: 'Tech1' },
+    { label: 'Tech2' },
+    { label: 'Tech3' },
+
+  ];
 
    // Data
   const listetache = useData('getallvtache');
@@ -56,6 +73,46 @@ const Listetache = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
+        <SimpleCard title="Rechercher une tache" sx={{ marginBottom: '16px' }}>        
+        <form /* onSubmit={this.handleSubmit}*/>
+        <div style={{ display: 'flex', gap: '16px' }}>
+        <TextField
+         fullWidth
+         size="small"
+         type="text"
+         name="designation"
+         label="Designation"
+         variant="outlined"
+         // value={values.code}
+         onChange={handleChange}
+         sx={{ mb: 3 }}
+       />
+
+        <AutoComplete
+          options={suggestions}
+          getOptionLabel={(option) => option.label}
+          renderInput={(params) => (
+            <TextField {...params} label="Responsable" variant="outlined" fullWidth />
+          )}
+          name="idtechnicien"
+          id="idtechnicien"
+        />
+
+      <TextField
+        fullWidth
+        size="small"
+        type="date"
+        name="date_tache"
+        variant="outlined"
+        // value={values.code}
+        onChange={handleChange}
+        sx={{ mb: 3 }}
+      />
+      </div>
+      </form>
+        </SimpleCard>
+          <p></p>
+          <p></p>
         <SimpleCard title="Liste des taches des techniciens">
         <PaginationTable columns={colonne} data={listetache} />
         </SimpleCard>

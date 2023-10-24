@@ -13,30 +13,26 @@ const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')
 const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
 const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
 
-// Entretien
-const Listeentretien = Loadable(lazy(() => import('app/views/admin/Listeentretien')));
-// Materiel
-const Listemateriel = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
-
-// Type entretien
-const ListeTypeEntretien = Loadable(lazy(() => import('app/views/admin/ListeTypeEntretien')));
-
-// Technicien
-const ListeTechnicien = Loadable(lazy(() => import('app/views/admin/ListeTechnicien')));
-
-
-// Disponibilite
-const Listedispo  = Loadable(lazy(() => import('app/views/admin/Listedispo')));
-
-// Connexion Admin
+// Admin
 const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
 
 const Calendriertech  = Loadable(lazy(() => import('app/views/admin/Calendriertech')));
 
 const Listetacheadmin = Loadable(lazy(() => import('app/views/admin/Listetache')));
 
+const ListetacheAdmin = Loadable(lazy(() => import('app/views/admin/Listetache')));
 
-// Connexion Utilisateur
+const Listeentretien = Loadable(lazy(() => import('app/views/admin/Listeentretien')));
+
+const Listemateriel = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
+
+const ListeTypeEntretien = Loadable(lazy(() => import('app/views/admin/ListeTypeEntretien')));
+
+const ListeTechnicien = Loadable(lazy(() => import('app/views/admin/ListeTechnicien')));
+
+const Listedispo  = Loadable(lazy(() => import('app/views/admin/Listedispo')));
+
+// Utilisateur
 const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
 
 const Register  = Loadable(lazy(() => import('app/views/user/Register')));
@@ -44,7 +40,7 @@ const Register  = Loadable(lazy(() => import('app/views/user/Register')));
 const Accueiluser = Loadable(lazy(() => import('app/views/user/Accueil')));
 
 
-// Connexion technicien
+//Technicien
 const LoginTech  = Loadable(lazy(() => import('app/views/tech/Logintech')));
 
 const Calendrier  = Loadable(lazy(() => import('app/views/tech/Calendrier')));
@@ -130,7 +126,7 @@ const routes = [
       },
 
       {
-        path: '/admin/tacheadmin',
+        path: '/admin/listetache',
         element: <Listetacheadmin />,
         auth: authRoles.admindefault
       },
@@ -145,19 +141,17 @@ const routes = [
   { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/session/signin-tech', element: < JwtLoginTech/> },
 
+
+  // Admin
+  { path: '/admin/connexion', element: < LoginAdmin/> },
+  { path: '/admin/calendriertech', element: < Calendriertech/> },
+  { path: '/admin/tacheadmin', element: < Listetacheadmin/> },
   { path: '/admin/listeentretien', element: < Listeentretien/> },
   { path: '/admin/listemateriel', element: < Listemateriel/> },
   { path: '/admin/listetypeentretien', element: < ListeTypeEntretien/> },
   { path: '/admin/listetechnicien', element: < ListeTechnicien/> },
   { path: '/admin/listedispo', element: < Listedispo/> },
-
-  // Admin
-  { path: '/admin/connexion', element: < LoginAdmin/> },
-
-  { path: '/admin/calendriertech', element: < Calendriertech/> },
-
-  { path: '/admin/tacheadmin', element: < Listetacheadmin/> },
-
+  { path: '/admin/listetache', element: < ListetacheAdmin/> },
 
   // Utilisateur
   { path: '/user/connexion', element: < LoginUser/> },

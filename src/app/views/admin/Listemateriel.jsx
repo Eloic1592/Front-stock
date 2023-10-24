@@ -30,6 +30,11 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
+  const handleChange = (event) => {
+
+  };
+
+  
 const Listemateriel = () => {
 
    // Data
@@ -91,7 +96,27 @@ const Listemateriel = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-        <SimpleCard title="Liste des entretiens">
+             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+              <form /* onSubmit={this.handleSubmit}*/>
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="materiel"
+               label="Nom du materiel"
+               variant="outlined"
+               // value={values.code}
+               onChange={handleChange}
+               sx={{ mb: 3 }}
+             />
+            </div>
+            </form>
+              </SimpleCard>
+                <p></p>
+                <p></p>
+
+              <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listemateriel} />
         </SimpleCard>
       </Container>

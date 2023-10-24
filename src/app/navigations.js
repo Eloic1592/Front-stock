@@ -13,6 +13,7 @@ export const navigations = [
       { name: 'Listes des materiel', iconText: 'SI', path: '/admin/listemateriel' },
       { name: 'Listes des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
       { name: 'Listes des techniciens', iconText: 'SI', path: '/admin/listetechnicien' },
+      { name: 'Listes des taches', iconText: 'SI', path: '/admin/listetache' },
       { name: 'Calendrier des techniciens', iconText: 'SI', path: '/admin/calendriertech' },
     ]
   },
