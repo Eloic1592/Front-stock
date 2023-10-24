@@ -1,8 +1,9 @@
-import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem, FormControl, InputLabel} from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import { NavLink } from 'react-router-dom';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -75,7 +76,9 @@ const Listeplainte = () => {
   // Colonne
   const colonne = [
     { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
-    { label: "Salle", field: "salle", render: (listesalle) => `${listesalle.salle}` },    
+    { label: "Salle", field: "salle", render:(listesalle) =>(<NavLink
+      to="/tech/probleme">{listesalle.salle}</NavLink>) },  
+
     { label: "etat", field: "etat", render: (listesalle) => `${listesalle.etat}` }, 
     { label: "Actions", render: () => (
       <div>

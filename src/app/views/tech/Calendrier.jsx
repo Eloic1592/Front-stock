@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box,Card, Grid,styled} from '@mui/material';
-import Button from '@mui/material/Button';
+import { Box,Card, Grid,styled,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent} from '@mui/material';
 import { Breadcrumb} from "app/components";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Fragment,useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import {frenchTranslations} from 'app/views/frenchtransalations';
 import moment from 'moment';
+
 
 const localizer = momentLocalizer(moment);
 
@@ -15,11 +15,6 @@ const ContentBox = styled('div')(({ theme }) => ({
     [theme.breakpoints.down('sm')]: { margin: '16px' },
   }));
 
-const NewagendaBouton = () => (
-    <Button variant="contained" color="primary">
-      Nouvel evenement
-    </Button>
-  );
 
 
   
@@ -37,6 +32,9 @@ const Calendrier = () => {
         end: new Date(),
       },
     ]);
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
       
     return (
        <Fragment>
@@ -48,10 +46,60 @@ const Calendrier = () => {
                    <Breadcrumb routeSegments={[{ name: "Agenda" }]} />
                  </Box>
                </Card>
-               <br/>
-               <p>
-                 <NewagendaBouton/>
-               </p>
+                 <p>
+               <Button variant="contained" onClick={handleClickOpen} color="primary">
+                   Nouvel evenement
+                 </Button>
+                </p>
+                 <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Nouvel evenement</DialogTitle>
+                 <DialogContent>
+                 <TextField
+                     fullWidth
+                     autoFocus
+                     id="idtechnicien"
+                     type="hidden"
+                     name="idtechnicien"
+                   />
+                  <TextField
+                     fullWidth
+                     autoFocus
+                     id="motif"
+                     type="text"
+                     margin="dense"
+                     label="Motif"
+                     name="salle"
+                   />
+                  <TextField
+                     fullWidth
+                     autoFocus
+                     id="date_debut"
+                     type="text"
+                     margin="dense"
+                     label="Date debut"
+                     name="date_debut"
+                   />
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="date_fin"
+                     type="text"
+                     margin="dense"
+                     label="Date fin"
+                     name="date_fin"
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Annuler
+                   </Button>
+
+                   <Button onClick={handleClose} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
                  <h1>Calendrier des disponibilités</h1>
 
                  <div>             

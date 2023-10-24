@@ -1,6 +1,7 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Select, MenuItem,TextField } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
+import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 
 
@@ -26,11 +27,17 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+idtache);  
   };
 
+  const handleChange = (event) => {
+
+  };
+
   
 const Listetache = () => {
 
+
    // Data
   const listetache = useData('getallvtache');
+  const [selectOption, setSelectedOption] = useState('1');
 
   // Colonne
   const colonne = [
@@ -47,6 +54,41 @@ const Listetache = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
         </Box>
+        <SimpleCard title="Rechercher une tache" sx={{ marginBottom: '16px' }}>        
+        <form /* onSubmit={this.handleSubmit}*/>
+        <div style={{ display: 'flex', gap: '16px' }}>
+        <TextField
+         fullWidth
+         size="small"
+         type="text"
+         name="designation"
+         label="Designation"
+         variant="outlined"
+         // value={values.code}
+         onChange={handleChange}
+         sx={{ mb: 3 }}
+       />
+
+      <TextField
+        fullWidth
+        size="small"
+        type="date"
+        name="date_tache"
+        variant="outlined"
+        // value={values.code}
+        onChange={handleChange}
+        sx={{ mb: 3 }}
+      />
+      <Select
+         labelId="select-label"
+         value={selectOption}
+        >
+         <MenuItem value="1">Basiques</MenuItem>
+         <MenuItem value="2">Prioritaires</MenuItem>
+      </Select>
+      </div>
+      </form>
+        </SimpleCard>
         <SimpleCard title="Liste des taches">
         <PaginationTable columns={colonne} data={listetache} />
         </SimpleCard>
