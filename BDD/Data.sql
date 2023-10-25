@@ -2,6 +2,8 @@
 -- Admin
 insert into admin(nom,prenom,email,mdp) values ('admin','admin','admin@gmail.com','admin');
 
+-- Salle
+Insert into salle(salle) values ('Salle1'),('Salle2'),('Salle3'),('Salle4'),('Salle5'),('Salle6'),('Salle7'),('Amphi A'),('Amphi B'),('Amphi C');
 
 -- Technicien
 insert into technicien(nom,prenom,code,email,mdp) values ('TECH-1','TECH-1','TECH-1','tech1@gmail.com','technicien1');

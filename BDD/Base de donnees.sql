@@ -199,6 +199,7 @@ CREATE TABLE achat_materiel (
 CREATE TABLE disponibilite (
     id serial PRIMARY KEY,
     idtechnicien int NOT NULL REFERENCES technicien(id),
+    motif TEXT NOT NUll,
     date_debut timestamp DEFAULT current_timestamp,
     date_fin timestamp DEFAULT current_timestamp,
     etat int NOT NULL DEFAULT 0

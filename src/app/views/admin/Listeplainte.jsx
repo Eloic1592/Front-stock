@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem, FormControl, InputLabel} from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem,Tooltip} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -82,12 +82,16 @@ const Listeplainte = () => {
     { label: "etat", field: "etat", render: (listesalle) => `${listesalle.etat}` }, 
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listesalle.id)}>
+      <Tooltip title="Modifier">
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listesalle.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listesalle.id)}>
+      </Tooltip>
+      <Tooltip title="Supprimer">
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle.id)}>
           <Icon>delete</Icon>
       </IconButton>
+      </Tooltip>
       </div>
     )},     // ... Ajoutez d'autres colonnes si nécessaire
   ];

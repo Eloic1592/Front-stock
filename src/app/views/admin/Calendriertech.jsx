@@ -29,15 +29,13 @@ const Calendriertech = () => {
         },
         {
           title: "Rendez-vous client",
-          start: new Date(),
-          end: new Date(),
-        },
-        {
-          title: "Rendez-vous client",
-          start: new Date(),
-          end: new Date(),
+          start: new Date(2023, 9, 1,10,20),
+          end: new Date(2023, 9, 25,10,20),
+  
         },
       ]);
+
+      
 
     return (
     <Fragment>

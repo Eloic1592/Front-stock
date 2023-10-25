@@ -1,8 +1,9 @@
-import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent} from "@mui/material";
+import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Tooltip} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import getUselink from 'app/views/getuseLink';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -24,10 +25,8 @@ const Container = styled("div")(({ theme }) => ({
     alert(`Mety`+id);  
   };
 
-  const handleChange = (event) => {
 
-  };
-
+  
   
 const Salle = () => {
 
@@ -36,20 +35,57 @@ const Salle = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [salle, setSalle] = useState('salle');
 
-  // Colonne
+
+  const handleInsertion = async () => {
+    try {
+      // Créer l'objet à insérer
+      const Newsalle = {
+        "salle": salle,
+      };
+  
+      // Envoyer la requête POST au serveur
+      const response = await fetch(getUselink()+'insertsalle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Newsalle),
+      });
+  
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+      if (response.ok) {
+        // Si la requête a réussi, vous pouvez effectuer des actions supplémentaires ici
+        alert.log('Insertion réussie !');
+      } else {
+        // Si la requête a échoué, gérer l'erreur
+        alert.log('Erreur lors de l\'insertion : ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'insertion : ', error);
+    }
+  };
+  
+  
+
+  // Resultat table
   const colonne = [
     { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
     { label: "Salle", field: "salle", render: (listesalle) => `${listesalle.salle}` },    
     { label: "etat", field: "etat", render: (listesalle) => `${listesalle.etat}` }, 
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listesalle.id)}>
+      <Tooltip title="Modifier">
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listesalle.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listesalle.id)}>
+      </Tooltip>
+      <Tooltip title="Supprimer">
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle.id)}>
           <Icon>delete</Icon>
       </IconButton>
+      </Tooltip>
       </div>
     )},     // ... Ajoutez d'autres colonnes si nécessaire
   ];
@@ -76,6 +112,8 @@ const Salle = () => {
                      margin="dense"
                      label="Nom de la salle"
                      name="salle"
+                     value={salle}
+                     onChange={(event) => setSalle(event.target.value)}
                    />
                  </DialogContent>
 
@@ -84,9 +122,10 @@ const Salle = () => {
                      Annuler
                    </Button>
 
-                   <Button onClick={handleClose} color="primary">
-                     Valider
-                   </Button>
+                   <Button onClick={handleInsertion} color="primary">
+                    Valider
+                  </Button>
+
                  </DialogActions>
                </Dialog>
              </Box>
@@ -101,7 +140,7 @@ const Salle = () => {
                label="Nom de la salle"
                variant="outlined"
                // value={values.code}
-               onChange={handleChange}
+              //  onChange={handleChange}
                sx={{ mb: 3 }}
              />
             </div>

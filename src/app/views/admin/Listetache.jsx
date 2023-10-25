@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Autocomplete } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Autocomplete,Tooltip } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
@@ -57,12 +57,16 @@ const Listetache = () => {
     { label: "etat", field: "etat", render: (listetache) => `${listetache.etat}` },  
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listetache.idtache)}>
+      <Tooltip title="Modifier">
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listetache.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listetache.idtache)}>
+      </Tooltip>
+      <Tooltip title="Supprimer">
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listetache.id)}>
           <Icon>delete</Icon>
       </IconButton>
+      </Tooltip>
       </div>
     )},    // ... Ajoutez d'autres colonnes si nécessaire
   ];

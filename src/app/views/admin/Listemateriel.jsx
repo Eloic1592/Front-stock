@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton } from "@mui/material";
+import { Box, styled,Icon, IconButton,Tooltip } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
@@ -34,6 +34,11 @@ const Container = styled("div")(({ theme }) => ({
 
   };
 
+  const create = (event) => {
+
+  };
+
+
   
 const Listemateriel = () => {
 
@@ -50,12 +55,16 @@ const Listemateriel = () => {
     { label: "etat", field: "etat", render: (listemateriel) => `${listemateriel.etat}` }, 
     { label: "Actions", render: () => (
       <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listemateriel.id)}>
+      <Tooltip title="Modifier">
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listemateriel.id)}>
+      </Tooltip>
+      <Tooltip title="Supprimer">
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
           <Icon>delete</Icon>
       </IconButton>
+      </Tooltip>
       </div>
     )},     // ... Ajoutez d'autres colonnes si nécessaire
   ];
