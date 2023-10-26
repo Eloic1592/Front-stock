@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Tooltip} from "@mui/material";
+import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Tooltip,Snackbar,Alert} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
@@ -32,10 +32,22 @@ const Salle = () => {
 
    // Data
   const listesalle = useData('getallsalle');
+
+  // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // Input 
   const [salle, setSalle] = useState('salle');
+
+  // Message
+  const [message,setMessage]= useState({
+    text:'Information enregistree',
+    severity:'success',
+    open:false,
+  });
+
 
 
   const handleInsertion = async () => {
@@ -43,6 +55,7 @@ const Salle = () => {
       // Créer l'objet à insérer
       const Newsalle = {
         "salle": salle,
+	      "etat":0
       };
   
       // Envoyer la requête POST au serveur
@@ -56,14 +69,31 @@ const Salle = () => {
   
       // Vérifier si la requête a réussi (statut HTTP 2xx)
       if (response.ok) {
-        // Si la requête a réussi, vous pouvez effectuer des actions supplémentaires ici
-        alert.log('Insertion réussie !');
+        setMessage({
+          text:'Information enregistree',
+          severity:'success',
+          open:true,
+        });
+        handleClose();
+        window.location.reload();
+
       } else {
-        // Si la requête a échoué, gérer l'erreur
-        alert.log('Erreur lors de l\'insertion : ', response.statusText);
+          setMessage({
+            text:'Une erreur s\'est produite '+response.statusText,
+            severity:'error',
+            open:true,
+
+        });
+        handleClose();
       }
     } catch (error) {
-      console.error('Erreur lors de l\'insertion : ', error);
+       setMessage({
+         text:'Une erreur s\'est produite',error,
+         severity:'error',
+         open:true,
+         
+       });
+       handleClose();
     }
   };
   
@@ -148,6 +178,13 @@ const Salle = () => {
               </SimpleCard>
                 <p></p>
                 <p></p>
+
+
+              <Snackbar open={message.open} autoHideDuration={6000}>
+                <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
+                   {message.text}
+                </Alert>
+              </Snackbar>
 
               <SimpleCard title="Liste des salle">
         <PaginationTable columns={colonne} data={listesalle} />

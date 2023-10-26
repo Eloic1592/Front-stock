@@ -1,13 +1,10 @@
-import { Box, styled,Icon, IconButton,Autocomplete,TextField,Tooltip  } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
+import getUselink from 'app/views/getuseLink';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -41,7 +38,10 @@ const AutoComplete = styled(Autocomplete)(() => ({
 const Listeentretien = () => {
 
    // Data
+  const listetype_entretien=useData('gettypeentretien');
+  const listemateriel=useData('getallmateriel');
   const listeentretien = useData('getallventretien');
+
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,6 +54,13 @@ const Listeentretien = () => {
     { label: 'Andorra' },
     { label: 'Angola' },
   ];
+
+   // Message
+   const [message,setMessage]= useState({
+     text:'Information enregistree',
+     severity:'success',
+     open:false,
+   });
 
   // Colonne
   const colonne = [
@@ -92,18 +99,18 @@ const Listeentretien = () => {
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Nouvel entretien</DialogTitle>
                  <DialogContent>
-                   <AutoComplete
-                     options={suggestions}
-                     getOptionLabel={(option) => option.label}
-                     renderInput={(params) => (
-                       <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
-                     )}
-                     name="idtype_entretien"
-                     id="idtype_entretien"
-                   />
+                 <AutoComplete
+                    options={listetype_entretien}
+                    getOptionLabel={(option) => option.typeEntretien}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
+                    )}
+                    name="idtype_entretien"
+                    id="idtype_entretien"
+                  />
                     <AutoComplete
-                     options={suggestions}
-                     getOptionLabel={(option) => option.label}
+                     options={listemateriel}
+                     getOptionLabel={(option) => option.materiel}
                      renderInput={(params) => (
                        <TextField {...params} label="Materiel" variant="outlined" fullWidth />
                      )}
@@ -147,8 +154,8 @@ const Listeentretien = () => {
                sx={{ mb: 3 }}
              />
              <AutoComplete
-              options={suggestions}
-              getOptionLabel={(option) => option.label}
+              options={listetype_entretien}
+              getOptionLabel={(option) => option.typeEntretien}
               renderInput={(params) => (
                 <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
               )}
@@ -156,8 +163,8 @@ const Listeentretien = () => {
               id="idtype_entretien"
             />
              <AutoComplete
-              options={suggestions}
-              getOptionLabel={(option) => option.label}
+              options={listemateriel}
+              getOptionLabel={(option) => option.materiel}
               renderInput={(params) => (
                 <TextField {...params} label="Materiel" variant="outlined" fullWidth />
               )}
@@ -170,6 +177,12 @@ const Listeentretien = () => {
               </SimpleCard>
                 <p></p>
                 <p></p>
+                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
+                   {message.text}
+                </Alert>
+              </Snackbar>
+
         <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listeentretien} />
         </SimpleCard>

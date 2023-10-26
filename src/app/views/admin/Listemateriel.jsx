@@ -1,14 +1,11 @@
-import { Box, styled,Icon, IconButton,Tooltip } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
+import getUselink from 'app/views/getuseLink';
+
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -34,19 +31,75 @@ const Container = styled("div")(({ theme }) => ({
 
   };
 
-  const create = (event) => {
-
-  };
-
-
   
 const Listemateriel = () => {
 
    // Data
   const listemateriel = useData('getallmateriel');
+
+
+  // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+    // Input 
+  const [materiel, setMateriel] = useState('');
+
+    // Message
+    const [message,setMessage]= useState({
+      text:'Information enregistree',
+      severity:'success',
+      open:false,
+    });
+  
+
+  const handleInsertion = async () => {
+    try {
+      // Créer l'objet à insérer
+      const NewMateriel = {
+        "materiel": materiel,
+	      "etat":0
+      };
+  
+      // Envoyer la requête POST au serveur
+      const response = await fetch(getUselink()+'insertmateriel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(NewMateriel),
+      });
+  
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+      if (response.ok) {
+        setMessage({
+          text:'Information enregistree',
+          severity:'success',
+          open:true,
+        });
+        handleClose();
+        window.location.reload();
+
+      } else {
+          setMessage({
+            text:'Une erreur s\'est produite '+response.statusText,
+            severity:'error',
+            open:true,
+
+        });
+        handleClose();
+      }
+    } catch (error) {
+       setMessage({
+         text:'Une erreur s\'est produite',error,
+         severity:'error',
+         open:true,
+         
+       });
+       handleClose();
+    }
+  };
 
   // Colonne
   const colonne = [
@@ -91,6 +144,8 @@ const Listemateriel = () => {
                      margin="dense"
                      label="materiel"
                      name="materiel"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
                    />
                  </DialogContent>
 
@@ -98,8 +153,7 @@ const Listemateriel = () => {
                    <Button variant="outlined" color="secondary" onClick={handleClose}>
                      Annuler
                    </Button>
-
-                   <Button onClick={handleClose} color="primary">
+                   <Button onClick={handleInsertion} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
@@ -124,6 +178,11 @@ const Listemateriel = () => {
               </SimpleCard>
                 <p></p>
                 <p></p>
+                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
+                   {message.text}
+                </Alert>
+              </Snackbar>
 
               <SimpleCard title="Liste des entretiens">
         <PaginationTable columns={colonne} data={listemateriel} />
