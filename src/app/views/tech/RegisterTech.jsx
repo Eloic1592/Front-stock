@@ -49,7 +49,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
-  code: Yup.string().required('codee requis!')
+  // code: Yup.string().required('codee requis!')
 
 });
 
@@ -59,26 +59,26 @@ const validationSchema = Yup.object().shape({
 const RegisterTech = () => {
   const theme = useTheme();
   const [message,setMessage]= useState({
-    text:'Information enregistree',
-    severity:'success',
-    open:false,
+    message: '',
+    state: false,
+    color:'green',
   });
 
 
   const handleInsertion = async (values) => {    
-    const { nom, prenom, code, email, password } = values;
+    const { nom, prenom, email, password } = values;
 
 
     const NewTech={
       "nom":nom,
       "prenom":prenom,
-      "code":code,
       "email":email,
       "mdp":password,
       "etat":0
     }
     try {
 
+    await validationSchema.validate(NewTech);
       const response = await fetch(getUselink()+'inserttechnicien', {
         method: 'POST',
         headers: {
@@ -90,26 +90,25 @@ const RegisterTech = () => {
       // Vérifier si la requête a réussi (statut HTTP 2xx)
       if (response.ok) {
         setMessage({
-          text:'Information enregistree',
-          severity:'success',
-          open:true,
-        });
-        window.location.reload();
+          message:'Informationn enregistree',
+          state:true,
+          color:'green',
 
+      });
       } else {
           setMessage({
-            text:'Une erreur s\'est produite '+response.statusText,
-            severity:'error',
-            open:true,
+            message:'Une erreur s\'est produite '+response.statusText,
+            state:true,
+            color:'red',
 
         });
       }
     
     } catch (error) {
        setMessage({
-         text:'Une erreur s\'est produite',error,
-         severity:'error',
-         open:true,
+        message:'Une erreur s\'est produite',error,
+        state:true,
+        color:'red',
          
        });
     }
@@ -172,23 +171,6 @@ const RegisterTech = () => {
                       sx={{ mb: 3 }}
                     />
 
-                    {/* <div>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        type="text"
-                        name="code"
-                        id="code"
-                        label="code"
-                        placeholder="TECH-"
-                        onBlur={handleBlur}
-                        value={values.code}
-                        onChange={handleChange}
-                        helperText={touched.code && errors.code}
-                        error={Boolean(errors.code && touched.code)}
-                        sx={{ mb: 3 }}
-                      />
-                    </div> */}
 
                     <TextField
                       fullWidth
@@ -219,6 +201,11 @@ const RegisterTech = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 2 }}
                     />
+                    {message && (
+                        <div style={{ color: message.color }}>
+                          {message.message}
+                        </div>
+                    )}
                     <Button
                       type="submit"
                       color="primary"
@@ -229,7 +216,7 @@ const RegisterTech = () => {
                       Enregistrer
                     </Button>
 
-                    <NavLink to="/tech/registertech" style={{ color: theme.palette.primary.main }}>
+                    <NavLink to="/tech/connexion" style={{ color: theme.palette.primary.main }}>
                       <LoadingButton
                         type="submit"
                         color="secondary"
