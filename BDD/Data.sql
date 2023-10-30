@@ -72,3 +72,5 @@ values(1,5,'Nettoyage et Depoussierage'),
 (1,5,'Mise a jour  du micrologiciel et du logiciel'),
 
 (2,5,'Reparation du reseau');
+
+-- Tache

@@ -53,6 +53,8 @@ const Listetache = Loadable(lazy(() => import('app/views/tech/Listetache')));
 
 const Listeplaintetech = Loadable(lazy(() => import('app/views/tech/Listeplainte')));
 
+const RegisterTech = Loadable(lazy(() => import('app/views/tech/RegisterTech')));
+
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
@@ -191,6 +193,9 @@ const routes = [
   { path: '/tech/listetaches', element: < Listetache/> },
 
   { path: '/tech/listeplainte', element: < Listeplaintetech/> },
+
+  { path: '/tech/registertech', element: < RegisterTech/> },
+
 
 
   { path: '/', element: <Navigate to="tech/calendrier" /> },

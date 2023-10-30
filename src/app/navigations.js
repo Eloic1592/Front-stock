@@ -28,7 +28,7 @@ export const navigations = [
       { name: 'Calendrier', iconText: 'SI', path: '/tech/calendrier' },
       { name: 'Listes des taches', iconText: 'SI', path: '/tech/listetaches' },
       { name: 'Listes des plaintes', iconText: 'SI', path: '/tech/listeplainte' },
-    ]
+      ]
   },
 
   {

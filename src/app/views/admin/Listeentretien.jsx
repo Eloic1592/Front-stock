@@ -45,15 +45,7 @@ const Listeentretien = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const suggestions = [
-    { label: 'Afghanistan' },
-    { label: 'Aland Islands' },
-    { label: 'Albania' },
-    { label: 'Algeria' },
-    { label: 'American Samoa' },
-    { label: 'Andorra' },
-    { label: 'Angola' },
-  ];
+ 
 
    // Message
    const [message,setMessage]= useState({
@@ -61,6 +53,60 @@ const Listeentretien = () => {
      severity:'success',
      open:false,
    });
+
+   const [idtype_entretien,setIdtype_entretien]=useState();
+   const [idmateriel,setIdmateriel]=useState();
+   const [entretien,setEntretien]=useState();
+
+
+   const handleInsertion = async () => {
+    try {
+      // Créer l'objet à insérer
+      const NewEntretien = {
+        "idtypeEntretien":idtype_entretien,
+        "idmateriel": idmateriel,
+        "entretien":entretien,
+	      "etat":0
+      };
+  
+      // Envoyer la requête POST au serveur
+      const response = await fetch(getUselink()+'insertentretien', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(NewEntretien),
+      });
+  
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+      if (response.ok) {
+        setMessage({
+          text:'Information enregistree',
+          severity:'success',
+          open:true,
+        });
+        handleClose();
+        window.location.reload();
+
+      } else {
+          setMessage({
+            text:'Une erreur s\'est produite '+response.statusText,
+            severity:'error',
+            open:true,
+
+        });
+        handleClose();
+      }
+    } catch (error) {
+       setMessage({
+         text:'Une erreur s\'est produite',error,
+         severity:'error',
+         open:true,
+         
+       });
+       handleClose();
+    }
+  };
 
   // Colonne
   const colonne = [
@@ -105,6 +151,11 @@ const Listeentretien = () => {
                     renderInput={(params) => (
                       <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
                     )}
+                    onChange={(event, value) => {
+                      if (value) {
+                        setIdtype_entretien(value.id); 
+                      }
+                    }}
                     name="idtype_entretien"
                     id="idtype_entretien"
                   />
@@ -114,6 +165,11 @@ const Listeentretien = () => {
                      renderInput={(params) => (
                        <TextField {...params} label="Materiel" variant="outlined" fullWidth />
                      )}
+                     onChange={(event, value) => {
+                      if (value) {
+                        setIdmateriel(value.id);
+                      }
+                    }}
                      name="idmateriel"
                      id="idmateriel"
                    />
@@ -125,6 +181,8 @@ const Listeentretien = () => {
                      margin="dense"
                      label="Entretien"
                      name="entretien"
+                     value={entretien}
+                     onChange={(event) => setEntretien(event.target.value)}
                    />
                  </DialogContent>
 
@@ -133,7 +191,7 @@ const Listeentretien = () => {
                      Annuler
                    </Button>
 
-                   <Button onClick={handleClose} color="primary">
+                   <Button onClick={handleInsertion} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
@@ -175,8 +233,9 @@ const Listeentretien = () => {
             </div>
             </form>
               </SimpleCard>
+              <p></p>
                 <p></p>
-                <p></p>
+
                 <Snackbar open={message.open} autoHideDuration={6000}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}

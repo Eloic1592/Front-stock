@@ -1,8 +1,7 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Grid, TextField } from '@mui/material';
+import { Card, Grid, TextField, useTheme } from '@mui/material';
 import { Box, styled } from '@mui/material';
-// import { useTheme } from '@emotion/react';
-import {  useNavigate } from 'react-router-dom';
+import {  NavLink,useNavigate } from 'react-router-dom';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -47,7 +46,7 @@ code: Yup.string().email('Adresse email invalide').required('Adresse email requi
 });
 
 const LoginTech = () => {
-//  const theme = useTheme();
+  const theme=useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -124,7 +123,7 @@ const LoginTech = () => {
                       Connexion
                     </LoadingButton>
 
-                    {/* <NavLink to="/user/register" style={{ color: theme.palette.primary.main }}>
+                    <NavLink to="/tech/registertech" style={{ color: theme.palette.primary.main }}>
                       <LoadingButton
                         type="submit"
                         color="secondary"
@@ -134,32 +133,8 @@ const LoginTech = () => {
                       >
                         S'inscrire
                       </LoadingButton>
-                    </NavLink> */}
+                    </NavLink>
 
-                    {/* <FlexBox justifyContent="space-between">
-                      <FlexBox gap={1}>
-                        <Checkbox
-                          size="small"
-                          name="remember"
-                          onChange={handleChange}
-                          checked={values.remember}
-                          sx={{ padding: 0 }}
-                        />
-
-                        <Paragraph>Se souvenir de moi</Paragraph>
-                      </FlexBox>
-                    </FlexBox> */}
-
-                 
-                    {/* <Paragraph>
-                      Don't have an account?
-                      <NavLink
-                        to="/session/signup"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
-                      >
-                        Register
-                      </NavLink>
-                    </Paragraph> */}
                   </form>
                 )}
               </Formik>
