@@ -1,10 +1,9 @@
 import { LoadingButton } from '@mui/lab';
 import { Button, Card,Grid, TextField,useTheme } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import useAuth from 'app/hooks/useAuth';
-import { Formik, validateYupSchema } from 'formik';
+import { Formik  } from 'formik';
 import { useState } from 'react';
-import { useNavigate,NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
@@ -65,7 +64,7 @@ const RegisterTech = () => {
   });
 
 
-  const handleInsertion = async (values) => {    
+  const handleFormSubmit = async (values) => {    
     const { nom, prenom, email, password } = values;
 
 
@@ -210,7 +209,7 @@ const RegisterTech = () => {
                       type="submit"
                       color="primary"
                       variant="contained"
-                      onClick={() => handleInsertion(values)} // Appel de la fonction avec les valeurs du formulaire
+                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
                       sx={{ my: 2, mr: 2 }}
                     >
                       Enregistrer

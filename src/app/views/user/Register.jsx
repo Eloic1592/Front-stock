@@ -5,7 +5,7 @@ import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -35,6 +35,7 @@ const JWTRegister = styled(JustifyBox)(() => ({
 const initialValues = {
   nom:'',
   prenom:'',
+  dtn:new Date(),
   code:'',
   email: '',
   password: '',
@@ -50,6 +51,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
+  dtn:Yup.date().required('Date requise')
 
 });
 
@@ -57,10 +59,13 @@ const validationSchema = Yup.object().shape({
 
 
 const JwtRegister = () => {
-  const { register } = useAuth();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
+  const [message,setMessage]= useState({
+    message: '',
+    state: false,
+    color:'green',
+  });
 
   const handleSelectRadio = (event) => {
     setSelectedValue(event.target.value);
@@ -72,19 +77,58 @@ const JwtRegister = () => {
   };
 
 
-  const handleFormSubmit = (values) => {
-    setLoading(true);
+  const handleFormSubmit = async (values) => {    
+    const { nom, prenom,dtn,code, email, password } = values;
 
-    try {
-      register(values.email, values.username, values.password);
-      navigate('/');
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
+
+    const NewUser={
+      "nom":nom,
+      "prenom":prenom,
+      "dtn":dtn,
+      "email":email,
+      "mdp":password,
+      "code":code,
+      "idtypeUtilisateur":selectedValue,
+      "etat":0
     }
-  };
+    try {
 
+    await validationSchema.validate(NewUser);
+      const response = await fetch(getUselink()+'insertuser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(NewUser),
+      });
+  
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+      if (response.ok) {
+        setMessage({
+          message:'Informationn enregistree',
+          state:true,
+          color:'green',
+
+      });
+      } else {
+          setMessage({
+            message:'Une erreur s\'est produite '+response.statusText,
+            state:true,
+            color:'red',
+
+        });
+      }
+    
+    } catch (error) {
+       setMessage({
+        message:'Une erreur s\'est produite',error,
+        state:true,
+        color:'red',
+         
+       });
+    }
+  
+  };
   return (
     <JWTRegister>
       <Card className="card">
@@ -111,6 +155,37 @@ const JwtRegister = () => {
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
+                    <div>
+                      <RadioGroup
+                        aria-label="options"
+                        name="options"
+                        value={selectedValue}
+                        onChange={handleSelectRadio}
+
+                      >
+                        <Box display="flex" flexDirection="row">
+                          <FormControlLabel value="1" control={<Radio />} label="Etudiant" />
+                          <FormControlLabel value="2" control={<Radio />} label="Professeur" />
+                          <FormControlLabel value="3" control={<Radio />} label="Autres" />
+                        </Box>
+                      </RadioGroup>
+
+                      <TextField
+                        fullWidth
+                        size="small"
+                        type={selectedValue === "1" ? "text" : "hidden"}
+                        name="code"
+                        id="code"
+                        label={selectedValue === "1" ? "Numero Etudiant" : " "}
+                        placeholder="Numero Etudiant: ETU0000----"
+                        onBlur={handleBlur}
+                        value={values.code}
+                        onChange={handleChange}
+                        helperText={touched.code && errors.code}
+                        error={Boolean(errors.code && touched.code)}
+                        sx={{ mb: 3 }}
+                      />
+                    </div>
                     <TextField
                       fullWidth
                       size="small"
@@ -140,37 +215,22 @@ const JwtRegister = () => {
                       error={Boolean(errors.prenom && touched.prenom)}
                       sx={{ mb: 3 }}
                     />
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="date"
+                      name="dtn"
+                      label=""
+                      variant="outlined"
+                      onBlur={handleBlur}
+                      value={values.dtn}
+                      onChange={handleChange}
+                      helperText={touched.dtn && errors.dtn}
+                      error={Boolean(errors.dtn && touched.dtn)}
+                      sx={{ mb: 3 }}
+                    />
 
-                    <div>
-                      <RadioGroup
-                        aria-label="options"
-                        name="options"
-                        value={selectedValue}
-                        onChange={handleSelectRadio}
-                      >
-                        <Box display="flex" flexDirection="row">
-                          <FormControlLabel value="1" control={<Radio />} label="Etudiant" select/>
-                          <FormControlLabel value="2" control={<Radio />} label="Professeur" />
-                          <FormControlLabel value="3" control={<Radio />} label="Autres" />
-                        </Box>
-                      </RadioGroup>
 
-                      <TextField
-                        fullWidth
-                        size="small"
-                        type={selectedValue === "1" ? "text" : "hidden"}
-                        name="code"
-                        id="code"
-                        label={selectedValue === "1" ? "code" : " "}
-                        placeholder="Numero Etudiant: ETU0000----"
-                        onBlur={handleBlur}
-                        value={values.code}
-                        onChange={handleChange}
-                        helperText={touched.code && errors.code}
-                        error={Boolean(errors.code && touched.code)}
-                        sx={{ mb: 3 }}
-                      />
-                    </div>
 
                     <TextField
                       fullWidth
@@ -201,6 +261,11 @@ const JwtRegister = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 2 }}
                     />
+                    {message && (
+                        <div style={{ color: message.color }}>
+                          {message.message}
+                        </div>
+                    )}
                     <LoadingButton
                       type="submit"
                       color="primary"
