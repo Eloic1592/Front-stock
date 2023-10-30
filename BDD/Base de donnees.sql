@@ -24,6 +24,9 @@ BEGIN
     END LOOP;
 END $$;
 
+-- Sequence CODE TECHNICIEN
+Create sequence codetech_seq start with 1 increment by 1;
+
 -- Admin
 CREATE TABLE admin (
     id serial PRIMARY KEY,
@@ -38,7 +41,7 @@ CREATE TABLE technicien (
     id serial PRIMARY KEY,
     nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
-    code varchar(50) NOT NULL,
+    code varchar(50) NOT NULL default concat('TECH-',nextval('codetech_seq')),
     email text NOT NULL,
     mdp text NOT NULL,
     etat int NOT NULL DEFAULT 0

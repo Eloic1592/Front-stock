@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab';
-import { Card,Grid, TextField,useTheme } from '@mui/material';
+import { Button, Card,Grid, TextField,useTheme } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import useAuth from 'app/hooks/useAuth';
-import { Formik } from 'formik';
+import { Formik, validateYupSchema } from 'formik';
 import { useState } from 'react';
 import { useNavigate,NavLink } from 'react-router-dom';
-
+import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -35,7 +35,7 @@ const JWTRegister = styled(JustifyBox)(() => ({
 const initialValues = {
   nom:'',
   prenom:'',
-  code:'',
+  // code:'',
   email: '',
   password: '',
   remember: true
@@ -49,7 +49,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
-  code: Yup.string().required('codee requies!')
+  code: Yup.string().required('codee requis!')
 
 });
 
@@ -58,22 +58,62 @@ const validationSchema = Yup.object().shape({
 
 const RegisterTech = () => {
   const theme = useTheme();
-  const { register } = useAuth();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [message,setMessage]= useState({
+    text:'Information enregistree',
+    severity:'success',
+    open:false,
+  });
 
 
-  const handleFormSubmit = (values) => {
-    setLoading(true);
+  const handleInsertion = async (values) => {    
+    const { nom, prenom, code, email, password } = values;
 
-    try {
-      register(values.email, values.username, values.password);
-      navigate('/');
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-      setLoading(false);
+
+    const NewTech={
+      "nom":nom,
+      "prenom":prenom,
+      "code":code,
+      "email":email,
+      "mdp":password,
+      "etat":0
     }
+    try {
+
+      const response = await fetch(getUselink()+'inserttechnicien', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(NewTech),
+      });
+  
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+      if (response.ok) {
+        setMessage({
+          text:'Information enregistree',
+          severity:'success',
+          open:true,
+        });
+        window.location.reload();
+
+      } else {
+          setMessage({
+            text:'Une erreur s\'est produite '+response.statusText,
+            severity:'error',
+            open:true,
+
+        });
+      }
+    
+    } catch (error) {
+       setMessage({
+         text:'Une erreur s\'est produite',error,
+         severity:'error',
+         open:true,
+         
+       });
+    }
+  
   };
 
   return (
@@ -96,12 +136,12 @@ const RegisterTech = () => {
             <h2>Inscription-Technicien</h2>
             </div>
               <Formik
-                onSubmit={handleFormSubmit}
+
                 initialValues={initialValues}
                 validationSchema={validationSchema}
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
+                  <form>
                     <TextField
                       fullWidth
                       size="small"
@@ -132,7 +172,7 @@ const RegisterTech = () => {
                       sx={{ mb: 3 }}
                     />
 
-                    <div>
+                    {/* <div>
                       <TextField
                         fullWidth
                         size="small"
@@ -148,7 +188,7 @@ const RegisterTech = () => {
                         error={Boolean(errors.code && touched.code)}
                         sx={{ mb: 3 }}
                       />
-                    </div>
+                    </div> */}
 
                     <TextField
                       fullWidth
@@ -179,21 +219,21 @@ const RegisterTech = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 2 }}
                     />
-                    <LoadingButton
+                    <Button
                       type="submit"
                       color="primary"
-                      loading={loading}
                       variant="contained"
-                      sx={{ my: 2, mr: 2 }} // Ajout de mr: 2 pour l'espacement horizontal
+                      onClick={() => handleInsertion(values)} // Appel de la fonction avec les valeurs du formulaire
+                      sx={{ my: 2, mr: 2 }}
                     >
                       Enregistrer
-                    </LoadingButton>
+                    </Button>
 
                     <NavLink to="/tech/registertech" style={{ color: theme.palette.primary.main }}>
                       <LoadingButton
                         type="submit"
                         color="secondary"
-                        loading={loading}
+                        // loading={loading}
                         variant="contained"
                         sx={{ my: 6 }} // Tu peux ajuster ce paramètre pour l'espacement vertical
                       >
