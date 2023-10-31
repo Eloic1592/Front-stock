@@ -1,11 +1,14 @@
 import React from 'react';
-import { Box,Card, Grid,styled,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent} from '@mui/material';
+import { Box,Card, Grid,styled,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Snackbar,Alert} from '@mui/material';
 import { Breadcrumb} from "app/components";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Fragment,useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import {frenchTranslations} from 'app/views/frenchtransalations';
 import moment from 'moment';
+import getUselink from 'app/views/getuseLink';
+import useData from 'app/useData';
+
 
 
 const localizer = momentLocalizer(moment);
@@ -17,24 +20,76 @@ const ContentBox = styled('div')(({ theme }) => ({
 
 
 
+
   
 const Calendrier = () => {
-    // Liste des evenements
-    const [events, setEvents] = useState([
-      {
-        title: "Indisponibilite tech",
-        start: new Date(),
-        end: new Date(),
-      },
-      {
-        title: "Rendez-vous client",
-        start: new Date(),
-        end: new Date(),
-      },
-    ]);
-    const [open, setOpen] = useState(false);
-    const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+  // Data
+  const listdisponibilite=useData('getalldisponibilite');
+      // Form input
+      const [open, setOpen] = useState(false);
+      const handleClickOpen = () => setOpen(true);
+      const handleClose = () => setOpen(false);
+      const [motif,setMotif]=useState('');
+      const [datedeb,setDatedeb]=useState(Date.now());
+      const [datefin,setDatefin]=useState(Date.now());
+      const [idtechnicien,setIdtechnicien]=useState(1);
+
+      // Message
+      const [message,setMessage]= useState({
+        text:'Information enregistree',
+        severity:'success',
+        open:false,
+      });
+
+      // Events
+      
+      const events = listdisponibilite.map(listdisponibilite => ({
+        title: listdisponibilite.motif, // Le titre de l'événement
+        start: new Date(listdisponibilite.dateDebut), // Date de début
+        end: new Date(listdisponibilite.dateFin) // Date de fin
+      }));
+    
+  const handleInsertion = async () => {
+
+    try {
+      // Créer l'objet à insérer
+      const NewDispo = {
+        "idtechnicien":1,
+        "motif": motif,
+        "dateDebut":new Date(datedeb).getTime(),
+        "dateFin":new Date(datefin).getTime(),
+	      "etat":0
+      };
+      // Envoyer la requête POST au serveur
+      const response = await fetch(getUselink()+'insertdisponibilite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(NewDispo),
+      });            
+      // Vérifier si la requête a réussi (statut HTTP 2xx)
+       if (response.ok) {
+         setMessage({
+           text:'Information enregistree',
+           severity:'success',
+           open:true,
+         });
+         window.location.reload();
+
+       } 
+
+    } catch (error) {
+       setMessage({
+         text:'Une erreur s\'est produite',error,
+         severity:'error',
+         open:true,
+         
+       });
+        handleClose();
+    }
+  };
+
       
     return (
        <Fragment>
@@ -60,6 +115,8 @@ const Calendrier = () => {
                      id="idtechnicien"
                      type="hidden"
                      name="idtechnicien"
+                     value={idtechnicien}
+                     onChange={(event) => setIdtechnicien(event.target.value)}
                    />
                   <TextField
                      fullWidth
@@ -69,24 +126,30 @@ const Calendrier = () => {
                      margin="dense"
                      label="Motif"
                      name="salle"
+                     value={motif}
+                     onChange={(event) => setMotif(event.target.value)}
                    />
+                   Date debut
                   <TextField
                      fullWidth
                      autoFocus
                      id="date_debut"
-                     type="text"
+                     type="datetime-local"
                      margin="dense"
-                     label="Date debut"
                      name="date_debut"
+                     value={datedeb}
+                     onChange={(event) => setDatedeb(event.target.value)}
                    />
+                   Date fin
                     <TextField
                      fullWidth
                      autoFocus
                      id="date_fin"
-                     type="text"
+                     type="datetime-local"
                      margin="dense"
-                     label="Date fin"
                      name="date_fin"
+                     value={datefin}
+                     onChange={(event) => setDatefin(event.target.value)}
                    />
                  </DialogContent>
 
@@ -95,11 +158,17 @@ const Calendrier = () => {
                      Annuler
                    </Button>
 
-                   <Button onClick={handleClose} color="primary">
+                   <Button onClick={handleInsertion} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
                </Dialog>
+               <Snackbar open={message.open} autoHideDuration={6000}>
+             <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
+                {message.text}
+             </Alert>
+           </Snackbar>
+           
                  <h1>Calendrier des disponibilités</h1>
 
                  <div>             

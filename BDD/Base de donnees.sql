@@ -255,7 +255,9 @@ CREATE TABLE question (
 );
 
 
-
+-- Edit table
+-- Materiel
+Alter table materiel add column icon TEXT DEFAULT NULL;
 
 
 -- Select 

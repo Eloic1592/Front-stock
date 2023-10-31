@@ -45,6 +45,7 @@ const Listemateriel = () => {
 
     // Input 
   const [materiel, setMateriel] = useState('');
+  const [icon, setIcon] = useState('');
 
     // Message
     const [message,setMessage]= useState({
@@ -59,7 +60,8 @@ const Listemateriel = () => {
       // Créer l'objet à insérer
       const NewMateriel = {
         "materiel": materiel,
-	      "etat":0
+	      "etat":0,
+        "icon":icon
       };
   
       // Envoyer la requête POST au serveur
@@ -147,6 +149,17 @@ const Listemateriel = () => {
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="materiel"
+                     type="text"
+                     margin="dense"
+                     label="Icon"
+                     name="icon"
+                     value={icon}
+                     onChange={(event) => setIcon(event.target.value)}
+                   />
                  </DialogContent>
 
                  <DialogActions>
@@ -159,7 +172,7 @@ const Listemateriel = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Technicien" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField

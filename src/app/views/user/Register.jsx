@@ -1,10 +1,9 @@
 import { LoadingButton } from '@mui/lab';
-import { Card,Grid, TextField,Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { Card,Grid, TextField,Radio, RadioGroup, FormControlLabel,useTheme,Button } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
@@ -45,20 +44,19 @@ const initialValues = {
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(6, 'Le mot de passe doit contenir au moins 1 caractere!')
-    .required('Mot de passe requis!'),
-  email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
-  dtn:Yup.date().required('Date requise')
-
+  dtn:Yup.date().required('Date requise'),
+  email: Yup.string().email('email invalide').required('un email est requis!'),
+  password: Yup.string().min(6, 'Le mot de passe doit contenir au moins 1 caractere!')
+  
 });
 
 
 
 
 const JwtRegister = () => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [message,setMessage]= useState({
@@ -85,9 +83,9 @@ const JwtRegister = () => {
       "nom":nom,
       "prenom":prenom,
       "dtn":dtn,
+      "code":code,
       "email":email,
       "mdp":password,
-      "code":code,
       "idtypeUtilisateur":selectedValue,
       "etat":0
     }
@@ -111,8 +109,9 @@ const JwtRegister = () => {
 
       });
       } else {
+          console.log(response.statusText);
           setMessage({
-            message:'Une erreur s\'est produite '+response.statusText,
+            message:'Une erreur s\'est produite '+ response.statusText,
             state:true,
             color:'red',
 
@@ -120,6 +119,8 @@ const JwtRegister = () => {
       }
     
     } catch (error) {
+      console.log(error);
+
        setMessage({
         message:'Une erreur s\'est produite',error,
         state:true,
@@ -191,7 +192,7 @@ const JwtRegister = () => {
                       size="small"
                       type="text"
                       name="nom"
-                      label="Votre nom"
+                      label="Nom"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.nom}
@@ -206,7 +207,7 @@ const JwtRegister = () => {
                       size="small"
                       type="text"
                       name="prenom"
-                      label="Votre prenom"
+                      label="Prenom"
                       variant="outlined"
                       onBlur={handleBlur}
                       value={values.prenom}
@@ -266,15 +267,27 @@ const JwtRegister = () => {
                           {message.message}
                         </div>
                     )}
-                    <LoadingButton
+                    <Button
                       type="submit"
                       color="primary"
-                      loading={loading}
                       variant="contained"
-                      sx={{ mb: 2, mt: 3 }}
+                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
+                      sx={{ my: 2, mr: 2 }}
                     >
                       Enregistrer
-                    </LoadingButton>
+                    </Button>
+
+                    <NavLink to="/user/connexion" style={{ color: theme.palette.primary.main }}>
+                      <LoadingButton
+                        type="submit"
+                        color="secondary"
+                        // loading={loading}
+                        variant="contained"
+                        sx={{ my: 6 }} // Tu peux ajuster ce paramètre pour l'espacement vertical
+                      >
+                        Retour
+                      </LoadingButton>
+                    </NavLink>
 
                   </form>
                 )}

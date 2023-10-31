@@ -76,4 +76,5 @@ values(1,5,'Nettoyage et Depoussierage'),
 
 (2,5,'Reparation du reseau');
 
--- Tache
+
+insert into disponibilite(idtechnicien,motif,date_debut,date_fin) values(1,'Motif','2023-10-11 11:33','2023-10-15 11:33');
