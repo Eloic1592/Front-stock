@@ -1,7 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import getUselink from 'app/views/getuseLink';
@@ -32,8 +31,8 @@ const JWTRoot = styled(JustifyBox)(() => ({
 
 // inital login credentials
 const initialValues = {
-  email: 'admin@gmail.com',
-  password: 'admin',
+  email: '',
+  password: '',
   remember: true
 };
 
@@ -58,43 +57,45 @@ const LoginAdmin = () => {
       "email": values.email,
       "mdp": values.password
     }
-  fetch(getUselink() + 'signinAdmin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      // body: utilisateur
-      body: JSON.stringify(admin)
-  })
-      .then(response => {
-          if (!response.ok) {
-            setMessage({
-              message:'Email ou mot de passe incorrect',
-              state:true,
-              color:'red',
-    
-          });
-              throw Error(response.statusText);
 
-          }
-          return response.json();
-      })
-      .then(data => {
-          if (data == null) {
-            setMessage({
-              message:'Email ou mot de passe incorrect',
-              state:true,
-              color:'red',
-    
+    try {
+      const response = await fetch(getUselink() + 'signinAdmin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(admin)
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        setMessage({
+          message: errorMessage,
+          state: true,
+          color: 'red',
+        });
+      } else {
+        const data = await response.json();
+        if (data == null) {
+          setMessage({
+            message: 'Email ou mot de passe incorrect',
+            state: true,
+            color: 'red',
           });
-              alert(message);
-          } else {
-              // alert(data.idutilisateur.nom);
-              // localStorage.setItem("token", data.token);
-              // localStorage.setItem("idutilisateur", data.idutilisateur.id);
-              window.location.replace('/admin/calendriertech');
-          }
-      })
-      .catch(message => console.log(message));
-  };
+        } else {
+          alert(data.idadmin.prenom);
+          // localStorage.setItem("token", data.token);
+          // localStorage.setItem("idadmin", data.idadmin.id);
+          window.location.replace('/admin/calendriertech');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        message: 'Une erreur est survenue, veuillez réessayer plus tard',
+        state: true,
+        color: 'red',
+      });
+    }
+};
 
   return (
     <JWTRoot>
