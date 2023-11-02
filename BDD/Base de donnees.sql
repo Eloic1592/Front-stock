@@ -35,6 +35,17 @@ CREATE TABLE admin (
     email TEXT NOT NULL,
     mdp TEXT NOT NULL
 );
+-- Token admin
+create table tokenAdmin
+(
+    id serial primary key ,
+    idadmin int references Admin(id),
+    token varchar(100),
+    datecreation date,
+    dateexpiration date,
+    role varchar(10)
+);
+
 
 -- Technicien
 CREATE TABLE technicien (
@@ -47,12 +58,26 @@ CREATE TABLE technicien (
     etat int NOT NULL DEFAULT 0
 );
 
+-- Token tech
+create table tokenTech
+(
+    id serial primary key ,
+    idtechnicien int references Technicien(id),
+    token varchar(100),
+    datecreation date,
+    dateexpiration date,
+    role varchar(10)
+);
+
+
 -- Utilisateur
 CREATE TABLE type_utilisateur (
     id serial PRIMARY KEY,
     type_utilisateur text NOT NULL,
     etat int NOT NULL DEFAULT 0
 );
+
+
 
 CREATE TABLE utilisateur (
     id serial PRIMARY KEY,
@@ -64,6 +89,17 @@ CREATE TABLE utilisateur (
     mdp varchar(100) NOT NULL,
     idtype_utilisateur int NOT NULL REFERENCES type_utilisateur(id),
     etat int NOT NULL DEFAULT 0
+);
+
+-- Token user
+create table tokenUser
+(
+    id serial primary key ,
+    idutilisateur int references Utilisateur(id),
+    token varchar(100),
+    datecreation date,
+    dateexpiration date,
+    role varchar(10)
 );
 
 -- Salle

@@ -1,12 +1,10 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
-// import { Paragraph } from 'app/components/Typography';
-// import { SimpleCard } from 'app/components';
 import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -48,20 +46,58 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginAdmin = () => {
-  // const theme = useTheme();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [message,setMessage]= useState({
+    message: '',
+    state: false,
+    color:'green',
+  });
+
 
   const { login } = useAuth();
 
   const handleFormSubmit = async (values) => {
-    setLoading(true);
-    try {
-      await login(values.email, values.password);
-      navigate('/');
-    } catch (e) {
-      setLoading(false);
+
+    const admin = {
+      "email": values.email,
+      "mdp": values.password
     }
+  fetch(getUselink() + 'signinadmin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // body: utilisateur
+      body: JSON.stringify(admin)
+  })
+      .then(response => {
+          if (!response.ok) {
+            setMessage({
+              message:'Email ou mot de passe incorrect',
+              state:true,
+              color:'red',
+    
+          });
+              throw Error(response.statusText);
+
+          }
+          return response.json();
+      })
+      .then(data => {
+          if (data == null) {
+            setMessage({
+              message:'Email ou mot de passe incorrect',
+              state:true,
+              color:'red',
+    
+          });
+              alert(message);
+          } else {
+              // alert(data.idutilisateur.nom);
+              // localStorage.setItem("token", data.token);
+              // localStorage.setItem("idutilisateur", data.idutilisateur.id);
+              window.location.replace('/calendriertech');
+          }
+      })
+      .catch(message => console.log(message));
   };
 
   return (
@@ -115,27 +151,11 @@ const LoginAdmin = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 1.5 }}
                     />
-
-                    {/* <FlexBox justifyContent="space-between">
-                      <FlexBox gap={1}>
-                        <Checkbox
-                          size="small"
-                          name="remember"
-                          onChange={handleChange}
-                          checked={values.remember}
-                          sx={{ padding: 0 }}
-                        />
-
-                        <Paragraph>Se souvenir de moi</Paragraph>
-                      </FlexBox>
-
-                      <NavLink
-                        to="/session/forgot-password"
-                        style={{ color: theme.palette.primary.main }}
-                      >
-                        Mot de passe oublie?
-                      </NavLink>
-                    </FlexBox> */}
+                    {message && (
+                        <div style={{ color: message.color }}>
+                          {message.message}
+                        </div>
+                    )}
 
                     <LoadingButton
                       type="submit"
@@ -146,16 +166,6 @@ const LoginAdmin = () => {
                     >
                       Connexion
                     </LoadingButton>
-
-                    {/* <Paragraph>
-                      Don't have an account?
-                      <NavLink
-                        to="/session/signup"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
-                      >
-                        Register
-                      </NavLink>
-                    </Paragraph> */}
                   </form>
                 )}
               </Formik>
