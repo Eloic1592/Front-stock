@@ -1,5 +1,4 @@
-import { LoadingButton } from '@mui/lab';
-import { Card, Grid, TextField } from '@mui/material';
+import { Card, Grid, TextField,Button } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -84,7 +83,7 @@ const LoginAdmin = () => {
           alert(data.idadmin.prenom);
           // localStorage.setItem("token", data.token);
           // localStorage.setItem("idadmin", data.idadmin.id);
-          window.location.replace('/admin/calendriertech');
+          // window.location.replace('/admin/calendriertech');
         }
       }
     } catch (error) {
@@ -154,15 +153,16 @@ const LoginAdmin = () => {
                         </div>
                     )}
 
-                    <LoadingButton
+                    <Button
                       type="submit"
                       color="primary"
                       loading={loading}
                       variant="contained"
+                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
                       sx={{ my: 2 }}
                     >
                       Connexion
-                    </LoadingButton>
+                    </Button>
                   </form>
                 )}
               </Formik>
