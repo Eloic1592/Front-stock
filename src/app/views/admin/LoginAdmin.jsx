@@ -52,17 +52,13 @@ const LoginAdmin = () => {
     state: false,
     color:'green',
   });
-
-
-  const { login } = useAuth();
-
   const handleFormSubmit = async (values) => {
 
     const admin = {
       "email": values.email,
       "mdp": values.password
     }
-  fetch(getUselink() + 'signinadmin', {
+  fetch(getUselink() + 'signinAdmin', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       // body: utilisateur
@@ -94,7 +90,7 @@ const LoginAdmin = () => {
               // alert(data.idutilisateur.nom);
               // localStorage.setItem("token", data.token);
               // localStorage.setItem("idutilisateur", data.idutilisateur.id);
-              window.location.replace('/calendriertech');
+              window.location.replace('/admin/calendriertech');
           }
       })
       .catch(message => console.log(message));
