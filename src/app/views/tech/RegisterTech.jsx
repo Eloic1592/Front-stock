@@ -34,7 +34,6 @@ const JWTRegister = styled(JustifyBox)(() => ({
 const initialValues = {
   nom:'',
   prenom:'',
-  // code:'',
   email: '',
   password: '',
   remember: true
@@ -42,9 +41,7 @@ const initialValues = {
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(6, 'Le mot de passe doit contenir au moins 1 caractere!')
-    .required('Mot de passe requis!'),
+  // password: Yup.string().required('Le mot de passe est requis!'),
   email: Yup.string().email('email invalide').required('un email est requis!'),
   nom: Yup.string().required('nom requis'),
   prenom: Yup.string().required('prenom requis'),
@@ -86,21 +83,22 @@ const RegisterTech = () => {
         body: JSON.stringify(NewTech),
       });
   
-      // Vérifier si la requête a réussi (statut HTTP 2xx)
       if (response.ok) {
         setMessage({
-          message:'Informationn enregistree',
+          message:'Information enregistree',
           state:true,
           color:'green',
 
       });
       } else {
+        
           setMessage({
             message:'Une erreur s\'est produite '+response.statusText,
             state:true,
             color:'red',
 
         });
+        console.log(message);
       }
     
     } catch (error) {
@@ -110,6 +108,7 @@ const RegisterTech = () => {
         color:'red',
          
        });
+       console.log(message);
     }
   
   };
@@ -137,9 +136,10 @@ const RegisterTech = () => {
 
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-              >
+                onSubmit={handleFormSubmit}           
+                   >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <TextField
                       fullWidth
                       size="small"
@@ -208,8 +208,7 @@ const RegisterTech = () => {
                     <Button
                       type="submit"
                       color="primary"
-                      variant="contained"
-                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
+                      variant="contained"                     
                       sx={{ my: 2, mr: 2 }}
                     >
                       Enregistrer

@@ -1,10 +1,10 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Grid, TextField, useTheme } from '@mui/material';
+import { Card, Grid, TextField,useTheme } from '@mui/material';
 import { Box, styled } from '@mui/material';
-import {  NavLink,useNavigate } from 'react-router-dom';
-import useAuth from 'app/hooks/useAuth';
+import {  NavLink } from 'react-router-dom';
 import { Formik } from 'formik';
 import { useState } from 'react';
+import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -32,7 +32,7 @@ const JWTRoot = styled(JustifyBox)(() => ({
 
 // inital login credentials
 const initialValues = {
-  code: '',
+  email: '',
   password: '',
   remember: true
 };
@@ -42,25 +42,62 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
     .required('Mot de passe requis'),
-code: Yup.string().email('Adresse email invalide').required('Adresse email requis!')
+    email: Yup.string().email('Adresse email invalide').required('Adresse email requis!')
 });
 
 const LoginTech = () => {
-  const theme=useTheme();
-  const navigate = useNavigate();
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
-
-  const { login } = useAuth();
-
+  const [message,setMessage]= useState({
+    message: '',
+    state: false,
+    color:'green',
+  });
   const handleFormSubmit = async (values) => {
-    setLoading(true);
-    try {
-      await login(values.email, values.password);
-      navigate('/');
-    } catch (e) {
-      setLoading(false);
+
+    const tech = {
+      "email": values.email,
+      "mdp": values.password
     }
-  };
+
+    try {
+      const response = await fetch(getUselink() + 'signinTech', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(tech)
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        setMessage({
+          message: errorMessage,
+          state: true,
+          color: 'red',
+        });
+      } else {
+        const data = await response.json();
+        if (data == null) {
+          setMessage({
+            message: 'Email ou mot de passe incorrect',
+            state: true,
+            color: 'red',
+          });
+        } else {
+          localStorage.setItem("token_tech", data.token);
+          localStorage.setItem("idtechnicien", data.idtechnicien.id);
+          window.location.replace('/tech/listetaches');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        message: 'Une erreur est survenue, veuillez réessayer plus tard',
+        state: true,
+        color: 'red',
+      });
+    }
+};
+
 
   return (
     <JWTRoot>
@@ -73,29 +110,30 @@ const LoginTech = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
+          <Box p={4} height="100%">
             <div>
             <h2>Connexion-Technicien</h2>
             </div>
             <ContentBox>
               <Formik
-                onSubmit={handleFormSubmit}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
+                onSubmit={handleFormSubmit}
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
                     <TextField
                       fullWidth
                       size="small"
-                      type="text"
-                      name="code"
-                      label="code"
+                      type="mail"
+                      name="email"
+                      label="Email"
                       variant="outlined"
                       onBlur={handleBlur}
-                      value={values.code}
+                      value={values.email}
                       onChange={handleChange}
-                      helperText={touched.code && errors.code}
-                      error={Boolean(errors.code && touched.code)}
+                      helperText={touched.email && errors.email}
+                      error={Boolean(errors.email && touched.email)}
                       sx={{ mb: 3 }}
                     />
 
@@ -113,6 +151,11 @@ const LoginTech = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 1.5 }}
                     />
+                    {message && (
+                        <div style={{ color: message.color }}>
+                          {message.message}
+                        </div>
+                    )}
                     <LoadingButton
                       type="submit"
                       color="primary"
@@ -139,6 +182,7 @@ const LoginTech = () => {
                 )}
               </Formik>
             </ContentBox>
+            </Box>
           </Grid>
         </Grid>
       </Card>

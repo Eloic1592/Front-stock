@@ -3,9 +3,9 @@ import { Card, Grid, TextField } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
+import getUselink from 'app/views/getuseLink';
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -33,7 +33,7 @@ const JWTRoot = styled(JustifyBox)(() => ({
 
 // inital login credentials
 const initialValues = {
-  code: '',
+  email: '',
   password: '',
   remember: true
 };
@@ -41,25 +41,61 @@ const initialValues = {
 // form field validation schema
 const validationSchema = Yup.object().shape({
   password: Yup.string().required('Mot de passe requis!'),
-  code: Yup.string().required('code  requis!')
+  email: Yup.string().required('Adresse email requis!')
 });
 
 const LoginUser = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  const { login } = useAuth();
-
+  const [message,setMessage]= useState({
+    message: '',
+    state: false,
+    color:'green',
+  });
   const handleFormSubmit = async (values) => {
-    setLoading(true);
-    try {
-      await login(values.email, values.password);
-      navigate('/');
-    } catch (e) {
-      setLoading(false);
+
+    const utilisateur = {
+      "email": values.email,
+      "mdp": values.password
     }
-  };
+
+    try {
+      const response = await fetch(getUselink() + 'signinUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(utilisateur)
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        setMessage({
+          message: errorMessage,
+          state: true,
+          color: 'red',
+        });
+      } else {
+        const data = await response.json();
+        if (data == null) {
+          setMessage({
+            message: 'Email ou mot de passe incorrect',
+            state: true,
+            color: 'red',
+          });
+        } else {
+          localStorage.setItem("token_user", data.token);
+          localStorage.setItem("idutilisateur", data.idutilisateur.id);
+          window.location.replace('/user/accueil');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        message: 'Une erreur est survenue, veuillez réessayer plus tard',
+        state: true,
+        color: 'red',
+      });
+    }
+};
 
   return (
     <JWTRoot>
@@ -72,6 +108,7 @@ const LoginUser = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
+          <Box p={4} height="100%">
             <div>
             <h2>Connexion-Utilisateur</h2>
             </div>
@@ -86,15 +123,15 @@ const LoginUser = () => {
                     <TextField
                       fullWidth
                       size="small"
-                      type="tex"
-                      name="code"
-                      label="ETU"
+                      type="mail"
+                      name="email"
+                      label="Email"
                       variant="outlined"
                       onBlur={handleBlur}
-                      value={values.code}
+                      value={values.email}
                       onChange={handleChange}
-                      helperText={touched.code && errors.code}
-                      error={Boolean(errors.code && touched.code)}
+                      helperText={touched.email && errors.email}
+                      error={Boolean(errors.email && touched.email)}
                       sx={{ mb: 3 }}
                     />
 
@@ -112,6 +149,12 @@ const LoginUser = () => {
                       error={Boolean(errors.password && touched.password)}
                       sx={{ mb: 1.5 }}
                     />
+                   
+                    {message && (
+                        <div style={{ color: message.color }}>
+                          {message.message}
+                        </div>
+                    )}
                     <LoadingButton
                       type="submit"
                       color="primary"
@@ -134,34 +177,11 @@ const LoginUser = () => {
                       </LoadingButton>
                     </NavLink>
 
-                    {/* <FlexBox justifyContent="space-between">
-                      <FlexBox gap={1}>
-                        <Checkbox
-                          size="small"
-                          name="remember"
-                          onChange={handleChange}
-                          checked={values.remember}
-                          sx={{ padding: 0 }}
-                        />
-
-                        <Paragraph>Se souvenir de moi</Paragraph>
-                      </FlexBox>
-                    </FlexBox> */}
-
-                 
-                    {/* <Paragraph>
-                      Don't have an account?
-                      <NavLink
-                        to="/session/signup"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
-                      >
-                        Register
-                      </NavLink>
-                    </Paragraph> */}
                   </form>
                 )}
               </Formik>
             </ContentBox>
+            </Box>
           </Grid>
         </Grid>
       </Card>

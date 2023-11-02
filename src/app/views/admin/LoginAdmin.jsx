@@ -44,6 +44,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginAdmin = () => {
+ 
   const [loading, setLoading] = useState(false);
   const [message,setMessage]= useState({
     message: '',
@@ -80,10 +81,9 @@ const LoginAdmin = () => {
             color: 'red',
           });
         } else {
-          alert(data.idadmin.prenom);
-          // localStorage.setItem("token", data.token);
-          // localStorage.setItem("idadmin", data.idadmin.id);
-          // window.location.replace('/admin/calendriertech');
+          localStorage.setItem("token_ad", data.token);
+          localStorage.setItem("idadmin", data.idadmin.id);
+          window.location.replace('/admin/calendriertech');
         }
       }
     } catch (error) {
@@ -107,14 +107,16 @@ const LoginAdmin = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
+          <Box p={4} height="100%">
             <div>
             <h2>Connexion-Administrateur</h2>
             </div>
             <ContentBox>
               <Formik
-                onSubmit={handleFormSubmit}
+                
                 initialValues={initialValues}
                 validationSchema={validationSchema}
+                onSubmit={handleFormSubmit}
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>
@@ -158,7 +160,6 @@ const LoginAdmin = () => {
                       color="primary"
                       loading={loading}
                       variant="contained"
-                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
                       sx={{ my: 2 }}
                     >
                       Connexion
@@ -167,6 +168,7 @@ const LoginAdmin = () => {
                 )}
               </Formik>
             </ContentBox>
+              </Box>
           </Grid>
         </Grid>
       </Card>

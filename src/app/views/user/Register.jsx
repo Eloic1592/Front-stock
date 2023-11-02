@@ -145,9 +145,9 @@ const JwtRegister = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
-            <Box p={4} height="100%">
+          <Box p={4} height="100%">
           <div>
-            <h2>Inscription-utilisateur</h2>
+            <h2>Inscription-Utilisateur</h2>
             </div>
               <Formik
                 onSubmit={handleFormSubmit}
