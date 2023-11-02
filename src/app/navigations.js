@@ -37,7 +37,7 @@ export const navigations = [
     children: [
     { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },  
     { name: 'Accueil', iconText: 'SI',path: '/user/accueil' },
-    { name: 'Enregistrement', iconText: 'SI',path: '/session/signup' },
+    { name: 'Enregistrement', iconText: 'SI',path: '/user/register' },
     ]
   },
 

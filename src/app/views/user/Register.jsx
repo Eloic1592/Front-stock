@@ -271,7 +271,6 @@ const JwtRegister = () => {
                       type="submit"
                       color="primary"
                       variant="contained"
-                      onClick={() => handleFormSubmit(values)} // Appel de la fonction avec les valeurs du formulaire
                       sx={{ my: 2, mr: 2 }}
                     >
                       Enregistrer
