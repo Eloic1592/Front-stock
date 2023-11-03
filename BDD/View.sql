@@ -22,6 +22,21 @@ select d.*,t.nom,t.prenom from disponibilite d join technicien t on t.id=d.idtec
 -- select i.id as idinter,i.date_int,i.entretien as intervention,e.entretien,t.designation from intervention i join tache t on i.idtache=t.id join entretien e on i.identretien=e.id;
 
 
+-- Vue plainte individuel et salle
+Drop view v_plainte_ind;
+Create or replace view v_plainte_ind as
+SELECT pi.idplainte,concat(u.nom,' ',prenom) as nom,tu.type_utilisateur,m.materiel,pi.description,p.date_depot FROM plainte_individuel pi 
+JOIN utilisateur u on pi.idutilisateur=u.id 
+join type_utilisateur tu on u.idtype_utilisateur=tu.id
+join materiel m on m.id=pi.idmateriel
+join plainte p on p.id=pi.idplainte;
+
+Drop view v_plainte_salle;
+Create or replace view v_plainte_salle as
+SELECT pi.idplainte,concat(u.salle) as salle,m.materiel,pi.description,p.date_depot FROM plainte_salle pi 
+JOIN salle u on pi.idsalle=u.id 
+join materiel m on m.id=pi.idmateriel
+join plainte p on p.id=pi.idplainte;
 -- Vue
 
 Tache,
