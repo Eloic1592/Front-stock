@@ -40,6 +40,7 @@ const Container = styled("div")(({ theme }) => ({
     
     // Data
     const listetentretien = useData('gettypeentretien');
+
     // Form dialog
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => setOpen(true);
@@ -47,6 +48,8 @@ const Container = styled("div")(({ theme }) => ({
 
       // Input 
   const [type_entretien, setTypeEntretien] = useState('');
+  const [type_entretienf, setType_entretienf] = useState('');
+  const listetentref = filtretypeentretien(listetentretien,type_entretienf);
 
   // Message
   const [message,setMessage]= useState({
@@ -108,7 +111,6 @@ const Container = styled("div")(({ theme }) => ({
   const colonne = [
     { label: "ID", field: "id", render: (listetentretien) => `${listetentretien.id}` },
     { label: "Type entretien", field: "type entretien", render: (listetentretien) => `${listetentretien.typeEntretien}` },    
-    { label: "etat", field: "etat", render: (listetentretien) => `${listetentretien.etat}` },   
     { label: "Actions", render: () => (
       <div>
       <Tooltip title="Modifier">
@@ -174,8 +176,8 @@ const Container = styled("div")(({ theme }) => ({
                name="type_entretien"
                label="Type d'entretien"
                variant="outlined"
-               // value={values.code}
-               onChange={handleChange}
+               value={type_entretienf}
+               onChange={(event) => setType_entretienf(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>
@@ -191,10 +193,16 @@ const Container = styled("div")(({ theme }) => ({
               </Snackbar>
 
         <SimpleCard title="Liste des types d' entretiens">
-        <PaginationTable columns={colonne} data={listetentretien} />
+        <PaginationTable columns={colonne} data={listetentref} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default ListeTypeEntretien;
+
+function filtretypeentretien(listetypeentretien, Type_entretien) {
+  return listetypeentretien.filter((Item) => {
+    return Item.typeEntretien.toLowerCase().includes(Type_entretien.toLowerCase());
+  });
+}

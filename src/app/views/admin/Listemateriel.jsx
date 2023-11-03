@@ -34,14 +34,15 @@ const Container = styled("div")(({ theme }) => ({
   
 const Listemateriel = () => {
 
-   // Data
-  const listemateriel = useData('getallmateriel');
-
-
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
+   // Data
+  const listemateriel =useData('getallmateriel');
+  const [materielfilter, setMaterielfilter] = useState('');
+  const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
   const [materiel, setMateriel] = useState('');
@@ -107,7 +108,6 @@ const Listemateriel = () => {
   const colonne = [
     { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
     { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "etat", field: "etat", render: (listemateriel) => `${listemateriel.etat}` }, 
     { label: "Actions", render: () => (
       <div>
       <Tooltip title="Modifier">
@@ -179,11 +179,11 @@ const Listemateriel = () => {
                fullWidth
                size="small"
                type="text"
-               name="materiel"
+               name="materielfiltre"
                label="Nom du materiel"
                variant="outlined"
-               // value={values.code}
-               onChange={handleChange}
+               value={materielfilter}
+               onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>
@@ -198,10 +198,16 @@ const Listemateriel = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listemateriel} />
+        <PaginationTable columns={colonne} data={listematfilter} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Listemateriel;
+
+function filtremateriel(listemateriel, materiel) {
+  return listemateriel.filter((Item) => {
+    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
+  });
+}

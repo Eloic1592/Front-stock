@@ -39,7 +39,9 @@ const Salle = () => {
   const handleClose = () => setOpen(false);
 
   // Input 
-  const [salle, setSalle] = useState('salle');
+  const [salle, setSalle] = useState('');
+  const [sallefiltrer, setSallefiltrer] = useState('');
+  const listesallefiltre = filterSalle(listesalle,sallefiltrer);
 
   // Message
   const [message,setMessage]= useState({
@@ -103,7 +105,6 @@ const Salle = () => {
   const colonne = [
     { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
     { label: "Salle", field: "salle", render: (listesalle) => `${listesalle.salle}` },    
-    { label: "etat", field: "etat", render: (listesalle) => `${listesalle.etat}` }, 
     { label: "Actions", render: () => (
       <div>
       <Tooltip title="Modifier">
@@ -166,11 +167,11 @@ const Salle = () => {
                fullWidth
                size="small"
                type="text"
-               name="salle"
+               name="sallefiltrer"
                label="Nom de la salle"
                variant="outlined"
-               // value={values.code}
-              //  onChange={handleChange}
+               value={sallefiltrer}
+               onChange={(event) => setSallefiltrer(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>
@@ -187,10 +188,16 @@ const Salle = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des salle">
-        <PaginationTable columns={colonne} data={listesalle} />
+        <PaginationTable columns={colonne} data={listesallefiltre} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Salle;
+
+function filterSalle(listesalle, salle) {
+  return listesalle.filter((salleItem) => {
+    return salleItem.salle.toLowerCase().includes(salle.toLowerCase());
+  });
+}

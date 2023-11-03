@@ -22,13 +22,13 @@ const AutoComplete = styled(Autocomplete)(() => ({
 
   
 const Calendriertech = () => {
-  const listdisponibilite=useData('getalldisponibilite');
+  const listdisponibilite=useData('getallvdisponibilite');
   const technicien=useData('gettechnicien');
 
 
       const events = listdisponibilite.map(listdisponibilite => ({
 
-        title: listdisponibilite.motif, // Le titre de l'événement
+        title: listdisponibilite.prenom+': '+listdisponibilite.motif, // Le titre de l'événement
 
         start: new Date(listdisponibilite.dateDebut), // Date de début
 
@@ -47,23 +47,8 @@ const Calendriertech = () => {
               <Box className="breadcrumb">
                 <Breadcrumb routeSegments={[{ name: "Agenda des techniciens" }]} />
               </Box>
-            </Card>             
-              <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <AutoComplete
-                     options={technicien}
-                     getOptionLabel={(option) => option.code}
-                     renderInput={(params) => (
-                       <TextField {...params} label="Technicien" variant="outlined" fullWidth />
-                     )}
-                     name="idtcechnicien"
-                     id="idtcechnicien"
-                   />
-            </div>
-            </form>
-              </SimpleCard>
-
+            </Card>    
+  
               <h1>Agenda des techniciens</h1>
               <div>             
               <Calendar

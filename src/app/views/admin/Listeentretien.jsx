@@ -58,6 +58,11 @@ const Listeentretien = () => {
    const [idmateriel,setIdmateriel]=useState();
    const [entretien,setEntretien]=useState();
 
+   const [entretienf, setEntretienf] = useState('');
+   const [typeEntretienf, setTypeEntretienf] = useState('');
+   const [materielf, setMaterielf] = useState('');
+  const listeentrfiltre = filterentretien(listeentretien,entretienf,typeEntretienf,materielf);
+
 
    const handleInsertion = async () => {
     try {
@@ -204,29 +209,32 @@ const Listeentretien = () => {
                fullWidth
                size="small"
                type="text"
-               name="entretien"
+               name="entretienf"
                label=" Genre d'entretien"
                variant="outlined"
-               // value={values.code}
-               onChange={handleChange}
+               value={entretienf}
+               onChange={(event) => setEntretienf(event.target.value)}
                sx={{ mb: 3 }}
              />
              <AutoComplete
               options={listetype_entretien}
               getOptionLabel={(option) => option.typeEntretien}
               renderInput={(params) => (
-                <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth />
+                <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth
+                onChange={(event) => setTypeEntretienf(event.target.value)} />
               )}
-              name="idtype_entretien"
+              name="idtype_entretienf"
               id="idtype_entretien"
             />
              <AutoComplete
               options={listemateriel}
               getOptionLabel={(option) => option.materiel}
               renderInput={(params) => (
-                <TextField {...params} label="Materiel" variant="outlined" fullWidth />
+                <TextField {...params} label="Materiel" variant="outlined" fullWidth                
+                value={materielf}
+                onChange={(event) => setMaterielf(event.target.value)}/>
               )}
-              name="idmateriel"
+              name="idmaterielf"
               id="idmateriel"
             />  
 
@@ -243,10 +251,18 @@ const Listeentretien = () => {
               </Snackbar>
 
         <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listeentretien} />
+        <PaginationTable columns={colonne} data={listeentrfiltre} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Listeentretien;
+
+function filterentretien(listeentretien,entretien,Tentretien,materiel) {
+  return listeentretien.filter((Item) => {
+    return  Item.entretien.toLowerCase().includes(entretien.toLowerCase())&&
+    Item.typeEntretien.toLowerCase().includes(Tentretien.toLowerCase())&&
+    Item.materiel.toLowerCase().includes(materiel.toLowerCase());
+  });
+}

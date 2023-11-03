@@ -24,7 +24,9 @@ const ContentBox = styled('div')(({ theme }) => ({
   
 const Calendrier = () => {
   // Data
-  const listdisponibilite=useData('getalldisponibilite');
+  const idtechnicien=localStorage.getItem('idtechnicien');
+  const listdisponibilite=useData('getvdisponibilite/'+idtechnicien);
+  
       // Form input
       const [open, setOpen] = useState(false);
       const handleClickOpen = () => setOpen(true);
@@ -32,7 +34,6 @@ const Calendrier = () => {
       const [motif,setMotif]=useState('');
       const [datedeb,setDatedeb]=useState(Date.now());
       const [datefin,setDatefin]=useState(Date.now());
-      const [idtechnicien,setIdtechnicien]=useState(1);
 
       // Message
       const [message,setMessage]= useState({
@@ -41,8 +42,7 @@ const Calendrier = () => {
         open:false,
       });
 
-      // Events
-      
+      // Events calendar
       const events = listdisponibilite.map(listdisponibilite => ({
         title: listdisponibilite.motif, // Le titre de l'événement
         start: new Date(listdisponibilite.dateDebut), // Date de début
@@ -54,7 +54,7 @@ const Calendrier = () => {
     try {
       // Créer l'objet à insérer
       const NewDispo = {
-        "idtechnicien":1,
+        "idtechnicien":idtechnicien,
         "motif": motif,
         "dateDebut":new Date(datedeb).getTime(),
         "dateFin":new Date(datefin).getTime(),
@@ -77,6 +77,7 @@ const Calendrier = () => {
          });
          window.location.reload();
 
+         
        } 
 
     } catch (error) {
@@ -109,14 +110,13 @@ const Calendrier = () => {
                  <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Nouvel evenement</DialogTitle>
                  <DialogContent>
-                 <TextField
+                 <input
                      fullWidth
                      autoFocus
                      id="idtechnicien"
                      type="hidden"
                      name="idtechnicien"
                      value={idtechnicien}
-                     onChange={(event) => setIdtechnicien(event.target.value)}
                    />
                   <TextField
                      fullWidth

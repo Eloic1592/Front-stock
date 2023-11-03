@@ -1,6 +1,7 @@
 import { Box, styled,Icon, IconButton,TextField,Tooltip} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
+import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 
 
@@ -36,6 +37,10 @@ const ListeTechnicien = () => {
 
    // Data  
    const listetechnicien = useData('gettechnicien');
+   const [filtrenom, setFiltrenom] = useState('');
+   const [filtreprenom, setFiltreprenom] = useState('');
+   const listetechfiltre = filtretech(listetechnicien,filtrenom,filtreprenom);
+ 
 
    const initialValues = {
     username: 'JohnDoe',
@@ -46,9 +51,10 @@ const ListeTechnicien = () => {
   // Colonne
   const colonne = [
     { label: "ID", field: "id", render: (listetechnicien) => `${listetechnicien.id}` },
-    { label: "Nom", field: "type entretien", render: (listetechnicien) => `${listetechnicien.nom}` },    
-    { label: "prenom", field: "type entretien", render: (listetechnicien) => `${listetechnicien.prenom}` },    
-    { label: "etat", field: "etat", render: (listetechnicien) => `${listetechnicien.etat}` },
+    { label: "Nom", field: "Nom", render: (listetechnicien) => `${listetechnicien.nom}` },   
+    { label: "Prenom", field: "Preno", render: (listetechnicien) => `${listetechnicien.prenom}` },   
+
+    // { label: "code", field: "code", render: (listetechnicien) => `${listetechnicien.code}` },    
     { label: "Actions", render: () => (
       <div>
       <Tooltip title="Modifier">
@@ -66,6 +72,9 @@ const ListeTechnicien = () => {
   ];
  
     return (
+
+
+
         <Container>
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
@@ -80,8 +89,8 @@ const ListeTechnicien = () => {
          name="nom"
          label="Nom"
          variant="outlined"
-         // value={values.code}
-         onChange={handleChange}
+         value={filtrenom}
+         onChange={(event) => setFiltrenom(event.target.value)}
          sx={{ mb: 3 }}
        />
       <TextField
@@ -91,8 +100,8 @@ const ListeTechnicien = () => {
         name="prenom"
         label="Prenom"
         variant="outlined"
-        // value={values.code}
-        onChange={handleChange}
+        value={filtreprenom}
+        onChange={(event) => setFiltreprenom(event.target.value)}
         sx={{ mb: 3 }}
       />
       </div>
@@ -101,10 +110,17 @@ const ListeTechnicien = () => {
           <p></p>
           <p></p>
         <SimpleCard title="Liste des types d' entretiens">
-        <PaginationTable columns={colonne} data={listetechnicien} />
+        <PaginationTable columns={colonne} data={listetechfiltre} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default ListeTechnicien;
+
+
+function filtretech(listeentretien,nom,prenom) {
+  return listeentretien.filter((Item) => {
+    return Item.nom.toLowerCase().includes(nom.toLowerCase())&&Item.prenom.toLowerCase().includes(prenom.toLowerCase());
+  });
+}
