@@ -3,6 +3,7 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import  convertdate from "app/views/convertdate";
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -35,66 +36,70 @@ const Container = styled("div")(({ theme }) => ({
 
   
 const Listeplainte = () => {
+// Data
+const [listeplainte,setListeplainte] = useState(() => {
+  return [];
+});
+const [colonne,setColonne]=useState([]);
+const [selectedOption, setSelectedOption] = useState('1');
+const [suggestions, setSuggestions] = useState([]);
+const materiel=useData('getallmateriel');
+const [autoCompleteProps, setAutoCompleteProps] = useState({
+  name: 'idutilisateur',
+  id: 'idutilisateur',
+  label: 'utilisateur',
+});
 
-  useEffect(() => {
-    handleChoixChange({ target: { value: selectedOption } });
-  }, []); // Le tableau de dépendances est vide, ce qui signifie 
+const plaintid=useData('getplainteind');
+const plainteSalle = useData('getplaintesalle');
 
-   // Data
-  const listesalle = useData('getallsalle');
+const fetchData = (selectedValue) => {
+  if (selectedValue === '1') {
+    setAutoCompleteProps({
+      name: 'idutilisateur',
+      id: 'idutilisateur',
+      label: 'utilisateur',
+    });
+    setListeplainte(() => plaintid);
+    // setSuggestions(() => );
+    setColonne([
+        { label: "Id", field: "id", render: (listeplainte) => `${listeplainte.idplainte}` },
+        { label: "nom", field: "nom", render: (listeplainte) => `${listeplainte.nom }` },    
+        { label: "materiel", field: "materiel", render: (listeplainte) => `${listeplainte.materiel}` }, 
+        { label: "description", field: "description", render: (listeplainte) => `${listeplainte.description}` }, 
+        { label: "date dedepot", field: "datedepot", render: (listeplainte) => `${convertdate(listeplainte.dateDepot)}` }, 
+      ]);
+  } else {
+    setAutoCompleteProps({
+      name: 'idsalle',
+      id: 'idsalle',
+      label: 'salle',
+    });
+    setListeplainte(() => plainteSalle);
+    // setSuggestions(() => );
+
+    setColonne([
+        { label: "Id", field: "id", render: (listeplainte) => `${listeplainte.idplainte}` },
+        { label: "salle", field: "salle", render: (listeplainte) => `${listeplainte.salle }` },    
+        { label: "materiel", field: "materiel", render: (listeplainte) => `${listeplainte.materiel}` }, 
+        { label: "description", field: "description", render: (listeplainte) => `${listeplainte.description}` }, 
+        { label: "date dedepot", field: "datedepot", render: (listeplainte) => `${convertdate(listeplainte.dateDepot)}` }, 
+  ]);
+    }
+  };
 
 
-  const [selectedOption, setSelectedOption] = useState('1');
-  const [suggestions, setSuggestions] = useState([]);
-  const [autoCompleteProps, setAutoCompleteProps] = useState({
-    name: 'idutilisateur',
-    id: 'idutilisateur',
-    label: 'utilisateur',
-  });
-  
   const handleChoixChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-  
-    if (selectedValue === '1') {
-      setAutoCompleteProps({
-        name: 'idutilisateur',
-        id: 'idutilisateur',
-        label: 'utilisateur',
-      });
-    } else {
-      setAutoCompleteProps({
-        name: 'idsalle',
-        id: 'idsalle',
-        label: 'salle',
-      });
-
-
-
-    }
-
+    fetchData(selectedValue);
   };
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
-    { label: "Salle", field: "salle", render: (listesalle) => `${listesalle.salle}` },    
-    { label: "etat", field: "etat", render: (listesalle) => `${listesalle.etat}` }, 
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listesalle.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
+  useEffect(() => {
+    handleChoixChange({ target: { value: selectedOption } });
+  }, [colonne]);
+ 
+
  
     return (
         <Container>
@@ -108,6 +113,7 @@ const Listeplainte = () => {
                labelId="select-label"
                value={selectedOption}
                onChange={handleChoixChange}
+               
                 >
                <MenuItem value="1">Individuel</MenuItem>
                <MenuItem value="2">Salle</MenuItem>
@@ -125,8 +131,8 @@ const Listeplainte = () => {
             />
             
             <AutoComplete
-              options={suggestions}
-              getOptionLabel={(option) => option.label}
+              options={materiel}
+              getOptionLabel={(option) => option.materiel}
               renderInput={(params) => (
                 <TextField {...params} label="Materiel" variant="outlined" fullWidth />
             )}
@@ -149,11 +155,12 @@ const Listeplainte = () => {
                 <p></p>
                 <p></p>
 
-              <SimpleCard title="Liste des salle">
-        <PaginationTable columns={colonne} data={listesalle} />
+              <SimpleCard title="Liste des plaintes">
+        <PaginationTable columns={colonne} data={listeplainte} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Listeplainte;
+
