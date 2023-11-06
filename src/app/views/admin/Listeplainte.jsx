@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Autocomplete,Select, MenuItem,Tooltip} from "@mui/material";
+import { Box, styled,TextField,Autocomplete,Select, MenuItem} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -37,18 +37,22 @@ const Container = styled("div")(({ theme }) => ({
   
 const Listeplainte = () => {
 // Data
-const [listeplainte,setListeplainte] = useState(() => {
-  return [];
-});
+const [listeplainte,setListeplainte] = useState([]);
 const [colonne,setColonne]=useState([]);
 const [selectedOption, setSelectedOption] = useState('1');
-const [suggestions, setSuggestions] = useState([]);
 const materiel=useData('getallmateriel');
 const [autoCompleteProps, setAutoCompleteProps] = useState({
   name: 'idutilisateur',
   id: 'idutilisateur',
   label: 'utilisateur',
 });
+const [date, setDate] = useState('');
+
+// Filtre
+
+const [materielf, setMaterielf] = useState('');
+const [suggestionf, setSuggestionf] = useState('');
+const [listeplaintefiltre,setListeplaintefiltre] = useState([]);
 
 const plaintid=useData('getplainteind');
 const plainteSalle = useData('getplaintesalle');
@@ -61,14 +65,15 @@ const fetchData = (selectedValue) => {
       label: 'utilisateur',
     });
     setListeplainte(() => plaintid);
-    // setSuggestions(() => );
     setColonne([
         { label: "Id", field: "id", render: (listeplainte) => `${listeplainte.idplainte}` },
-        { label: "nom", field: "nom", render: (listeplainte) => `${listeplainte.nom }` },    
+        { label: "nom", field: "nom", render: (listeplainte) => `${listeplainte.nom}` },    
         { label: "materiel", field: "materiel", render: (listeplainte) => `${listeplainte.materiel}` }, 
         { label: "description", field: "description", render: (listeplainte) => `${listeplainte.description}` }, 
         { label: "date dedepot", field: "datedepot", render: (listeplainte) => `${convertdate(listeplainte.dateDepot)}` }, 
       ]);
+
+      setListeplaintefiltre(filtreplainte(listeplainte,suggestionf,materielf,date,selectedOption));
   } else {
     setAutoCompleteProps({
       name: 'idsalle',
@@ -76,15 +81,14 @@ const fetchData = (selectedValue) => {
       label: 'salle',
     });
     setListeplainte(() => plainteSalle);
-    // setSuggestions(() => );
-
     setColonne([
         { label: "Id", field: "id", render: (listeplainte) => `${listeplainte.idplainte}` },
-        { label: "salle", field: "salle", render: (listeplainte) => `${listeplainte.salle }` },    
+        { label: "salle", field: "salle", render: (listeplainte) => `${listeplainte.salle}` },    
         { label: "materiel", field: "materiel", render: (listeplainte) => `${listeplainte.materiel}` }, 
         { label: "description", field: "description", render: (listeplainte) => `${listeplainte.description}` }, 
         { label: "date dedepot", field: "datedepot", render: (listeplainte) => `${convertdate(listeplainte.dateDepot)}` }, 
   ]);
+  setListeplaintefiltre(filtreplainte(listeplainte,suggestionf,materielf,date,selectedOption));
     }
   };
 
@@ -97,7 +101,7 @@ const fetchData = (selectedValue) => {
 
   useEffect(() => {
     handleChoixChange({ target: { value: selectedOption } });
-  }, [colonne]);
+  }, [colonne,listeplaintefiltre]);
  
 
  
@@ -118,35 +122,41 @@ const fetchData = (selectedValue) => {
                <MenuItem value="1">Individuel</MenuItem>
                <MenuItem value="2">Salle</MenuItem>
             </Select>
-
-
-            <AutoComplete
-              options={suggestions}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <TextField {...params} label={autoCompleteProps.label} variant="outlined" fullWidth />
-              )}
-              name={autoCompleteProps.name}
-              id={autoCompleteProps.id}
-            />
-            
             <AutoComplete
               options={materiel}
               getOptionLabel={(option) => option.materiel}
               renderInput={(params) => (
-                <TextField {...params} label="Materiel" variant="outlined" fullWidth />
+                <TextField {...params} label="Materiel" variant="outlined" fullWidth
+                value={materielf}
+                onSelect={(event) => setMaterielf(event.target.value)}
+                />
             )}
               name="idmateriel"
               id="idmateriel"
             />
+
+            <TextField
+                fullWidth
+                size="small"
+                type="text"
+                label={autoCompleteProps.label}
+                name={autoCompleteProps.name}
+                id={autoCompleteProps.id}
+                variant="outlined"
+                value={suggestionf}
+                onChange={(event) => setSuggestionf(event.target.value)}
+               sx={{ mb: 3 }}
+            />
+            
+
             <TextField
                fullWidth
                size="small"
                type="date"
                name="date_envoi"
-                variant="outlined"
-               // value={values.code}
-               onChange={handleChange}
+              variant="outlined"
+               value={date}
+               onChange={(event) => setDate(event.target.value)}
                sx={{ mb: 3 }}
             />
             </div>
@@ -156,11 +166,31 @@ const fetchData = (selectedValue) => {
                 <p></p>
 
               <SimpleCard title="Liste des plaintes">
-        <PaginationTable columns={colonne} data={listeplainte} />
+        <PaginationTable columns={colonne} data={listeplaintefiltre} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Listeplainte;
+
+function filtreplainte(listeplainte, suggestions, materiel, date, selectedOption) {
+  return listeplainte.filter((Item) => {
+    if (selectedOption === '1') {
+      return (
+        Item.materiel.toLowerCase().includes(materiel.toLowerCase()) &&
+        Item.nom.toLowerCase().includes(suggestions.toLowerCase())  &&
+        Item.dateDepot &&
+        Item.dateDepot.includes(date)
+      );
+    } else {
+      return (
+        Item.materiel.toLowerCase().includes(materiel.toLowerCase()) &&
+        Item.salle.toLowerCase().includes(suggestions.toLowerCase())  && 
+        Item.dateDepot &&
+        Item.dateDepot.includes(date)      
+        );
+    }
+  });
+}
 
