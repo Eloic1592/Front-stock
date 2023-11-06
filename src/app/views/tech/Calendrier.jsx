@@ -8,6 +8,7 @@ import {frenchTranslations} from 'app/views/frenchtransalations';
 import moment from 'moment';
 import getUselink from 'app/views/getuseLink';
 import useData from 'app/useData';
+import {insertData} from 'app/views/insertData';
 
 
 
@@ -42,55 +43,32 @@ const Calendrier = () => {
         open:false,
       });
 
-      // Events calendar
-      const events = listdisponibilite.map(listdisponibilite => ({
-        title: listdisponibilite.motif, // Le titre de l'événement
-        start: new Date(listdisponibilite.dateDebut), // Date de début
-        end: new Date(listdisponibilite.dateFin) // Date de fin
-      }));
+
     
-  const handleInsertion = async () => {
-
-    try {
-      // Créer l'objet à insérer
-      const NewDispo = {
-        "idtechnicien":idtechnicien,
-        "motif": motif,
-        "dateDebut":new Date(datedeb).getTime(),
-        "dateFin":new Date(datefin).getTime(),
-	      "etat":0
-      };
-      // Envoyer la requête POST au serveur
-      const response = await fetch(getUselink()+'insertdisponibilite', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    const handleSubmit = async  () => {
+      const result = await insertData({
+          "idtechnicien":idtechnicien,
+          "motif": motif,
+          "dateDebut":new Date(datedeb).getTime(),
+          "dateFin":new Date(datefin).getTime(),
+          "etat":0
         },
-        body: JSON.stringify(NewDispo),
-      });            
-      // Vérifier si la requête a réussi (statut HTTP 2xx)
-       if (response.ok) {
-         setMessage({
-           text:'Information enregistree',
-           severity:'success',
-           open:true,
-         });
-         window.location.reload();
+        getUselink()+'inserttypeentretien');
 
-         
-       } 
-
-    } catch (error) {
-       setMessage({
-         text:'Une erreur s\'est produite',error,
-         severity:'error',
-         open:true,
-         
-       });
-        handleClose();
+        setMessage({
+            text:result.text,
+            severity:result.severity,
+            open:result.open,
+          });
+          window.location.reload();
     }
-  };
 
+    // Events calendar
+    const events = listdisponibilite.map(listdisponibilite => ({
+      title: listdisponibilite.motif, // Le titre de l'événement
+      start: new Date(listdisponibilite.dateDebut), // Date de début
+      end: new Date(listdisponibilite.dateFin) // Date de fin
+    }));
       
     return (
        <Fragment>
@@ -158,7 +136,7 @@ const Calendrier = () => {
                      Annuler
                    </Button>
 
-                   <Button onClick={handleInsertion} color="primary">
+                   <Button onClick={handleSubmit} color="primary">
                      Valider
                    </Button>
                  </DialogActions>

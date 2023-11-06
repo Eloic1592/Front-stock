@@ -5,6 +5,7 @@ import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { useState } from 'react';
 import getUselink from 'app/views/getuseLink';
+import {insertData} from 'app/views/insertData';
 
 
 
@@ -40,72 +41,34 @@ const Container = styled("div")(({ theme }) => ({
     
     // Data
     const listetentretien = useData('gettypeentretien');
-
     // Form dialog
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-      // Input 
-  const [type_entretien, setTypeEntretien] = useState('');
-  const [type_entretienf, setType_entretienf] = useState('');
-  const listetentref = filtretypeentretien(listetentretien,type_entretienf);
-
-  // Message
-  const [message,setMessage]= useState({
-    text:'Information enregistree',
-    severity:'success',
-    open:false,
-  });
+    // Input 
+    const [type_entretien, setTypeEntretien] = useState('');
+    const [type_entretienf, setType_entretienf] = useState('');
+    const listetentref = filtretypeentretien(listetentretien,type_entretienf);
+    // Message
+    const [message,setMessage]= useState({
+      text:'Information enregistree',
+      severity:'success',
+      open:false,
+    });
 
 
 
-  const handleInsertion = async () => {
-    try {
-      // Créer l'objet à insérer
-      const Newentretien = {
-        "typeEntretien": type_entretien,
-	      "etat":0
-      };
-  
-      // Envoyer la requête POST au serveur
-      const response = await fetch(getUselink()+'inserttypeentretien', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(Newentretien),
+// Insert data
+  const handleSubmit = async  () => {
+    const result = await insertData({"typeEntretien":type_entretien,"etat":0},getUselink()+'inserttypeentretien');
+    setMessage({
+        text:result.text,
+        severity:result.severity,
+        open:result.open,
       });
-  
-      // Vérifier si la requête a réussi (statut HTTP 2xx)
-      if (response.ok) {
-        setMessage({
-          text:'Information enregistree',
-          severity:'success',
-          open:true,
-        });
-        handleClose();
-        window.location.reload();
+      window.location.reload();
+  }
 
-      } else {
-          setMessage({
-            text:'Une erreur s\'est produite '+response.statusText,
-            severity:'error',
-            open:true,
-
-        });
-        handleClose();
-      }
-    } catch (error) {
-       setMessage({
-         text:'Une erreur s\'est produite',error,
-         severity:'error',
-         open:true,
-         
-       });
-       handleClose();
-    }
-  };
 
   // Colonne
   const colonne = [
@@ -160,7 +123,7 @@ const Container = styled("div")(({ theme }) => ({
                      Annuler
                    </Button>
 
-                   <Button onClick={handleInsertion} color="primary">
+                   <Button onClick={handleSubmit} color="primary">
                      Valider
                    </Button>
                  </DialogActions>

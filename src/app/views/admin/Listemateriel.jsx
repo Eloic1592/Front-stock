@@ -5,6 +5,7 @@ import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
+import {insertData} from 'app/views/insertData';
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -56,53 +57,16 @@ const Listemateriel = () => {
     });
   
 
-  const handleInsertion = async () => {
-    try {
-      // Créer l'objet à insérer
-      const NewMateriel = {
-        "materiel": materiel,
-	      "etat":0,
-        "icon":icon
-      };
-  
-      // Envoyer la requête POST au serveur
-      const response = await fetch(getUselink()+'insertmateriel', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(NewMateriel),
-      });
-  
-      // Vérifier si la requête a réussi (statut HTTP 2xx)
-      if (response.ok) {
-        setMessage({
-          text:'Information enregistree',
-          severity:'success',
-          open:true,
+    const handleSubmit = async  () => {
+      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
+      setMessage({
+        text:result.text,
+        severity:result.severity,
+        open:result.open,
         });
-        handleClose();
         window.location.reload();
-
-      } else {
-          setMessage({
-            text:'Une erreur s\'est produite '+response.statusText,
-            severity:'error',
-            open:true,
-
-        });
-        handleClose();
-      }
-    } catch (error) {
-       setMessage({
-         text:'Une erreur s\'est produite',error,
-         severity:'error',
-         open:true,
-         
-       });
-       handleClose();
     }
-  };
+
 
   // Colonne
   const colonne = [
@@ -166,13 +130,13 @@ const Listemateriel = () => {
                    <Button variant="outlined" color="secondary" onClick={handleClose}>
                      Annuler
                    </Button>
-                   <Button onClick={handleInsertion} color="primary">
+                   <Button onClick={handleSubmit} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Technicien" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField

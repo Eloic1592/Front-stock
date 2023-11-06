@@ -5,6 +5,7 @@ import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import getUselink from 'app/views/getuseLink';
+import {insertData} from 'app/views/insertData';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -64,54 +65,15 @@ const Listeentretien = () => {
   const listeentrfiltre = filterentretien(listeentretien,entretienf,typeEntretienf,materielf);
 
 
-   const handleInsertion = async () => {
-    try {
-      // Créer l'objet à insérer
-      const NewEntretien = {
-        "idtypeEntretien":idtype_entretien,
-        "idmateriel": idmateriel,
-        "entretien":entretien,
-	      "etat":0
-      };
-  
-      // Envoyer la requête POST au serveur
-      const response = await fetch(getUselink()+'insertentretien', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(NewEntretien),
+  const handleSubmit = async  () => {
+    const result = await insertData({"idtypeEntretien":idtype_entretien,"idmateriel": idmateriel,"entretien":entretien,"etat":0},getUselink()+'insertentretien');
+    setMessage({
+        text:result.text,
+        severity:result.severity,
+        open:result.open,
       });
-  
-      // Vérifier si la requête a réussi (statut HTTP 2xx)
-      if (response.ok) {
-        setMessage({
-          text:'Information enregistree',
-          severity:'success',
-          open:true,
-        });
-        handleClose();
-        window.location.reload();
-
-      } else {
-          setMessage({
-            text:'Une erreur s\'est produite '+response.statusText,
-            severity:'error',
-            open:true,
-
-        });
-        handleClose();
-      }
-    } catch (error) {
-       setMessage({
-         text:'Une erreur s\'est produite',error,
-         severity:'error',
-         open:true,
-         
-       });
-       handleClose();
-    }
-  };
+      window.location.reload();
+  }
 
   // Colonne
   const colonne = [
@@ -196,7 +158,7 @@ const Listeentretien = () => {
                      Annuler
                    </Button>
 
-                   <Button onClick={handleInsertion} color="primary">
+                   <Button onClick={handleSubmit} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
@@ -221,7 +183,7 @@ const Listeentretien = () => {
               getOptionLabel={(option) => option.typeEntretien}
               renderInput={(params) => (
                 <TextField {...params} label="Type d'entretien" variant="outlined" fullWidth
-                onChange={(event) => setTypeEntretienf(event.target.value)} />
+                onSelect={(event) => setTypeEntretienf(event.target.value)} />
               )}
               name="idtype_entretienf"
               id="idtype_entretien"
@@ -232,7 +194,7 @@ const Listeentretien = () => {
               renderInput={(params) => (
                 <TextField {...params} label="Materiel" variant="outlined" fullWidth                
                 value={materielf}
-                onChange={(event) => setMaterielf(event.target.value)}/>
+                onSelect={(event) => setMaterielf(event.target.value)}/>
               )}
               name="idmaterielf"
               id="idmateriel"
