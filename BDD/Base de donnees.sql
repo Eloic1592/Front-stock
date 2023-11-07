@@ -201,6 +201,7 @@ CREATE TABLE tache (
 CREATE TABLE tache_tech (
     id serial PRIMARY KEY,
     idtache int NOT NULL REFERENCES tache(id),
+    identretien int NOT NULL references entretien(id),
     idtechnicien int NOT NULL REFERENCES technicien(id),
     etat int NOT NULL DEFAULT 0
 );

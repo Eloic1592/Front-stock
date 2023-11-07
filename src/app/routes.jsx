@@ -41,7 +41,7 @@ const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
 
 const Register  = Loadable(lazy(() => import('app/views/user/Register')));
 
-const Accueiluser = Loadable(lazy(() => import('app/views/user/Accueil')));
+const Demande = Loadable(lazy(() => import('app/views/user/Demande')));
 
 
 //Technicien
@@ -114,8 +114,8 @@ const routes = [
       },
 
       {
-        path: '/user/accueil',
-        element: <Accueiluser />,
+        path: '/user/demande',
+        element: <Demande />,
         auth: authRoles.admindefault
       },
 
@@ -183,6 +183,8 @@ const routes = [
   { path: '/user/connexion', element: < LoginUser/> },
 
   { path: '/user/register', element: < Register/> },
+
+  { path: '/user/demande', element: < Demande/> },
 
 
   // Technicien
