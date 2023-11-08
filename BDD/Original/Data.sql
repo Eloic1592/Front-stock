@@ -87,10 +87,10 @@ Insert into plainte(date_depot) values(now());
 Insert into plainte(date_depot) values(now());
 
 -- Plainte individuel
-Insert into plainte_salle(idplainte,idutilisateur,description,idmateriel) values(1,7,'Pave numerique ne fonctionne pas',1);
-Insert into plainte_salle(idplainte,idutilisateur,description,idmateriel) values(2,7,'grub introuvable',1);
-Insert into plainte_salle(idplainte,idutilisateur,description,idmateriel) values(3,11,'Reinstallation systeme windows',1);
-Insert into plainte_salle(idplainte,idutilisateur,description,idmateriel) values(4,11,'Pave tactile ne fonctionne pas',1);
+Insert into plainte_individuel(idplainte,idutilisateur,description,idmateriel) values(1,7,'Pave numerique ne fonctionne pas',1);
+Insert into plainte_individuel(idplainte,idutilisateur,description,idmateriel) values(2,7,'grub introuvable',1);
+Insert into plainte_individuel(idplainte,idutilisateur,description,idmateriel) values(3,11,'Reinstallation systeme windows',1);
+Insert into plainte_individuel(idplainte,idutilisateur,description,idmateriel) values(4,11,'Pave tactile ne fonctionne pas',1);
 
 -- Plainte salle
 Insert into plainte_salle(idplainte,idsalle,description,idmateriel) values(2,1,'grub introuvable',1);

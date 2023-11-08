@@ -200,7 +200,7 @@ const routes = [
 
 
 
-  { path: '/', element: <Navigate to="admin/calendriertech" /> },
+  { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];
 

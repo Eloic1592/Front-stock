@@ -1,9 +1,10 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip} from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Button } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-
+import getUselink from 'app/views/getuseLink';
+import {insertData} from 'app/views/insertData';
 
   const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -36,23 +37,60 @@ import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 const ListeTechnicien = () => {
 
    // Data  
-   const listetechnicien = useData('gettechnicien');
+   const data = useData('gettechnicien');
+   const [listetechnicien, setListetechnicien] = useState([]);
+
+  //  Input
+   const [nom, setNom] = useState('');
+   const [prenom, setPrenom] = useState('');
+   const [code, setCode] = useState('');
+   const [dtn, setDtn] = useState('');
+   const [mdp, setMdp] = useState('');
    const [filtrenom, setFiltrenom] = useState('');
    const [filtreprenom, setFiltreprenom] = useState('');
    const listetechfiltre = filtretech(listetechnicien,filtrenom,filtreprenom);
- 
 
-   const initialValues = {
-    username: 'JohnDoe',
-    firstName: 'John',
-    // ...ajoutez d'autres valeurs initiales
-  };
+// Dialog
+   const [open, setOpen] = useState(false);
+   const handleClickOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
+    const handleAlertClose = () => setMessage({open:false});
+
+ 
+   // Message
+   const [message,setMessage]= useState({
+    text:'Information enregistree',
+    severity:'success',
+    open:false,
+  });
+
+  // Validation form
+  const handleSubmit = async  () => {
+    const result = await insertData(
+      {"nom":nom,
+      "prenom": prenom,
+      'dtn':dtn,
+      "code":code,
+      "mdp":mdp,
+      "etat":0},
+      getUselink()+'inserttechnicien');
+
+    setMessage({
+        text:result.text,
+        severity:result.severity,
+        open:result.open,
+      });
+      handleClose();
+  }
+  useEffect(() => {
+    setListetechnicien(data);
+  },[data]);
 
   // Colonne
   const colonne = [
-    { label: "ID", field: "id", render: (listetechnicien) => `${listetechnicien.id}` },
+    { label: "Code", field: "Code", render: (listetechnicien) => `${listetechnicien.code}` },
     { label: "Nom", field: "Nom", render: (listetechnicien) => `${listetechnicien.nom}` },   
-    { label: "Prenom", field: "Preno", render: (listetechnicien) => `${listetechnicien.prenom}` },   
+    { label: "Prenom", field: "Prenom", render: (listetechnicien) => `${listetechnicien.prenom}` },   
 
     // { label: "code", field: "code", render: (listetechnicien) => `${listetechnicien.code}` },    
     { label: "Actions", render: () => (
@@ -79,6 +117,89 @@ const ListeTechnicien = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Technicien", path: "/material" }, { name: "Table" }]} />
         </Box>
+        <p>
+           <Button variant="contained" onClick={handleClickOpen} color="primary">
+           Nouveau technicien
+           </Button>
+          </p>
+          <Box>
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Nouveau technicien</DialogTitle>
+                 <DialogContent>
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="nom"
+                     type="text"
+                     margin="dense"
+                     label="Nom"
+                     name="nom"
+                     value={nom}
+                     onChange={(event) => setNom(event.target.value)}
+                    />
+                                        
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="prenom"
+                     type="text"
+                     margin="dense"
+                     label="Prenom"
+                     name="prenom"
+                     value={prenom}
+                     onChange={(event) => setPrenom(event.target.value)}
+                    />
+                    <TextField                     
+                      fullWidth
+                      autoFocus
+                      id="mdp"
+                      type="date"
+                      margin="dense"
+                      name="dtn"
+                      value={dtn}
+                      onChange={(event) => setDtn(event.target.value)}
+                      sx={{ mb: 2 }}
+                    />
+                 
+
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="code"
+                     type="text"
+                     margin="dense"
+                     label="Code"
+                     name="code"
+                     value={code}
+                     onChange={(event) => setCode(event.target.value)}
+                    />
+
+                    <TextField                     
+                      fullWidth
+                      autoFocus
+                      id="mdp"
+                      type="password"
+                      margin="dense"
+                      label="Mot de passe"
+                      name="mdp"
+                      value={mdp}
+                      onChange={(event) => setMdp(event.target.value)}
+                      sx={{ mb: 2 }}
+                    />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Annuler
+                   </Button>
+
+                   <Button onClick={handleSubmit} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
+
         <SimpleCard title="Rechercher un technicien" sx={{ marginBottom: '16px' }}>        
         <form /* onSubmit={this.handleSubmit}*/>
         <div style={{ display: 'flex', gap: '16px' }}>
@@ -109,7 +230,13 @@ const ListeTechnicien = () => {
         </SimpleCard>
           <p></p>
           <p></p>
-        <SimpleCard title="Liste des types d' entretiens">
+          <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+                <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
+                   {message.text}
+                </Alert>
+          </Snackbar>
+
+        <SimpleCard title="Liste des techniciens">
         <PaginationTable columns={colonne} data={listetechfiltre} />
         </SimpleCard>
       </Container>

@@ -3,7 +3,7 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import Button from '@mui/material/Button';
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import getUselink from 'app/views/getuseLink';
 import {insertData} from 'app/views/insertData';
 
@@ -40,11 +40,15 @@ const Container = styled("div")(({ theme }) => ({
   const ListeTypeEntretien = () => {
     
     // Data
-    const listetentretien = useData('gettypeentretien');
+    const data = useData('gettypeentretien');
+    const [listetentretien,setListeentretien]= useState([]);
+
     // Form dialog
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleAlertClose = () => setMessage({open:false});
+
     // Input 
     const [type_entretien, setTypeEntretien] = useState('');
     const [type_entretienf, setType_entretienf] = useState('');
@@ -58,7 +62,8 @@ const Container = styled("div")(({ theme }) => ({
 
 
 
-// Insert data
+  // Validation form
+
   const handleSubmit = async  () => {
     const result = await insertData({"typeEntretien":type_entretien,"etat":0},getUselink()+'inserttypeentretien');
     setMessage({
@@ -66,8 +71,12 @@ const Container = styled("div")(({ theme }) => ({
         severity:result.severity,
         open:result.open,
       });
-      window.location.reload();
+      handleClose();
   }
+
+  useEffect(() => {
+    setListeentretien(data);
+  },[data]);
 
 
   // Colonne
@@ -93,7 +102,7 @@ const Container = styled("div")(({ theme }) => ({
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Type_entretien", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Type_entretien", path: "/admin/listetypeentretien" }, { name: "Type d'entretien" }]} />
         </Box>
           <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
@@ -149,7 +158,7 @@ const Container = styled("div")(({ theme }) => ({
                 <p></p>
                 <p></p>
 
-                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>

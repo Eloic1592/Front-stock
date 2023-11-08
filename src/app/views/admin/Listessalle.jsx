@@ -1,10 +1,12 @@
 import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Tooltip,Snackbar,Alert} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import getUselink from 'app/views/getuseLink';
 import {insertData} from 'app/views/insertData';
+// import {Finddata} from 'app/findData';
+import {deleteData} from 'app/views/deleteData';
+import {Editsalle} from 'app/views/admin/Editsalle';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -15,61 +17,77 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-  const Salle =  () => {
+const Salle =  () => {
 
 // Data 
- const listesalle = useData('getallsalle');
+  const data= useData('getallsalle');
+
+  const [listesalle,setListesalle] = useState([]);
 
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleAlertClose = () => setMessage({open:false});
+
+  // Edit 
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleEditopen = () => setOpenEdit(true);
+  const handleEditclose = () => setOpenEdit(false);
+  const [object, setObject] = useState(null);
+
+
 
   // Input 
   const [salle, setSalle] = useState('');
   const [sallefiltrer, setSallefiltrer] = useState('');
   const listesallefiltre = filterSalle(listesalle,sallefiltrer);
 
-    // Message
-      const [message,setMessage]= useState({
-        text:'Information enregistree',
-        severity:'success',
-        open:false,
-      });
+  // Message
+    const [message,setMessage]= useState({
+      text:'Information enregistree',
+      severity:'success',
+      open:false,
+    });
     
+        // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"salle":salle,"etat":0},getUselink()+'insertsalle');
+      const result = await insertData({"salle":salle,"etat":0},'insertsalle');
       setMessage({
         text:result.text,
         severity:result.severity,
         open:result.open,
         });
-        window.location.reload();
+        handleClose();
     }
+    
+    const handleEdit = async (listesalleid) => {
+      // handleEditopen();
+    };
 
+    const handleDelete = async  (listesalle) => {
+     await deleteData({"salle":listesalle.salle,"etat":1},'updatesalle');
+     alert('mety');
+    };
+    
+    useEffect(() => {
+      setListesalle(data);
+    },[data]);
 
 
   const colonne = [
     { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
-    { label: "Salle", field: "salle", render: (listesalle) => `${listesalle.salle}` },    
-    { label: "Actions", render: () => (
+    { label: "Salle", field: "Salle", render: (listesalle) => `${listesalle.salle}` },
+    { label: "ID", field: "id", render: (listesalle) => `${listesalle.etat}` },    
+    { label: "Actions", render: (listesalle) => (
       <div>
       <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listesalle.id)}>
+      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() => handleEdit(listesalle.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
       </Tooltip>
       <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle.id)}>
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle)}>
           <Icon>delete</Icon>
       </IconButton>
       </Tooltip>
@@ -81,7 +99,7 @@ const Container = styled("div")(({ theme }) => ({
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Salle", path: "admin/salle" }, { name: "Salle" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
@@ -98,10 +116,11 @@ const Container = styled("div")(({ theme }) => ({
                      id="salle"
                      type="text"
                      margin="dense"
-                     label="salle"
+                     label="Salle"
                      name="salle"
                      value={salle}
                      onChange={(event) => setSalle(event.target.value)}
+                    
                    />
                  </DialogContent>
   
@@ -134,20 +153,23 @@ const Container = styled("div")(({ theme }) => ({
               </SimpleCard>
                 <p></p>
                 <p></p>
-                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
-  
-              <SimpleCard title="Liste des entretiens">
+
+            <Editsalle open={openEdit} close={handleEditclose} object={object}/>
+
+              <SimpleCard title="Liste des salles">
         <PaginationTable columns={colonne} data={listesallefiltre} />
         </SimpleCard>
       </Container>    
       );
     };
-  export default Salle;
+export default Salle;
 
+// Filtre
   function filterSalle(listesalle, salle) {
     return listesalle.filter((salleItem) => {
       return salleItem.salle.toLowerCase().includes(salle.toLowerCase());

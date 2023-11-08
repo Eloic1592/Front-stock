@@ -1,8 +1,10 @@
 // Fonction d'insertion généralisée
+import getUselink from 'app/views/getuseLink';
+
 const insertData = async (objetAInserer,lienPost) => {
   try {
     // Envoyer la requête POST au serveur
-    const response = await fetch(lienPost, {
+    const response = await fetch(getUselink()+lienPost, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,6 +37,5 @@ const insertData = async (objetAInserer,lienPost) => {
     };
 };
 }
-
 export {insertData}
   

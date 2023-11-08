@@ -114,9 +114,9 @@ const LoginUser = () => {
             </div>
             <ContentBox>
               <Formik
-                onSubmit={handleFormSubmit}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
+                onSubmit={handleFormSubmit}
               >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                   <form onSubmit={handleSubmit}>

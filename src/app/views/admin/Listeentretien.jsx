@@ -3,7 +3,7 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import getUselink from 'app/views/getuseLink';
 import {insertData} from 'app/views/insertData';
 
@@ -39,14 +39,17 @@ const AutoComplete = styled(Autocomplete)(() => ({
 const Listeentretien = () => {
 
    // Data
-  const listetype_entretien=useData('gettypeentretien');
+  const data=useData('gettypeentretien');
+  const[listetype_entretien,setListetype_entretien]=useState([]);
   const listemateriel=useData('getallmateriel');
   const listeentretien = useData('getallventretien');
 
+  // Dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
- 
+  const handleAlertClose = () => setMessage({open:false});
+
 
    // Message
    const [message,setMessage]= useState({
@@ -55,6 +58,7 @@ const Listeentretien = () => {
      open:false,
    });
 
+  //  Input
    const [idtype_entretien,setIdtype_entretien]=useState();
    const [idmateriel,setIdmateriel]=useState();
    const [entretien,setEntretien]=useState();
@@ -64,16 +68,26 @@ const Listeentretien = () => {
    const [materielf, setMaterielf] = useState('');
   const listeentrfiltre = filterentretien(listeentretien,entretienf,typeEntretienf,materielf);
 
+  // Validation form
 
   const handleSubmit = async  () => {
-    const result = await insertData({"idtypeEntretien":idtype_entretien,"idmateriel": idmateriel,"entretien":entretien,"etat":0},getUselink()+'insertentretien');
+    const result = await insertData(
+      {"idtypeEntretien":idtype_entretien,
+      "idmateriel": idmateriel,
+      "entretien":entretien,
+      "etat":0},
+      getUselink()+'insertentretien');
+
     setMessage({
         text:result.text,
         severity:result.severity,
         open:result.open,
       });
-      window.location.reload();
+      handleClose();
   }
+  useEffect(() => {
+    setListetype_entretien(data);
+  },[data]);
 
   // Colonne
   const colonne = [
@@ -101,7 +115,7 @@ const Listeentretien = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Entretien", path: "/admin/listeentretien" }, { name: "Entretien" }]} />
         </Box>
           <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
@@ -206,7 +220,7 @@ const Listeentretien = () => {
               <p></p>
                 <p></p>
 
-                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>

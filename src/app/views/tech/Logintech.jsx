@@ -166,18 +166,6 @@ const LoginTech = () => {
                       Connexion
                     </LoadingButton>
 
-                    <NavLink to="/tech/registertech" style={{ color: theme.palette.primary.main }}>
-                      <LoadingButton
-                        type="submit"
-                        color="secondary"
-                        loading={loading}
-                        variant="contained"
-                        sx={{ my: 6 }} // Tu peux ajuster ce paramètre pour l'espacement vertical
-                      >
-                        S'inscrire
-                      </LoadingButton>
-                    </NavLink>
-
                   </form>
                 )}
               </Formik>

@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Autocomplete,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState } from 'react';
@@ -17,6 +17,10 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
+  const AutoComplete = styled(Autocomplete)(() => ({
+    width: 500,
+    marginBottom: '16px',
+  }));
 
   const handleEdit = (id) => {
     // Mettez ici votre logique pour l'édition
@@ -42,12 +46,15 @@ const Demande = () => {
   
    // Data
   const listemateriel =useData('getallmateriel');
+  const listeplainte =useData('getplainteuser');
   const [materielfilter, setMaterielfilter] = useState('');
   const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [idmateriel, setIdmateriel] = useState('');
+  const [description, setDescription] = useState('');
+  const [dateDepot, setDateDepot] = useState('');
+ 
 
     // Message
     const [message,setMessage]= useState({
@@ -58,13 +65,13 @@ const Demande = () => {
   
 
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-        window.location.reload();
+      // const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
+      // setMessage({
+      //   text:result.text,
+      //   severity:result.severity,
+      //   open:result.open,
+      //   });
+      //   window.location.reload();
     }
 
 
@@ -95,34 +102,50 @@ const Demande = () => {
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
+           Nouvelle demande
            </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouvelle demande</DialogTitle>
                  <DialogContent>
+                 <AutoComplete
+                    options={listemateriel}
+                    getOptionLabel={(option) => option.materiel}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Materiel" variant="outlined" fullWidth
+                      onChange={(event, value) => {
+                        if (value) {
+                          setIdmateriel(value.id); 
+                        }
+                      }}
+                      />
+                  )}
+                    name="idmateriel"
+                    id="idmateriel"
+                  />
+
                   <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="description"
                      type="text"
                      margin="dense"
-                     label="materiel"
-                     name="materiel"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     label="Description"
+                     name="description"
+                     value={description}
+                     onChange={(event) => setDescription(event.target.value)}
                    />
                     <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="date_depot"
                      type="text"
                      margin="dense"
-                     label="Icon"
-                     name="icon"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
+                     label="Date de depot"
+                     name="date_depot"
+                     value={dateDepot}
+                     onChange={(event) => setDateDepot(event.target.value)}
                    />
                  </DialogContent>
 
@@ -136,7 +159,7 @@ const Demande = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher une demande" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
@@ -161,7 +184,7 @@ const Demande = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
+              <SimpleCard title="Liste des plaintes">
         <PaginationTable columns={colonne} data={listematfilter} />
         </SimpleCard>
       </Container>

@@ -1,22 +1,39 @@
 import { useEffect, useState } from "react";
+import getUselink from 'app/views/getuseLink';
 
 export function useData(url) {
     const [data, setData] = useState([]);
+    const [previousUrl, setPreviousUrl] = useState(null);
+  
     useEffect(() => {
-        fetch('http://localhost:8080/'+url)
-            .then(response => response.json())
-            .then(json => {
-                if (!json) {
-                    setData([]);
-                } else {
-                    setData(json);
-                }
-            })
-            .catch(error => console.error(error));
-    }, []);
-    console.log(data);
-
+      // Cette fonction effectue la requête et met à jour les données
+      const fetchData = async () => {
+        try {
+          const response = await fetch(getUselink() + url);
+          const json = await response.json();
+  
+          if (!json) {
+            setData([]);
+          } else {
+            setData(json);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+      // Si l'URL change, effectuer la requête
+      if (url !== previousUrl) {
+        fetchData();
+        setPreviousUrl(url);
+      } else {
+        // Si l'URL n'a pas changé, mettre à jour les données
+        fetchData();
+      }
+    }, [url, previousUrl]);
+  
     return data;
-}
-
-export default useData;
+  }
+  
+  export default useData;
+  

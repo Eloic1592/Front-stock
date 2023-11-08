@@ -24,9 +24,6 @@ BEGIN
     END LOOP;
 END $$;
 
--- Sequence CODE TECHNICIEN
-Create sequence codetech_seq start with 1 increment by 1;
-
 -- Admin
 CREATE TABLE admin (
     id serial PRIMARY KEY,
@@ -52,8 +49,8 @@ CREATE TABLE technicien (
     id serial PRIMARY KEY,
     nom TEXT NOT NULL,
     prenom TEXT NOT NULL,
-    code varchar(50) NOT NULL default concat('TECH-',nextval('codetech_seq')),
-    email text NOT NULL,
+    dtn date not null,
+    code varchar(20),
     mdp text NOT NULL,
     etat int NOT NULL DEFAULT 0
 );
@@ -102,6 +99,7 @@ create table tokenUser
     role varchar(10)
 );
 
+
 -- Salle
 CREATE TABLE salle (
     id serial NOT NULL PRIMARY KEY,
@@ -109,12 +107,30 @@ CREATE TABLE salle (
     etat int NOT NULL DEFAULT 0
 );
 
+
 -- Materiels
 CREATE TABLE materiel (
     id serial PRIMARY KEY,
     materiel text NOT NULL,
     etat int NOT NULL DEFAULT 0
 );
+
+-- Type entretien
+CREATE TABLE type_entretien (
+    id serial PRIMARY KEY,
+    type_entretien text NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
+-- Entretien
+CREATE TABLE entretien (
+    id serial PRIMARY KEY,
+    idtype_entretien int NOT NULL REFERENCES type_entretien(id),
+    idmateriel int NOT NULL REFERENCES materiel(id),
+    entretien TEXT NOT NULL,
+    etat int NOT NULL DEFAULT 0
+);
+
 
 -- Plainte
 CREATE TABLE plainte (
@@ -141,6 +157,7 @@ CREATE TABLE plainte_salle (
     etat int NOT NULL DEFAULT 0
 );
 
+
 CREATE TABLE fichier_pl (
     id serial PRIMARY KEY,
     idplainte int NOT NULL REFERENCES plainte(id),
@@ -156,6 +173,7 @@ CREATE TABLE video_pl (
     URL TEXT NOT NULL,
     etat int NOT NULL DEFAULT 0
 );
+
 
 -- Conversation
 CREATE TABLE conversation (
@@ -190,6 +208,8 @@ CREATE TABLE archivage (
     etat int NOT NULL DEFAULT 0
 );
 
+
+
 -- Tache a faire
 CREATE TABLE tache (
     id serial PRIMARY KEY,
@@ -198,13 +218,6 @@ CREATE TABLE tache (
     etat int NOT NULL DEFAULT 0
 );
 
-CREATE TABLE tache_tech (
-    id serial PRIMARY KEY,
-    idtache int NOT NULL REFERENCES tache(id),
-    identretien int NOT NULL references entretien(id),
-    idtechnicien int NOT NULL REFERENCES technicien(id),
-    etat int NOT NULL DEFAULT 0
-);
 
 CREATE TABLE tache_acheve (
     id serial PRIMARY KEY,
@@ -218,6 +231,15 @@ CREATE TABLE tache_prioritaires (
     idtache int NOT NULL REFERENCES tache(id),
     etat int NOT NULL DEFAULT 0
 );
+
+CREATE TABLE tache_tech (
+    id serial PRIMARY KEY,
+    idtache int NOT NULL REFERENCES tache(id),
+    identretien int NOT NULL references entretien(id),
+    idtechnicien int NOT NULL REFERENCES technicien(id),
+    etat int NOT NULL DEFAULT 0
+);
+
 
 -- Achat
 CREATE TABLE achat (
@@ -235,6 +257,7 @@ CREATE TABLE achat_materiel (
     etat int NOT NULL DEFAULT 0
 );
 
+
 -- Disponibilite de technicien
 CREATE TABLE disponibilite (
     id serial PRIMARY KEY,
@@ -245,34 +268,6 @@ CREATE TABLE disponibilite (
     etat int NOT NULL DEFAULT 0
 );
 
--- Type entretien
-CREATE TABLE type_entretien (
-    id serial PRIMARY KEY,
-    type_entretien text NOT NULL,
-    etat int NOT NULL DEFAULT 0
-);
-
--- Entretien
-CREATE TABLE entretien (
-    id serial PRIMARY KEY,
-    idtype_entretien int NOT NULL REFERENCES type_entretien(id),
-    idmateriel int NOT NULL REFERENCES materiel(id),
-    entretien TEXT NOT NULL,
-    etat int NOT NULL DEFAULT 0
-);
-
--- Intervention par rapport a la tache
-CREATE TABLE intervention (
-    id serial PRIMARY KEY,
-    idtache int NOT NULL REFERENCES tache(id),
-    etat int NOT NULL DEFAULT 0
-);
-
-CREATE TABLE intervention_details (
-    id serial PRIMARY KEY,
-    idintervention int NOT NULL REFERENCES intervention(id),
-    etat int NOT NULL DEFAULT 0
-);
 
 -- Historique recherche
 CREATE TABLE historique (

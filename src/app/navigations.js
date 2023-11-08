@@ -1,18 +1,13 @@
 export const navigations = [
 
-
-  
-
-
   {
     name: 'Administrateur',
     icon: 'arrows-right',
     children: [
-      { name: 'Connexion', iconText: 'SI', path: '/admin/connexion' },
       { name: 'Salle', iconText: 'SI', path: '/admin/salle' },
+      { name: 'Liste des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
       { name: 'Liste des entretiens', iconText: 'SI', path: '/admin/listeentretien' },
       { name: 'Liste des materiel', iconText: 'SI', path: '/admin/listemateriel' },
-      { name: 'Liste des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
       { name: 'Liste des techniciens', iconText: 'SI', path: '/admin/listetechnicien' },
       { name: 'Liste des taches', iconText: 'SI', path: '/admin/listetache' },
       { name: 'Liste des plaintes', iconText: 'SI', path: '/admin/listeplainte' },

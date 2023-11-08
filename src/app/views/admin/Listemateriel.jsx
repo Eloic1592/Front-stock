@@ -1,7 +1,7 @@
 import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
@@ -39,9 +39,11 @@ const Listemateriel = () => {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+  const handleAlertClose = () => setMessage({open:false});
+
    // Data
-  const listemateriel =useData('getallmateriel');
+  const data =useData('getallmateriel');
+  const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
   const listematfilter = filtremateriel(listemateriel,materielfilter);
 
@@ -56,7 +58,7 @@ const Listemateriel = () => {
       open:false,
     });
   
-
+  // Validation form
     const handleSubmit = async  () => {
       const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
       setMessage({
@@ -64,8 +66,12 @@ const Listemateriel = () => {
         severity:result.severity,
         open:result.open,
         });
-        window.location.reload();
+       handleClose();
     }
+
+    useEffect(() => {
+      setListemateriel(data);
+    },[data]);
 
 
   // Colonne
@@ -91,7 +97,7 @@ const Listemateriel = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
@@ -155,7 +161,7 @@ const Listemateriel = () => {
               </SimpleCard>
                 <p></p>
                 <p></p>
-                <Snackbar open={message.open} autoHideDuration={6000}>
+                <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
