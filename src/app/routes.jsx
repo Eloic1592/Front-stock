@@ -16,7 +16,7 @@ const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech
 // Admin
 const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
 
-const Listesalle  = Loadable(lazy(() => import('app/views/admin/Listessalle')));
+const Dashboard  = Loadable(lazy(() => import('app/views/admin/dashboard')));
 
 const Calendriertech  = Loadable(lazy(() => import('app/views/admin/Calendriertech')));
 
@@ -139,8 +139,8 @@ const routes = [
       },
 
       {
-        path: '/admin/salle',
-        element: <Listesalle />,
+        path: '/admin/dashboard',
+        element: <Dashboard />,
         auth: authRoles.admindefault
       },
       {
@@ -169,7 +169,7 @@ const routes = [
   // Admin
   { path: '/admin/connexion', element: < LoginAdmin/> },
   { path: '/admin/listeplainte', element: < Listeplainte/> },
-  { path: '/admin/salle', element: < Listesalle/> },
+  { path: '/admin/dashboard', element: < Dashboard/> },
   { path: '/admin/calendriertech', element: < Calendriertech/> },
   { path: '/admin/tacheadmin', element: < Listetacheadmin/> },
   { path: '/admin/listeentretien', element: < Listeentretien/> },
@@ -200,7 +200,7 @@ const routes = [
 
 
 
-  { path: '/', element: <Navigate to="/admin/connexion" /> },
+  { path: '/', element: <Navigate to="/admin/salle" /> },
   { path: '*', element: <NotFound /> }
 ];
 

@@ -4,7 +4,7 @@ export const navigations = [
     name: 'Administrateur',
     icon: 'arrows-right',
     children: [
-      { name: 'Salle', iconText: 'SI', path: '/admin/salle' },
+      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Liste des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
       { name: 'Liste des entretiens', iconText: 'SI', path: '/admin/listeentretien' },
       { name: 'Liste des materiel', iconText: 'SI', path: '/admin/listemateriel' },
@@ -12,27 +12,6 @@ export const navigations = [
       { name: 'Liste des taches', iconText: 'SI', path: '/admin/listetache' },
       { name: 'Liste des plaintes', iconText: 'SI', path: '/admin/listeplainte' },
       { name: 'Calendrier des techniciens', iconText: 'SI', path: '/admin/calendriertech' },
-    ]
-  },
-
-  {
-    name:'Technicien',
-    icon: 'arrows-right',
-    children: [
-      { name: 'Connexion Technicien', iconText: 'SI', path: '/tech/connexion' },
-      { name: 'Calendrier', iconText: 'SI', path: '/tech/calendrier' },
-      { name: 'Listes des taches', iconText: 'SI', path: '/tech/listetaches' },
-      { name: 'Listes des plaintes', iconText: 'SI', path: '/tech/listeplainte' },
-      ]
-  },
-
-  {
-    name:'Utilisateur',
-    icon: 'arrows-right',
-    children: [
-    { name: 'Connexion Utilisateur', iconText: 'SI', path: '/user/connexion' },  
-    { name: 'Accueil', iconText: 'SI',path: '/user/demande' },
-    { name: 'Enregistrement', iconText: 'SI',path: '/user/register' },
     ]
   },
 
