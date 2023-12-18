@@ -1,1 +1,0 @@
-insert into admin(nom,prenom,email,mdp) values ('admin','admin','admin@gmail.com','admin');
