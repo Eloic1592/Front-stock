@@ -26,7 +26,7 @@ const Container = styled("div")(({ theme }) => ({
   };
 
   
-const Listedispo = () => {
+const Stock = () => {
 
    // Data
   const listedispo = useData('getallvdisponibilite');
@@ -62,4 +62,4 @@ const Listedispo = () => {
     );
   };
   
-export default Listedispo;
+export default Stock;

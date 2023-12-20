@@ -5,13 +5,15 @@ export const navigations = [
     icon: 'arrows-right',
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
-      { name: 'Liste des type d\'entretien', iconText: 'SI', path: '/admin/listetypeentretien' },
-      { name: 'Liste des entretiens', iconText: 'SI', path: '/admin/listeentretien' },
-      { name: 'Liste des materiel', iconText: 'SI', path: '/admin/listemateriel' },
-      { name: 'Liste des techniciens', iconText: 'SI', path: '/admin/listetechnicien' },
-      { name: 'Liste des taches', iconText: 'SI', path: '/admin/listetache' },
-      { name: 'Liste des plaintes', iconText: 'SI', path: '/admin/listeplainte' },
-      { name: 'Calendrier des techniciens', iconText: 'SI', path: '/admin/calendriertech' },
+      { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
+      { name: 'Mouvement de stock', iconText: 'SI', path: '/admin/stock' },
+      { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
+      { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
+      { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
+      { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
+      { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
+      { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
+
     ]
   },
 

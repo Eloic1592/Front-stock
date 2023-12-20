@@ -5,6 +5,7 @@ import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
+import Listemateriel from './views/admin/Listemateriel';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -16,44 +17,24 @@ const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech
 // Admin
 const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
 
-const Dashboard  = Loadable(lazy(() => import('app/views/admin/dashboard')));
+const Dashboard  = Loadable(lazy(() => import('app/views/admin/Dashboard')));
 
-const Calendriertech  = Loadable(lazy(() => import('app/views/admin/Calendriertech')));
+const Bilan  = Loadable(lazy(() => import('app/views/admin/Bilan')));
 
-const Listetacheadmin = Loadable(lazy(() => import('app/views/admin/Listetache')));
+const Stock  = Loadable(lazy(() => import('app/views/admin/Stock')));
 
-const Listeplainte = Loadable(lazy(() => import('app/views/admin/Listeplainte')));
+const Materiel  = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
 
-const ListetacheAdmin = Loadable(lazy(() => import('app/views/admin/Listetache')));
+const EntreeSortie  = Loadable(lazy(() => import('app/views/admin/EntreeSortie')));
 
-const Listeentretien = Loadable(lazy(() => import('app/views/admin/Listeentretien')));
+const Facture  = Loadable(lazy(() => import('app/views/admin/Facture')));
 
-const Listemateriel = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
+const Proforma  = Loadable(lazy(() => import('app/views/admin/Proforma')));
 
-const ListeTypeEntretien = Loadable(lazy(() => import('app/views/admin/ListeTypeEntretien')));
+const Devis  = Loadable(lazy(() => import('app/views/admin/Devis')));
 
-const ListeTechnicien = Loadable(lazy(() => import('app/views/admin/ListeTechnicien')));
+const Commande  = Loadable(lazy(() => import('app/views/admin/Commande')));
 
-const Listedispo  = Loadable(lazy(() => import('app/views/admin/Listedispo')));
-
-// Utilisateur
-const LoginUser  = Loadable(lazy(() => import('app/views/user/LoginUser')));
-
-const Register  = Loadable(lazy(() => import('app/views/user/Register')));
-
-const Demande = Loadable(lazy(() => import('app/views/user/Demande')));
-
-
-//Technicien
-const LoginTech  = Loadable(lazy(() => import('app/views/tech/Logintech')));
-
-const Calendrier  = Loadable(lazy(() => import('app/views/tech/Calendrier')));
-
-const Listetache = Loadable(lazy(() => import('app/views/tech/Listetache')));
-
-const Listeplaintetech = Loadable(lazy(() => import('app/views/tech/Listeplainte')));
-
-const RegisterTech = Loadable(lazy(() => import('app/views/tech/RegisterTech')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
@@ -81,80 +62,60 @@ const routes = [
         element: <AppEchart />,
         auth: authRoles.editor
       },
-      // listeentretien route
-      {
-        path: '/admin/listeentretien',
-        element: <Listeentretien />,
-        auth: authRoles.admindefault
-      },
-      {
-        path: '/admin/listemateriel',
-        element: <Listemateriel />,
-        auth: authRoles.admindefault
-      },
-      {
-        path: '/admin/listetypeentretien',
-        element: <ListeTypeEntretien />,
-        auth: authRoles.admindefault
-      },
-      {
-        path: '/admin/listetechnicien',
-        element: <ListeTechnicien />,
-        auth: authRoles.admindefault
-      },
-      {
-        path: '/tech/listetaches',
-        element: <Listetache />,
-        auth: authRoles.admindefault
-      },
-      {
-        path: '/admin/listedispo',
-        element: <Listedispo />,
-        auth: authRoles.admindefault
-      },
-
-      {
-        path: '/user/demande',
-        element: <Demande />,
-        auth: authRoles.admindefault
-      },
-
-
-      {
-        path: '/tech/calendrier',
-        element: <Calendrier />,
-        auth: authRoles.admindefault
-      },
-
-      {
-        path: '/admin/calendriertech',
-        element: <Calendriertech />,
-        auth: authRoles.admindefault
-      },
-
-      {
-        path: '/admin/listetache',
-        element: <Listetacheadmin />,
-        auth: authRoles.admindefault
-      },
-
       {
         path: '/admin/dashboard',
         element: <Dashboard />,
         auth: authRoles.admindefault
       },
-      {
-        path: '/admin/listeplainte',
-        element: <Listeplainte />,
-        auth: authRoles.admindefault
 
-        
-      },
       {
-      path: '/tech/listeplainte',
-      element: <Listeplaintetech />,
-      auth: authRoles.admindefault
+        path: '/admin/bilan',
+        element: <Bilan />,
+        auth: authRoles.admindefault
       },
+
+      {
+        path: '/admin/stock',
+        element: <Stock />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/listemateriel',
+        element: <Materiel />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/entreesortie',
+        element: <EntreeSortie />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/facture',
+        element: <Facture />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/proforma',
+        element: <Proforma />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/devis',
+        element: <Devis />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/commande',
+        element: <Commande />,
+        auth: authRoles.admindefault
+      },
+      
     ]
   },
 
@@ -168,39 +129,17 @@ const routes = [
 
   // Admin
   { path: '/admin/connexion', element: < LoginAdmin/> },
-  { path: '/admin/listeplainte', element: < Listeplainte/> },
   { path: '/admin/dashboard', element: < Dashboard/> },
-  { path: '/admin/calendriertech', element: < Calendriertech/> },
-  { path: '/admin/tacheadmin', element: < Listetacheadmin/> },
-  { path: '/admin/listeentretien', element: < Listeentretien/> },
-  { path: '/admin/listemateriel', element: < Listemateriel/> },
-  { path: '/admin/listetypeentretien', element: < ListeTypeEntretien/> },
-  { path: '/admin/listetechnicien', element: < ListeTechnicien/> },
-  { path: '/admin/listedispo', element: < Listedispo/> },
-  { path: '/admin/listetache', element: < ListetacheAdmin/> },
+  { path: '/admin/bilan', element: < Bilan/> },
+  { path: '/admin/stock', element: < Stock/> },
+  { path: '/admin/listemateriel', element: < Materiel/> },
+  { path: '/admin/entreesortie', element: < EntreeSortie/> },
+  { path: '/admin/facture', element: < Facture/> },
+  { path: '/admin/devis', element: < Devis/> },
+  { path: '/admin/proforma', element: < Proforma/> },
+  { path: '/admin/commande', element: < Commande/> },
 
-  // Utilisateur
-  { path: '/user/connexion', element: < LoginUser/> },
-
-  { path: '/user/register', element: < Register/> },
-
-  { path: '/user/demande', element: < Demande/> },
-
-
-  // Technicien
-  { path: '/tech/connexion', element: < LoginTech/> },
-
-  { path: '/tech/calendrier', element: < Calendrier/> },
-
-  { path: '/tech/listetaches', element: < Listetache/> },
-
-  { path: '/tech/listeplainte', element: < Listeplaintetech/> },
-
-  { path: '/tech/registertech', element: < RegisterTech/> },
-
-
-
-  { path: '/', element: <Navigate to="/admin/salle" /> },
+  { path: '/', element: <Navigate to="/admin/dashboard" /> },
   { path: '*', element: <NotFound /> }
 ];
 

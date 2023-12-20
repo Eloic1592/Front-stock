@@ -1,15 +1,11 @@
 import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import Button from '@mui/material/Button';
 import { useData } from 'app/useData';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { useState,useEffect } from 'react';
+import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
 import {insertData} from 'app/views/insertData';
-
-
-
-
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -20,6 +16,7 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
+
 
   const handleEdit = (id) => {
     // Mettez ici votre logique pour l'édition
@@ -34,122 +31,129 @@ const Container = styled("div")(({ theme }) => ({
   const handleChange = (event) => {
 
   };
-  
-  
-  
-  const ListeTypeEntretien = () => {
-    
-    // Data
-    const data = useData('gettypeentretien');
-    const [listetentretien,setListeentretien]= useState([]);
 
-    // Form dialog
-    const [open, setOpen] = useState(false);
-    const handleClickOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const handleAlertClose = () => setMessage({open:false});
+  
+const Proforma = () => {
+
+  // Form dialog
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleAlertClose = () => setMessage({open:false});
+
+   // Data
+  const data =useData('getallmateriel');
+  const [listemateriel, setListemateriel] = useState([]);
+  const [materielfilter, setMaterielfilter] = useState('');
+  const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
-    const [type_entretien, setTypeEntretien] = useState('');
-    const [type_entretienf, setType_entretienf] = useState('');
-    const listetentref = filtretypeentretien(listetentretien,type_entretienf);
+  const [materiel, setMateriel] = useState('');
+  const [icon, setIcon] = useState('');
+
     // Message
     const [message,setMessage]= useState({
       text:'Information enregistree',
       severity:'success',
       open:false,
     });
-
-
-
+  
   // Validation form
-
-  const handleSubmit = async  () => {
-    const result = await insertData({"typeEntretien":type_entretien,"etat":0},getUselink()+'inserttypeentretien');
-    setMessage({
+    const handleSubmit = async  () => {
+      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
+      setMessage({
         text:result.text,
         severity:result.severity,
         open:result.open,
-      });
-      handleClose();
-  }
+        });
+       handleClose();
+    }
 
-  useEffect(() => {
-    setListeentretien(data);
-  },[data]);
+    useEffect(() => {
+      setListemateriel(data);
+    },[data]);
 
 
   // Colonne
   const colonne = [
-    { label: "ID", field: "id", render: (listetentretien) => `${listetentretien.id}` },
-    { label: "Type entretien", field: "type entretien", render: (listetentretien) => `${listetentretien.typeEntretien}` },    
+    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
+    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
     { label: "Actions", render: () => (
       <div>
       <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listetentretien.id)}>
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
           <Icon>edit_icon</Icon>
       </IconButton>
       </Tooltip>
       <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listetentretien.id)}>
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
           <Icon>delete</Icon>
       </IconButton>
       </Tooltip>
       </div>
-    )},    // ... Ajoutez d'autres colonnes si nécessaire
+    )},     // ... Ajoutez d'autres colonnes si nécessaire
   ];
  
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Type_entretien", path: "/admin/listetypeentretien" }, { name: "Type d'entretien" }]} />
+          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
         </Box>
-          <p>
+        <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau type d'entretien
+             Nouveau materiel
            </Button>
-           </p>
-              <Box>
+          </p>
+          <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau type d'entretien</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
                  <DialogContent>
-                   <TextField
+                  <TextField
                      fullWidth
                      autoFocus
-                     id="type_entretien"
+                     id="materiel"
                      type="text"
                      margin="dense"
-                     label="Type entretien"
-                     value={type_entretien}
-                     name="type_entretien"
-                     onChange={(event) => setTypeEntretien(event.target.value)}
+                     label="materiel"
+                     name="materiel"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
                    />
-
+                    <TextField
+                     fullWidth
+                     autoFocus
+                     id="materiel"
+                     type="text"
+                     margin="dense"
+                     label="Icon"
+                     name="icon"
+                     value={icon}
+                     onChange={(event) => setIcon(event.target.value)}
+                   />
                  </DialogContent>
 
                  <DialogActions>
                    <Button variant="outlined" color="secondary" onClick={handleClose}>
                      Annuler
                    </Button>
-
                    <Button onClick={handleSubmit} color="primary">
                      Valider
                    </Button>
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un type d'entretien" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
                fullWidth
                size="small"
                type="text"
-               name="type_entretien"
-               label="Type d'entretien"
+               name="materielfiltre"
+               label="Nom du materiel"
                variant="outlined"
-               value={type_entretienf}
-               onChange={(event) => setType_entretienf(event.target.value)}
+               value={materielfilter}
+               onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>
@@ -157,24 +161,23 @@ const Container = styled("div")(({ theme }) => ({
               </SimpleCard>
                 <p></p>
                 <p></p>
-
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
 
-        <SimpleCard title="Liste des types d' entretiens">
-        <PaginationTable columns={colonne} data={listetentref} />
+              <SimpleCard title="Liste des entretiens">
+        <PaginationTable columns={colonne} data={listematfilter} />
         </SimpleCard>
       </Container>
     );
   };
   
-export default ListeTypeEntretien;
+export default Proforma;
 
-function filtretypeentretien(listetypeentretien, Type_entretien) {
-  return listetypeentretien.filter((Item) => {
-    return Item.typeEntretien.toLowerCase().includes(Type_entretien.toLowerCase());
+function filtremateriel(listemateriel, materiel) {
+  return listemateriel.filter((Item) => {
+    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
   });
 }
