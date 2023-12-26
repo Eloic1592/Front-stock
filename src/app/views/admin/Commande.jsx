@@ -101,32 +101,34 @@ const Commande = () => {
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
-           </Button>
+             Nouveau bon de commande
+           </Button>&nbsp;&nbsp;        
+           <Button variant="contained" color="secondary">
+            Importer un bon
+          </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau bon de commande</DialogTitle>
                  <DialogContent>
                   <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
-                     type="text"
+                     id="datebon"
+                     type="date"
                      margin="dense"
-                     label="materiel"
-                     name="materiel"
+                     name="datebon"
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
                     <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="nom"
                      type="text"
                      margin="dense"
-                     label="Icon"
-                     name="icon"
+                     label="Nom du client"
+                     name="nom"
                      value={icon}
                      onChange={(event) => setIcon(event.target.value)}
                    />
@@ -142,20 +144,30 @@ const Commande = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
+                fullWidth
+                size="small"
+                id="datebon"
+                type="date"
+                margin="dense"
+                name="datebon"
+                value={materiel}
+                onChange={(event) => setMateriel(event.target.value)}
+              />
+              <TextField
+                fullWidth
+                size="small"
+                id="nom"
+                type="text"
+                margin="dense"
+                label="Nom du client"
+                name="nom"
+                value={icon}
+                onChange={(event) => setIcon(event.target.value)}
+              />
             </div>
             </form>
               </SimpleCard>
@@ -167,7 +179,7 @@ const Commande = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
+              <SimpleCard title="Bon de commande">
         <PaginationTable columns={colonne} data={listematfilter} />
         </SimpleCard>
       </Container>

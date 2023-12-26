@@ -96,6 +96,14 @@ const Depot = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Depot", path: "admin/depot" }, { name: "Depot" }]} />
         </Box>
+        <p>
+         <Button variant="contained" onClick={handleClickOpen} color="primary">
+           Nouveau Depot
+         </Button>&nbsp;&nbsp;
+           <Button variant="contained" color="secondary">
+            Importer les donnees
+          </Button>
+         </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
@@ -147,11 +155,7 @@ const Depot = () => {
                    {message.text}
                 </Alert>
               </Snackbar>
-              <p>
-               <Button variant="contained" onClick={handleClickOpen} color="primary">
-                 Nouveau Depot
-               </Button>
-               </p>
+
               <SimpleCard title="Liste des depots">
               <PaginationTable columns={columns} data={donnees} />        
               </SimpleCard>

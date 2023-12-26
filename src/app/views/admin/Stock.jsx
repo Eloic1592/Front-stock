@@ -139,6 +139,25 @@ const Stock = () => {
                <MenuItem value="1">Entree</MenuItem>
                <MenuItem value="-1"> Sortie</MenuItem>
             </Select>
+            <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Depot</MenuItem>
+               <MenuItem value="-1"> Salle 6</MenuItem>
+            </Select>
+
+            <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+              >
+               <MenuItem value="1">Don</MenuItem>
+               <MenuItem value="-1"> Transfert</MenuItem>
+               <MenuItem value="-1"> Perte</MenuItem>
+            </Select>
+            
             </div>
             </form>
         </SimpleCard>

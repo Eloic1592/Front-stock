@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,Select,MenuItem } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -73,89 +73,55 @@ const Historique = () => {
       setListemateriel(data);
     },[data]);
 
+// Colonne
+    const columns = [
+      { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+      { label: 'Date', field: 'datefacture', align: 'center' },
+      { label: 'Materiel', field: 'materiel', align: 'center' },
+      { label: 'Mouvement', field: 'mouvement', align: 'center' },
+      { label: 'statut', field: 'statut', align: 'center' },
+      // Other columns...
+     ];
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
+
  
     return (
         <Container>
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
         </Box>
-        <p>
-           <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
-           </Button>
-          </p>
-          <Box>
-               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
-                 <DialogContent>
-                  <TextField
-                     fullWidth
-                     autoFocus
-                     id="materiel"
-                     type="text"
-                     margin="dense"
-                     label="materiel"
-                     name="materiel"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
-                   />
-                    <TextField
-                     fullWidth
-                     autoFocus
-                     id="materiel"
-                     type="text"
-                     margin="dense"
-                     label="Icon"
-                     name="icon"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
-                   />
-                 </DialogContent>
-
-                 <DialogActions>
-                   <Button variant="outlined" color="secondary" onClick={handleClose}>
-                     Annuler
-                   </Button>
-                   <Button onClick={handleSubmit} color="primary">
-                     Valider
-                   </Button>
-                 </DialogActions>
-               </Dialog>
-             </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
                fullWidth
                size="small"
                type="text"
-               name="materielfiltre"
+               name="materiel"
                label="Nom du materiel"
                variant="outlined"
                value={materielfilter}
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
+              <TextField
+               fullWidth
+               size="small"
+               type="date"
+               name="date"
+               variant="outlined"
+               value={materielfilter}
+               onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+            <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Entree</MenuItem>
+               <MenuItem value="-1"> Sortie</MenuItem>
+            </Select>
             </div>
             </form>
               </SimpleCard>
@@ -168,7 +134,7 @@ const Historique = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listematfilter} />
+        <PaginationTable columns={columns} data={listematfilter} />
         </SimpleCard>
       </Container>
     );

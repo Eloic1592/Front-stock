@@ -75,15 +75,15 @@ const Facture = () => {
 
     const columns = [
       { label: 'ID', field: 'idmouvementdestock', align: 'center' },
-      { label: 'Date de depot', field: 'datedepot', align: 'center' },
-      { label: 'Mouvement', field: 'mouvement', align: 'center' },
-      { label: 'Nature', field: 'naturemouvement', align: 'center' },
-      { label: 'Description', field: 'description', align: 'center' },
-      { label: 'Modele', field: 'modele', align: 'center' },
-      { label: 'Quantite', field: 'quantite', align: 'center' },
-      { label: 'Prix', field: 'P.U', align: 'center' },
-      { label: 'Total', field: 'total', align: 'center' },
-      { label: 'Depot', field: 'depot', align: 'center' },
+      { label: 'Date', field: 'datefacture', align: 'center' },
+      { label: 'ID MV', field: 'mouvement', align: 'center' },
+      { label: 'Nom du client', field: 'nom', align: 'center' },
+      { label: 'Telephone', field: 'telephone', align: 'center' },
+      { label: 'NIF', field: 'nif', align: 'center' },
+      { label: 'NUMSTAT', field: 'numstat', align: 'center' },
+      { label: 'Adresse', field: 'Adresse', align: 'center' },
+      { label: 'QUITTANCE', field: 'quittance', align: 'center' },
+      { label: 'statut', field: 'statut', align: 'center' },
       // Other columns...
      ];
 
@@ -113,8 +113,8 @@ const Facture = () => {
                      id="materiel"
                      type="text"
                      margin="dense"
-                     label="materiel"
-                     name="materiel"
+                     label="Id du mouvement"
+                     name="idmouvement"
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
@@ -122,10 +122,9 @@ const Facture = () => {
                      fullWidth
                      autoFocus
                      id="materiel"
-                     type="text"
+                     type="date"
                      margin="dense"
-                     label="Icon"
-                     name="icon"
+                     name="datefacture"
                      value={icon}
                      onChange={(event) => setIcon(event.target.value)}
                    />
@@ -148,8 +147,8 @@ const Facture = () => {
                fullWidth
                size="small"
                type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
+               name="client"
+               label="Nom du client"
                variant="outlined"
                value={materielfilter}
                onChange={(event) => setMaterielfilter(event.target.value)}
@@ -165,31 +164,28 @@ const Facture = () => {
               //  onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
-            <Select
-               labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
-                >
-               <MenuItem value="1">Entree</MenuItem>
-               <MenuItem value="-1"> Sortie</MenuItem>
-            </Select>
-            <Select
-               labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
-                >
-               <MenuItem value="1">Depot</MenuItem>
-               <MenuItem value="-1"> Salle 6</MenuItem>
-            </Select>
-            <Select
-               labelId="select-label"
-               value={"-2"}
-              //  onChange={handleChange}
-                >
-               <MenuItem value="1">Don</MenuItem>
-               <MenuItem value="-1">Perte</MenuItem>
-               <MenuItem value="-2">Transfert</MenuItem>
-            </Select>
+             <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="stat"
+               variant="outlined"
+               label="Numstat"
+              //  value={materielfilter}
+              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+            <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="telephone"
+               variant="outlined"
+               label="Telephone"
+              //  value={materielfilter}
+              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
             </div>
             </form>
               </SimpleCard>
