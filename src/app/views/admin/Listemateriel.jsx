@@ -119,17 +119,6 @@ const Listemateriel = () => {
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
-                    <TextField
-                     fullWidth
-                     autoFocus
-                     id="materiel"
-                     type="text"
-                     margin="dense"
-                     label="Icon"
-                     name="icon"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
-                   />
                  </DialogContent>
 
                  <DialogActions>

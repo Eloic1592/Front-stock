@@ -13,6 +13,9 @@ export const navigations = [
       { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
       { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
       { name: 'Depot', iconText: 'SI', path: '/admin/depot' },
+      { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
+      { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
+      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },
       { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
       { name: 'Historique', iconText: 'SI', path: '/admin/historique' },
 

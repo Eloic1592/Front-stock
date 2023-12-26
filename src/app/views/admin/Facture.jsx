@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Select,MenuItem } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -73,27 +73,20 @@ const Facture = () => {
       setListemateriel(data);
     },[data]);
 
+    const columns = [
+      { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+      { label: 'Date de depot', field: 'datedepot', align: 'center' },
+      { label: 'Mouvement', field: 'mouvement', align: 'center' },
+      { label: 'Nature', field: 'naturemouvement', align: 'center' },
+      { label: 'Description', field: 'description', align: 'center' },
+      { label: 'Modele', field: 'modele', align: 'center' },
+      { label: 'Quantite', field: 'quantite', align: 'center' },
+      { label: 'Prix', field: 'P.U', align: 'center' },
+      { label: 'Total', field: 'total', align: 'center' },
+      { label: 'Depot', field: 'depot', align: 'center' },
+      // Other columns...
+     ];
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
- 
     return (
         <Container>
         <Box className="breadcrumb">
@@ -101,12 +94,12 @@ const Facture = () => {
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
+             Nouvelle facture
            </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouvelle facture</DialogTitle>
                  <DialogContent>
                   <TextField
                      fullWidth
@@ -142,7 +135,7 @@ const Facture = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher une facture" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
@@ -155,7 +148,42 @@ const Facture = () => {
                value={materielfilter}
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
+             />            
+             <TextField
+               fullWidth
+               size="small"
+               type="date"
+               name="date"
+               variant="outlined"
+              //  value={materielfilter}
+              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
              />
+            <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Entree</MenuItem>
+               <MenuItem value="-1"> Sortie</MenuItem>
+            </Select>
+            <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Depot</MenuItem>
+               <MenuItem value="-1"> Salle 6</MenuItem>
+            </Select>
+            <Select
+               labelId="select-label"
+               value={"-2"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Don</MenuItem>
+               <MenuItem value="-1">Perte</MenuItem>
+               <MenuItem value="-2">Transfert</MenuItem>
+            </Select>
             </div>
             </form>
               </SimpleCard>
@@ -167,8 +195,8 @@ const Facture = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listematfilter} />
+              <SimpleCard title="Liste des factures">
+        <PaginationTable columns={columns} data={listematfilter} />
         </SimpleCard>
       </Container>
     );

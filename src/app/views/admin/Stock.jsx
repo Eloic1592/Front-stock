@@ -67,7 +67,7 @@ const Stock = () => {
           {/* <Button variant="contained" onClick={handleClickOpen} color="primary">
           Nouveau
           </Button>&nbsp;&nbsp; */}
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="primary">
           Exporter en pdf
           </Button>&nbsp;&nbsp;
           <Button variant="contained" color="secondary">
@@ -121,23 +121,12 @@ const Stock = () => {
                size="small"
                type="date"
                name="date"
-               label="Date du mouvement"
                variant="outlined"
               //  value={materielfilter}
               //  onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
             {/* <AutoComplete
-              fullWidth
-              // options={suggestions}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <TextField {...params} label="Materiel" variant="outlined" fullWidth />
-            )}
-              name="idmateriel"
-              id="idmateriel"
-            />
-            <AutoComplete
               fullWidth
               // options={suggestions}
               getOptionLabel={(option) => option.label}
@@ -161,7 +150,7 @@ const Stock = () => {
 
         <br />
       {/* Liste des donnees */}
-        <SimpleCard title="Liste des entretiens">
+        <SimpleCard title="Liste des mouvements actuels">
         <PaginationTable columns={colonne} data={listedispo} />
         </SimpleCard>
       </Container>

@@ -20,6 +20,12 @@ const Dashboard  = Loadable(lazy(() => import('app/views/admin/Dashboard')));
 
 const Bilan  = Loadable(lazy(() => import('app/views/admin/Bilan')));
 
+const TypeMouvement  = Loadable(lazy(() => import('app/views/admin/Naturemouvement')));
+
+const TypeMateriel  = Loadable(lazy(() => import('app/views/admin/Typemateriel')));
+
+const Categoriemateriel  = Loadable(lazy(() => import('app/views/admin/Categoriemateriel')));
+
 const Stock  = Loadable(lazy(() => import('app/views/admin/Stock')));
 
 const Materiel  = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
@@ -73,6 +79,24 @@ const routes = [
       {
         path: '/admin/bilan',
         element: <Bilan />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/typemouvement',
+        element: <TypeMouvement />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/typemateriel',
+        element: <TypeMateriel />,
+        auth: authRoles.admindefault
+      },
+
+      {
+        path: '/admin/categoriemateriel',
+        element: <Categoriemateriel />,
         auth: authRoles.admindefault
       },
 
@@ -146,6 +170,9 @@ const routes = [
   { path: '/admin/connexion', element: < LoginAdmin/> },
   { path: '/admin/dashboard', element: < Dashboard/> },
   { path: '/admin/bilan', element: < Bilan/> },
+  { path: '/admin/typemouvement', element: < TypeMouvement/> },
+  { path: '/admin/typemateriel', element: < TypeMateriel/> },
+  { path: '/admin/categoriemateriel', element: < Categoriemateriel/> },
   { path: '/admin/stock', element: < Stock/> },
   { path: '/admin/listemateriel', element: < Materiel/> },
   { path: '/admin/entreesortie', element: < EntreeSortie/> },

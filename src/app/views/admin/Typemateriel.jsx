@@ -1,4 +1,4 @@
-import { Box, styled,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -33,7 +33,7 @@ const Container = styled("div")(({ theme }) => ({
   };
 
   
-const Depot = () => {
+const Typemateriel = () => {
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -45,7 +45,6 @@ const Depot = () => {
   const data =useData('getallmateriel');
   const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
   const [materiel, setMateriel] = useState('');
@@ -73,41 +72,46 @@ const Depot = () => {
       setListemateriel(data);
     },[data]);
 
+    const columns = [
+      { label: 'ID', field: 'id', align: 'center' },
+      { label: 'Type de materiel', field: 'typemateriel', align: 'center' },
+      // Other columns...
+     ];
 
-  // Colonne
-  const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' },
-    // Other columns...
-   ];
+     const donnees = [
+      { id: 1, typemateriel: 'Depot 1', /* other fields... */ },
+      { id: 2, typemateriel: 'Depot 2', /* other fields... */ },
+      { id: 3, typemateriel: 'Depot 3', /* other fields... */ },
+      { id: 4, typemateriel: 'Depot 4', /* other fields... */ },
+      { id: 5, typemateriel: 'Depot 5', /* other fields... */ },
+      { id: 6, typemateriel: 'Depot 6', /* other fields... */ },
+      // More rows...
+     ];
 
-   const donnees = [
-    { id: 1, depot: 'Depot 1', /* other fields... */ },
-    { id: 2, depot: 'Depot 2', /* other fields... */ },
-    { id: 3, depot: 'Depot 3', /* other fields... */ },
-    { id: 4, depot: 'Depot 4', /* other fields... */ },
-    { id: 5, depot: 'Depot 5', /* other fields... */ },
-    { id: 6, depot: 'Depot 6', /* other fields... */ },
-    // More rows...
-   ];
-   
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Depot", path: "admin/depot" }, { name: "Depot" }]} />
+          <Breadcrumb routeSegments={[{ name: "Type de materiel", path: "admin/typemateriel" }, { name: "Type de materiel" }]} />
         </Box>
+        <p>
+           <Button variant="contained" onClick={handleClickOpen} color="primary">
+           Nouveau type de materiel           
+           </Button>&nbsp;&nbsp;
+           <Button variant="contained" color="secondary">
+          Importer des données
+          </Button>
+          </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
                  <DialogContent>
                   <TextField
-                     fullWidth
-                     autoFocus
-                     id="depot"
-                     type="text"
-                     margin="dense"
-                     label="depot"
-                     name="depot"
+                   fullWidth
+                    size="small"
+                    type="text"
+                    name="typemateriel"
+                    label="type de materiel"
+
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
@@ -123,15 +127,15 @@ const Depot = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un type de materiel" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
                fullWidth
                size="small"
                type="text"
-               name="materielfiltre"
-               label="Nom du depot"
+               name="typemateriel"
+               label="type de materiel"
                variant="outlined"
                value={materielfilter}
                onChange={(event) => setMaterielfilter(event.target.value)}
@@ -147,22 +151,12 @@ const Depot = () => {
                    {message.text}
                 </Alert>
               </Snackbar>
-              <p>
-               <Button variant="contained" onClick={handleClickOpen} color="primary">
-                 Nouveau Depot
-               </Button>
-               </p>
-              <SimpleCard title="Liste des depots">
-              <PaginationTable columns={columns} data={donnees} />        
-              </SimpleCard>
+
+              <SimpleCard title="Liste des types de materiel">
+        <PaginationTable columns={columns} data={donnees} />
+        </SimpleCard>
       </Container>
     );
   };
   
-export default Depot;
-
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}
+export default Typemateriel;
