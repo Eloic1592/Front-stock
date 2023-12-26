@@ -90,12 +90,18 @@ const Facture = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
+          <Breadcrumb routeSegments={[{ name: "Facture", path: "admin/facture" }, { name: "Facture" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
              Nouvelle facture
-           </Button>
+           </Button>&nbsp;&nbsp;
+           <Button variant="contained" color="inherit">
+            Exporter la facture
+          </Button>&nbsp;&nbsp;
+          <Button variant="contained" color="secondary">
+            Importer la facture
+          </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

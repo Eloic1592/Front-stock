@@ -40,24 +40,19 @@ const Stock = () => {
     alert(`Mety`+id);  
   };
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listedispo) => `${listedispo.id}` },
-    { label: "Responsable", field: "Responsable", render: (listedispo) => `${listedispo.nom+' '+listedispo.prenom}` },    
-    { label: "date debut", field: "date debut", render: (listedispo) => `${listedispo.date_debut}` },
-    { label: "date fin", field: "date fin", render: (listedispo) => `${listedispo.date_fin}` },
-    { label: "etat", field: "etat", render: (listedispo) => `${listedispo.etat}` },  
-    { label: "Actions", render: () => (
-      <div>
-      <IconButton className="button" aria-label="Edit"  color="primary" onClick={() =>handleEdit(listedispo.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      <IconButton className="button" aria-label="Delete"  color="default" onClick={() =>handleDelete(listedispo.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </div>
-    )},    // ... Ajoutez d'autres colonnes si nécessaire
-  ];
+  const columns = [
+    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+    { label: 'Date de depot', field: 'datedepot', align: 'center' },
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Nature', field: 'naturemouvement', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Prix', field: 'P.U', align: 'center' },
+    { label: 'Total', field: 'total', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' },
+    // Other columns...
+   ];
  
     return (
         <Container>
@@ -151,7 +146,7 @@ const Stock = () => {
         <br />
       {/* Liste des donnees */}
         <SimpleCard title="Liste des mouvements actuels">
-        <PaginationTable columns={colonne} data={listedispo} />
+        <PaginationTable columns={columns} data={listedispo} />
         </SimpleCard>
       </Container>
     );
