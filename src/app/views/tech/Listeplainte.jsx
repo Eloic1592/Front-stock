@@ -133,7 +133,7 @@ const Listeplainte = () => {
             />
             <Select
                labelId="select-label"
-               value={selectedDate}
+               value={selectedDate || "1"}
                onChange={handleChange}
                 >
                <MenuItem value="1">Aujourd'hui</MenuItem>

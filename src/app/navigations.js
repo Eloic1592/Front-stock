@@ -12,7 +12,9 @@ export const navigations = [
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
       { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
       { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
+      { name: 'Depot', iconText: 'SI', path: '/admin/depot' },
       { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
+      { name: 'Historique', iconText: 'SI', path: '/admin/historique' },
 
     ]
   },
