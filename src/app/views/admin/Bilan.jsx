@@ -1,12 +1,11 @@
-import { Box, styled,Icon, IconButton,Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent,Tooltip,Snackbar,Alert} from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useEffect, useState } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import {insertData} from 'app/views/insertData';
 // import {Finddata} from 'app/findData';
 import {deleteData} from 'app/views/deleteData';
-import {Editsalle} from 'app/views/admin/Editsalle';
+
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",

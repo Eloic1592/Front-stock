@@ -88,7 +88,7 @@ const Historique = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
+          <Breadcrumb routeSegments={[{ name: "Historique", path: "admin/historique" }, { name: "Historique" }]} />
         </Box>
              <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>

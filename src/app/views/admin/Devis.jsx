@@ -80,29 +80,19 @@ const Devis = () => {
 
 
   // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
- 
+  const columns = [
+    { label: 'ID', field: 'id', align: 'center' },
+    { label: 'Commande', field: 'commande', align: 'center' },
+    { label: 'date du devis', field: 'datedevis', align: 'center' },
+    { label: 'Nom du client', field: 'nom', align: 'center' },
+    { label: 'Etat', field: 'statut', align: 'center' },
+
+    // Other columns...
+   ];
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
+          <Breadcrumb routeSegments={[{ name: "Devis", path: "admin/devis" }, { name: "Devis" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
@@ -116,25 +106,35 @@ const Devis = () => {
                   <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
-                     type="text"
+                     id="datedevis"
+                     type="date"
                      margin="dense"
-                     label="materiel"
-                     name="materiel"
+                     name="datedevis"
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
-                    <TextField
+                  <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="idcommande"
                      type="text"
                      margin="dense"
-                     label="Icon"
-                     name="icon"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
+                     label="Id de la commande"
+                     name="idcommande"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
                    />
+                  <AutoComplete
+                    fullWidth
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+                  )}
+                    name="idmateriel"
+                    id="idmateriel"
+                  />
+
                  </DialogContent>
 
                  <DialogActions>
@@ -150,17 +150,6 @@ const Devis = () => {
              <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
               <TextField
                fullWidth
                size="small"
@@ -192,8 +181,8 @@ const Devis = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listematfilter} />
+              <SimpleCard title="Liste des devis">
+        <PaginationTable columns={columns} data={listematfilter} />
         </SimpleCard>
       </Container>
     );

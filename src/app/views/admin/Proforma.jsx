@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -16,6 +16,10 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
+  const AutoComplete = styled(Autocomplete)(() => ({
+    width: 300,
+    marginBottom: '16px',
+}));
 
 
   const handleEdit = (id) => {
@@ -74,6 +78,16 @@ const Proforma = () => {
     },[data]);
 
 
+    const columns = [
+      { label: 'ID', field: 'id', align: 'center' },
+      { label: 'Commande', field: 'commande', align: 'center' },
+      { label: 'date', field: 'datedevis', align: 'center' },
+      { label: 'Nom du client', field: 'nom', align: 'center' },
+      { label: 'Etat', field: 'statut', align: 'center' },
+      // Other columns...
+     ];
+
+
     return (
         <Container>
         <Box className="breadcrumb">
@@ -85,14 +99,23 @@ const Proforma = () => {
               <TextField
                fullWidth
                size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
+               type="date"
+               name="datedevis"
                variant="outlined"
                value={materielfilter}
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
+            <AutoComplete
+              fullWidth
+              // options={suggestions}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+            )}
+              name="idmateriel"
+              id="idmateriel"
+            />
             </div>
             </form>
               </SimpleCard>
@@ -103,7 +126,10 @@ const Proforma = () => {
                    {message.text}
                 </Alert>
               </Snackbar>
-
+              
+              <SimpleCard title="Liste des proformas">
+        <PaginationTable columns={columns} data={listematfilter} />
+        </SimpleCard>
       </Container>
     );
   };

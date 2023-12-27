@@ -57,7 +57,7 @@ const Stock = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
+          <Breadcrumb routeSegments={[{ name: "Mouvement de stock", path: "admin/stock" }, { name: "Stock" }]} />
           <p>
           <Button variant="contained" onClick={handleClickOpen} color="primary">
           Nouveau mouvement

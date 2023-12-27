@@ -97,7 +97,7 @@ const Commande = () => {
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
+          <Breadcrumb routeSegments={[{ name: "Commande", path: "admin/commande" }, { name: "Commande" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
