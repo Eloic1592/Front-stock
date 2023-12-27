@@ -71,67 +71,12 @@ const Bilan =  () => {
         useEffect(() => {
           setListesalle(data);
         },[data]);
-    
-    
-      const colonne = [
-        { label: "ID", field: "id", render: (listesalle) => `${listesalle.id}` },
-        { label: "Salle", field: "Salle", render: (listesalle) => `${listesalle.salle}` },
-        { label: "ID", field: "id", render: (listesalle) => `${listesalle.etat}` },    
-        { label: "Actions", render: (listesalle) => (
-          <div>
-          <Tooltip title="Modifier">
-          <IconButton className="button" aria-label="Edit"  color="primary" onClick={() => handleEdit(listesalle.id)}>
-              <Icon>edit_icon</Icon>
-          </IconButton>
-          </Tooltip>
-          <Tooltip title="Supprimer">
-          <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listesalle)}>
-              <Icon>delete</Icon>
-          </IconButton>
-          </Tooltip>
-          </div>
-        )},     // ... Ajoutez d'autres colonnes si nécessaire
-      ];
-     
-    
+        
         return (
             <Container>
             <Box className="breadcrumb">
-              <Breadcrumb routeSegments={[{ name: "Salle", path: "admin/salle" }, { name: "Salle" }]} />
+              <Breadcrumb routeSegments={[{ name: "Bilan general", path: "admin/bilan" }, { name: "Bilan general" }]} />
             </Box>
-            <p>
-               <Button variant="contained" onClick={handleClickOpen} color="primary">
-                 Nouvelle salle
-               </Button>
-              </p>
-              <Box>
-                   <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                     <DialogTitle id="form-dialog-title">Nouvelle salle</DialogTitle>
-                     <DialogContent>
-                      <TextField
-                         fullWidth
-                         autoFocus
-                         id="salle"
-                         type="text"
-                         margin="dense"
-                         label="Salle"
-                         name="salle"
-                         value={salle}
-                         onChange={(event) => setSalle(event.target.value)}
-                        
-                       />
-                     </DialogContent>
-      
-                     <DialogActions>
-                       <Button variant="outlined" color="secondary" onClick={handleClose}>
-                         Annuler
-                       </Button>
-                       <Button onClick={handleSubmit} color="primary">
-                         Valider
-                       </Button>
-                     </DialogActions>
-                   </Dialog>
-                 </Box>
                  <SimpleCard title="Rechercher une salle" sx={{ marginBottom: '16px' }}>        
                   <form /* onSubmit={this.handleSubmit}*/>
                   <div style={{ display: 'flex', gap: '16px' }}>
@@ -156,13 +101,7 @@ const Bilan =  () => {
                        {message.text}
                     </Alert>
                   </Snackbar>
-    
-                <Editsalle open={openEdit} close={handleEditclose} object={object}/>
-{/*     
-                  <SimpleCard title="Liste des salles">
-            <PaginationTable columns={colonne} data={listesallefiltre} />
-            </SimpleCard> */}
-          </Container>    
+              </Container>    
           );
         };
 

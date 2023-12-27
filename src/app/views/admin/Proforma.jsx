@@ -74,75 +74,12 @@ const Proforma = () => {
     },[data]);
 
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
- 
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Materiel", path: "admin/listemateriel" }, { name: "Materiel" }]} />
+          <Breadcrumb routeSegments={[{ name: "Proforma", path: "admin/proforma" }, { name: "Proforma" }]} />
         </Box>
-        <p>
-           <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
-           </Button>
-          </p>
-          <Box>
-               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
-                 <DialogContent>
-                  <TextField
-                     fullWidth
-                     autoFocus
-                     id="materiel"
-                     type="text"
-                     margin="dense"
-                     label="materiel"
-                     name="materiel"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
-                   />
-                    <TextField
-                     fullWidth
-                     autoFocus
-                     id="materiel"
-                     type="text"
-                     margin="dense"
-                     label="Icon"
-                     name="icon"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
-                   />
-                 </DialogContent>
-
-                 <DialogActions>
-                   <Button variant="outlined" color="secondary" onClick={handleClose}>
-                     Annuler
-                   </Button>
-                   <Button onClick={handleSubmit} color="primary">
-                     Valider
-                   </Button>
-                 </DialogActions>
-               </Dialog>
-             </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un proforma" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
@@ -167,9 +104,6 @@ const Proforma = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listematfilter} />
-        </SimpleCard>
       </Container>
     );
   };

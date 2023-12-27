@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,MenuItem,Select,InputLabel } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -16,6 +16,11 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
+
+const AutoComplete = styled(Autocomplete)(() => ({
+    width: 300,
+    marginBottom: '16px',
+}));
 
 
   const handleEdit = (id) => {
@@ -73,26 +78,18 @@ const Listemateriel = () => {
       setListemateriel(data);
     },[data]);
 
-
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
+    const columns = [
+      { label: 'ID', field: 'id', align: 'center' },
+      { label: 'Type', field: 'type', align: 'center' },
+      { label: 'Categorie', field: 'categorie', align: 'center' },
+      { label: 'Marque', field: 'marque', align: 'center' },
+      { label: 'Modele', field: 'telephone', align: 'center' },
+      { label: 'N serie', field: 'numserie', align: 'center' },
+      { label: 'Couleur', field: 'numstat', align: 'center' },
+      { label: 'Caution', field: 'caution', align: 'center' },
+      { label: 'P.V', field: 'quittance', align: 'center' },
+      // Other columns...
+     ];
  
     return (
         <Container>
@@ -108,14 +105,92 @@ const Listemateriel = () => {
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
                  <DialogContent>
+                  <AutoComplete
+                    fullWidth
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
+                  )}
+                    name="typemateriel"
+                    id="typemateriel"
+                  />
+                  
+                  <InputLabel id="color-select-label">Categorie de materiel</InputLabel>
+                  <Select
+                    labelId="select-label"
+                    value={"1"}
+                   //  onChange={handleChange}
+                     >
+                    <MenuItem value="1">Materiel bureautique</MenuItem>
+                    <MenuItem value="-1"> Materiel informatique</MenuItem>
+                    <MenuItem value="-1"> Materiel sonore</MenuItem>
+                    <MenuItem value="-1"> Alimentation</MenuItem>
+
+                 </Select>
+                <p></p>
+                <p></p>
+                 <AutoComplete
+                    fullWidth
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Modele du materiel" variant="outlined" fullWidth />
+                  )}
+                    name="typemateriel"
+                    id="typemateriel"
+                  />
+                   <TextField
+                     fullWidth
+                     autoFocus
+                     id="numeroserie"
+                     type="text"
+                     margin="dense"
+                     label="Numero de serie"
+                     name="numserie"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
+                   />
+                 <InputLabel id="color-select-label">Couleur de materiel</InputLabel>
+                <Select
+                    labelId="select-label"
+                    value={"1"}
+                   //  onChange={handleChange}
+                     >
+                    <MenuItem value="1">Noir</MenuItem>
+                    <MenuItem value="1">Gris</MenuItem>
+                 </Select>
+                 <TextField
+                     fullWidth
+                     autoFocus
+                     id="description"
+                     type="text"
+                     margin="dense"
+                     label="Description du materiel"
+                     name="description"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
+                   />
+
+                 <TextField
+                     fullWidth
+                     autoFocus
+                     id="prixvente"
+                     type="number"
+                     margin="dense"
+                     label="Prix de vente"
+                     name="prixvente"
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
+                   />
                   <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
-                     type="text"
+                     id="caution"
+                     type="number"
                      margin="dense"
-                     label="materiel"
-                     name="materiel"
+                     label="Caution"
+                     name="caution"
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
@@ -145,6 +220,48 @@ const Listemateriel = () => {
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
+              <TextField
+                fullWidth
+                size="small"
+                id="numeroserie"
+                type="text"
+                label="Numero de serie"
+                name="numserie"
+                variant="outlined"
+                value={materiel}
+                onChange={(event) => setMateriel(event.target.value)}
+                sx={{ mb: 3 }}
+              />
+              <AutoComplete
+                    fullWidth
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Modele" variant="outlined" fullWidth />
+                  )}
+                    name="typemateriel"
+                    id="typemateriel"
+              />
+              <Select
+                labelId="select-label"
+                value={"1"}
+                size="small"
+               //  onChange={handleChange}
+                 >
+                <MenuItem value="1">Noir</MenuItem>
+                <MenuItem value="1">Gris</MenuItem>
+             </Select>
+             <Select
+                    labelId="select-label"
+                    value={"1"}
+                   //  onChange={handleChange}
+                     >
+                    <MenuItem value="1">Materiel bureautique</MenuItem>
+                    <MenuItem value="-1"> Materiel informatique</MenuItem>
+                    <MenuItem value="-1"> Materiel sonore</MenuItem>
+                    <MenuItem value="-1"> Alimentation</MenuItem>
+
+                 </Select>
             </div>
             </form>
               </SimpleCard>
@@ -157,7 +274,7 @@ const Listemateriel = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={colonne} data={listematfilter} />
+        <PaginationTable columns={columns} data={listematfilter} />
         </SimpleCard>
       </Container>
     );

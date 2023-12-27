@@ -1,4 +1,4 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Select,MenuItem } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -17,6 +17,10 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
+  const AutoComplete = styled(Autocomplete)(() => ({
+    width: 300,
+    marginBottom: '16px',
+  }));
 
   const handleEdit = (id) => {
     // Mettez ici votre logique pour l'édition
@@ -110,7 +114,7 @@ const Facture = () => {
                   <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="idmouvement"
                      type="text"
                      margin="dense"
                      label="Id du mouvement"
@@ -121,13 +125,25 @@ const Facture = () => {
                     <TextField
                      fullWidth
                      autoFocus
-                     id="materiel"
+                     id="datefacture"
                      type="date"
                      margin="dense"
                      name="datefacture"
                      value={icon}
                      onChange={(event) => setIcon(event.target.value)}
                    />
+
+                    <AutoComplete
+                      fullWidth
+                      // options={suggestions}
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+                    )}
+                      name="nom"
+                      id="nom"
+                    />
+
                  </DialogContent>
 
                  <DialogActions>

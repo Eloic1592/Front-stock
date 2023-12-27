@@ -59,9 +59,9 @@ const Stock = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Entretien", path: "/material" }, { name: "Table" }]} />
           <p>
-          {/* <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouveau
-          </Button>&nbsp;&nbsp; */}
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+          Nouveau mouvement
+          </Button>&nbsp;&nbsp;
           <Button variant="contained" color="primary">
           Exporter en pdf
           </Button>&nbsp;&nbsp;
@@ -72,22 +72,40 @@ const Stock = () => {
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
              <DialogTitle id="form-dialog-title">Nouveau mouvement</DialogTitle>
              <DialogContent>
+              <Select
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Entree</MenuItem>
+               <MenuItem value="-1"> Sortie</MenuItem>
+            </Select>
+            <p></p>
               <TextField
                  fullWidth
                  autoFocus
-                 id="salle"
-                 type="text"
-                 margin="dense"
-                 label="Salle"
-                 name="salle"
+                 id=" datedepot"
+                 type="date"
+                 margin="dense"                
+                 name="datedepot"
                 //  value={salle}
                 //  onChange={(event) => setSalle(event.target.value)}
-                
                />
+            <AutoComplete
+                    fullWidth
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Nature du mouvement" variant="outlined" fullWidth />
+                  )}
+                    name="typemateriel"
+                    id="typemateriel"
+                  />
+
              </DialogContent>
       
              <DialogActions>
-               <Button variant="outlined" color="secondary" /*onClick={handleClose}*/>
+               <Button variant="outlined" color="secondary" onClick={handleClose}>
                  Annuler
                </Button>
                <Button /*onClick={handleSubmit}*/ color="primary">

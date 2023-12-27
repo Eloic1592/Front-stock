@@ -99,11 +99,6 @@ const EntreeSortie =  () => {
             <Box className="breadcrumb">
               <Breadcrumb routeSegments={[{ name: "Salle", path: "admin/salle" }, { name: "Salle" }]} />
             </Box>
-            <p>
-               <Button variant="contained" onClick={handleClickOpen} color="primary">
-                 Nouvelle salle
-               </Button>
-              </p>
               <Box>
                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                      <DialogTitle id="form-dialog-title">Nouvelle salle</DialogTitle>

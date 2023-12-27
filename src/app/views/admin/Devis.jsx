@@ -1,4 +1,4 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -15,6 +15,11 @@ const Container = styled("div")(({ theme }) => ({
       marginBottom: "30px",
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
+  }));
+
+  const AutoComplete = styled(Autocomplete)(() => ({
+    width: 300,
+    marginBottom: '16px',
   }));
 
 
@@ -101,12 +106,12 @@ const Devis = () => {
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau materiel
+             Nouveau devis
            </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau devis</DialogTitle>
                  <DialogContent>
                   <TextField
                      fullWidth
@@ -142,7 +147,7 @@ const Devis = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
@@ -156,6 +161,26 @@ const Devis = () => {
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
+              <TextField
+               fullWidth
+               size="small"
+               type="date"
+               name="datedevis"
+               variant="outlined"
+               value={materielfilter}
+               onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+            <AutoComplete
+              fullWidth
+              // options={suggestions}
+              getOptionLabel={(option) => option.label}
+              renderInput={(params) => (
+                <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+            )}
+              name="idmateriel"
+              id="idmateriel"
+            />
             </div>
             </form>
               </SimpleCard>
