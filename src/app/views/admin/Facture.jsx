@@ -1,11 +1,10 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,MenuItem,Select,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
-import {insertData} from 'app/views/insertData';
+import Grid from '@mui/material/Grid';
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -20,22 +19,7 @@ const Container = styled("div")(({ theme }) => ({
   const AutoComplete = styled(Autocomplete)(() => ({
     width: 300,
     marginBottom: '16px',
-  }));
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
+}));
   
 const Facture = () => {
 
@@ -44,6 +28,7 @@ const Facture = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({open:false});
+  const [formData, setFormData] = useState([]);
 
    // Data
   const data =useData('getallmateriel');
@@ -63,15 +48,18 @@ const Facture = () => {
     });
   
   // Validation form
-    const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
-    }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+   
+    const newData = {
+    article: '1',
+    quantite: 2,
+    prixunitaire: 4, 
+    total: 8, // Remplacez par la valeur réelle du nom du client
+    };
+   
+    setFormData([...formData, newData]);
+   };
 
     useEffect(() => {
       setListemateriel(data);
@@ -88,6 +76,13 @@ const Facture = () => {
       { label: 'Adresse', field: 'Adresse', align: 'center' },
       { label: 'QUITTANCE', field: 'quittance', align: 'center' },
       { label: 'statut', field: 'statut', align: 'center' },
+      // Other columns...
+     ];
+     const columnsdetails = [
+      { label: 'article', field: 'article', align: 'center' },
+      { label: 'quantite', field: 'quantite', align: 'center' },
+      { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
+      { label: 'total', field: 'total', align: 'center' },
       // Other columns...
      ];
 
@@ -108,42 +103,101 @@ const Facture = () => {
           </Button>
           </p>
           <Box>
-               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog
+               open={open}
+               onClose={handleClose}
+               aria-labelledby="form-dialog-title"
+               fullWidth
+               maxWidth="xl"
+          >
                  <DialogTitle id="form-dialog-title">Nouvelle facture</DialogTitle>
                  <DialogContent>
-                  <TextField
-                     fullWidth
-                     autoFocus
-                     id="idmouvement"
-                     type="text"
-                     margin="dense"
-                     label="Id du mouvement"
-                     name="idmouvement"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
-                   />
-                    <TextField
-                     fullWidth
-                     autoFocus
-                     id="datefacture"
-                     type="date"
-                     margin="dense"
-                     name="datefacture"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
-                   />
-
-                    <AutoComplete
+                 <Grid container spacing={2}>
+                     <Grid item xs={4}>
+                       <TextField
+                         fullWidth
+                         autoFocus
+                         id="idmouvement"
+                         type="text"
+                         margin="dense"
+                         label="Id du mouvement"
+                         name="idmouvement"
+                         value={materiel}
+                         onChange={(event) => setMateriel(event.target.value)}
+                       />
+                     </Grid>
+                     <Grid item xs={4}>
+                       <TextField
+                         fullWidth
+                         autoFocus
+                         id="datefacture"
+                         type="date"
+                         margin="dense"
+                         name="datefacture"
+                         value={icon}
+                         onChange={(event) => setIcon(event.target.value)}
+                       />
+                     </Grid>
+                     <Grid item xs={4}>
+                       <AutoComplete
+                         fullWidth
+                         autoFocus
+                         // options={suggestions}
+                         getOptionLabel={(option) => option.label}
+                         renderInput={(params) => (
+                           <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+                         )}
+                         name="nom"
+                         id="nom"
+                       />
+                     </Grid>
+                   </Grid>          
+                   <Grid container spacing={2}>
+                     <Grid item xs={3}>
+                       <TextField
+                          fullWidth
+                          size="small"
+                          type="number"
+                          name="quantite"
+                          label="Quantite"
+                          variant="outlined"
+                          value={materielfilter}
+                          onChange={(event) => setMateriel(event.target.value)}
+                          sx={{ mb: 3 }}
+                       />
+                     </Grid>
+                     <Grid item xs={3}>
+                       <TextField
+                          fullWidth
+                          size="small"
+                          type="number"
+                          name="prixunitaire"
+                          label="Prix unitaire"
+                          variant="outlined"
+                          value={materielfilter}
+                          onChange={(event) => setMaterielfilter(event.target.value)}
+                          sx={{ mb: 3 }}
+                       />
+                     </Grid>
+                     <Grid item xs={3}>
+                     <Select
                       fullWidth
-                      // options={suggestions}
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                    )}
-                      name="nom"
-                      id="nom"
-                    />
-
+                       labelId="select-label"
+                       value={"1"}
+                       size="small" // Ajustez la taille du Select
+                       // onChange={handleChange}
+                     >
+                       <MenuItem value="1">Client 1</MenuItem>
+                       <MenuItem value="1">Client 2</MenuItem>
+                     </Select>
+                    </Grid>                    
+                    <Grid item xs={3}>
+                    <Button variant="outlined" color="secondary">
+                     Inserer
+                   </Button>
+                    </Grid>
+                   </Grid>
+                  <PaginationTable columns={columnsdetails} data={formData} />
                  </DialogContent>
 
                  <DialogActions>
@@ -151,7 +205,7 @@ const Facture = () => {
                      Annuler
                    </Button>
                    <Button onClick={handleSubmit} color="primary">
-                     Valider
+                     Enregistrer
                    </Button>
                  </DialogActions>
                </Dialog>
@@ -176,8 +230,6 @@ const Facture = () => {
                type="date"
                name="date"
                variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
              <TextField
@@ -187,8 +239,6 @@ const Facture = () => {
                name="stat"
                variant="outlined"
                label="Numstat"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
             <TextField
@@ -198,8 +248,6 @@ const Facture = () => {
                name="telephone"
                variant="outlined"
                label="Telephone"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>

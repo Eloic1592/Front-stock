@@ -34,9 +34,17 @@ import {
     </Button>
   );
  };
+
+ const EditButton = ({ onClick }) => {
+  return (
+    <Button variant="contained"  onClick={onClick} color="primary">
+        <Icon>edit_icon</Icon>
+    </Button>
+  );
+ };
  
  
- const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
+ const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] },editable=true) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);
@@ -98,7 +106,7 @@ import {
   return (
     <Box width="100%" overflow="auto">
             <DeleteButton selectedCount={selectedIds.length} onClick={handleDeleteAll} />
-
+            {/* <EditButton /> */}
       <StyledTable>
         <TableHead>
           <TableRow>
@@ -117,7 +125,7 @@ import {
               </TableCell>
 
             ))}
-            <TableCell>Action</TableCell>
+            {/* <TableCell>Action</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -147,11 +155,12 @@ import {
                  </TableCell>
                  
                 ))}
-                <TableCell>
+
+                {/* <TableCell>
                  <IconButton className="button" aria-label="Edit"  color="primary" onClick={() => handleEdit(row)}>
                       <Icon>edit_icon</Icon>
                 </IconButton>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
         </TableBody>
