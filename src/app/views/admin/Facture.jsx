@@ -3,6 +3,7 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
+import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
@@ -22,48 +23,59 @@ const Container = styled("div")(({ theme }) => ({
 }));
   
 const Facture = () => {
+  // Input 
+  const [idmouvement, setIdmouvement] = useState('');
+  const [datefacture, setDatefacture] = useState('');
+  const [quantite, setQuantite] = useState(0);
+  const [prixunitaire, setPrixunitaire] = useState(0);
+  const [formData, setFormData] = useState([]);
+
+
+  // Data
+  const[listefacture,setListeFacture]= useState([]);
+  const[client,setClient]= useState([]);
+  // Message
+  const [message,setMessage]= useState({
+    text:'Information enregistree',
+    severity:'success',
+    open:false,
+  });
+  const handleAlertClose = () => setMessage({open:false});
 
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
+
+  // Close form
   const handleClose = () => setOpen(false);
-  const handleAlertClose = () => setMessage({open:false});
-  const [formData, setFormData] = useState([]);
 
-   // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
-  const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
-
-    // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
-
-    // Message
-    const [message,setMessage]= useState({
-      text:'Information enregistree',
-      severity:'success',
-      open:false,
-    });
-  
   // Validation form
   const handleSubmit = (event) => {
     event.preventDefault();
    
     const newData = {
     article: '1',
-    quantite: 2,
-    prixunitaire: 4, 
-    total: 8, // Remplacez par la valeur réelle du nom du client
+    quantite: '2',
+    prixunitaire: '4', 
+    total: '8', // Remplacez par la valeur réelle du nom du client
     };
    
     setFormData([...formData, newData]);
    };
 
-    useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+  // Reset data to null
+  const resetData = () => {
+    setQuantite(0);
+    setIdmouvement('');
+    setDatefacture('');
+    setPrixunitaire(0);
+    setFormData([]);
+  };
+
+  // Page onLoad
+   useEffect(() => {
+    setListeFacture([]);
+   },[listefacture]);
 
     const columns = [
       { label: 'ID', field: 'idmouvementdestock', align: 'center' },
@@ -122,10 +134,22 @@ const Facture = () => {
                          margin="dense"
                          label="Id du mouvement"
                          name="idmouvement"
-                         value={materiel}
-                         onChange={(event) => setMateriel(event.target.value)}
+                         value={idmouvement}
+                         onChange={(event) => setIdmouvement(event.target.value)}
                        />
                      </Grid>
+                     <Grid item xs={4}>
+                     <Select
+                      fullWidth
+                      autoFocus
+                       labelId="select-label"
+                       value={"1"}
+                       margin="dense"
+                     >
+                       <MenuItem value="1">Client 1</MenuItem>
+                       <MenuItem value="2">Client 2</MenuItem>
+                     </Select>
+                    </Grid>
                      <Grid item xs={4}>
                        <TextField
                          fullWidth
@@ -134,24 +158,12 @@ const Facture = () => {
                          type="date"
                          margin="dense"
                          name="datefacture"
-                         value={icon}
-                         onChange={(event) => setIcon(event.target.value)}
+                         value={datefacture}
+                         onChange={(event) => setDatefacture(event.target.value)}
                        />
                      </Grid>
-                     <Grid item xs={4}>
-                       <AutoComplete
-                         fullWidth
-                         autoFocus
-                         // options={suggestions}
-                         getOptionLabel={(option) => option.label}
-                         renderInput={(params) => (
-                           <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                         )}
-                         name="nom"
-                         id="nom"
-                       />
-                     </Grid>
-                   </Grid>          
+                   </Grid>    
+                   <h3>Details de la facture</h3>      
                    <Grid container spacing={2}>
                      <Grid item xs={3}>
                        <TextField
@@ -161,8 +173,8 @@ const Facture = () => {
                           name="quantite"
                           label="Quantite"
                           variant="outlined"
-                          value={materielfilter}
-                          onChange={(event) => setMateriel(event.target.value)}
+                          value={quantite}
+                          onChange={(event) => setQuantite(event.target.value)}
                           sx={{ mb: 3 }}
                        />
                      </Grid>
@@ -174,42 +186,49 @@ const Facture = () => {
                           name="prixunitaire"
                           label="Prix unitaire"
                           variant="outlined"
-                          value={materielfilter}
-                          onChange={(event) => setMaterielfilter(event.target.value)}
+                          value={prixunitaire}
+                          onChange={(event) => setPrixunitaire(event.target.value)}
                           sx={{ mb: 3 }}
                        />
                      </Grid>
                      <Grid item xs={3}>
                      <Select
                       fullWidth
+                      autoFocus
                        labelId="select-label"
                        value={"1"}
-                       size="small" // Ajustez la taille du Select
-                       // onChange={handleChange}
+                       margin="dense"
+                       size="small"
                      >
-                       <MenuItem value="1">Client 1</MenuItem>
-                       <MenuItem value="1">Client 2</MenuItem>
+                       <MenuItem value="1">Article 1</MenuItem>
+                       <MenuItem value="2">Article 2</MenuItem>
                      </Select>
-                    </Grid>                    
+                    </Grid>
+
                     <Grid item xs={3}>
-                    <Button variant="outlined" color="secondary">
+                    <Button variant="outlined" color="secondary" onClick={handleSubmit}>
                      Inserer
                    </Button>
                     </Grid>
                    </Grid>
-                  <PaginationTable columns={columnsdetails} data={formData} />
+                  <CustomizedTable columns={columnsdetails} data={formData} />
                  </DialogContent>
 
                  <DialogActions>
-                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                 <Button onClick={resetData} color="inherit" variant="contained">
+                     Reinitialiser
+                   </Button>
+                   <Button variant="contained" color="secondary" onClick={handleClose}>
                      Annuler
                    </Button>
-                   <Button onClick={handleSubmit} color="primary">
+                   <Button onClick={handleSubmit} color="primary" variant="contained">
                      Enregistrer
                    </Button>
                  </DialogActions>
                </Dialog>
              </Box>
+
+
              <SimpleCard title="Rechercher une facture" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
@@ -220,8 +239,8 @@ const Facture = () => {
                name="client"
                label="Nom du client"
                variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
+               value={client}
+               onChange={(event) => setClient(event.target.value)}
                sx={{ mb: 3 }}
              />            
              <TextField
@@ -262,16 +281,10 @@ const Facture = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des factures">
-        <PaginationTable columns={columns} data={listematfilter} />
+        <PaginationTable columns={columns} data={listefacture} />
         </SimpleCard>
       </Container>
     );
   };
   
 export default Facture;
-
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}

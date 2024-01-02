@@ -12,6 +12,7 @@ import {
   IconButton,
   TextField,
   Checkbox,
+  Grid,
  } from "@mui/material";
  import { useState } from "react";
  
@@ -25,15 +26,7 @@ import {
   },
  }));
 
- const DeleteButton = ({ selectedCount, onClick }) => {
-  const disabled = selectedCount === 0;
-  const className = disabled ? 'disabled' : '';
-  return (
-    <Button variant="contained" className={className} onClick={onClick} color="secondary">
-        <Icon>delete</Icon>
-    </Button>
-  );
- };
+
 
  const EditButton = ({ onClick }) => {
   return (
@@ -105,8 +98,6 @@ import {
  
   return (
     <Box width="100%" overflow="auto">
-            <DeleteButton selectedCount={selectedIds.length} onClick={handleDeleteAll} />
-            {/* <EditButton /> */}
       <StyledTable>
         <TableHead>
           <TableRow>
@@ -125,7 +116,7 @@ import {
               </TableCell>
 
             ))}
-            {/* <TableCell>Action</TableCell> */}
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -156,16 +147,17 @@ import {
                  
                 ))}
 
-                {/* <TableCell>
-                 <IconButton className="button" aria-label="Edit"  color="primary" onClick={() => handleEdit(row)}>
+                <TableCell>
+                 <IconButton className="button" variant="contained" aria-label="Edit"  color="primary" onClick={() => handleEdit(row)}>
                       <Icon>edit_icon</Icon>
                 </IconButton>
-                </TableCell> */}
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </StyledTable>
-
+      <Grid container spacing={2}>
+      <Grid item xs={12}>
       <TablePagination
         sx={{ px: 2 }}
         page={page}
@@ -177,7 +169,9 @@ import {
         onRowsPerPageChange={handleChangeRowsPerPage}
         nextIconButtonProps={{ "aria-label": "Next Page" }}
         backIconButtonProps={{ "aria-label": "Previous Page" }}
-      />
+        />
+        </Grid>
+      </Grid>
     </Box>
   );
  };

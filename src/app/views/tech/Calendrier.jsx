@@ -8,7 +8,8 @@ import {frenchTranslations} from 'app/views/frenchtransalations';
 import moment from 'moment';
 import getUselink from 'app/views/getuseLink';
 import useData from 'app/useData';
-import {insertData} from 'app/views/insertData';
+import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+
 
 
 

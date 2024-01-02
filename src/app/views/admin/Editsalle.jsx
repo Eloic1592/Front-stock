@@ -2,8 +2,8 @@
 import { Button,Dialog,TextField,DialogTitle,DialogActions,DialogContent} from "@mui/material";
 
 import { useState } from "react";
-import getUselink from "../getuseLink";
-import { UpdateData } from "../UpdateData";
+import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+
 
 const handleSubmit = async  () => {
     // const result = await UpdateData({"salle":salle,"etat":0},getUselink+'updatesalle');

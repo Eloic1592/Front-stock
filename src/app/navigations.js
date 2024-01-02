@@ -6,7 +6,13 @@ export const navigations = [
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Mouvement de stock', iconText: 'SI', path: '/admin/stock' },
+      { name: 'Mouvement de stock', iconText: 'arrows-right',
+        children: [
+          {name: 'Mouvement physique', iconText: 'SI', path:'/admin/mouvementphysique'},
+          {name: 'Mouvement fictif', iconText: 'SI',path:'/admin/mouvementfictif'},
+
+        ]
+      },
       { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
       { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },

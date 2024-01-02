@@ -2,9 +2,8 @@ import { Box, styled,TextField,Snackbar,Alert} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useEffect, useState } from 'react';
-import {insertData} from 'app/views/insertData';
-// import {Finddata} from 'app/findData';
-import {deleteData} from 'app/views/deleteData';
+import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+
 
 
 const Container = styled("div")(({ theme }) => ({

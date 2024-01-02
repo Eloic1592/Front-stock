@@ -5,7 +5,8 @@ import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
-import {insertData} from 'app/views/insertData';
+import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -99,7 +100,10 @@ const Listemateriel = () => {
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
              Nouveau materiel
-           </Button>
+           </Button>&nbsp;&nbsp;
+           <Button variant="contained" color="secondary">
+            Importer des données
+            </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
