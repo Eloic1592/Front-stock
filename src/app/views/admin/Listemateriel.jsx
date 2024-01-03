@@ -1,4 +1,4 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,MenuItem,Select,InputLabel } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,MenuItem,Select,InputLabel,Grid } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
@@ -19,24 +19,9 @@ const Container = styled("div")(({ theme }) => ({
   }));
 
 const AutoComplete = styled(Autocomplete)(() => ({
-    width: 300,
     marginBottom: '16px',
 }));
 
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
 
   
 const Listemateriel = () => {
@@ -55,7 +40,12 @@ const Listemateriel = () => {
 
     // Input 
   const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [catmateriel, setCatmateriel] = useState(' ');
+  const [couleur, setCouleur] = useState(' ');
+  const [numserie, setNumserie] = useState('');
+  const [description, setDescription] = useState('');
+  const [prixvente, setPrixvente] = useState(0);
+  const [caution, setCaution] = useState(0);
 
     // Message
     const [message,setMessage]= useState({
@@ -66,18 +56,10 @@ const Listemateriel = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+    },[]);
 
     const columns = [
       { label: 'ID', field: 'id', align: 'center' },
@@ -106,45 +88,70 @@ const Listemateriel = () => {
             </Button>
           </p>
           <Box>
-               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth
+               maxWidth="xl">
                  <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
                  <DialogContent>
-                  <AutoComplete
-                    fullWidth
-                    // options={suggestions}
-                    getOptionLabel={(option) => option.label}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
-                  )}
-                    name="typemateriel"
-                    id="typemateriel"
-                  />
-                  
-                  <InputLabel id="color-select-label">Categorie de materiel</InputLabel>
-                  <Select
-                    labelId="select-label"
-                    value={"1"}
-                   //  onChange={handleChange}
-                     >
-                    <MenuItem value="1">Materiel bureautique</MenuItem>
-                    <MenuItem value="-1"> Materiel informatique</MenuItem>
-                    <MenuItem value="-1"> Materiel sonore</MenuItem>
-                    <MenuItem value="-1"> Alimentation</MenuItem>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                    <AutoComplete
+                      fullWidth
+                      // options={suggestions}
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
+                    )}
+                      name="typemateriel"
+                      id="typemateriel"
+                      sx={{ mb: 3 }}
+                    />
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={catmateriel}
+                      onChange={(event) => setCatmateriel(event.target.value)}
 
-                 </Select>
-                <p></p>
-                <p></p>
-                 <AutoComplete
-                    fullWidth
-                    // options={suggestions}
-                    getOptionLabel={(option) => option.label}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Modele du materiel" variant="outlined" fullWidth />
-                  )}
-                    name="typemateriel"
-                    id="typemateriel"
-                  />
-                   <TextField
+                     sx={{ mb: 3 }}
+                       >
+                      <MenuItem value=" ">Choisir la categorie de materiel</MenuItem>
+                      <MenuItem value="1">Materiel bureautique</MenuItem>
+                      <MenuItem value="-1"> Materiel informatique</MenuItem>
+                      <MenuItem value="-1"> Materiel sonore</MenuItem>
+                      <MenuItem value="-1"> Alimentation</MenuItem>
+
+                   </Select>
+                   </Grid>
+                 </Grid>
+                 <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <AutoComplete
+                       fullWidth
+                       // options={suggestions}
+                       getOptionLabel={(option) => option.label}
+                       renderInput={(params) => (
+                         <TextField {...params} label="Modele du materiel" variant="outlined" fullWidth />
+                     )}
+                       name="typemateriel"
+                       id="typemateriel"
+                     />
+                  </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          value={couleur}
+                          onChange={(event) => setCouleur(event.target.value)}
+                          >
+                          <MenuItem value=" ">Choisir une couleur</MenuItem>
+                          <MenuItem value="1">Noir</MenuItem>
+                          <MenuItem value="1">Gris</MenuItem>
+                       </Select>
+                    </Grid>
+                  </Grid>
+                                    
+                  <TextField
                      fullWidth
                      autoFocus
                      id="numeroserie"
@@ -152,18 +159,10 @@ const Listemateriel = () => {
                      margin="dense"
                      label="Numero de serie"
                      name="numserie"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={numserie}
+                     onChange={(event) => setNumserie(event.target.value)}
                    />
-                 <InputLabel id="color-select-label">Couleur de materiel</InputLabel>
-                <Select
-                    labelId="select-label"
-                    value={"1"}
-                   //  onChange={handleChange}
-                     >
-                    <MenuItem value="1">Noir</MenuItem>
-                    <MenuItem value="1">Gris</MenuItem>
-                 </Select>
+
                  <TextField
                      fullWidth
                      autoFocus
@@ -171,9 +170,11 @@ const Listemateriel = () => {
                      type="text"
                      margin="dense"
                      label="Description du materiel"
+                     rows={4}
+                     multiline
                      name="description"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={description}
+                     onChange={(event) => setDescription(event.target.value)}
                    />
 
                  <TextField
@@ -184,8 +185,8 @@ const Listemateriel = () => {
                      margin="dense"
                      label="Prix de vente"
                      name="prixvente"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={prixvente}
+                     onChange={(event) => setPrixvente(event.target.value)}
                    />
                   <TextField
                      fullWidth
@@ -195,16 +196,17 @@ const Listemateriel = () => {
                      margin="dense"
                      label="Caution"
                      name="caution"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={caution}
+                     onChange={(event) => setCaution(event.target.value)}
                    />
+                   
                  </DialogContent>
 
                  <DialogActions>
                    <Button variant="outlined" color="secondary" onClick={handleClose}>
                      Annuler
                    </Button>
-                   <Button onClick={handleSubmit} color="primary">
+                   <Button onClick={handleSubmit} color="primary" variant="contained">
                      Valider
                    </Button>
                  </DialogActions>
@@ -238,6 +240,7 @@ const Listemateriel = () => {
               />
               <AutoComplete
                     fullWidth
+                    size="small"
                     // options={suggestions}
                     getOptionLabel={(option) => option.label}
                     renderInput={(params) => (
@@ -250,20 +253,23 @@ const Listemateriel = () => {
                 labelId="select-label"
                 value={"1"}
                 size="small"
+                sx={{ mb: 3 }}
                //  onChange={handleChange}
                  >
                 <MenuItem value="1">Noir</MenuItem>
                 <MenuItem value="1">Gris</MenuItem>
              </Select>
              <Select
-                    labelId="select-label"
-                    value={"1"}
+                  size="small"
+                  labelId="select-label"
+                  value={"1"}
+                  sx={{ mb: 3 }}
                    //  onChange={handleChange}
-                     >
-                    <MenuItem value="1">Materiel bureautique</MenuItem>
-                    <MenuItem value="-1"> Materiel informatique</MenuItem>
-                    <MenuItem value="-1"> Materiel sonore</MenuItem>
-                    <MenuItem value="-1"> Alimentation</MenuItem>
+                  >
+                  <MenuItem value="1">Materiel bureautique</MenuItem>
+                  <MenuItem value="-1"> Materiel informatique</MenuItem>
+                  <MenuItem value="-1"> Materiel sonore</MenuItem>
+                  <MenuItem value="-1"> Alimentation</MenuItem>
 
                  </Select>
             </div>

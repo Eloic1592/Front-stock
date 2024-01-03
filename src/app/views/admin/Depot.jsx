@@ -83,12 +83,12 @@ const Depot = () => {
    ];
 
    const donnees = [
-    { id: 1, depot: 'Depot 1', /* other fields... */ },
-    { id: 2, depot: 'Depot 2', /* other fields... */ },
-    { id: 3, depot: 'Depot 3', /* other fields... */ },
+     { id: 5, depot: 'Depot 5', /* other fields... */ },
+     { id: 2, depot: 'Depot 2', /* other fields... */ },
+     { id: 1, depot: 'Depot 1', /* other fields... */ },
+     { id: 6, depot: 'Depot 6', /* other fields... */ },
     { id: 4, depot: 'Depot 4', /* other fields... */ },
-    { id: 5, depot: 'Depot 5', /* other fields... */ },
-    { id: 6, depot: 'Depot 6', /* other fields... */ },
+    { id: 3, depot: 'Depot 3', /* other fields... */ },
     // More rows...
    ];
    

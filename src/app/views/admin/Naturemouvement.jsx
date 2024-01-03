@@ -1,10 +1,9 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Select,MenuItem,Button } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
+import Grid from '@mui/material/Grid';
 import { deleteData, Finddata, insertData, UpdateData } from '../functions';
 
 
@@ -18,21 +17,6 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
   
 const Naturemouvement = () => {
 
@@ -44,12 +28,11 @@ const Naturemouvement = () => {
 
    // Data
   const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
 
     // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [typemouvement, setTypemouvement] = useState('');
+  const [categoriemouvement, setCategoriemouvement] = useState('1');
 
     // Message
     const [message,setMessage]= useState({
@@ -60,18 +43,10 @@ const Naturemouvement = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+    },[]);
 
     const columns = [
       { label: 'ID', field: 'id', align: 'center' },
@@ -114,9 +89,18 @@ const Naturemouvement = () => {
                      margin="dense"
                      label="type de mouvement"
                      name="typemouvement"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
-                   />
+                     value={typemouvement}
+                     onChange={(event) => setTypemouvement(event.target.value)}
+                       />
+                    <Select
+                    fullWidth
+                     labelId="select-label"
+                     value={categoriemouvement}
+                     onChange={(event) => setCategoriemouvement(event.target.value)}
+                      >
+                     <MenuItem value="1">Physique</MenuItem>
+                     <MenuItem value="2">Fictif</MenuItem>
+                    </Select>
                  </DialogContent>
 
                  <DialogActions>
@@ -132,17 +116,33 @@ const Naturemouvement = () => {
              <SimpleCard title="Rechercher un type de mouvement" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="typemouvement"
-               label="type de mouvement"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                <TextField
+                 fullWidth
+                 size="small"
+                 type="text"
+                 name="typemouvement"
+                 label="type de mouvement"
+                 variant="outlined"
+                 value={materielfilter}
+                 onChange={(event) => setMaterielfilter(event.target.value)}
+                 sx={{ mb: 3 }}
+               />
+             </Grid>
+             <Grid item xs={6}>
+                <Select
+                    fullWidth
+                    size="small"
+                     labelId="select-label"
+                     value={categoriemouvement}
+                     onChange={(event) => setCategoriemouvement(event.target.value)}
+                      >
+                     <MenuItem value="1">Physique</MenuItem>
+                     <MenuItem value="2">Fictif</MenuItem>
+                </Select>
+                </Grid>
+              </Grid>
             </div>
             </form>
               </SimpleCard>

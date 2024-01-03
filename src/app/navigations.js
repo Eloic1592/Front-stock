@@ -14,7 +14,7 @@ export const navigations = [
         ]
       },
       { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
-      { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
+      // { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
       { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
       { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
@@ -23,7 +23,7 @@ export const navigations = [
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
       { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },
       { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
-      { name: 'Historique', iconText: 'SI', path: '/admin/historique' },
+      { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' },
 
     ]
   },

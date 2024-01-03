@@ -44,6 +44,8 @@ const Commande  = Loadable(lazy(() => import('app/views/admin/Commande')));
 
 const Depot  = Loadable(lazy(() => import('app/views/admin/Depot')));
 
+const Archives  = Loadable(lazy(() => import('app/views/admin/Archives')));
+
 const Historique  = Loadable(lazy(() => import('app/views/admin/Historique')));
 
 // echart page
@@ -158,11 +160,17 @@ const routes = [
 
       
       {
+        path: '/admin/archives',
+        element: <Archives />,
+        auth: authRoles.admindefault
+      },
+      
+            
+      {
         path: '/admin/historique',
         element: <Historique />,
         auth: authRoles.admindefault
       },
-      
     ]
   },
 
@@ -190,6 +198,7 @@ const routes = [
   { path: '/admin/proforma', element: < Proforma/> },
   { path: '/admin/commande', element: < Commande/> },
   { path: '/admin/depot', element: < Depot/> },
+  { path: '/admin/archives', element: < Archives/> },
   { path: '/admin/historique', element: < Historique/> },
 
   { path: '/', element: <Navigate to="/admin/dashboard" /> },

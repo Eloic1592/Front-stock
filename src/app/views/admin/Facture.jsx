@@ -1,6 +1,5 @@
 import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,MenuItem,Select,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";

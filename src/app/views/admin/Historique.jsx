@@ -1,7 +1,8 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,Select,MenuItem } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,Select,MenuItem,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
+import Grid from '@mui/material/Grid';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
@@ -17,27 +18,14 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
-
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
   
 const Historique = () => {
 
   // Form dialog
   const [open, setOpen] = useState(false);
+  const [mouvement, setMouvement] = useState('1');
+  const [mois, setMois] = useState('1');
+  const [filename, setFilename] = useState('');
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({open:false});
@@ -48,10 +36,6 @@ const Historique = () => {
   const [materielfilter, setMaterielfilter] = useState('');
   const listematfilter = filtremateriel(listemateriel,materielfilter);
 
-    // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
-
     // Message
     const [message,setMessage]= useState({
       text:'Information enregistree',
@@ -61,18 +45,10 @@ const Historique = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+    },[]);
 
 // Colonne
     const columns = [
@@ -91,9 +67,81 @@ const Historique = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Historique", path: "admin/historique" }, { name: "Historique" }]} />
         </Box>
+        <p>
+        <Button variant="contained" onClick={handleClickOpen} color="inherit">
+          Exporter des donnees
+        </Button>&nbsp;&nbsp;
+        </p>
+
+        {/* Formulaire */}
+        <Box>
+               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Importation de donnees</DialogTitle>
+                 <DialogContent>
+                 <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                     <Select
+                     fullWidth
+                       labelId="select-label"
+                       value={mouvement}
+                       onChange={(event) => setMouvement(event.target.value)}
+                     >
+                       <MenuItem value="1">Entree</MenuItem>
+                       <MenuItem value="-1"> Sortie</MenuItem>
+                     </Select>
+                   </Grid>
+                   <Grid item xs={6}>
+                     <Select
+                     fullWidth
+                       labelId="select-label"
+                       value={mois}
+                       onChange={(event) => setMois(event.target.value)}
+                     >
+                       <MenuItem value="1">Janvier</MenuItem>
+                       <MenuItem value="2">Fevrier</MenuItem>
+                       <MenuItem value="3">Mars</MenuItem>
+                       <MenuItem value="4">Avril</MenuItem>
+                       <MenuItem value="5">Mai</MenuItem>
+                       <MenuItem value="6">Juin</MenuItem>
+                       <MenuItem value="7">Juillet</MenuItem>
+                       <MenuItem value="8">Aout</MenuItem>
+                       <MenuItem value="9">Septembre</MenuItem>
+                       <MenuItem value="10">Octobre</MenuItem>
+                       <MenuItem value="11">Novembre</MenuItem>
+                       <MenuItem value="12">Decembre</MenuItem>
+                     </Select>
+                   </Grid>
+                   </Grid>
+                     <TextField
+                       fullWidth
+                       autoFocus
+                       id="filename"
+                       type="text"
+                       margin="dense"
+                       label="Nom du fichier"
+                       name="filename"
+                       value={filename}
+                       onChange={(event) => setFilename(event.target.value)}
+                     />                 
+
+
+                 </DialogContent>
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleClose}>
+                     Annuler
+                   </Button>
+                   <Button onClick={handleSubmit} color="primary">
+                     Imprimer
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
+
              <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
+              <Grid container spacing={3}>
+              <Grid item xs={4}>
               <TextField
                fullWidth
                size="small"
@@ -105,17 +153,33 @@ const Historique = () => {
                onChange={(event) => setMaterielfilter(event.target.value)}
                sx={{ mb: 3 }}
              />
-              <TextField
-               fullWidth
-               size="small"
-               type="date"
-               name="date"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
+             </Grid>
+             <Grid item xs={4}>
             <Select
+                fullWidth
+                size="small"
+               labelId="select-label"
+               value={"1"}
+              //  onChange={handleChange}
+                >
+               <MenuItem value="1">Janvier</MenuItem>
+               <MenuItem value="2">Fevrier</MenuItem>
+               <MenuItem value="3">Mars</MenuItem>
+               <MenuItem value="4">Avril</MenuItem>
+               <MenuItem value="5">Mai</MenuItem>
+               <MenuItem value="6">Juin</MenuItem>
+               <MenuItem value="7">Juillet</MenuItem>
+               <MenuItem value="8">Aout</MenuItem>
+               <MenuItem value="9">Septembre</MenuItem>
+               <MenuItem value="10">Octobre</MenuItem>
+               <MenuItem value="11">Novembre</MenuItem>
+               <MenuItem value="12">Decembre</MenuItem>
+            </Select>
+            </Grid>
+            <Grid item xs={4}>
+            <Select
+              fullWidth
+              size="small"
                labelId="select-label"
                value={"1"}
               //  onChange={handleChange}
@@ -123,6 +187,8 @@ const Historique = () => {
                <MenuItem value="1">Entree</MenuItem>
                <MenuItem value="-1"> Sortie</MenuItem>
             </Select>
+            </Grid>
+            </Grid>
             </div>
             </form>
               </SimpleCard>

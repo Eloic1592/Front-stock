@@ -12,9 +12,11 @@ import {
   IconButton,
   TextField,
   Checkbox,
+  Select,
+  MenuItem,
   Grid,
  } from "@mui/material";
- import { useState } from "react";
+ import { useState,useEffect } from "react";
  
  const StyledTable = styled(Table)(() => ({
   whiteSpace: "pre",
@@ -42,6 +44,8 @@ import {
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [sortColumn, setSortColumn] = useState(["1"]);
+  const [sortDirection, setSortDirection] = useState([]);
  
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -57,14 +61,9 @@ import {
   };
  
   const handleSave = (value, id, field) => {
-    // setData(data.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
     setEditingId(null);
   };
  
-  const handleInsert = () => {
-    // setData([...data, { /* new row data */ }]);
-  };
-
   
  const handleSelection = (event, id) => {
   if (event.target.checked) {
@@ -75,16 +74,8 @@ import {
  };
 
 //  Supprime une ligne
- const handleDelete = (id) => {
-  // setData(data.filter((row) => !selectedIds.includes(row.id)));
-  setSelectedIds(selectedIds.filter((i) => i !== id));
- };
 
 //  Supprime toutes les lignes de cette liste
- const handleDeleteAll = () => {
-  // setData(data.filter((row) => !selectedIds.includes(row.id)));
-  setSelectedIds([]);
- };
 
  //Select  toutes les checkboxes de la liste  
  const handleSelectAll = (event) => {
@@ -95,14 +86,69 @@ import {
   }
  };
 
+//  Tri colonne
+const handleSelectDirection = (event) => {
+  setSortDirection(event.target.value);
+ };
+
+ 
+const handleSelectColumn = (event) => {
+  setSortColumn(event.target.value);
+ };
+
+ const sortedData = data.sort((a, b) => {
+  if (a[sortColumn] < b[sortColumn]) {
+  return sortDirection === 'asc' ? -1 : 1;
+  }
+  if (a[sortColumn] > b[sortColumn]) {
+  return sortDirection === 'asc' ? 1 : -1;
+  }
+  return 0;
+ });
+ 
+
+//  Use effect
+useEffect(() => {
+  setSortDirection("desc");
+},[sortedData]);
+ 
+
  
   return (
     <Box width="100%" overflow="auto">
+        {/* Tri de tables */}
+        <Grid container spacing={2}>
+           <Grid item xs={2}>
+             <Select
+              fullWidth
+               labelId="select-label"
+               value={sortColumn}
+               size="small"
+               onChange={handleSelectColumn}
+             >
+               <MenuItem value="1">Colonne</MenuItem>
+               {columns.map((column) => (
+                 <MenuItem value={column.field}>{column.label}</MenuItem>
+               ))}
+             </Select>
+           </Grid>
+           <Grid item xs={3}>
+             <Select
+               labelId="select-direction-label"
+               value={sortDirection}
+               size="small"
+               onChange={handleSelectDirection}
+             >
+               <MenuItem value="asc">ASC</MenuItem>
+               <MenuItem value="desc">DESC</MenuItem>
+             </Select>
+           </Grid>
+          </Grid> 
       <StyledTable>
         <TableHead>
+          {/* Listage de Donnees */}
           <TableRow>
           <TableCell>
-            {/* Selectionne toutes les checkboxes de la liste */}
           <Checkbox
             checked={data.every((row) => selectedIds.includes(row.id))}
             indeterminate={data.some((row) => selectedIds.includes(row.id)) && !data.every((row) => selectedIds.includes(row.id))}
@@ -121,7 +167,7 @@ import {
         </TableHead>
         <TableBody>
           {/* Donnees du tableau */}
-          {data
+          {sortedData
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => (
               

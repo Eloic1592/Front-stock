@@ -18,7 +18,6 @@ const Container = styled("div")(({ theme }) => ({
   }));
 
 const AutoComplete = styled(Autocomplete)(() => ({
-    width: 300,
     marginBottom: '16px',
 }));
 
@@ -33,8 +32,8 @@ const [quantite, setQuantite] = useState(0);
 const [prixunitaire, setPrixunitaire] = useState(0);
 const [depot, setDepot] = useState('');
 const [prixstock, setPrixstock] = useState(0);
-const [description, setDescription] = useState(0);
-const [commentaire, setCommentaire] = useState(0);
+const [description, setDescription] = useState('');
+const [commentaire, setCommentaire] = useState('');
   // Data
   const[listemouvementstock,setListemouvementstock]= useState([]);
   const[naturemouvement,setNaturemouvement]= useState([]);
@@ -134,26 +133,24 @@ const [commentaire, setCommentaire] = useState(0);
           >
                  <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
                  <DialogContent>
-                 <Grid container spacing={2}>
+                 <Grid container spacing={3}>
                      <Grid item xs={4}>
                      <Select
                       fullWidth
-                      autoFocus
                        labelId="select-label"
                        value={"1"}
-                       margin="dense"
+                      
                      >
                        <MenuItem value="1">Perte</MenuItem>
                        <MenuItem value="2">Transfert</MenuItem>
                      </Select>
                     </Grid>
-                     <Grid item xs={4}>
+                    <Grid item xs={4}>
                        <TextField
                          fullWidth
-                         autoFocus
                          id="datedepot"
                          type="date"
-                         margin="dense"
+                        
                          name="datedepot"
                          value={datedepot}
                          onChange={(event) => setDatedepot(event.target.value)}
@@ -162,10 +159,9 @@ const [commentaire, setCommentaire] = useState(0);
                      <Grid item xs={4}>
                      <Select
                       fullWidth
-                      autoFocus
                        labelId="select-label"
                        value={"1"}
-                       margin="dense"
+                      
                      >
                        <MenuItem value="1">Entree</MenuItem>
                        <MenuItem value="2">Sortie</MenuItem>
@@ -291,55 +287,69 @@ const [commentaire, setCommentaire] = useState(0);
         <SimpleCard title="Rechercher" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
-               variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            <TextField
-               fullWidth
-               size="small"
-               type="date"
-               name="date"
-               variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            <Select
-               labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
-                >
-               <MenuItem value="1">Entree</MenuItem>
-               <MenuItem value="-1"> Sortie</MenuItem>
-            </Select>
-            <Select
-               labelId="select-label"
-               value={"1"}
-               onChange={(event) => setDepot(event.target.value)}
-
-                >
-               <MenuItem value="1">Depot</MenuItem>
-               <MenuItem value="-1"> Salle 6</MenuItem>
-            </Select>
-
-            <Select
-               labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
-              >
-               <MenuItem value="1">Don</MenuItem>
-               <MenuItem value="-1"> Transfert</MenuItem>
-               <MenuItem value="-1"> Perte</MenuItem>
-            </Select>
-            
+                <Grid container spacing={2}>
+                  <Grid item xs={3}>
+                    <TextField
+                     fullWidth
+                     size="small"
+                     type="text"
+                     name="materielfiltre"
+                     label="Nom du materiel"
+                     variant="outlined"
+                    //  value={materielfilter}
+                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     sx={{ mb: 3 }}
+                   />
+                   </Grid>
+                  <Grid item  xs={3}>
+                  <TextField
+                     fullWidth
+                     size="small"
+                     type="date"
+                     name="date"
+                     variant="outlined"
+                    //  value={materielfilter}
+                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     sx={{ mb: 3 }}
+                   />
+                   </Grid>
+                  <Grid item  xs={3}>
+                  <Select
+                    fullWidth
+                     size="small"
+                     labelId="select-label"
+                     value={"1"}
+                    //  onChange={handleChange}
+                      >
+                     <MenuItem value="1">Entree</MenuItem>
+                     <MenuItem value="-1"> Sortie</MenuItem>
+                  </Select>
+                  </Grid>
+                  <Grid item xs={1}>
+                  <Select
+                    size="small"
+                     labelId="select-label"
+                     value={"1"}
+                     onChange={(event) => setDepot(event.target.value)}
+                      >
+                     <MenuItem value="1">Depot</MenuItem>
+                     <MenuItem value="-1"> Salle 6</MenuItem>
+                  </Select>
+                  </Grid>
+                  <Grid item xs={2}>
+                  <Select
+                  fullWidth
+                    size="small"
+                     labelId="select-label"
+                     value={"1"}
+                    //  onChange={handleChange}
+                    >
+                     <MenuItem value="1">Don</MenuItem>
+                     <MenuItem value="-1"> Transfert</MenuItem>
+                     <MenuItem value="-1"> Perte</MenuItem>
+                  </Select>
+                  </Grid>
+            </Grid>
             </div>
             </form>
         </SimpleCard>

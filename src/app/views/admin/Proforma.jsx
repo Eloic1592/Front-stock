@@ -1,10 +1,8 @@
-import { Box, styled,TextField,Snackbar,Alert,Autocomplete } from "@mui/material";
+import { Box, styled,TextField,Snackbar,Alert,Autocomplete,Grid } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
 import { deleteData, Finddata, insertData, UpdateData } from '../functions';
 
 
@@ -18,24 +16,8 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
   const AutoComplete = styled(Autocomplete)(() => ({
-    width: 300,
     marginBottom: '16px',
 }));
-
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
 
   
 const Proforma = () => {
@@ -65,13 +47,6 @@ const Proforma = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
@@ -97,26 +72,33 @@ const Proforma = () => {
              <SimpleCard title="Rechercher un proforma" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="date"
-               name="datedevis"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            <AutoComplete
-              fullWidth
-              // options={suggestions}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-            )}
-              name="idmateriel"
-              id="idmateriel"
-            />
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <TextField
+                   fullWidth
+                   size="small"
+                   type="date"
+                   name="datedevis"
+                   variant="outlined"
+                   value={materielfilter}
+                   onChange={(event) => setMaterielfilter(event.target.value)}
+                   sx={{ mb: 3 }}
+                  />
+             </Grid>
+             <Grid item xs={6}>
+                <AutoComplete
+                  fullWidth
+                  size="small"
+                  // options={suggestions}
+                  getOptionLabel={(option) => option.label}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+                )}
+                  name="idmateriel"
+                  id="idmateriel"
+                />
+              </Grid>
+            </Grid>
             </div>
             </form>
               </SimpleCard>
