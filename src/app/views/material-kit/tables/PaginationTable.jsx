@@ -16,6 +16,7 @@ import {
   MenuItem,
   Grid,
  } from "@mui/material";
+ import Typography from '@mui/material/Typography';
  import { useState,useEffect } from "react";
  
  const StyledTable = styled(Table)(() => ({
@@ -132,8 +133,9 @@ useEffect(() => {
                ))}
              </Select>
            </Grid>
-           <Grid item xs={3}>
+           <Grid item xs={1}>
              <Select
+              fullWidth
                labelId="select-direction-label"
                value={sortDirection}
                size="small"
@@ -143,6 +145,12 @@ useEffect(() => {
                <MenuItem value="desc">DESC</MenuItem>
              </Select>
            </Grid>
+           <Grid item xs={2}>
+           <Button className="button" variant="contained" aria-label="Edit" color="error">
+              <Icon>delete</Icon>
+            </Button>
+           </Grid>
+
           </Grid> 
       <StyledTable>
         <TableHead>
@@ -167,39 +175,37 @@ useEffect(() => {
         </TableHead>
         <TableBody>
           {/* Donnees du tableau */}
-          {sortedData
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row, index) => (
-              
-              <TableRow key={index}>
-                <TableCell>
-                    <Checkbox
-                      checked={selectedIds.includes(row.id)}
-                      onChange={(event) => handleSelection(event, row.id)}
-                    />
-                </TableCell>
-                {columns.map((column, index) => (
-                  
-                 <TableCell key={index} align={column.align || "left"}>
-                   {editingId === row.id ? (
-                     <TextField                                                    
-                       defaultValue={column.render ? column.render(row) : row[column.field]}
-                       onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                     />
-                   ) : (
-                     column.render ? column.render(row) : row[column.field]
-                   )}
-                 </TableCell>
-                 
-                ))}
+          {sortedData && sortedData.length > 0 ? sortedData
+             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+             .map((row, index) => (
+                 <TableRow key={index}>
+                     <TableCell>
+                         <Checkbox
+                            checked={selectedIds.includes(row.id)}
+                            onChange={(event) => handleSelection(event, row.id)}
+                         />
+                     </TableCell>
+                     {columns.map((column, index) => (
+                         <TableCell key={index} align={column.align || "left"}>
+                            {editingId === row.id ? (
+                                <TextField
+                                    defaultValue={column.render ? column.render(row) : row[column.field]}
+                                    onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
+                                />
+                            ) : (
+                                column.render ? column.render(row) : row[column.field]
+                            )}
+                         </TableCell>
+                     ))}
+          
+                     <TableCell>
+                         <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
+                            <Icon>edit_icon</Icon>
+                         </IconButton>
+                     </TableCell>
+                 </TableRow>
+             )) : <p><Typography variant="subtitle1" color="textSecondary">Aucune donnee disponible</Typography></p>}
 
-                <TableCell>
-                 <IconButton className="button" variant="contained" aria-label="Edit"  color="primary" onClick={() => handleEdit(row)}>
-                      <Icon>edit_icon</Icon>
-                </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
         </TableBody>
       </StyledTable>
       <Grid container spacing={2}>
