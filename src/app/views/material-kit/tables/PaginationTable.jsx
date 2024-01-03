@@ -47,7 +47,10 @@ import {
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortColumn, setSortColumn] = useState(["1"]);
   const [sortDirection, setSortDirection] = useState([]);
- 
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+
+
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -59,6 +62,8 @@ import {
  
   const handleEdit = (row) => {
     setEditingId(row.id);
+    setIsEditClicked(true);
+    setSelectedRowId(row.id);
   };
  
   const handleSave = (value, id, field) => {
@@ -133,7 +138,7 @@ useEffect(() => {
                ))}
              </Select>
            </Grid>
-           <Grid item xs={1}>
+           <Grid item xs={2}>
              <Select
               fullWidth
                labelId="select-direction-label"
@@ -146,7 +151,7 @@ useEffect(() => {
              </Select>
            </Grid>
            <Grid item xs={2}>
-           <Button className="button" variant="contained" aria-label="Edit" color="error">
+           <Button className="button" variant="contained" aria-label="Edit" color="error" disabled={selectedIds.length == 0}>
               <Icon>delete</Icon>
             </Button>
            </Grid>
@@ -202,6 +207,11 @@ useEffect(() => {
                          <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
                             <Icon>edit_icon</Icon>
                          </IconButton>
+                         {isEditClicked && row.id=== selectedRowId && (
+                         <IconButton  className="button" variant="contained" aria-label="Edit" color="secondary">
+                            <Icon>arrow_forward</Icon>
+                         </IconButton>
+                         )}
                      </TableCell>
                  </TableRow>
              )) : <p><Typography variant="subtitle1" color="textSecondary">Aucune donnee disponible</Typography></p>}
