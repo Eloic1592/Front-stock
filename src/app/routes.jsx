@@ -14,39 +14,39 @@ const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPass
 const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
 
 // Admin
-const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/LoginAdmin')));
+const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
 
-const Dashboard  = Loadable(lazy(() => import('app/views/admin/Dashboard')));
+const Dashboard  = Loadable(lazy(() => import('app/views/admin/Dashboard/Dashboard')));
 
-const Bilan  = Loadable(lazy(() => import('app/views/admin/Bilan')));
+const Bilan  = Loadable(lazy(() => import('app/views/admin/Dashboard/Bilan')));
 
-const TypeMouvement  = Loadable(lazy(() => import('app/views/admin/Naturemouvement')));
+const TypeMouvement  = Loadable(lazy(() => import('app/views/admin/Mouvement/Naturemouvement')));
 
-const TypeMateriel  = Loadable(lazy(() => import('app/views/admin/Typemateriel')));
+const TypeMateriel  = Loadable(lazy(() => import('app/views/admin/Typemateriel/Typemateriel')));
 
-const Categoriemateriel  = Loadable(lazy(() => import('app/views/admin/Categoriemateriel')));
+const Categoriemateriel  = Loadable(lazy(() => import('app/views/admin/Categoriemateriel/Categoriemateriel')));
 
-const Stockphysique  = Loadable(lazy(() => import('app/views/admin/Stockphysique')));
+const Stockphysique  = Loadable(lazy(() => import('app/views/admin/Stock/Stockphysique')));
 
-const Stockfictif  = Loadable(lazy(() => import('app/views/admin/Stockfictif')));
+const Stockfictif  = Loadable(lazy(() => import('app/views/admin/Stock/Stockfictif')));
 
-const Materiel  = Loadable(lazy(() => import('app/views/admin/Listemateriel')));
+const Materiel  = Loadable(lazy(() => import('app/views/admin/Materiel/Listemateriel')));
 
 const EntreeSortie  = Loadable(lazy(() => import('app/views/admin/EntreeSortie')));
 
-const Facture  = Loadable(lazy(() => import('app/views/admin/Facture')));
+const Facture  = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
 
-const Proforma  = Loadable(lazy(() => import('app/views/admin/Proforma')));
+const Proforma  = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
 
-const Devis  = Loadable(lazy(() => import('app/views/admin/Devis')));
+const Devis  = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
 
-const Commande  = Loadable(lazy(() => import('app/views/admin/Commande')));
+const Commande  = Loadable(lazy(() => import('app/views/admin/Commande/Commande')));
 
-const Depot  = Loadable(lazy(() => import('app/views/admin/Depot')));
+const Depot  = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
 
-const Archives  = Loadable(lazy(() => import('app/views/admin/Archives')));
+const Archives  = Loadable(lazy(() => import('app/views/admin/Archives/Archives')));
 
-const Historique  = Loadable(lazy(() => import('app/views/admin/Historique')));
+const Historique  = Loadable(lazy(() => import('app/views/admin/Archives/Historique')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));

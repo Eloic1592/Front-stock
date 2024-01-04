@@ -4,7 +4,7 @@ import { useData } from 'app/useData';
 import { useEffect, useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { deleteData, Finddata, insertData, UpdateData } from '../functions';
-import {Editsalle} from 'app/views/admin/Editsalle';
+// import {Editsalle} from 'app/views/admin/Editsalle';
 
 const Container = styled("div")(({ theme }) => ({
     margin: "30px",
@@ -150,7 +150,7 @@ const EntreeSortie =  () => {
                     </Alert>
                   </Snackbar>
     
-                <Editsalle open={openEdit} close={handleEditclose} object={object}/>
+                {/* <Editsalle open={openEdit} close={handleEditclose} object={object}/> */}
 {/*     
                   <SimpleCard title="Liste des salles">
             <PaginationTable columns={colonne} data={listesallefiltre} />

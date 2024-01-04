@@ -3,7 +3,7 @@ import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useEffect, useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
-import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 
 
 

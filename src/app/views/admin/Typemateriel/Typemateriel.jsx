@@ -5,7 +5,7 @@ import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
-import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 
 
 
@@ -34,7 +34,7 @@ const Container = styled("div")(({ theme }) => ({
   };
 
   
-const Commande = () => {
+const Typemateriel = () => {
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -46,7 +46,6 @@ const Commande = () => {
   const data =useData('getallmateriel');
   const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
   const [materiel, setMateriel] = useState('');
@@ -74,64 +73,48 @@ const Commande = () => {
       setListemateriel(data);
     },[data]);
 
+    const columns = [
+      { label: 'ID', field: 'id', align: 'center' },
+      { label: 'Type de materiel', field: 'typemateriel', align: 'center' },
+      // Other columns...
+     ];
 
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
- 
+     const donnees = [
+      { id: 1, typemateriel: 'Depot 1', /* other fields... */ },
+      { id: 2, typemateriel: 'Depot 2', /* other fields... */ },
+      { id: 3, typemateriel: 'Depot 3', /* other fields... */ },
+      { id: 4, typemateriel: 'Depot 4', /* other fields... */ },
+      { id: 5, typemateriel: 'Depot 5', /* other fields... */ },
+      { id: 6, typemateriel: 'Depot 6', /* other fields... */ },
+      // More rows...
+     ];
+
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Commande", path: "admin/commande" }, { name: "Commande" }]} />
+          <Breadcrumb routeSegments={[{ name: "Type de materiel", path: "admin/typemateriel" }, { name: "Type de materiel" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau bon de commande
-           </Button>&nbsp;&nbsp;        
+           Nouveau type de materiel           
+           </Button>&nbsp;&nbsp;
            <Button variant="contained" color="secondary">
-            Importer un bon
+          Importer des données
           </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau bon de commande</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
                  <DialogContent>
                   <TextField
-                     fullWidth
-                     autoFocus
-                     id="datebon"
-                     type="date"
-                     margin="dense"
-                     name="datebon"
+                   fullWidth
+                    size="small"
+                    type="text"
+                    name="typemateriel"
+                    label="type de materiel"
+
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
-                   />
-                    <TextField
-                     fullWidth
-                     autoFocus
-                     id="nom"
-                     type="text"
-                     margin="dense"
-                     label="Nom du client"
-                     name="nom"
-                     value={icon}
-                     onChange={(event) => setIcon(event.target.value)}
                    />
                  </DialogContent>
 
@@ -145,30 +128,20 @@ const Commande = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un type de materiel" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
-                fullWidth
-                size="small"
-                id="datebon"
-                type="date"
-                margin="dense"
-                name="datebon"
-                value={materiel}
-                onChange={(event) => setMateriel(event.target.value)}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="nom"
-                type="text"
-                margin="dense"
-                label="Nom du client"
-                name="nom"
-                value={icon}
-                onChange={(event) => setIcon(event.target.value)}
-              />
+               fullWidth
+               size="small"
+               type="text"
+               name="typemateriel"
+               label="type de materiel"
+               variant="outlined"
+               value={materielfilter}
+               onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
             </div>
             </form>
               </SimpleCard>
@@ -180,17 +153,11 @@ const Commande = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Bon de commande">
-        <PaginationTable columns={colonne} data={listematfilter} />
+              <SimpleCard title="Liste des types de materiel">
+        <PaginationTable columns={columns} data={donnees} />
         </SimpleCard>
       </Container>
     );
   };
   
-export default Commande;
-
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}
+export default Typemateriel;

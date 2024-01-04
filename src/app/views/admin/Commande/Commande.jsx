@@ -1,11 +1,11 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,Grid } from "@mui/material";
+import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
-import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 
 
 
@@ -18,13 +18,23 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-  const AutoComplete = styled(Autocomplete)(() => ({
-    marginBottom: '16px',
-  }));
 
+  const handleEdit = (id) => {
+    // Mettez ici votre logique pour l'édition
+    alert(`Mety`+id);
+  };
+  
+  const handleDelete = (id) => {
+    // Mettez ici votre logique pour la suppression
+    alert(`Mety`+id);  
+  };
+
+  const handleChange = (event) => {
+
+  };
 
   
-const Devis = () => {
+const Commande = () => {
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -66,61 +76,63 @@ const Devis = () => {
 
 
   // Colonne
-  const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'Commande', field: 'commande', align: 'center' },
-    { label: 'date du devis', field: 'datedevis', align: 'center' },
-    { label: 'Nom du client', field: 'nom', align: 'center' },
-    { label: 'Etat', field: 'statut', align: 'center' },
-
-    // Other columns...
-   ];
+  const colonne = [
+    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
+    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
+    { label: "Actions", render: () => (
+      <div>
+      <Tooltip title="Modifier">
+      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
+          <Icon>edit_icon</Icon>
+      </IconButton>
+      </Tooltip>
+      <Tooltip title="Supprimer">
+      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
+          <Icon>delete</Icon>
+      </IconButton>
+      </Tooltip>
+      </div>
+    )},     // ... Ajoutez d'autres colonnes si nécessaire
+  ];
+ 
     return (
         <Container>
         <Box className="breadcrumb">
-          <Breadcrumb routeSegments={[{ name: "Devis", path: "admin/devis" }, { name: "Devis" }]} />
+          <Breadcrumb routeSegments={[{ name: "Commande", path: "admin/commande" }, { name: "Commande" }]} />
         </Box>
         <p>
            <Button variant="contained" onClick={handleClickOpen} color="primary">
-             Nouveau devis
-           </Button>
+             Nouveau bon de commande
+           </Button>&nbsp;&nbsp;        
+           <Button variant="contained" color="secondary">
+            Importer un bon
+          </Button>
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                 <DialogTitle id="form-dialog-title">Nouveau devis</DialogTitle>
+                 <DialogTitle id="form-dialog-title">Nouveau bon de commande</DialogTitle>
                  <DialogContent>
                   <TextField
                      fullWidth
                      autoFocus
-                     id="datedevis"
+                     id="datebon"
                      type="date"
                      margin="dense"
-                     name="datedevis"
+                     name="datebon"
                      value={materiel}
                      onChange={(event) => setMateriel(event.target.value)}
                    />
-                  <TextField
+                    <TextField
                      fullWidth
                      autoFocus
-                     id="idcommande"
+                     id="nom"
                      type="text"
                      margin="dense"
-                     label="Id de la commande"
-                     name="idcommande"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     label="Nom du client"
+                     name="nom"
+                     value={icon}
+                     onChange={(event) => setIcon(event.target.value)}
                    />
-                  <AutoComplete
-                    fullWidth
-                    // options={suggestions}
-                    getOptionLabel={(option) => option.label}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                  )}
-                    name="idmateriel"
-                    id="idmateriel"
-                  />
-
                  </DialogContent>
 
                  <DialogActions>
@@ -133,36 +145,30 @@ const Devis = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>        
+             <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
-                  <TextField
-                   fullWidth
-                   size="small"
-                   type="date"
-                   name="datedevis"
-                   variant="outlined"
-                   value={materielfilter}
-                   onChange={(event) => setMaterielfilter(event.target.value)}
-                   sx={{ mb: 3 }}
-                  />
-                </Grid>
-             <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
-                  size="small"
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                )}
-                  name="idmateriel"
-                  id="idmateriel"
-                />
-              </Grid>
-            </Grid>
+              <TextField
+                fullWidth
+                size="small"
+                id="datebon"
+                type="date"
+                margin="dense"
+                name="datebon"
+                value={materiel}
+                onChange={(event) => setMateriel(event.target.value)}
+              />
+              <TextField
+                fullWidth
+                size="small"
+                id="nom"
+                type="text"
+                margin="dense"
+                label="Nom du client"
+                name="nom"
+                value={icon}
+                onChange={(event) => setIcon(event.target.value)}
+              />
             </div>
             </form>
               </SimpleCard>
@@ -174,14 +180,14 @@ const Devis = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des devis">
-        <PaginationTable columns={columns} data={listematfilter} />
+              <SimpleCard title="Bon de commande">
+        <PaginationTable columns={colonne} data={listematfilter} />
         </SimpleCard>
       </Container>
     );
   };
   
-export default Devis;
+export default Commande;
 
 function filtremateriel(listemateriel, materiel) {
   return listemateriel.filter((Item) => {

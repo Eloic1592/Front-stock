@@ -1,7 +1,7 @@
 import { Box, styled,TextField,Select,MenuItem} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useEffect, useState } from 'react';
-import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 

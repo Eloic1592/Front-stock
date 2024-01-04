@@ -4,7 +4,7 @@ import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Grid from '@mui/material/Grid';
-import { deleteData, Finddata, insertData, UpdateData } from '../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 
 
 
