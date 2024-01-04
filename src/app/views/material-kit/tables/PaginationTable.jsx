@@ -30,17 +30,8 @@ import {
  }));
 
 
-
- const EditButton = ({ onClick }) => {
-  return (
-    <Button variant="contained"  onClick={onClick} color="primary">
-        <Icon>edit_icon</Icon>
-    </Button>
-  );
- };
  
- 
- const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] },editable=true) => {
+ const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);
@@ -151,7 +142,7 @@ useEffect(() => {
              </Select>
            </Grid>
            <Grid item xs={2}>
-           <Button className="button" variant="contained" aria-label="Edit" color="error" disabled={selectedIds.length == 0}>
+           <Button className="button" variant="contained" aria-label="Edit" color="error" disabled={selectedIds.length === 0}>
               <Icon>delete</Icon>
             </Button>
            </Grid>

@@ -2,10 +2,10 @@ import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogCon
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listetypemateriel from "./Listetypemateriel";
 
 
 
@@ -17,22 +17,6 @@ const Container = styled("div")(({ theme }) => ({
       [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
     },
   }));
-
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
   
 const Typemateriel = () => {
 
@@ -43,13 +27,10 @@ const Typemateriel = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
 
     // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [typemateriel, setTypemateriel] = useState('');
 
     // Message
     const [message,setMessage]= useState({
@@ -60,26 +41,13 @@ const Typemateriel = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
+
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+    },[]);
 
-    const columns = [
-      { label: 'ID', field: 'id', align: 'center' },
-      { label: 'Type de materiel', field: 'typemateriel', align: 'center' },
-      // Other columns...
-     ];
-
-     const donnees = [
+    const donnees = [
       { id: 1, typemateriel: 'Depot 1', /* other fields... */ },
       { id: 2, typemateriel: 'Depot 2', /* other fields... */ },
       { id: 3, typemateriel: 'Depot 3', /* other fields... */ },
@@ -112,9 +80,8 @@ const Typemateriel = () => {
                     type="text"
                     name="typemateriel"
                     label="type de materiel"
-
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={typemateriel}
+                     onChange={(event) => setTypemateriel(event.target.value)}
                    />
                  </DialogContent>
 
@@ -154,7 +121,8 @@ const Typemateriel = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des types de materiel">
-        <PaginationTable columns={columns} data={donnees} />
+               <Listetypemateriel data={donnees} />        
+
         </SimpleCard>
       </Container>
     );

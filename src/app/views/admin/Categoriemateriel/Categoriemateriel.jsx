@@ -2,10 +2,10 @@ import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogCon
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
 import getUselink from 'app/views/getuseLink';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listecategoriemateriel from "./Listecategoriemateriel";
 
 
 
@@ -43,13 +43,11 @@ const Categoriemateriel = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
   const [materielfilter, setMaterielfilter] = useState('');
 
     // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+  const [categoriemateriel, setCategoriemateriel] = useState('');
+
 
     // Message
     const [message,setMessage]= useState({
@@ -60,24 +58,10 @@ const Categoriemateriel = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
-
-    const columns = [
-      { label: 'ID', field: 'id', align: 'center' },
-      { label: 'Categorie de materiel', field: 'categoriemateriel', align: 'center' },
-      // Other columns...
-     ];
+    },[]);
 
      const donnees = [
       { id: 1, categoriemateriel: 'Depot 1', /* other fields... */ },
@@ -113,8 +97,8 @@ const Categoriemateriel = () => {
                     name="categoriemateriel"
                     label="categorie de materiel"
                     variant="outlined"
-                     value={materiel}
-                     onChange={(event) => setMateriel(event.target.value)}
+                     value={categoriemateriel}
+                     onChange={(event) => setCategoriemateriel(event.target.value)}
                    />
                  </DialogContent>
 
@@ -154,7 +138,7 @@ const Categoriemateriel = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des categories de materiel">
-        <PaginationTable columns={columns} data={donnees} />
+        <Listecategoriemateriel data={donnees} />
         </SimpleCard>
       </Container>
     );
