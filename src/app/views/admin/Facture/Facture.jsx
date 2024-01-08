@@ -1,10 +1,10 @@
 import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,MenuItem,Select,Autocomplete } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Listefacture from "./Listefacture";
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -74,21 +74,9 @@ const Facture = () => {
   // Page onLoad
    useEffect(() => {
     setListeFacture([]);
-   },[listefacture]);
+   },[]);
 
-    const columns = [
-      { label: 'ID', field: 'idmouvementdestock', align: 'center' },
-      { label: 'Date', field: 'datefacture', align: 'center' },
-      { label: 'ID MV', field: 'mouvement', align: 'center' },
-      { label: 'Nom du client', field: 'nom', align: 'center' },
-      { label: 'Telephone', field: 'telephone', align: 'center' },
-      { label: 'NIF', field: 'nif', align: 'center' },
-      { label: 'NUMSTAT', field: 'numstat', align: 'center' },
-      { label: 'Adresse', field: 'Adresse', align: 'center' },
-      { label: 'QUITTANCE', field: 'quittance', align: 'center' },
-      { label: 'statut', field: 'statut', align: 'center' },
-      // Other columns...
-     ];
+
      const columnsdetails = [
       { label: 'article', field: 'article', align: 'center' },
       { label: 'quantite', field: 'quantite', align: 'center' },
@@ -96,6 +84,8 @@ const Facture = () => {
       { label: 'total', field: 'total', align: 'center' },
       // Other columns...
      ];
+
+     const donnees=[];
 
     return (
         <Container>
@@ -280,7 +270,7 @@ const Facture = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des factures">
-        <PaginationTable columns={columns} data={listefacture} />
+        <Listefacture  data={donnees} />
         </SimpleCard>
       </Container>
     );

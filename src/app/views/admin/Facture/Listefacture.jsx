@@ -17,7 +17,6 @@ import {
     Grid,
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
-   import { SimpleCard } from "app/components";
    import { useState,useEffect } from "react";
    
    const StyledTable = styled(Table)(() => ({
@@ -32,7 +31,7 @@ import {
   
   
     
-   const Listetypemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+const Listefacture = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
@@ -42,14 +41,24 @@ import {
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
 
-
   
-//   // Colonne
-  const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'type materiel', field: 'typemateriel', align: 'center' },
+// Colonne
+
+const columns = [
+    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+    { label: 'Date', field: 'datefacture', align: 'center' },
+    { label: 'ID Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Nom du client', field: 'nom', align: 'center' },
+    { label: 'Telephone', field: 'telephone', align: 'center' },
+    { label: 'NIF', field: 'nif', align: 'center' },
+    { label: 'NUMSTAT', field: 'numstat', align: 'center' },
+    { label: 'Adresse', field: 'Adresse', align: 'center' },
+    { label: 'QUITTANCE', field: 'quittance', align: 'center' },
+    { label: 'statut', field: 'statut', align: 'center' },
     // Other columns...
    ];
+
+
   
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -94,6 +103,7 @@ import {
     }
    };
   
+
    
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
@@ -120,9 +130,7 @@ import {
   
    
     return (
-
       <Box width="100%" overflow="auto">
-
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -211,6 +219,7 @@ import {
                            <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
                               <Icon>edit_icon</Icon>
                            </IconButton>
+
                            {isEditClicked && row.id=== selectedRowId && (
                             <>
                            <IconButton  className="button" variant="contained" aria-label="Edit" color="secondary">
@@ -248,5 +257,5 @@ import {
     );
    };
    
-   export default Listetypemateriel;
+   export default Listefacture;
    

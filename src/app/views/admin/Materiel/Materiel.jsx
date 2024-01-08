@@ -31,9 +31,8 @@ const Materiel = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const [listemateriel, setListemateriel] = useState([]);
-  const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
+  const [nommateriel, setNomateriel] = useState('');
+  const [snumserie, setSnumserie] = useState('');
 
     // Input 
   const [materiel, setMateriel] = useState('');
@@ -211,8 +210,8 @@ const Materiel = () => {
                name="materielfiltre"
                label="Nom du materiel"
                variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
+               value={nommateriel}
+               onChange={(event) => setNomateriel(event.target.value)}
                sx={{ mb: 3 }}
              />
               <TextField
@@ -223,8 +222,8 @@ const Materiel = () => {
                 label="Numero de serie"
                 name="numserie"
                 variant="outlined"
-                value={materiel}
-                onChange={(event) => setMateriel(event.target.value)}
+                value={snumserie}
+                onChange={(event) => setSnumserie(event.target.value)}
                 sx={{ mb: 3 }}
               />
               <AutoComplete
