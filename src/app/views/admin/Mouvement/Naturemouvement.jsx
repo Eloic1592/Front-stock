@@ -1,6 +1,6 @@
 import { Box, styled,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Select,MenuItem,Button } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
+
 import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Grid from '@mui/material/Grid';
@@ -28,7 +28,6 @@ const Naturemouvement = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const data =useData('getallmateriel');
   const [materielfilter, setMaterielfilter] = useState('');
 
     // Input 

@@ -1,11 +1,10 @@
 import { Box, styled,TextField,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,Select,MenuItem } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";
 import Button from '@mui/material/Button';
+import Listestockfictif from "./Listestockfictif";
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -86,19 +85,6 @@ const [commentaire, setCommentaire] = useState('');
     setFormData([]);
   };
 
-  const columns = [
-    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
-    { label: 'Date de depot', field: 'datedepot', align: 'center' },
-    { label: 'Mouvement', field: 'mouvement', align: 'center' },
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' },
-    { label: 'Prix', field: 'P.U', align: 'center' },
-    { label: 'Total', field: 'total', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' },
-    // Other columns...
-   ];
    const columnsdetails = [
     { label: 'article', field: 'article', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
@@ -109,6 +95,10 @@ const [commentaire, setCommentaire] = useState('');
     { label: 'statut', field: 'prixunitaire', align: 'center' },
     
     // Other columns...
+   ];
+
+   const donnees=[
+
    ];
  
     return (
@@ -381,8 +371,8 @@ const [commentaire, setCommentaire] = useState('');
 
         <br />
       {/* Liste des donnees */}
-        <SimpleCard title="Liste des mouvements actuels">
-        <PaginationTable columns={columns} data={listemouvementstock} />
+        <SimpleCard title="Liste des mouvements fictifs actuels">
+        <Listestockfictif  data={donnees} />
         </SimpleCard>
       </Container>
     );

@@ -18,7 +18,6 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-
    
    const StyledTable = styled(Table)(() => ({
     whiteSpace: "pre",
@@ -32,7 +31,7 @@ import {
   
   
     
-   const Listemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+const Listestockphysique = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
@@ -43,21 +42,23 @@ import {
     const [selectedRowId, setSelectedRowId] = useState(null);
 
   
-//   // Colonne
+// Colonne
 
-  const columns = [
-  { label: 'ID', field: 'id', align: 'center' },
-  { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-  { label: 'Article', field: 'article', align: 'center' },
-  { label: 'Numserie', field: 'numserie', align: 'center' },
-  { label: 'Description', field: 'description', align: 'center' },
-  { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-  { label: 'Caution', field: 'caution', align: 'center' },
-  { label: 'Couleur', field: 'couleur', align: 'center' },
-  { label: 'statut', field: 'statut', align: 'center' },
+const columns = [
+    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+    { label: 'Date de depot', field: 'datedepot', align: 'center' },
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Nature', field: 'naturemouvement', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Prix', field: 'P.U', align: 'center' },
+    { label: 'Total', field: 'total', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' },
+    // Other columns...
+   ];
 
-  // Other columns...
- ];
+
   
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -218,9 +219,6 @@ import {
                            <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
                               <Icon>edit_icon</Icon>
                            </IconButton>
-                           <IconButton className="button" variant="contained" aria-label="Edit" color="primary" >
-                              <Icon>info</Icon>
-                           </IconButton>
 
                            {isEditClicked && row.id=== selectedRowId && (
                             <>
@@ -259,5 +257,5 @@ import {
     );
    };
    
-   export default Listemateriel;
+   export default Listestockphysique;
    

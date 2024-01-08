@@ -1,6 +1,7 @@
 import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
+
+
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';

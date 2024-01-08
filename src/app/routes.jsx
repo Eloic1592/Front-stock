@@ -32,8 +32,6 @@ const Stockfictif  = Loadable(lazy(() => import('app/views/admin/Stock/Stockfict
 
 const Materiel  = Loadable(lazy(() => import('app/views/admin/Materiel/Materiel')));
 
-const EntreeSortie  = Loadable(lazy(() => import('app/views/admin/EntreeSortie')));
-
 const Facture  = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
 
 const Proforma  = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
@@ -123,12 +121,6 @@ const routes = [
       },
 
       {
-        path: '/admin/entreesortie',
-        element: <EntreeSortie />,
-        auth: authRoles.admindefault
-      },
-
-      {
         path: '/admin/facture',
         element: <Facture />,
         auth: authRoles.admindefault
@@ -192,7 +184,6 @@ const routes = [
   { path: '/admin/mouvementphysique', element: < Stockphysique/> },
   { path: '/admin/mouvementfictif', element: < Stockfictif/> },
   { path: '/admin/listemateriel', element: < Materiel/> },
-  { path: '/admin/entreesortie', element: < EntreeSortie/> },
   { path: '/admin/facture', element: < Facture/> },
   { path: '/admin/devis', element: < Devis/> },
   { path: '/admin/proforma', element: < Proforma/> },
