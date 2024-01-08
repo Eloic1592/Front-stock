@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import getUselink from 'app/views/getuseLink';
+
+import { baseUrl } from 'app/utils/constant';
+
 
 export function useData(url) {
     const [data, setData] = useState([]);
@@ -9,7 +11,7 @@ export function useData(url) {
       // Cette fonction effectue la requête et met à jour les données
       const fetchData = async () => {
         try {
-          const response = await fetch(getUselink() + url);
+          const response = await fetch(baseUrl + url);
           const json = await response.json();
   
           if (!json) {

@@ -2,7 +2,9 @@ import { Card, Grid, TextField,Button } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import getUselink from 'app/views/getuseLink';
+import { baseUrl } from 'app/utils/constant';
+
+
 import * as Yup from 'yup';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
@@ -59,7 +61,7 @@ const LoginAdmin = () => {
     }
 
     try {
-      const response = await fetch(getUselink() + 'signinAdmin', {
+      const response = await fetch(baseUrl + 'signinAdmin', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(admin)

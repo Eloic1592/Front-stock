@@ -1,12 +1,10 @@
-import { Box, styled,TextField,Snackbar,Alert,Select,MenuItem,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Box, styled,TextField,Select,MenuItem,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listehistorique from "./Listehistorique";
 
 
 
@@ -28,20 +26,12 @@ const Historique = () => {
   const [filename, setFilename] = useState('');
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleAlertClose = () => setMessage({open:false});
 
-   // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
-  const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
+  const [findmove, setFindmove] = useState('1');
+  const [findmonth, setFindmonth] = useState('1');
+  const [findmaterial, setFindmaterial] = useState('');
 
-    // Message
-    const [message,setMessage]= useState({
-      text:'Information enregistree',
-      severity:'success',
-      open:false,
-    });
+
   
   // Validation form
     const handleSubmit = async  () => {
@@ -60,6 +50,8 @@ const Historique = () => {
       // Other columns...
      ];
 
+     const donnees = [
+     ];
 
  
     return (
@@ -74,7 +66,7 @@ const Historique = () => {
         </p>
 
         {/* Formulaire */}
-        <Box>
+        <Box mb={2}>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                  <DialogTitle id="form-dialog-title">Importation de donnees</DialogTitle>
                  <DialogContent>
@@ -137,6 +129,7 @@ const Historique = () => {
                </Dialog>
              </Box>
 
+             <Box mb={2}>
              <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
               <form /* onSubmit={this.handleSubmit}*/>
               <div style={{ display: 'flex', gap: '16px' }}>
@@ -149,8 +142,8 @@ const Historique = () => {
                name="materiel"
                label="Nom du materiel"
                variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
+               value={findmaterial}
+               onChange={(event) => setFindmaterial(event.target.value)}
                sx={{ mb: 3 }}
              />
              </Grid>
@@ -159,9 +152,9 @@ const Historique = () => {
                 fullWidth
                 size="small"
                labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
-                >
+               value={findmonth}
+               onChange={(event) => setFindmonth(event.target.value)}
+               >
                <MenuItem value="1">Janvier</MenuItem>
                <MenuItem value="2">Fevrier</MenuItem>
                <MenuItem value="3">Mars</MenuItem>
@@ -181,8 +174,8 @@ const Historique = () => {
               fullWidth
               size="small"
                labelId="select-label"
-               value={"1"}
-              //  onChange={handleChange}
+               value={findmove}
+               onChange={(event) => setFindmove(event.target.value)}
                 >
                <MenuItem value="1">Entree</MenuItem>
                <MenuItem value="-1"> Sortie</MenuItem>
@@ -192,25 +185,21 @@ const Historique = () => {
             </div>
             </form>
               </SimpleCard>
-                <p></p>
-                <p></p>
-                <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
-                <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
-                   {message.text}
-                </Alert>
-              </Snackbar>
+              </Box>
 
-              <SimpleCard title="Liste des entretiens">
-        <PaginationTable columns={columns} data={listematfilter} />
-        </SimpleCard>
+              <Box>
+                  <SimpleCard title="Historique des proformas">
+                    <Listehistorique data={donnees} />
+                  </SimpleCard>
+            </Box>
       </Container>
     );
   };
   
 export default Historique;
 
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}
+// function filtremateriel(listemateriel, materiel) {
+//   return listemateriel.filter((Item) => {
+//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
+//   });
+// }

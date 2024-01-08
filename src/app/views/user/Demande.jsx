@@ -4,7 +4,8 @@ import { useData } from 'app/useData';
 import { useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
+
+
 import { deleteData, Finddata, insertData, UpdateData } from '../functions';
 
 
