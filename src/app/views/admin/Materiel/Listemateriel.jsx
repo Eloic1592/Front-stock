@@ -217,6 +217,10 @@ import {
                            <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
                               <Icon>edit_icon</Icon>
                            </IconButton>
+                           <IconButton className="button" variant="contained" aria-label="Edit" color="primary" >
+                              <Icon>info</Icon>
+                           </IconButton>
+
                            {isEditClicked && row.id=== selectedRowId && (
                             <>
                            <IconButton  className="button" variant="contained" aria-label="Edit" color="secondary">
