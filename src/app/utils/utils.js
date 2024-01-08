@@ -132,3 +132,60 @@ export function getTimeDifference(date) {
   else if (difference < 86400 * 30 * 12) return `${Math.floor(difference / 86400 / 30)} mon`;
   else return `${(difference / 86400 / 30 / 12).toFixed(1)} y`;
 }
+
+// Traduction francais mois
+ const frenchTranslations = {
+  today: "Aujourd'hui",
+  previous: "Précédent",
+  next: "Suivant",
+  month: "Mois",
+  week: "Semaine",
+  day: "Jour",
+  agenda: "Agenda",
+  date: "Date",
+  time: "Heure",
+  event: "Événement",
+  allDay: "Toute la journée",
+  noEventsInRange: "Aucun événement à afficher",
+  "monthNames": [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre",
+    ],
+    "dayNames": [
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi",
+      "Dimanche",
+    ],
+    "weekNumbers": ["1", "2", "3", "4", "5", "6", "7"],
+};
+
+// Traduction jour de la semaine
+const frenchdayNames = [
+  'Dimanche',
+  'Lundi',
+  'Mardi',
+  'Mercredi',
+  'Jeudi',
+  'Vendredi',
+  'Samedi'
+
+];
+
+// Formattage de date en jour/mois/annee
+export function convertdate(date) {     
+  return  moment(date).locale("fr").format("DD MMMM YYYY HH:mm");
+}

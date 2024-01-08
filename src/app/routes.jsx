@@ -30,7 +30,7 @@ const Stockphysique  = Loadable(lazy(() => import('app/views/admin/Stock/Stockph
 
 const Stockfictif  = Loadable(lazy(() => import('app/views/admin/Stock/Stockfictif')));
 
-const Materiel  = Loadable(lazy(() => import('app/views/admin/Materiel/Listemateriel')));
+const Materiel  = Loadable(lazy(() => import('app/views/admin/Materiel/Materiel')));
 
 const EntreeSortie  = Loadable(lazy(() => import('app/views/admin/EntreeSortie')));
 

@@ -1,9 +1,8 @@
 import { Box, styled,TextField,Snackbar,Alert,Autocomplete,Grid } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listeproforma from "./Listeproforma";
 
 
 
@@ -23,20 +22,14 @@ const Container = styled("div")(({ theme }) => ({
 const Proforma = () => {
 
   // Form dialog
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
-  const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
+   const [datedevis, setDatedevis] = useState('');
+   const [idclient, setIdclient] = useState('');
 
     // Input 
-  const [materiel, setMateriel] = useState('');
-  const [icon, setIcon] = useState('');
+
 
     // Message
     const [message,setMessage]= useState({
@@ -45,25 +38,22 @@ const Proforma = () => {
       open:false,
     });
   
-  // Validation form
-    const handleSubmit = async  () => {
-    }
+
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
 
+    },[]);
 
-    const columns = [
-      { label: 'ID', field: 'id', align: 'center' },
-      { label: 'Commande', field: 'commande', align: 'center' },
-      { label: 'date', field: 'datedevis', align: 'center' },
-      { label: 'Nom du client', field: 'nom', align: 'center' },
-      { label: 'Etat', field: 'statut', align: 'center' },
-      // Other columns...
+    const donnees = [
+      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 10, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 3, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 4, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 5, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 7, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+      { id: 8, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+
      ];
-
-
     return (
         <Container>
         <Box className="breadcrumb">
@@ -80,8 +70,8 @@ const Proforma = () => {
                    type="date"
                    name="datedevis"
                    variant="outlined"
-                   value={materielfilter}
-                   onChange={(event) => setMaterielfilter(event.target.value)}
+                   value={datedevis}
+                   onChange={(event) => setDatedevis(event.target.value)}
                    sx={{ mb: 3 }}
                   />
              </Grid>
@@ -111,7 +101,7 @@ const Proforma = () => {
               </Snackbar>
               
               <SimpleCard title="Liste des proformas">
-        <PaginationTable columns={columns} data={listematfilter} />
+        <Listeproforma  data={donnees} />
         </SimpleCard>
       </Container>
     );
@@ -119,8 +109,8 @@ const Proforma = () => {
   
 export default Proforma;
 
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}
+// function filtremateriel(listemateriel, materiel) {
+//   return listemateriel.filter((Item) => {
+//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
+//   });
+// }

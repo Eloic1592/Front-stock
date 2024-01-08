@@ -30,33 +30,26 @@ import {
    }));
   
   
-    
-   const Listemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+    // Proforma tsy afaka ovaina intsony
+   const Listeproforma = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
-    const [editingId, setEditingId] = useState(null);
-    const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
     const [sortDirection, setSortDirection] = useState([]);
-    const [isEditClicked, setIsEditClicked] = useState(false);
-    const [selectedRowId, setSelectedRowId] = useState(null);
+
 
   
 //   // Colonne
-
   const columns = [
-  { label: 'ID', field: 'id', align: 'center' },
-  { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-  { label: 'Article', field: 'article', align: 'center' },
-  { label: 'Numserie', field: 'numserie', align: 'center' },
-  { label: 'Description', field: 'description', align: 'center' },
-  { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-  { label: 'Caution', field: 'caution', align: 'center' },
-  { label: 'Couleur', field: 'couleur', align: 'center' },
-  { label: 'statut', field: 'statut', align: 'center' },
+    { label: 'ID', field: 'id', align: 'center' },
+    { label: 'Commande', field: 'idcommande', align: 'center' },
+    { label: 'Client', field: 'idclient', align: 'center' },
+    { label: 'devis', field: 'iddevis', align: 'center' },
+    { label: 'statut', field: 'statut', align: 'center' },
 
-  // Other columns...
- ];
+
+    // Other columns...
+   ];
   
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -67,40 +60,6 @@ import {
       setPage(0);
     };
    
-    // Active la modification
-    const handleEdit = (row) => {
-      setEditingId(row.id);
-      setIsEditClicked(true);
-      setSelectedRowId(row.id);
-    };
-    const cancelEdit = (row) => {
-        setEditingId(null);
-        setIsEditClicked(false);
-    };
-
-    const handleSave = (value, id, field) => {
-      setEditingId(null);
-      
-    };
-   
-    
-   const handleSelection = (event, id) => {
-    if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
-    } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
-    }
-   };
-  
-   //Select  toutes les checkboxes de la liste  
-   const handleSelectAll = (event) => {
-    if (event.target.checked) {
-     setSelectedIds(data.map((row) => row.id));
-    } else {
-     setSelectedIds([]);
-    }
-   };
-  
 
    
    const handleSelectColumn = (event) => {
@@ -129,8 +88,7 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
-          {/* Tri de tables */}
-          <Grid container spacing={2}>
+        <Grid container spacing={2}>
              <Grid item xs={2}>
                <Select
                 fullWidth
@@ -157,25 +115,12 @@ import {
                  <MenuItem value="asc">ASC</MenuItem>
                  <MenuItem value="desc">DESC</MenuItem>
                </Select>
-             </Grid>
-             <Grid item xs={2}>
-             <Button className="button" variant="contained" aria-label="Edit" color="error" disabled={selectedIds.length == 0}>
-                <Icon>delete</Icon>
-              </Button>
-             </Grid>
-  
+             </Grid>  
             </Grid> 
         <StyledTable>
           <TableHead>
             {/* Listage de Donnees */}
             <TableRow>
-            <TableCell>
-            <Checkbox
-              checked={data.every((row) => selectedIds.includes(row.id))}
-              indeterminate={data.some((row) => selectedIds.includes(row.id)) && !data.every((row) => selectedIds.includes(row.id))}
-              onChange={handleSelectAll}
-             />
-            </TableCell>
               {columns.map((column, index) => (
                 // Nom des colonnes du tableau
                 <TableCell key={index} align={column.align || "left"}>
@@ -183,7 +128,6 @@ import {
                 </TableCell>
   
               ))}
-              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -193,42 +137,11 @@ import {
                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                .map((row, index) => (
                    <TableRow key={index}>
-                       <TableCell>
-                           <Checkbox
-                              checked={selectedIds.includes(row.id)}
-                              onChange={(event) => handleSelection(event, row.id)}
-                           />
-                       </TableCell>
                        {columns.map((column, index) => (
                            <TableCell key={index} align={column.align || "left"}>
-                              {editingId === row.id ? (
-                                  <TextField
-                                      defaultValue={column.render ? column.render(row) : row[column.field]}
-                                      name={row.field}
-                                      onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                                  />
-                              ) : (
-                                  column.render ? column.render(row) : row[column.field]
-                              )}
+                            {column.render ? column.render(row) : row[column.field] }
                            </TableCell>
                        ))}
-            
-                       <TableCell>
-                           <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
-                              <Icon>edit_icon</Icon>
-                           </IconButton>
-                           {isEditClicked && row.id=== selectedRowId && (
-                            <>
-                           <IconButton  className="button" variant="contained" aria-label="Edit" color="secondary">
-                              <Icon>arrow_forward</Icon>
-                           </IconButton>
-                           <IconButton  className="button" variant="contained" aria-label="Edit" color="error" onClick={() => cancelEdit(row)}>
-                              <Icon>close</Icon>
-                           </IconButton>
-                           </>
-                           )}
-
-                       </TableCell>
                    </TableRow>
                )) : <p><Typography variant="subtitle1" color="textSecondary">Aucune donnee disponible</Typography></p>}
   
@@ -254,5 +167,5 @@ import {
     );
    };
    
-   export default Listemateriel;
+export default Listeproforma;
    

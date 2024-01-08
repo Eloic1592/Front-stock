@@ -2,10 +2,9 @@ import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogCon
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useData } from 'app/useData';
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-import getUselink from 'app/views/getuseLink';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listecommande from "./Listecommande";
 
 
 
@@ -18,21 +17,6 @@ const Container = styled("div")(({ theme }) => ({
     },
   }));
 
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
   
 const Commande = () => {
 
@@ -43,10 +27,6 @@ const Commande = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const data =useData('getallmateriel');
-  const [listemateriel, setListemateriel] = useState([]);
-  const [materielfilter, setMaterielfilter] = useState('');
-  const listematfilter = filtremateriel(listemateriel,materielfilter);
 
     // Input 
   const [materiel, setMateriel] = useState('');
@@ -61,39 +41,20 @@ const Commande = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-      const result = await insertData({"materiel":materiel,"icon":icon,"etat":0},getUselink()+'insertmateriel');
-      setMessage({
-        text:result.text,
-        severity:result.severity,
-        open:result.open,
-        });
-       handleClose();
     }
 
     useEffect(() => {
-      setListemateriel(data);
-    },[data]);
+    },[]);
 
-
-  // Colonne
-  const colonne = [
-    { label: "ID", field: "id", render: (listemateriel) => `${listemateriel.id}` },
-    { label: "Materiel", field: "materiel", render: (listemateriel) => `${listemateriel.materiel}` },    
-    { label: "Actions", render: () => (
-      <div>
-      <Tooltip title="Modifier">
-      <IconButton className="button" aria-label="Edit"    color="primary" onClick={() =>handleEdit(listemateriel.id)}>
-          <Icon>edit_icon</Icon>
-      </IconButton>
-      </Tooltip>
-      <Tooltip title="Supprimer">
-      <IconButton className="button" aria-label="Delete" color="default" onClick={() =>handleDelete(listemateriel.id)}>
-          <Icon>delete</Icon>
-      </IconButton>
-      </Tooltip>
-      </div>
-    )},     // ... Ajoutez d'autres colonnes si nécessaire
-  ];
+    const donnees = [
+      { id: 1, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:23,prixunitaire:15,total:235,statut:"1" /* other fields... */ },
+      { id: 2, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:1,prixunitaire:234,total:34,statut:"1" /* other fields... */ },
+      { id: 3, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:10,prixunitaire:12,total:346,statut:"1" /* other fields... */ },
+      { id: 4, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:4,prixunitaire:25,total:45,statut:"1" /* other fields... */ },
+      { id: 5, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:6,total:456,statut:"1" /* other fields... */ },
+      { id: 6, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:45,prixunitaire:97,total:78,statut:"1" /* other fields... */ },
+      { id: 7, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:56,total:78,statut:"1" /* other fields... */ },
+     ];
  
     return (
         <Container>
@@ -181,7 +142,7 @@ const Commande = () => {
               </Snackbar>
 
               <SimpleCard title="Bon de commande">
-        <PaginationTable columns={colonne} data={listematfilter} />
+        <Listecommande  data={donnees} />
         </SimpleCard>
       </Container>
     );
@@ -189,8 +150,8 @@ const Commande = () => {
   
 export default Commande;
 
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}
+// function filtremateriel(listemateriel, materiel) {
+//   return listemateriel.filter((Item) => {
+//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
+//   });
+// }

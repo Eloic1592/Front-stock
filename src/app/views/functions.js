@@ -1,10 +1,10 @@
 
-import getUselink from 'app/views/getuseLink';
 import { useEffect, useState } from 'react';
+import { baseUrl } from 'app/utils/constant';
 
 export const deleteData = async (objetAInserer,lienPost) => {
    try {
-     const response = await fetch(getUselink()+lienPost, {
+     const response = await fetch(baseUrl+lienPost, {
        method: 'PUT',
        headers: {
          'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const deleteData = async (objetAInserer,lienPost) => {
 export const Finddata = (url,id) => {
    const [data, setData] = useState(null);
    useEffect(() => {
-       fetch(getUselink()+url+"/"+id)
+       fetch(baseUrl+url+"/"+id)
            .then(response => response.json())
            .then(json => {
                   setData(json);
@@ -51,7 +51,7 @@ export const Finddata = (url,id) => {
 
 export const insertData = async (objetAInserer,lienPost) => {
  try {
-   const response = await fetch(getUselink()+lienPost, {
+   const response = await fetch(baseUrl+lienPost, {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json',

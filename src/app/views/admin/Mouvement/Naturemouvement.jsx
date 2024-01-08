@@ -5,6 +5,7 @@ import { useState,useEffect } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Grid from '@mui/material/Grid';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import Listenaturemouvement from "./Listenaturemouvement";
 
 
 
@@ -48,19 +49,13 @@ const Naturemouvement = () => {
     useEffect(() => {
     },[]);
 
-    const columns = [
-      { label: 'ID', field: 'id', align: 'center' },
-      { label: 'Nature du mouvement', field: 'naturemouvement', align: 'center' },
-      // Other columns...
-     ];
-
      const donnees = [
-      { id: 1, naturemouvement: 'Depot 1', /* other fields... */ },
-      { id: 2, naturemouvement: 'Depot 2', /* other fields... */ },
-      { id: 3, naturemouvement: 'Depot 3', /* other fields... */ },
-      { id: 4, naturemouvement: 'Depot 4', /* other fields... */ },
-      { id: 5, naturemouvement: 'Depot 5', /* other fields... */ },
-      { id: 6, naturemouvement: 'Depot 6', /* other fields... */ },
+      { id: 1, naturemouvement: 'Achat', /* other fields... */ },
+      { id: 2, naturemouvement: 'Vente', /* other fields... */ },
+      { id: 3, naturemouvement: 'Transfert', /* other fields... */ },
+      { id: 4, naturemouvement: 'Don', /* other fields... */ },
+      { id: 5, naturemouvement: 'Perte', /* other fields... */ },
+      { id: 6, naturemouvement: 'Emprunt', /* other fields... */ },
       // More rows...
      ];
 
@@ -155,7 +150,7 @@ const Naturemouvement = () => {
               </Snackbar>
 
               <SimpleCard title="Liste des types de mouvements">
-        <PaginationTable columns={columns} data={donnees} />
+        <Listenaturemouvement data={donnees} />
         </SimpleCard>
       </Container>
     );

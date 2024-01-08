@@ -31,7 +31,7 @@ import {
   
   
     
-   const Listemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listenaturemouvement = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
@@ -46,15 +46,7 @@ import {
 
   const columns = [
   { label: 'ID', field: 'id', align: 'center' },
-  { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-  { label: 'Article', field: 'article', align: 'center' },
-  { label: 'Numserie', field: 'numserie', align: 'center' },
-  { label: 'Description', field: 'description', align: 'center' },
-  { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-  { label: 'Caution', field: 'caution', align: 'center' },
-  { label: 'Couleur', field: 'couleur', align: 'center' },
-  { label: 'statut', field: 'statut', align: 'center' },
-
+  { label: 'Nature du mouvement', field: 'naturemouvement', align: 'center' },
   // Other columns...
  ];
   
@@ -254,5 +246,5 @@ import {
     );
    };
    
-   export default Listemateriel;
+   export default Listenaturemouvement;
    
