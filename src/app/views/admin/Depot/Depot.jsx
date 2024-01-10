@@ -97,9 +97,3 @@ const Depot = () => {
   };
   
 export default Depot;
-
-// function filtremateriel(listemateriel, materiel) {
-//   return listemateriel.filter((Item) => {
-//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-//   });
-// }

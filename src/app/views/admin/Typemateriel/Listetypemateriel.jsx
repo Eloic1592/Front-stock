@@ -1,114 +1,28 @@
-import {
-    Box,
-    Button,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Icon, 
-    IconButton,
-    TextField,
-    Checkbox,
-    Select,
-    MenuItem,
-    Grid,
-   } from "@mui/material";
+  import {Box,Button,TableBody,TableCell,TableHead,TablePagination,TableRow,Icon, IconButton,TextField,Checkbox,Select,MenuItem,Grid,} from "@mui/material";
    import Typography from '@mui/material/Typography';
-   import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import { filtretypemateriel } from "app/views/admin/Typemateriel/function";
+   import { useListetypematerielFunctions } from "app/views/admin/Typemateriel/function";
 
-  
-  
-    
    const Listetypemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
-    const [editingId, setEditingId] = useState(null);
-    const [selectedIds, setSelectedIds] = useState([]);
-    const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
-    const [isEditClicked, setIsEditClicked] = useState(false);
-    const [selectedRowId, setSelectedRowId] = useState(null);
+
+    //   // Colonne
+        const columns = [
+          { label: 'ID', field: 'id', align: 'center' },
+          { label: 'type materiel', field: 'typemateriel', align: 'center' },
+          // Other columns...
+    ];
 
 
-  
-//   // Colonne
-  const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'type materiel', field: 'typemateriel', align: 'center' },
-    // Other columns...
-   ];
-  
-    const handleChangePage = (_, newPage) => {
-      setPage(newPage);
-    };
-   
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-   
-    // Active la modification
-    const handleEdit = (row) => {
-      setEditingId(row.id);
-      setIsEditClicked(true);
-      setSelectedRowId(row.id);
-    };
-    const cancelEdit = (row) => {
-        setEditingId(null);
-        setIsEditClicked(false);
-    };
 
-    const handleSave = (value, id, field) => {
-      setEditingId(null);
-      
-    };
-   
-    
-   const handleSelection = (event, id) => {
-    if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
-    } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
-    }
-   };
+    const {page,setPage,rowsPerPage,setRowsPerPage,editingId,setEditingId,selectedIds,setSelectedIds,sortColumn,setSortColumn,sortDirection,
+      setSortDirection,isEditClicked,setIsEditClicked,selectedRowId,setSelectedRowId,typemateriel,setTypemateriel,handleChangePage,
+      handleChangeRowsPerPage,handleEdit,cancelEdit,handleSave,handleSelection,handleSelectAll,handleSelectColumn,sortedData
+     } = useListetypematerielFunctions(data);
   
-   //Select  toutes les checkboxes de la liste  
-   const handleSelectAll = (event) => {
-    if (event.target.checked) {
-     setSelectedIds(data.map((row) => row.id));
-    } else {
-     setSelectedIds([]);
-    }
-   };
-  
-   
-   const handleSelectColumn = (event) => {
-    setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
-    console.log(sortDirection);
-   };
-   
-   const sortedData = data.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-    return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-    return sortDirection === 'asc' ? 1 : -1;
-    }
-    return 0;
-   });
-   
- 
-  //  Use effect
-  useEffect(() => {
-    setSortDirection("asc");
-  },[sortedData]);
-   
-  
-   
+
+
     return (
 
       <Box width="100%" overflow="auto">
@@ -124,8 +38,8 @@ import {
                name="typemateriel"
                label="type de materiel"
                variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               value={typemateriel}
+               onChange={(event) => setTypemateriel(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>

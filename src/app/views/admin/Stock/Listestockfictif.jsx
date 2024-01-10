@@ -1,23 +1,9 @@
-import {
-    Box,
-    Button,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Icon, 
-    IconButton,
-    TextField,
-    Checkbox,
-    Select,
-    MenuItem,
-    Grid,
-   } from "@mui/material";
+  import {Box,Button,TableBody,TableCell,TableHead,TablePagination,TableRow,Icon, IconButton,TextField,Checkbox,Select,MenuItem,Grid,} from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import {filtrestockfictif} from "app/views/admin/Stock/function";
 
   
   
@@ -31,7 +17,8 @@ const Listestockfictif = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [sortDirection, setSortDirection] = useState([]);
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
-
+    const [materiel, setMateriel] = useState(false);
+    const [date, setDate] = useState(null);
   
 // Colonne
 
@@ -133,11 +120,11 @@ const columns = [
                      fullWidth
                      size="small"
                      type="text"
-                     name="materielfiltre"
+                     name="materiel"
                      label="Nom du materiel"
                      variant="outlined"
-                    //  value={materielfilter}
-                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     value={materiel}
+                     onChange={(event) => setMateriel(event.target.value)}
                      sx={{ mb: 3 }}
                    />
                    </Grid>
@@ -148,8 +135,8 @@ const columns = [
                      type="date"
                      name="date"
                      variant="outlined"
-                    //  value={materielfilter}
-                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     value={date}
+                     onChange={(event) => setDate(event.target.value)}
                      sx={{ mb: 3 }}
                    />
                    </Grid>

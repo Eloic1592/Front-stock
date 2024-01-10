@@ -133,9 +133,3 @@ const Historique = () => {
   };
   
 export default Historique;
-
-// function filtremateriel(listemateriel, materiel) {
-//   return listemateriel.filter((Item) => {
-//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-//   });
-// }

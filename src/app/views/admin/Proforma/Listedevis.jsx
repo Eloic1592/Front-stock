@@ -18,6 +18,7 @@ import {
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import {filtredevis} from "app/views/admin/Proforma/function";
 
   
     

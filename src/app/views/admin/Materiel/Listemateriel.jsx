@@ -13,12 +13,12 @@ import {
     Select,
     MenuItem,
     Grid,
-    Autocomplete
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable,AutoComplete } from "app/views/style/style";
+   import {filtremateriel} from "app/views/admin/Materiel/function";
 
   
     
@@ -96,7 +96,6 @@ import {
    
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
     console.log(sortDirection);
    };
    
@@ -113,7 +112,6 @@ import {
  
   //  Use effect
   useEffect(() => {
-    setSortDirection("asc");
   },[sortedData]);
    
   
@@ -126,17 +124,6 @@ import {
               <form >
               <div style={{ display: 'flex', gap: '16px' }}>
               <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
-               variant="outlined"
-              //  value={nommateriel}
-              //  onChange={(event) => setNomateriel(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-              <TextField
                 fullWidth
                 size="small"
                 id="numeroserie"
@@ -144,8 +131,8 @@ import {
                 label="Numero de serie"
                 name="numserie"
                 variant="outlined"
-                // value={snumserie}
-                // onChange={(event) => setSnumserie(event.target.value)}
+                // value={numserie}
+                // onChange={(event) => setnumserie(event.target.value)}
                 sx={{ mb: 3 }}
               />
               <AutoComplete
@@ -159,6 +146,20 @@ import {
                     name="typemateriel"
                     id="typemateriel"
               />
+
+             <Select
+                  size="small"
+                  labelId="select-label"
+                  value={"1"}
+                  sx={{ mb: 3 }}
+                   //  onChange={handleChange}
+                  >
+                  <MenuItem value="1">Ordinateur</MenuItem>
+                  <MenuItem value="-1">Materiel sonore</MenuItem>
+                  <MenuItem value="-1">Alimentation</MenuItem>
+                  <MenuItem value="-1">Baffles</MenuItem>
+
+              </Select>
               <Select
                 labelId="select-label"
                 value={"1"}
@@ -181,7 +182,7 @@ import {
                   <MenuItem value="-1"> Materiel sonore</MenuItem>
                   <MenuItem value="-1"> Alimentation</MenuItem>
 
-                 </Select>
+              </Select>
             </div>
             </form>
               </SimpleCard>

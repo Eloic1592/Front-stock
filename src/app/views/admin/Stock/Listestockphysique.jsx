@@ -1,23 +1,9 @@
-import {
-    Box,
-    Button,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Icon, 
-    IconButton,
-    TextField,
-    Checkbox,
-    Select,
-    MenuItem,
-    Grid,
-   } from "@mui/material";
+  import {Box,Button,TableBody,TableCell,TableHead,TablePagination,TableRow,Icon, IconButton,TextField,Checkbox,Select,MenuItem,Grid,} from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import {filtrestockphysique} from "app/views/admin/Stock/function";
 
   
   

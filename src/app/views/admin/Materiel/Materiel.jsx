@@ -17,11 +17,8 @@ const Materiel = () => {
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const [nommateriel, setNomateriel] = useState('');
-  const [snumserie, setSnumserie] = useState('');
 
     // Input 
-  const [materiel, setMateriel] = useState('');
   const [catmateriel, setCatmateriel] = useState(' ');
   const [couleur, setCouleur] = useState(' ');
   const [numserie, setNumserie] = useState('');
@@ -48,7 +45,9 @@ const Materiel = () => {
     },[]);
     
 
-    const donnees=[];
+    const donnees=[
+
+    ];
  
     return (
         <Container>

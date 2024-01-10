@@ -17,7 +17,7 @@ import {
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
-   import { StyledTable } from "app/views/style/style";
+   import { StyledTable,AutoComplete } from "app/views/style/style";
 
   
     
@@ -124,23 +124,38 @@ useEffect(() => {
               <TextField
                 fullWidth
                 size="small"
-                id="datebon"
+                id="datedevis"
                 type="date"
                 margin="dense"
-                name="datebon"
-                // value={materiel}
-                // onChange={(event) => setMateriel(event.target.value)}
-              />
-              <TextField
+                name="datedevis"
+                // value={datedevis}
+                // onChange={(event) => setDatedevis(event.target.value)}
+                />
+              <AutoComplete
                 fullWidth
                 size="small"
-                id="nom"
-                type="text"
-                margin="dense"
-                label="Nom du client"
-                name="nom"
-                // value={icon}
-                // onChange={(event) => setIcon(event.target.value)}
+                // options={suggestions}
+                getOptionLabel={(option) => option.label}
+                // onChange={(event) => setIdclient(event.target.value)}
+                // value={idclient}
+                renderInput={(params) => (
+                  <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+              )}
+                name="idclient"
+                id="idclient"
+              />
+              <AutoComplete
+                  size="small"
+                  fullWidth
+                  // options={suggestions}
+                  getOptionLabel={(option) => option.label}
+                  // onChange={(event) => setIdclient(event.target.value)}
+                  // value={idclient}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Modele" variant="outlined" fullWidth />
+                )}
+                  name="modele"
+                  id="modele"
               />
             </div>
             </form>

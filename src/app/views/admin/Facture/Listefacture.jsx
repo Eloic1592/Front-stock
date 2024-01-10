@@ -18,6 +18,7 @@ import {
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import { filtrefacture } from "app/views/admin/Facture/function";
 
   
   
@@ -31,6 +32,11 @@ const Listefacture = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [sortDirection, setSortDirection] = useState([]);
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
+    const [client, setClient] = useState(null);
+    const [date, setDate] = useState(null);
+    const [numstat, setNumstat] = useState(null);
+    const [telephone, setTelephone] = useState(null);
+
 
   
 // Colonne
@@ -134,8 +140,8 @@ const columns = [
                name="client"
                label="Nom du client"
                variant="outlined"
-              //  value={client}
-              //  onChange={(event) => setClient(event.target.value)}
+               value={client}
+               onChange={(event) => setClient(event.target.value)}
                sx={{ mb: 3 }}
              />            
              <TextField
@@ -144,6 +150,8 @@ const columns = [
                type="date"
                name="date"
                variant="outlined"
+               value={date}
+               onChange={(event) => setDate(event.target.value)}
                sx={{ mb: 3 }}
              />
              <TextField
@@ -153,6 +161,8 @@ const columns = [
                name="stat"
                variant="outlined"
                label="Numstat"
+               value={numstat}
+               onChange={(event) => setNumstat(event.target.value)}
                sx={{ mb: 3 }}
              />
             <TextField
@@ -162,6 +172,8 @@ const columns = [
                name="telephone"
                variant="outlined"
                label="Telephone"
+               value={telephone}
+               onChange={(event) => setTelephone(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>

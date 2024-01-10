@@ -18,6 +18,7 @@ import {
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import { filterdepot } from "app/views/admin/Depot/function";
 
   
     
@@ -27,10 +28,10 @@ import {
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
-
+    const [nomdepot, setNomdepot] = useState('');
   
 //   // Colonne
   const columns = [
@@ -82,28 +83,25 @@ import {
     }
    };
   
-
    
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
-    console.log(sortDirection);
-   };
-   
-   const sortedData = data.sort((a, b) => {
+  };
+
+  const filtredata=filterdepot(data,nomdepot);
+   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
     return sortDirection === 'asc' ? -1 : 1;
     }
     if (a[sortColumn] > b[sortColumn]) {
-    return sortDirection === 'asc' ? 1 : -1;
+      return sortDirection === 'asc' ? 1 : -1;
     }
     return 0;
-   });
-   
- 
+  });
+  
+
   //  Use effect
   useEffect(() => {
-    setSortDirection("asc");
   },[sortedData]);
    
   
@@ -122,8 +120,8 @@ import {
                name="materielfiltre"
                label="Nom du depot"
                variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               value={nomdepot}
+               onChange={(event) => setNomdepot(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>

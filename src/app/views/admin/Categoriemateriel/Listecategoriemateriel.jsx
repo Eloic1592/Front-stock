@@ -18,6 +18,7 @@ import {
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
+   import { filtercategoriemateriel } from "app/views/admin/Categoriemateriel/function";
   
     
    const Listecategoriemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -26,10 +27,10 @@ import {
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState(["asc"]);
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
-
+    const [categoriemateriel, setCategoriemateriel] = useState('');
   
 //   // Colonne
   const columns = [
@@ -85,11 +86,11 @@ import {
    
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
     console.log(sortDirection);
    };
    
-   const sortedData = data.sort((a, b) => {
+   const filtredata=filtercategoriemateriel(data,categoriemateriel);
+   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
     return sortDirection === 'asc' ? -1 : 1;
     }
@@ -102,7 +103,6 @@ import {
  
   //  Use effect
   useEffect(() => {
-    setSortDirection("asc");
   },[sortedData]);
    
   
@@ -121,8 +121,8 @@ import {
                name="categoriemateriel"
                label="categorie de materiel"
                variant="outlined"
-              //  value={materielfilter}
-              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               value={categoriemateriel}
+               onChange={(event) => setCategoriemateriel(event.target.value)}
                sx={{ mb: 3 }}
              />
             </div>

@@ -18,7 +18,7 @@ import {
    import { useState,useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
-
+   import { filtrenaturemouvement } from "app/views/admin/Mouvement/function";
   
     
    const Listenaturemouvement = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -27,12 +27,13 @@ import {
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
-
+    const [naturemouvement, setNaturemouvement] = useState('');
+    const [categoriemouvement, setCategoriemouvement] = useState(1);
   
-//   // Colonne
+  // Colonne
 
   const columns = [
   { label: 'ID', field: 'id', align: 'center' },
@@ -84,14 +85,13 @@ import {
    };
   
 
-   
    const handleSelectColumn = (event) => {
-    setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
-    console.log(sortDirection);
-   };
-   
-   const sortedData = data.sort((a, b) => {
+     setSortColumn(event.target.value);
+     console.log(sortDirection);
+    };
+    
+  const filtredata=filtrenaturemouvement(data,naturemouvement);
+   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
     return sortDirection === 'asc' ? -1 : 1;
     }
@@ -104,7 +104,6 @@ import {
  
   //  Use effect
   useEffect(() => {
-    setSortDirection("asc");
   },[sortedData]);
    
   
@@ -125,8 +124,8 @@ import {
                  name="typemouvement"
                  label="type de mouvement"
                  variant="outlined"
-                //  value={materielfilter}
-                //  onChange={(event) => setMaterielfilter(event.target.value)}
+                 value={naturemouvement}
+                 onChange={(event) => setNaturemouvement(event.target.value)}
                  sx={{ mb: 3 }}
                />
              </Grid>
@@ -135,8 +134,8 @@ import {
                     fullWidth
                     size="small"
                      labelId="select-label"
-                    //  value={categoriemouvement}
-                    //  onChange={(event) => setCategoriemouvement(event.target.value)}
+                     value={categoriemouvement}
+                     onChange={(event) => setCategoriemouvement(event.target.value)}
                       >
                      <MenuItem value="1">Physique</MenuItem>
                      <MenuItem value="2">Fictif</MenuItem>
