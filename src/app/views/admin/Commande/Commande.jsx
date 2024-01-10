@@ -1,22 +1,10 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
-
-
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listecommande from "./Listecommande";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
+import { Container } from "app/views/style/style";
 
   
 const Commande = () => {
@@ -107,45 +95,14 @@ const Commande = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-                fullWidth
-                size="small"
-                id="datebon"
-                type="date"
-                margin="dense"
-                name="datebon"
-                value={materiel}
-                onChange={(event) => setMateriel(event.target.value)}
-              />
-              <TextField
-                fullWidth
-                size="small"
-                id="nom"
-                type="text"
-                margin="dense"
-                label="Nom du client"
-                name="nom"
-                value={icon}
-                onChange={(event) => setIcon(event.target.value)}
-              />
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
-
-              <SimpleCard title="Bon de commande">
-        <Listecommande  data={donnees} />
-        </SimpleCard>
-      </Container>
+        <Listecommande  data={donnees} />      
+        </Container>
     );
   };
   

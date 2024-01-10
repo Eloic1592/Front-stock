@@ -1,21 +1,13 @@
-import { Box, styled,TextField,Select,MenuItem,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Box,TextField,Select,MenuItem,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listehistorique from "./Listehistorique";
+import { Container } from "app/views/style/style";
 
 
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
   
 const Historique = () => {
 
@@ -130,67 +122,11 @@ const Historique = () => {
              </Box>
 
              <Box mb={2}>
-             <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <Grid container spacing={3}>
-              <Grid item xs={4}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materiel"
-               label="Nom du materiel"
-               variant="outlined"
-               value={findmaterial}
-               onChange={(event) => setFindmaterial(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-             </Grid>
-             <Grid item xs={4}>
-            <Select
-                fullWidth
-                size="small"
-               labelId="select-label"
-               value={findmonth}
-               onChange={(event) => setFindmonth(event.target.value)}
-               >
-               <MenuItem value="1">Janvier</MenuItem>
-               <MenuItem value="2">Fevrier</MenuItem>
-               <MenuItem value="3">Mars</MenuItem>
-               <MenuItem value="4">Avril</MenuItem>
-               <MenuItem value="5">Mai</MenuItem>
-               <MenuItem value="6">Juin</MenuItem>
-               <MenuItem value="7">Juillet</MenuItem>
-               <MenuItem value="8">Aout</MenuItem>
-               <MenuItem value="9">Septembre</MenuItem>
-               <MenuItem value="10">Octobre</MenuItem>
-               <MenuItem value="11">Novembre</MenuItem>
-               <MenuItem value="12">Decembre</MenuItem>
-            </Select>
-            </Grid>
-            <Grid item xs={4}>
-            <Select
-              fullWidth
-              size="small"
-               labelId="select-label"
-               value={findmove}
-               onChange={(event) => setFindmove(event.target.value)}
-                >
-               <MenuItem value="1">Entree</MenuItem>
-               <MenuItem value="-1"> Sortie</MenuItem>
-            </Select>
-            </Grid>
-            </Grid>
-            </div>
-            </form>
-              </SimpleCard>
+             
               </Box>
 
               <Box>
-                  <SimpleCard title="Historique des proformas">
-                    <Listehistorique data={donnees} />
-                  </SimpleCard>
+                <Listehistorique data={donnees} />
             </Box>
       </Container>
     );

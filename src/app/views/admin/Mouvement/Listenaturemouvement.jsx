@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,17 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
-  
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
     
    const Listenaturemouvement = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -121,6 +111,46 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+        <Grid item>             
+        <SimpleCard title="Rechercher un type de mouvement" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                <TextField
+                 fullWidth
+                 size="small"
+                 type="text"
+                 name="typemouvement"
+                 label="type de mouvement"
+                 variant="outlined"
+                //  value={materielfilter}
+                //  onChange={(event) => setMaterielfilter(event.target.value)}
+                 sx={{ mb: 3 }}
+               />
+             </Grid>
+             <Grid item xs={6}>
+                <Select
+                    fullWidth
+                    size="small"
+                     labelId="select-label"
+                    //  value={categoriemouvement}
+                    //  onChange={(event) => setCategoriemouvement(event.target.value)}
+                      >
+                     <MenuItem value="1">Physique</MenuItem>
+                     <MenuItem value="2">Fictif</MenuItem>
+                </Select>
+                </Grid>
+              </Grid>
+            </div>
+            </form>
+          </SimpleCard>
+        </Grid>
+
+
+        <Grid item>
+        <SimpleCard title="Liste des mouvements">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -242,6 +272,9 @@ import {
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>
         </Grid>
       </Box>
     );

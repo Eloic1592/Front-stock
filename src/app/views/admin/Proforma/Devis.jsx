@@ -1,30 +1,10 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,Grid } from "@mui/material";
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Grid } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
-
-
 import { useState,useEffect } from 'react';
-import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import Button from '@mui/material/Button';
-
-
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listedevis from "./Listedevis";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
-  const AutoComplete = styled(Autocomplete)(() => ({
-    marginBottom: '16px',
-  }));
-
+import { Container,AutoComplete } from "app/views/style/style";
 
   
 const Devis = () => {
@@ -130,7 +110,7 @@ const Devis = () => {
                </Dialog>
              </Box>
              <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
+              <form >
               <div style={{ display: 'flex', gap: '16px' }}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
@@ -170,9 +150,7 @@ const Devis = () => {
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des devis">
         <Listedevis  data={donnees} />
-        </SimpleCard>
       </Container>
     );
   };

@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,17 +16,8 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
-  
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
   
     
    const Listecategoriemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -120,6 +109,31 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+        <Grid item>
+        <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="categoriemateriel"
+               label="categorie de materiel"
+               variant="outlined"
+              //  value={materielfilter}
+              //  onChange={(event) => setMaterielfilter(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+            </div>
+            </form>
+          </SimpleCard>
+        </Grid>
+
+        
+        <Grid item>
+        <SimpleCard title="Liste des categories de materiel">
+
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -240,6 +254,9 @@ import {
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>
         </Grid>
       </Box>
     );

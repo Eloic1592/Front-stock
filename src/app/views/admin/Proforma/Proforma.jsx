@@ -1,32 +1,22 @@
-import { Box, styled,TextField,Snackbar,Alert,Autocomplete,Grid } from "@mui/material";
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Grid,Button } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useState,useEffect } from 'react';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listeproforma from "./Listeproforma";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-  const AutoComplete = styled(Autocomplete)(() => ({
-    marginBottom: '16px',
-}));
+import { Container,AutoComplete } from "app/views/style/style";
 
   
 const Proforma = () => {
 
   // Form dialog
   const handleAlertClose = () => setMessage({open:false});
+  const [file, setFile] = useState('');
+  const handleFileOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
+  const [fileOpen, setFileOpen] = useState(false);
 
    // Data
    const [datedevis, setDatedevis] = useState('');
-   const [idclient, setIdclient] = useState('');
 
     // Input 
 
@@ -59,8 +49,13 @@ const Proforma = () => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={[{ name: "Proforma", path: "admin/proforma" }, { name: "Proforma" }]} />
         </Box>
+        <p>
+           <Button variant="contained" onClick={handleFileOpen} color="secondary">
+            Exporter des données
+            </Button>
+        </p>
              <SimpleCard title="Rechercher un proforma" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
+              <form >
               <div style={{ display: 'flex', gap: '16px' }}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
@@ -92,17 +87,40 @@ const Proforma = () => {
             </div>
             </form>
               </SimpleCard>
-                <p></p>
-                <p></p>
+              <Box>
+               <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
+                 <DialogContent>
+                  <TextField
+                   fullWidth
+                    size="small"
+                    type="number"
+                    name="annee"
+                    label="De quel annee ?"
+                     value={file}
+                     onChange={(event) => setFile(event.target.value)}
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                     Annuler
+                   </Button>
+                   <Button /*onClick={handleSubmit}*/ color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
               
-              <SimpleCard title="Liste des proformas">
-        <Listeproforma  data={donnees} />
-        </SimpleCard>
+          <Listeproforma  data={donnees} />
+
       </Container>
     );
   };

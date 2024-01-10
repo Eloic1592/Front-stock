@@ -1,21 +1,11 @@
-import { Box, styled,TextField,Select,MenuItem,Grid} from "@mui/material";
+import { Box,TextField,Select,MenuItem,Grid} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 
 
 import { useEffect, useState } from 'react';
 import PaginationTable from "app/views/material-kit/tables/PaginationTable";
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
+import { Container,AutoComplete } from "app/views/style/style";
 
 const Dashboard =  () => {
 
@@ -42,7 +32,7 @@ const Dashboard =  () => {
               <Breadcrumb routeSegments={[{ name: "Tableau de bord", path: "admin/dashboard" }, { name: "Tableau de bord" }]} />
             </Box>
                  <SimpleCard title="" sx={{ marginBottom: '16px' }}>        
-                  <form /* onSubmit={this.handleSubmit}*/>
+                  <form >
                   <div style={{ display: 'flex', gap: '16px' }}>
                   <Grid container spacing={2}>
                     <Grid item xs={6}>

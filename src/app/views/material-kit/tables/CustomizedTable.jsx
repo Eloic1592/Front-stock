@@ -1,29 +1,16 @@
 import {
   Box,
-  Button,
-  styled,
-  Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Icon, 
-  IconButton,
   TextField,
-  Checkbox,
  } from "@mui/material";
  import { useState,useEffect } from "react";
  
- const StyledTable = styled(Table)(() => ({
-  whiteSpace: "pre",
-  "& thead": {
-    "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-  },
-  "& tbody": {
-    "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-  },
- }));
+ import { StyledTable } from "app/views/style/style";
+
  
  const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] },editable=true) => {
   const [page, setPage] = useState(0);

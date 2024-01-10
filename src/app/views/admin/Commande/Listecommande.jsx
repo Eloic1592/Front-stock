@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,17 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
-  
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
     
    const Listecommande = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -126,6 +116,41 @@ useEffect(() => {
  
   return (
     <Box width="100%" overflow="auto">
+      <Grid container direction="column" spacing={2}>
+      <Grid item>
+      <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+                fullWidth
+                size="small"
+                id="datebon"
+                type="date"
+                margin="dense"
+                name="datebon"
+                // value={materiel}
+                // onChange={(event) => setMateriel(event.target.value)}
+              />
+              <TextField
+                fullWidth
+                size="small"
+                id="nom"
+                type="text"
+                margin="dense"
+                label="Nom du client"
+                name="nom"
+                // value={icon}
+                // onChange={(event) => setIcon(event.target.value)}
+              />
+            </div>
+            </form>
+        </SimpleCard>
+      </Grid>
+
+
+      
+      <Grid item>
+      <SimpleCard title="Liste des commandes">
         {/* Tri de tables */}
         <Grid container spacing={2}>
            <Grid item xs={2}>
@@ -246,6 +271,9 @@ useEffect(() => {
         backIconButtonProps={{ "aria-label": "Previous Page" }}
         />
         </Grid>
+      </Grid>
+      </SimpleCard>
+      </Grid>
       </Grid>
     </Box>
   );

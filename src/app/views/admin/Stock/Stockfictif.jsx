@@ -1,25 +1,11 @@
-import { Box, styled,TextField,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,Select,MenuItem } from "@mui/material";
+import { Box,TextField,DialogContent,DialogActions,DialogTitle,Dialog,Select,MenuItem } from "@mui/material";
 import Grid from '@mui/material/Grid';
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";
 import Button from '@mui/material/Button';
 import Listestockfictif from "./Listestockfictif";
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
-const AutoComplete = styled(Autocomplete)(() => ({
-    width: 300,
-    marginBottom: '16px',
-}));
+import { Container,AutoComplete } from "app/views/style/style";
 
   
 const Stockfictif = () => {
@@ -36,6 +22,10 @@ const [idetudiant, setIdetudiant] = useState('');
 const [idmateriel, setIdmateriel] = useState('');
 const [description, setDescription] = useState('');
 const [commentaire, setCommentaire] = useState('');
+const [file, setFile] = useState('');
+const handleFileOpen = () => setFileOpen(true);
+const handleFileClose = () => setFileOpen(false);
+const [fileOpen, setFileOpen] = useState(false);
 
 
   // Data
@@ -112,7 +102,7 @@ const [commentaire, setCommentaire] = useState('');
           <Button variant="contained" color="inherit">
             Exporter les  mouvements
           </Button>&nbsp;&nbsp;
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" onClick={handleFileOpen} color="secondary">
           Importer des données
           </Button>
           </p>        
@@ -281,7 +271,6 @@ const [commentaire, setCommentaire] = useState('');
                       />
                     </Grid>
                   </Grid>
-                  <p></p>
                   <CustomizedTable columns={columnsdetails} data={formData} />
                  </DialogContent>
 
@@ -298,82 +287,34 @@ const [commentaire, setCommentaire] = useState('');
                  </DialogActions>
                </Dialog>
              </Box>
-        <SimpleCard title="Rechercher" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <Grid container spacing={2}>
-                  <Grid item xs={3}>
-                    <TextField
-                     fullWidth
-                     size="small"
-                     type="text"
-                     name="materielfiltre"
-                     label="Nom du materiel"
-                     variant="outlined"
-                    //  value={materielfilter}
-                    //  onChange={(event) => setMaterielfilter(event.target.value)}
-                     sx={{ mb: 3 }}
-                   />
-                   </Grid>
-                  <Grid item  xs={3}>
+             <Box>
+               <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
+                 <DialogContent>
                   <TextField
-                     fullWidth
-                     size="small"
-                     type="date"
-                     name="date"
-                     variant="outlined"
-                    //  value={materielfilter}
-                    //  onChange={(event) => setMaterielfilter(event.target.value)}
-                     sx={{ mb: 3 }}
+                   fullWidth
+                    size="small"
+                    type="file"
+                    name="filename"
+                    label="Fichier"
+                     value={file}
+                     onChange={(event) => setFile(event.target.value)}
                    />
-                   </Grid>
-                  <Grid item  xs={3}>
-                  <Select
-                    fullWidth
-                     size="small"
-                     labelId="select-label"
-                     value={"1"}
-                    //  onChange={handleChange}
-                      >
-                     <MenuItem value="1">Entree</MenuItem>
-                     <MenuItem value="-1"> Sortie</MenuItem>
-                  </Select>
-                  </Grid>
-                  <Grid item xs={1}>
-                  <Select
-                    size="small"
-                     labelId="select-label"
-                     value={"1"}
-                     onChange={(event) => setDepot(event.target.value)}
-                      >
-                     <MenuItem value="1">Depot</MenuItem>
-                     <MenuItem value="-1"> Salle 6</MenuItem>
-                  </Select>
-                  </Grid>
-                  <Grid item xs={2}>
-                  <Select
-                  fullWidth
-                    size="small"
-                     labelId="select-label"
-                     value={"1"}
-                    //  onChange={handleChange}
-                    >
-                     <MenuItem value="1">Don</MenuItem>
-                     <MenuItem value="-1"> Transfert</MenuItem>
-                     <MenuItem value="-1"> Perte</MenuItem>
-                  </Select>
-                  </Grid>
-            </Grid>
+                 </DialogContent>
 
-            </div>
-            </form>
-        </SimpleCard>
-
-        <br />
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                     Annuler
+                   </Button>
+                   <Button onClick={handleSubmit} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
+             
       {/* Liste des donnees */}
-        <SimpleCard title="Liste des mouvements fictifs actuels">
         <Listestockfictif  data={donnees} />
-        </SimpleCard>
       </Container>
     );
   };

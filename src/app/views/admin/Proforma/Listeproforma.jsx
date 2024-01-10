@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     styled,
     Table,
     TableBody,
@@ -8,26 +7,15 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    Icon, 
-    IconButton,
-    TextField,
-    Checkbox,
     Select,
     MenuItem,
     Grid,
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
   
     // Proforma tsy afaka ovaina intsony
@@ -88,6 +76,7 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+        <SimpleCard title="Liste des mouvements proformas">
         <Grid container spacing={2}>
              <Grid item xs={2}>
                <Select
@@ -163,6 +152,7 @@ import {
           />
           </Grid>
         </Grid>
+        </SimpleCard>
       </Box>
     );
    };

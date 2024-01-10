@@ -1,24 +1,10 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,MenuItem,Select,InputLabel,Grid } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,Autocomplete,MenuItem,Select,Grid } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listemateriel from "./Listemateriel";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
-const AutoComplete = styled(Autocomplete)(() => ({
-    marginBottom: '16px',
-}));
+import { Container,AutoComplete } from "app/views/style/style";
 
 
   
@@ -42,6 +28,10 @@ const Materiel = () => {
   const [description, setDescription] = useState('');
   const [prixvente, setPrixvente] = useState(0);
   const [caution, setCaution] = useState(0);
+  const [file, setFile] = useState('');
+  const handleFileOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
+  const [fileOpen, setFileOpen] = useState(false);
 
     // Message
     const [message,setMessage]= useState({
@@ -69,8 +59,8 @@ const Materiel = () => {
            <Button variant="contained" onClick={handleClickOpen} color="primary">
              Nouveau materiel
            </Button>&nbsp;&nbsp;
-           <Button variant="contained" color="secondary">
-            Importer des données
+           <Button variant="contained" onClick={handleFileOpen} color="secondary">
+            Exporter des données
             </Button>
           </p>
           <Box>
@@ -200,80 +190,39 @@ const Materiel = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du materiel"
-               variant="outlined"
-               value={nommateriel}
-               onChange={(event) => setNomateriel(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-              <TextField
-                fullWidth
-                size="small"
-                id="numeroserie"
-                type="text"
-                label="Numero de serie"
-                name="numserie"
-                variant="outlined"
-                value={snumserie}
-                onChange={(event) => setSnumserie(event.target.value)}
-                sx={{ mb: 3 }}
-              />
-              <AutoComplete
-                    fullWidth
+             <Box>
+               <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
+                 <DialogContent>
+                  <TextField
+                   fullWidth
                     size="small"
-                    // options={suggestions}
-                    getOptionLabel={(option) => option.label}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Modele" variant="outlined" fullWidth />
-                  )}
-                    name="typemateriel"
-                    id="typemateriel"
-              />
-              <Select
-                labelId="select-label"
-                value={"1"}
-                size="small"
-                sx={{ mb: 3 }}
-               //  onChange={handleChange}
-                 >
-                <MenuItem value="1">Noir</MenuItem>
-                <MenuItem value="1">Gris</MenuItem>
-             </Select>
-             <Select
-                  size="small"
-                  labelId="select-label"
-                  value={"1"}
-                  sx={{ mb: 3 }}
-                   //  onChange={handleChange}
-                  >
-                  <MenuItem value="1">Materiel bureautique</MenuItem>
-                  <MenuItem value="-1"> Materiel informatique</MenuItem>
-                  <MenuItem value="-1"> Materiel sonore</MenuItem>
-                  <MenuItem value="-1"> Alimentation</MenuItem>
+                    type="text"
+                    name="filename"
+                    label="Nom du fichier"
+                     value={file}
+                     onChange={(event) => setFile(event.target.value)}
+                   />
+                 </DialogContent>
 
-                 </Select>
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                     Annuler
+                   </Button>
+                   <Button onClick={handleSubmit} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des entretiens">
         <Listemateriel  data={donnees} />
-        </SimpleCard>
       </Container>
     );
   };

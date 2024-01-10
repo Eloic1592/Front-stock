@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,16 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
   
     
@@ -131,6 +122,56 @@ const columns = [
    
     return (
       <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+        <Grid item>             
+          <SimpleCard title="Rechercher une facture" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="client"
+               label="Nom du client"
+               variant="outlined"
+              //  value={client}
+              //  onChange={(event) => setClient(event.target.value)}
+               sx={{ mb: 3 }}
+             />            
+             <TextField
+               fullWidth
+               size="small"
+               type="date"
+               name="date"
+               variant="outlined"
+               sx={{ mb: 3 }}
+             />
+             <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="stat"
+               variant="outlined"
+               label="Numstat"
+               sx={{ mb: 3 }}
+             />
+            <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="telephone"
+               variant="outlined"
+               label="Telephone"
+               sx={{ mb: 3 }}
+             />
+            </div>
+            </form>
+              </SimpleCard>
+        </Grid>
+
+        
+        <Grid item>
+        <SimpleCard title="Liste des factures">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -252,6 +293,9 @@ const columns = [
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>
         </Grid>
       </Box>
     );

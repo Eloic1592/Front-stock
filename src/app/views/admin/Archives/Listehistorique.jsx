@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,19 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
   
-  
-    
    const Listehistorique = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
@@ -42,8 +30,7 @@ import {
     const [selectedRowId, setSelectedRowId] = useState(null);
 
   
-//   // Colonne
-
+//Colonne
   const columns = [
   { label: 'ID', field: 'id', align: 'center' },
   { label: 'Date', field: 'date', align: 'center' },
@@ -123,6 +110,66 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+        <SimpleCard title="Rechercher dans l'historique" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <Grid container spacing={3}>
+              <Grid item xs={4}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="materiel"
+               label="Nom du materiel"
+               variant="outlined"
+              //  value={findmaterial}
+              //  onChange={(event) => setFindmaterial(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+             </Grid>
+             <Grid item xs={4}>
+            <Select
+                fullWidth
+                size="small"
+               labelId="select-label"
+              //  value={findmonth}
+              //  onChange={(event) => setFindmonth(event.target.value)}
+               >
+               <MenuItem value="1">Janvier</MenuItem>
+               <MenuItem value="2">Fevrier</MenuItem>
+               <MenuItem value="3">Mars</MenuItem>
+               <MenuItem value="4">Avril</MenuItem>
+               <MenuItem value="5">Mai</MenuItem>
+               <MenuItem value="6">Juin</MenuItem>
+               <MenuItem value="7">Juillet</MenuItem>
+               <MenuItem value="8">Aout</MenuItem>
+               <MenuItem value="9">Septembre</MenuItem>
+               <MenuItem value="10">Octobre</MenuItem>
+               <MenuItem value="11">Novembre</MenuItem>
+               <MenuItem value="12">Decembre</MenuItem>
+            </Select>
+            </Grid>
+            <Grid item xs={4}>
+            <Select
+              fullWidth
+              size="small"
+               labelId="select-label"
+              //  value={findmove}
+              //  onChange={(event) => setFindmove(event.target.value)}
+                >
+               <MenuItem value="1">Entree</MenuItem>
+               <MenuItem value="-1"> Sortie</MenuItem>
+            </Select>
+            </Grid>
+            </Grid>
+            </div>
+            </form>
+              </SimpleCard>
+        </Grid>
+        <Grid item>
+        <SimpleCard title="Historique">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -243,6 +290,9 @@ import {
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>        
         </Grid>
       </Box>
     );

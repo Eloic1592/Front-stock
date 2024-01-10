@@ -1,20 +1,10 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listedepot from "./Listedepot";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
+import { Container } from "app/views/style/style";
 
   
 const Depot = () => {
@@ -64,9 +54,9 @@ const Depot = () => {
          <Button variant="contained" onClick={handleClickOpen} color="primary">
            Nouveau Depot
          </Button>&nbsp;&nbsp;
-           <Button variant="contained" color="secondary">
+           {/* <Button variant="contained" color="secondary">
             Importer les donnees
-          </Button>
+          </Button> */}
          </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -95,34 +85,13 @@ const Depot = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="materielfiltre"
-               label="Nom du depot"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
-
-              <SimpleCard title="Liste des depots">
               <Listedepot data={donnees} />        
-              </SimpleCard>
       </Container>
     );
   };

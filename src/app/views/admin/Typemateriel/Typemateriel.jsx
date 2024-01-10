@@ -1,35 +1,24 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
-
-
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
-
-
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listetypemateriel from "./Listetypemateriel";
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
+import { Container } from "app/views/style/style";
   
 const Typemateriel = () => {
 
   // Form dialog
   const [open, setOpen] = useState(false);
+  const [fileOpen, setFileOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
+  const handleFileOpen = () => setFileOpen(true);
   const handleClose = () => setOpen(false);
+  const handleFileClose = () => setFileOpen(false);
   const handleAlertClose = () => setMessage({open:false});
 
    // Data
-  const [materielfilter, setMaterielfilter] = useState('');
+  const [file, setFile] = useState('');
 
     // Input 
   const [typemateriel, setTypemateriel] = useState('');
@@ -68,9 +57,9 @@ const Typemateriel = () => {
            <Button variant="contained" onClick={handleClickOpen} color="primary">
            Nouveau type de materiel           
            </Button>&nbsp;&nbsp;
-           <Button variant="contained" color="secondary">
+           {/* <Button variant="contained" onClick={handleFileOpen} color="secondary">
           Importer des données
-          </Button>
+          </Button> */}
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -97,35 +86,40 @@ const Typemateriel = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher un type de materiel" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="typemateriel"
-               label="type de materiel"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+             {/* <Box>
+               <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
+                 <DialogContent>
+                  <TextField
+                   fullWidth
+                    size="small"
+                    type="file"
+                    name="filename"
+                    label="Fichier"
+                     value={file}
+                     onChange={(event) => setFile(event.target.value)}
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                     Annuler
+                   </Button>
+                   <Button onClick={handleSubmit} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box> */}
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des types de materiel">
-               <Listetypemateriel data={donnees} />        
+        
+        <Listetypemateriel data={donnees} />        
 
-        </SimpleCard>
       </Container>
     );
   };

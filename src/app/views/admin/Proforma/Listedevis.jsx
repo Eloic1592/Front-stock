@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,17 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
-  
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
     
    const Listedevis = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -125,6 +115,7 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+                <SimpleCard title="Liste des devis">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -246,6 +237,7 @@ import {
           />
           </Grid>
         </Grid>
+        </SimpleCard>
       </Box>
     );
    };

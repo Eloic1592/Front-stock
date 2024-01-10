@@ -1,25 +1,12 @@
-import { Box, styled,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,MenuItem,Select,Autocomplete } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog,MenuItem,Select,Autocomplete } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import CustomizedTable from "app/views/material-kit/tables/CustomizedTable";
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Listefacture from "./Listefacture";
+import { Container } from "app/views/style/style";
 
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
-  const AutoComplete = styled(Autocomplete)(() => ({
-    width: 300,
-    marginBottom: '16px',
-}));
   
 const Facture = () => {
   // Input 
@@ -28,7 +15,10 @@ const Facture = () => {
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [formData, setFormData] = useState([]);
-
+  const [file, setFile] = useState('');
+  const handleFileOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
+  const [fileOpen, setFileOpen] = useState(false);
 
   // Data
   const[listefacture,setListeFacture]= useState([]);
@@ -99,7 +89,7 @@ const Facture = () => {
            <Button variant="contained" color="inherit">
             Exporter la facture
           </Button>&nbsp;&nbsp;
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" onClick={handleFileOpen} color="secondary">
             Importer la facture
           </Button>
           </p>
@@ -216,62 +206,42 @@ const Facture = () => {
                  </DialogActions>
                </Dialog>
              </Box>
+             <Box>
+               <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+                 <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
+                 <DialogContent>
+                  <TextField
+                   fullWidth
+                    size="small"
+                    type="file"
+                    name="filename"
+                    label="Fichier"
+                     value={file}
+                     onChange={(event) => setFile(event.target.value)}
+                   />
+                 </DialogContent>
+
+                 <DialogActions>
+                   <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                     Annuler
+                   </Button>
+                   <Button onClick={handleSubmit} color="primary">
+                     Valider
+                   </Button>
+                 </DialogActions>
+               </Dialog>
+             </Box>
 
 
-             <SimpleCard title="Rechercher une facture" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="client"
-               label="Nom du client"
-               variant="outlined"
-               value={client}
-               onChange={(event) => setClient(event.target.value)}
-               sx={{ mb: 3 }}
-             />            
-             <TextField
-               fullWidth
-               size="small"
-               type="date"
-               name="date"
-               variant="outlined"
-               sx={{ mb: 3 }}
-             />
-             <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="stat"
-               variant="outlined"
-               label="Numstat"
-               sx={{ mb: 3 }}
-             />
-            <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="telephone"
-               variant="outlined"
-               label="Telephone"
-               sx={{ mb: 3 }}
-             />
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des factures">
         <Listefacture  data={donnees} />
-        </SimpleCard>
       </Container>
     );
   };

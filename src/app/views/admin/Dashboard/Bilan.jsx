@@ -1,18 +1,9 @@
-import { Box, styled,TextField,Select,MenuItem} from "@mui/material";
+import { Box,TextField,Select,MenuItem} from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useEffect, useState } from 'react';
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
+import { Container } from "app/views/style/style";
 
 const Bilan =  () => {
 const[annee,setAnnee]=useState('');
@@ -27,7 +18,7 @@ const[annee,setAnnee]=useState('');
             </Box>
 
           <SimpleCard title="Rechercher dans le bilan" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
+              <form >
               <div style={{ display: 'flex', gap: '16px' }}>
               <Grid container spacing={2}>
                <Grid item xs={6}>

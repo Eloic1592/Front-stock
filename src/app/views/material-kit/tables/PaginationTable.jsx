@@ -1,8 +1,6 @@
 import {
   Box,
   Button,
-  styled,
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -19,15 +17,8 @@ import {
  import Typography from '@mui/material/Typography';
  import { useState,useEffect } from "react";
  
- const StyledTable = styled(Table)(() => ({
-  whiteSpace: "pre",
-  "& thead": {
-    "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-  },
-  "& tbody": {
-    "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-  },
- }));
+ import { StyledTable } from "app/views/style/style";
+
 
 
  

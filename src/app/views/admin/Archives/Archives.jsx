@@ -1,23 +1,12 @@
-import { Box, styled,Icon } from "@mui/material";
+import { Box,Icon } from "@mui/material";
 import { Breadcrumb, SimpleCard } from "app/components";
 import { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
+import { Container } from "app/views/style/style";
 
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
-
-
-
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
   
 const Archives = () => {
 

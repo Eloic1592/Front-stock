@@ -2,23 +2,14 @@ import {
   Box,
   Icon,
   IconButton,
-  styled,
-  Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from "@mui/material";
 
-const StyledTable = styled(Table)(({ theme }) => ({
-  whiteSpace: "pre",
-  "& thead": {
-    "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-  },
-  "& tbody": {
-    "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-  },
-}));
+import { StyledTable } from "app/views/style/style";
+
 
 const subscribarList = [
   {

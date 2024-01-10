@@ -1,41 +1,13 @@
-import { Box, styled,Icon, IconButton,TextField,Tooltip,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
-import { Breadcrumb, SimpleCard } from "app/components";
-
-
+import { Box,TextField,Snackbar,Alert,DialogContent,DialogActions,DialogTitle,Dialog } from "@mui/material";
+import { Breadcrumb } from "app/components";
 import { useState,useEffect } from 'react';
 import Button from '@mui/material/Button';
-
-
 import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listecategoriemateriel from "./Listecategoriemateriel";
+import { Container } from "app/views/style/style";
 
 
 
-const Container = styled("div")(({ theme }) => ({
-    margin: "30px",
-    [theme.breakpoints.down("sm")]: { margin: "16px" },
-    "& .breadcrumb": {
-      marginBottom: "30px",
-      [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
-    },
-  }));
-
-
-  const handleEdit = (id) => {
-    // Mettez ici votre logique pour l'édition
-    alert(`Mety`+id);
-  };
-  
-  const handleDelete = (id) => {
-    // Mettez ici votre logique pour la suppression
-    alert(`Mety`+id);  
-  };
-
-  const handleChange = (event) => {
-
-  };
-
-  
 const Categoriemateriel = () => {
 
   // Form dialog
@@ -44,8 +16,6 @@ const Categoriemateriel = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({open:false});
 
-   // Data
-  const [materielfilter, setMaterielfilter] = useState('');
 
     // Input 
   const [categoriemateriel, setCategoriemateriel] = useState('');
@@ -64,16 +34,20 @@ const Categoriemateriel = () => {
 
     useEffect(() => {
     },[]);
-
-     const donnees = [
-      { id: 1, categoriemateriel: 'Depot 1', /* other fields... */ },
-      { id: 2, categoriemateriel: 'Depot 2', /* other fields... */ },
-      { id: 3, categoriemateriel: 'Depot 3', /* other fields... */ },
-      { id: 4, categoriemateriel: 'Depot 4', /* other fields... */ },
-      { id: 5, categoriemateriel: 'Depot 5', /* other fields... */ },
-      { id: 6, categoriemateriel: 'Depot 6', /* other fields... */ },
-      // More rows...
-     ];
+    
+      const donnees = [
+        { id: 1, categoriemateriel: 'Test Data 1', /* other fields... */ },
+        { id: 2, categoriemateriel: 'Test Data 2', /* other fields... */ },
+        { id: 3, categoriemateriel: 'Test Data 3', /* other fields... */ },
+        { id: 4, categoriemateriel: 'Test Data 4', /* other fields... */ },
+        { id: 5, categoriemateriel: 'Test Data 5', /* other fields... */ },
+        { id: 6, categoriemateriel: 'Test Data 6', /* other fields... */ },
+        { id: 7, categoriemateriel: 'Test Data 7', /* other fields... */ },
+        { id: 8, categoriemateriel: 'Test Data 8', /* other fields... */ },
+        { id: 9, categoriemateriel: 'Test Data 9', /* other fields... */ },
+        { id: 10, categoriemateriel: 'Test Data 10', /* other fields... */ },
+        // Add more rows if needed
+       ];
 
     return (
         <Container>
@@ -84,9 +58,9 @@ const Categoriemateriel = () => {
            <Button variant="contained" onClick={handleClickOpen} color="primary">
              Nouvelle categorie de materiel           
            </Button>&nbsp;&nbsp;
-           <Button variant="contained" color="secondary">
+           {/* <Button variant="contained" color="secondary">
             Importer des données
-          </Button>
+          </Button> */}
           </p>
           <Box>
                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -114,34 +88,15 @@ const Categoriemateriel = () => {
                  </DialogActions>
                </Dialog>
              </Box>
-             <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>        
-              <form /* onSubmit={this.handleSubmit}*/>
-              <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="categoriemateriel"
-               label="categorie de materiel"
-               variant="outlined"
-               value={materielfilter}
-               onChange={(event) => setMaterielfilter(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            </div>
-            </form>
-              </SimpleCard>
-                <p></p>
-                <p></p>
+
+
                 <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
                 <Alert  severity={message.severity} sx={{ width: '100%' }} variant="filled">
                    {message.text}
                 </Alert>
               </Snackbar>
 
-              <SimpleCard title="Liste des categories de materiel">
         <Listecategoriemateriel data={donnees} />
-        </SimpleCard>
       </Container>
     );
   };

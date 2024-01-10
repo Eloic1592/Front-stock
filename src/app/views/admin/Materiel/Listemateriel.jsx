@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -15,21 +13,13 @@ import {
     Select,
     MenuItem,
     Grid,
+    Autocomplete
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
+   import { SimpleCard } from "app/components";
+   import { StyledTable,AutoComplete } from "app/views/style/style";
 
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
-  
   
     
    const Listemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
@@ -130,6 +120,74 @@ import {
    
     return (
       <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+        <Grid item>
+        <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+              <TextField
+               fullWidth
+               size="small"
+               type="text"
+               name="materielfiltre"
+               label="Nom du materiel"
+               variant="outlined"
+              //  value={nommateriel}
+              //  onChange={(event) => setNomateriel(event.target.value)}
+               sx={{ mb: 3 }}
+             />
+              <TextField
+                fullWidth
+                size="small"
+                id="numeroserie"
+                type="text"
+                label="Numero de serie"
+                name="numserie"
+                variant="outlined"
+                // value={snumserie}
+                // onChange={(event) => setSnumserie(event.target.value)}
+                sx={{ mb: 3 }}
+              />
+              <AutoComplete
+                    fullWidth
+                    size="small"
+                    // options={suggestions}
+                    getOptionLabel={(option) => option.label}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Modele" variant="outlined" fullWidth />
+                  )}
+                    name="typemateriel"
+                    id="typemateriel"
+              />
+              <Select
+                labelId="select-label"
+                value={"1"}
+                size="small"
+                sx={{ mb: 3 }}
+               //  onChange={handleChange}
+                 >
+                <MenuItem value="1">Noir</MenuItem>
+                <MenuItem value="1">Gris</MenuItem>
+             </Select>
+             <Select
+                  size="small"
+                  labelId="select-label"
+                  value={"1"}
+                  sx={{ mb: 3 }}
+                   //  onChange={handleChange}
+                  >
+                  <MenuItem value="1">Materiel bureautique</MenuItem>
+                  <MenuItem value="-1"> Materiel informatique</MenuItem>
+                  <MenuItem value="-1"> Materiel sonore</MenuItem>
+                  <MenuItem value="-1"> Alimentation</MenuItem>
+
+                 </Select>
+            </div>
+            </form>
+              </SimpleCard>
+        </Grid>
+        <Grid item>
+        <SimpleCard title="Liste des materiels">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -254,6 +312,9 @@ import {
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>
         </Grid>
       </Box>
     );

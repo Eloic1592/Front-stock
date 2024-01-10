@@ -1,8 +1,6 @@
 import {
     Box,
     Button,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -18,16 +16,9 @@ import {
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { useState,useEffect } from "react";
-   
-   const StyledTable = styled(Table)(() => ({
-    whiteSpace: "pre",
-    "& thead": {
-      "& tr": { "& th": { paddingLeft: 0, paddingRight: 0 } },
-    },
-    "& tbody": {
-      "& tr": { "& td": { paddingLeft: 0, textTransform: "capitalize" } },
-    },
-   }));
+   import { SimpleCard } from "app/components";
+   import { StyledTable } from "app/views/style/style";
+
   
   
     
@@ -131,6 +122,81 @@ const columns = [
    
     return (
       <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+        <Grid item>        
+        <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>        
+              <form >
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={3}>
+                    <TextField
+                     fullWidth
+                     size="small"
+                     type="text"
+                     name="materielfiltre"
+                     label="Nom du materiel"
+                     variant="outlined"
+                    //  value={materielfilter}
+                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     sx={{ mb: 3 }}
+                   />
+                   </Grid>
+                  <Grid item  xs={3}>
+                  <TextField
+                     fullWidth
+                     size="small"
+                     type="date"
+                     name="date"
+                     variant="outlined"
+                    //  value={materielfilter}
+                    //  onChange={(event) => setMaterielfilter(event.target.value)}
+                     sx={{ mb: 3 }}
+                   />
+                   </Grid>
+                  <Grid item  xs={3}>
+                  <Select
+                    fullWidth
+                     size="small"
+                     labelId="select-label"
+                     value={"1"}
+                    //  onChange={handleChange}
+                      >
+                     <MenuItem value="1">Entree</MenuItem>
+                     <MenuItem value="-1"> Sortie</MenuItem>
+                  </Select>
+                  </Grid>
+                  <Grid item xs={1}>
+                  <Select
+                    size="small"
+                     labelId="select-label"
+                     value={"1"}
+                    //  onChange={(event) => setDepot(event.target.value)}
+                      >
+                     <MenuItem value="1">Depot</MenuItem>
+                     <MenuItem value="-1"> Salle 6</MenuItem>
+                  </Select>
+                  </Grid>
+                  <Grid item xs={2}>
+                  <Select
+                  fullWidth
+                    size="small"
+                     labelId="select-label"
+                     value={"1"}
+                    //  onChange={handleChange}
+                    >
+                     <MenuItem value="1">Don</MenuItem>
+                     <MenuItem value="-1"> Transfert</MenuItem>
+                     <MenuItem value="-1"> Perte</MenuItem>
+                  </Select>
+                  </Grid>
+            </Grid>
+            </div>
+            </form>
+        </SimpleCard>
+        </Grid>
+
+        <Grid item>
+        <SimpleCard title="Liste des mouvements physiques actuels">
           {/* Tri de tables */}
           <Grid container spacing={2}>
              <Grid item xs={2}>
@@ -252,6 +318,9 @@ const columns = [
           backIconButtonProps={{ "aria-label": "Previous Page" }}
           />
           </Grid>
+        </Grid>
+        </SimpleCard>
+        </Grid>
         </Grid>
       </Box>
     );
