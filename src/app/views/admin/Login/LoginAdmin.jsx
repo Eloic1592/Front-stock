@@ -1,9 +1,8 @@
-import { Card, Grid, TextField,Button } from '@mui/material';
+import { Card, Grid, TextField, Button } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { baseUrl } from 'app/utils/constant';
-
 
 import * as Yup from 'yup';
 
@@ -46,25 +45,23 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginAdmin = () => {
- 
   const [loading, setLoading] = useState(false);
-  const [message,setMessage]= useState({
+  const [message, setMessage] = useState({
     message: '',
     state: false,
-    color:'green',
+    color: 'green'
   });
   const handleFormSubmit = async (values) => {
-
     const admin = {
-      "email": values.email,
-      "mdp": values.password
-    }
+      email: values.email,
+      mdp: values.password
+    };
 
     try {
       const response = await fetch(baseUrl + 'signinAdmin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(admin)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(admin)
       });
 
       if (!response.ok) {
@@ -72,7 +69,7 @@ const LoginAdmin = () => {
         setMessage({
           message: errorMessage,
           state: true,
-          color: 'red',
+          color: 'red'
         });
       } else {
         const data = await response.json();
@@ -80,11 +77,11 @@ const LoginAdmin = () => {
           setMessage({
             message: 'Email ou mot de passe incorrect',
             state: true,
-            color: 'red',
+            color: 'red'
           });
         } else {
-          localStorage.setItem("token_ad", data.token);
-          localStorage.setItem("idadmin", data.idadmin.id);
+          localStorage.setItem('token_ad', data.token);
+          localStorage.setItem('idadmin', data.idadmin.id);
           window.location.replace('/admin/calendriertech');
         }
       }
@@ -93,10 +90,10 @@ const LoginAdmin = () => {
       setMessage({
         message: 'Une erreur est survenue, veuillez réessayer plus tard',
         state: true,
-        color: 'red',
+        color: 'red'
       });
     }
-};
+  };
 
   return (
     <JWTRoot>
@@ -109,68 +106,63 @@ const LoginAdmin = () => {
           </Grid>
 
           <Grid item sm={6} xs={12}>
-          <Box p={4} height="100%">
-            <div>
-            <h2>Connexion-Administrateur</h2>
-            </div>
-            <ContentBox>
-              <Formik
-                
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleFormSubmit}
-              >
-                {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="email"
-                      name="email"
-                      label="Email"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      value={values.email}
-                      onChange={handleChange}
-                      helperText={touched.email && errors.email}
-                      error={Boolean(errors.email && touched.email)}
-                      sx={{ mb: 3 }}
-                    />
+            <Box p={4} height="100%">
+              <div>
+                <h2>Connexion-Administrateur</h2>
+              </div>
+              <ContentBox>
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={handleFormSubmit}
+                >
+                  {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        type="email"
+                        name="email"
+                        label="Email"
+                        variant="outlined"
+                        onBlur={handleBlur}
+                        value={values.email}
+                        onChange={handleChange}
+                        helperText={touched.email && errors.email}
+                        error={Boolean(errors.email && touched.email)}
+                        sx={{ mb: 3 }}
+                      />
 
-                    <TextField
-                      fullWidth
-                      size="small"
-                      name="password"
-                      type="password"
-                      label="Mot de passe"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      value={values.password}
-                      onChange={handleChange}
-                      helperText={touched.password && errors.password}
-                      error={Boolean(errors.password && touched.password)}
-                      sx={{ mb: 1.5 }}
-                    />
-                    {message && (
-                        <div style={{ color: message.color }}>
-                          {message.message}
-                        </div>
-                    )}
+                      <TextField
+                        fullWidth
+                        size="small"
+                        name="password"
+                        type="password"
+                        label="Mot de passe"
+                        variant="outlined"
+                        onBlur={handleBlur}
+                        value={values.password}
+                        onChange={handleChange}
+                        helperText={touched.password && errors.password}
+                        error={Boolean(errors.password && touched.password)}
+                        sx={{ mb: 1.5 }}
+                      />
+                      {message && <div style={{ color: message.color }}>{message.message}</div>}
 
-                    <Button
-                      type="submit"
-                      color="primary"
-                      loading={loading}
-                      variant="contained"
-                      sx={{ my: 2 }}
-                    >
-                      Connexion
-                    </Button>
-                  </form>
-                )}
-              </Formik>
-            </ContentBox>
-              </Box>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        loading={loading}
+                        variant="contained"
+                        sx={{ my: 2 }}
+                      >
+                        Connexion
+                      </Button>
+                    </form>
+                  )}
+                </Formik>
+              </ContentBox>
+            </Box>
           </Grid>
         </Grid>
       </Card>

@@ -15,24 +15,15 @@ import {
     Grid,
    } from "@mui/material";
    import Typography from '@mui/material/Typography';
-   import { useState,useEffect } from "react";
+   import { useEffect } from "react";
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
-   import { filtercategoriemateriel } from "app/views/admin/Categoriemateriel/function";
+   import { useListecategoriematerielFunctions } from "app/views/admin/Categoriemateriel/function";
   
     
    const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
-    const [editingId, setEditingId] = useState(null);
-    const [selectedIds, setSelectedIds] = useState([]);
-    const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState(["asc"]);
-    const [isEditClicked, setIsEditClicked] = useState(false);
-    const [selectedRowId, setSelectedRowId] = useState(null);
-    const [categoriemateriel, setCategoriemateriel] = useState('');
   
-//   // Colonne
+  // Colonne
   const columns = [
     { label: 'ID', field: 'id', align: 'center' },
     { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' },
@@ -53,69 +44,12 @@ import {
     // Add more rows if needed
    ];
 
-  
-    const handleChangePage = (_, newPage) => {
-      setPage(newPage);
-    };
-   
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-   
-    // Active la modification
-    const handleEdit = (row) => {
-      setEditingId(row.id);
-      setIsEditClicked(true);
-      setSelectedRowId(row.id);
-    };
-    const cancelEdit = (row) => {
-        setEditingId(null);
-        setIsEditClicked(false);
-    };
-
-    const handleSave = (value, id, field) => {
-      setEditingId(null);
-      
-    };
-   
-    
-   const handleSelection = (event, id) => {
-    if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
-    } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
-    }
-   };
-  
-   //Select  toutes les checkboxes de la liste  
-   const handleSelectAll = (event) => {
-    if (event.target.checked) {
-     setSelectedIds(data.map((row) => row.id));
-    } else {
-     setSelectedIds([]);
-    }
-   };
-  
+   const {editingId,sortDirection,page,rowsPerPage,
+    setSortDirection,isEditClicked,selectedRowId,setCategoriemateriel,categoriemateriel,handleChangePage,sortColumn,selectedIds,
+    handleChangeRowsPerPage,handleEdit,cancelEdit,handleSave,handleSelection,handleSelectAll,handleSelectColumn,sortedData
+   } = useListecategoriematerielFunctions(data);
 
    
-   const handleSelectColumn = (event) => {
-    setSortColumn(event.target.value);
-    
-   };
-   
-   const filtredata=filtercategoriemateriel(data,categoriemateriel);
-   const sortedData = filtredata.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-    return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-    return sortDirection === 'asc' ? 1 : -1;
-    }
-    return 0;
-   });
-   
- 
   //  Use effect
   useEffect(() => {
   },[sortedData]);

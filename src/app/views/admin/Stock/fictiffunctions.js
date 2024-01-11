@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useMphysiqueFunctions = (data) => {
+export const useMfictifFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -9,10 +9,10 @@ export const useMphysiqueFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
+  const [materiel, setMateriel] = useState(false);
+  const [date, setDate] = useState(null);
   const [mouvement, setMouvement] = useState('');
   const [depot, setDepot] = useState('');
-  const [article, setArticle] = useState('');
-  const [date, setDate] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -59,7 +59,7 @@ export const useMphysiqueFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtrestockphysique(data, article, mouvement, depot, date);
+  const filtredata = filtrestockfictif(data, materiel, mouvement, depot, date);
   const sortedData = data.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -96,21 +96,23 @@ export const useMphysiqueFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    article,
+    materiel,
     date,
     depot,
     mouvement,
     setDate,
     setDepot,
-    setArticle,
+    setMateriel,
     setMouvement
   };
 };
-function filtrestockphysique(listestockphysique, article, mouvement, depot, date) {
-  return listestockphysique.filter((Item) => {
+
+// Filtre
+function filtrestockfictif(listestockfictif, materiel, mouvement, depot, date) {
+  return listestockfictif.filter((Item) => {
     return (
       Item.date.toLowerCase().includes(date.toLowerCase()) &&
-      Item.article.toLowerCase().includes(article.toLowerCase()) &&
+      Item.materiel.toLowerCase().includes(materiel.toLowerCase()) &&
       Item.mouvement.toLowerCase().includes(mouvement.toLowerCase()) &&
       Item.depot.toLowerCase().includes(depot.toLowerCase())
     );
