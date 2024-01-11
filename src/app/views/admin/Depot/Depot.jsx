@@ -15,9 +15,6 @@ const Depot = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({open:false});
 
-   // Data
-  const [materielfilter, setMaterielfilter] = useState('');
-
     // Input 
   const [depot, setDepot] = useState('');
 
@@ -35,15 +32,7 @@ const Depot = () => {
     useEffect(() => {
     },[]);
 
-   const donnees = [
-    { id: 5, depot: 'Depot 9', /* other fields... */ },
-    { id: 2, depot: 'Depot 70', /* other fields... */ },
-    { id: 1, depot: 'Depot 45', /* other fields... */ },
-    { id: 6, depot: 'Depot 17', /* other fields... */ },
-    { id: 4, depot: 'Depot 4', /* other fields... */ },
-    { id: 3, depot: 'Depot 3', /* other fields... */ },
-    // More rows...
-   ];
+
    
     return (
         <Container>
@@ -91,7 +80,7 @@ const Depot = () => {
                    {message.text}
                 </Alert>
               </Snackbar>
-              <Listedepot data={donnees} />        
+              <Listedepot />        
       </Container>
     );
   };

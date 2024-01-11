@@ -40,17 +40,6 @@ const Devis = () => {
     useEffect(() => {
     },[]);
 
-    const donnees = [
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-
-     ];
-
     return (
         <Container>
         <Box className="breadcrumb">
@@ -150,7 +139,7 @@ const Devis = () => {
                 </Alert>
               </Snackbar>
 
-        <Listedevis  data={donnees} />
+        <Listedevis />
       </Container>
     );
   };

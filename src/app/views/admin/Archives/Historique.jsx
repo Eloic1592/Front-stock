@@ -32,19 +32,6 @@ const Historique = () => {
     useEffect(() => {
     },[]);
 
-// Colonne
-    const columns = [
-      { label: 'ID', field: 'idmouvementdestock', align: 'center' },
-      { label: 'Date', field: 'datefacture', align: 'center' },
-      { label: 'Materiel', field: 'materiel', align: 'center' },
-      { label: 'Mouvement', field: 'mouvement', align: 'center' },
-      { label: 'statut', field: 'statut', align: 'center' },
-      // Other columns...
-     ];
-
-     const donnees = [
-     ];
-
  
     return (
         <Container>
@@ -126,7 +113,7 @@ const Historique = () => {
               </Box>
 
               <Box>
-                <Listehistorique data={donnees} />
+                <Listehistorique />
             </Box>
       </Container>
     );

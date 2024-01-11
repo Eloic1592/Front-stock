@@ -21,13 +21,13 @@ import {
 
   
     
-   const Listecommande = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listecommande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
 
@@ -44,6 +44,17 @@ import {
     { label: 'statut', field: 'statut', align: 'center' },
     // Other columns...
    ];
+
+   const data = [
+    { id: 1, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:23,prixunitaire:15,total:235,statut:"1" /* other fields... */ },
+    { id: 2, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:1,prixunitaire:234,total:34,statut:"1" /* other fields... */ },
+    { id: 3, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:10,prixunitaire:12,total:346,statut:"1" /* other fields... */ },
+    { id: 4, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:4,prixunitaire:25,total:45,statut:"1" /* other fields... */ },
+    { id: 5, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:6,total:456,statut:"1" /* other fields... */ },
+    { id: 6, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:45,prixunitaire:97,total:78,statut:"1" /* other fields... */ },
+    { id: 7, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:56,total:78,statut:"1" /* other fields... */ },
+   ];
+
   
    const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -92,8 +103,7 @@ import {
  
  const handleSelectColumn = (event) => {
   setSortColumn(event.target.value);
-  setSortDirection('asc'); // reset the sort direction every time a new column is selected
-  console.log(sortDirection);
+  
  };
  
  const sortedData = data.sort((a, b) => {
@@ -109,7 +119,6 @@ import {
 
 //  Use effect
 useEffect(() => {
-  setSortDirection("asc");
 },[sortedData]);
  
 

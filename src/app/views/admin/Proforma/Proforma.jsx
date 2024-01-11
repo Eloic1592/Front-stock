@@ -33,17 +33,6 @@ const Proforma = () => {
     useEffect(() => {
 
     },[]);
-
-    const donnees = [
-      { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 10, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 3, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 4, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 5, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 7, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-      { id: 8, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
-
-     ];
     return (
         <Container>
         <Box className="breadcrumb">
@@ -119,7 +108,7 @@ const Proforma = () => {
                 </Alert>
               </Snackbar>
               
-          <Listeproforma  data={donnees} />
+          <Listeproforma/>
 
       </Container>
     );

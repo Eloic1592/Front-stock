@@ -36,17 +36,6 @@ const Naturemouvement = () => {
 
     useEffect(() => {
     },[]);
-
-     const donnees = [
-      { id: 1, naturemouvement: 'Achat', /* other fields... */ },
-      { id: 2, naturemouvement: 'Vente', /* other fields... */ },
-      { id: 3, naturemouvement: 'Transfert', /* other fields... */ },
-      { id: 4, naturemouvement: 'Don', /* other fields... */ },
-      { id: 5, naturemouvement: 'Perte', /* other fields... */ },
-      { id: 6, naturemouvement: 'Emprunt', /* other fields... */ },
-      // More rows...
-     ];
-
     return (
         <Container>
         <Box className="breadcrumb">
@@ -103,7 +92,7 @@ const Naturemouvement = () => {
                 </Alert>
               </Snackbar>
 
-        <Listenaturemouvement data={donnees} />
+        <Listenaturemouvement  />
       </Container>
     );
   };

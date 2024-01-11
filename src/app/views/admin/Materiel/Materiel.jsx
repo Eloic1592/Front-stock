@@ -44,10 +44,6 @@ const Materiel = () => {
     useEffect(() => {
     },[]);
     
-
-    const donnees=[
-
-    ];
  
     return (
         <Container>
@@ -221,15 +217,10 @@ const Materiel = () => {
                 </Alert>
               </Snackbar>
 
-        <Listemateriel  data={donnees} />
+        <Listemateriel  />
       </Container>
     );
   };
   
 export default Materiel;
 
-function filtremateriel(listemateriel, materiel) {
-  return listemateriel.filter((Item) => {
-    return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-  });
-}

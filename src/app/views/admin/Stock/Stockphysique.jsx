@@ -85,9 +85,7 @@ const [fileOpen, setFileOpen] = useState(false);
     // Other columns...
    ];
 
-    const donnees=[
 
-    ];
  
     return (
         <Container>
@@ -294,7 +292,7 @@ const [fileOpen, setFileOpen] = useState(false);
              </Box>
 
       {/* Liste des donnees */}
-        <Listestockphysique data={donnees} />
+        <Listestockphysique  />
       </Container>
     );
   };

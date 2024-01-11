@@ -32,21 +32,10 @@ const Typemateriel = () => {
   
   // Validation form
     const handleSubmit = async  () => {
-
     }
 
     useEffect(() => {
     },[]);
-
-    const donnees = [
-      { id: 1, typemateriel: 'Depot 1', /* other fields... */ },
-      { id: 2, typemateriel: 'Depot 2', /* other fields... */ },
-      { id: 3, typemateriel: 'Depot 3', /* other fields... */ },
-      { id: 4, typemateriel: 'Depot 4', /* other fields... */ },
-      { id: 5, typemateriel: 'Depot 5', /* other fields... */ },
-      { id: 6, typemateriel: 'Depot 6', /* other fields... */ },
-      // More rows...
-     ];
 
     return (
         <Container>
@@ -118,7 +107,7 @@ const Typemateriel = () => {
               </Snackbar>
 
         
-        <Listetypemateriel data={donnees} />        
+        <Listetypemateriel/>        
 
       </Container>
     );

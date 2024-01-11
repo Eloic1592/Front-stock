@@ -14,6 +14,7 @@ import { useState,useEffect } from "react";
     const [typemateriel, setTypemateriel] = useState('');
 
 
+    // Pagination
     const handleChangePage = (_, newPage) => {
      setPage(newPage);
     };
@@ -23,6 +24,7 @@ import { useState,useEffect } from "react";
      setPage(0);
     };
    
+    // Modification(Update)
     const handleEdit = (row) => {
      setEditingId(row.id);
      setIsEditClicked(true);
@@ -37,7 +39,9 @@ import { useState,useEffect } from "react";
     const handleSave = (value, id, field) => {
      setEditingId(null);
     };
-   
+
+
+  // Suppression(Delete)
     const handleSelection = (event, id) => {
      if (event.target.checked) {
        setSelectedIds([...selectedIds, id]);
@@ -54,6 +58,7 @@ import { useState,useEffect } from "react";
      }
     };
    
+    // Tri de table
     const handleSelectColumn = (event) => {
      setSortColumn(event.target.value);
     };
@@ -103,7 +108,7 @@ import { useState,useEffect } from "react";
     };
    };
 
-  //  Filtre
+  //  Filtre de recherche
    export function filtretypemateriel(listetypemateriel, typemateriel) {
     return listetypemateriel.filter((Item) => {
       return Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());

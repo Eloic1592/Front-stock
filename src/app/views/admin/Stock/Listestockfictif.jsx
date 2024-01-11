@@ -8,13 +8,13 @@
   
   
     
-const Listestockfictif = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
     const [materiel, setMateriel] = useState(false);
@@ -36,7 +36,10 @@ const columns = [
     // Other columns...
    ];
 
+   const data=[
 
+   ];
+ 
   
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -86,7 +89,7 @@ const columns = [
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
     setSortDirection('asc'); // reset the sort direction every time a new column is selected
-    console.log(sortDirection);
+    
    };
    
    const sortedData = data.sort((a, b) => {

@@ -1,7 +1,5 @@
 import {
     Box,
-    styled,
-    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -19,24 +17,33 @@ import {
   
   
     // Proforma tsy afaka ovaina intsony
-   const Listeproforma = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
 
 
   
-//   // Colonne
-  const columns = [
+   // Colonne
+    const columns = [
     { label: 'ID', field: 'id', align: 'center' },
     { label: 'Commande', field: 'idcommande', align: 'center' },
     { label: 'Client', field: 'idclient', align: 'center' },
     { label: 'devis', field: 'iddevis', align: 'center' },
     { label: 'statut', field: 'statut', align: 'center' },
+   ];
 
+   
+   const data = [
+    { id: 1, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 10, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 3, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 4, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 5, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 7, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
+    { id: 8, idcommande: 'COM1',idclient:"CL1",iddevis:"DEV1",statut:"1" /* other fields... */ },
 
-    // Other columns...
    ];
   
     const handleChangePage = (_, newPage) => {
@@ -51,9 +58,7 @@ import {
 
    
    const handleSelectColumn = (event) => {
-    setSortColumn(event.target.value);
-    setSortDirection('asc'); // reset the sort direction every time a new column is selected
-    console.log(sortDirection);
+    setSortColumn(event.target.value);    
    };
    
    const sortedData = data.sort((a, b) => {
@@ -69,7 +74,6 @@ import {
  
   //  Use effect
   useEffect(() => {
-    setSortDirection("asc");
   },[sortedData]);
    
   

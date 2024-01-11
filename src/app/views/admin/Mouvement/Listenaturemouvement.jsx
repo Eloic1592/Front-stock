@@ -21,7 +21,7 @@ import {
    import { filtrenaturemouvement } from "app/views/admin/Mouvement/function";
   
     
-   const Listenaturemouvement = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
@@ -40,7 +40,17 @@ import {
   { label: 'Nature du mouvement', field: 'naturemouvement', align: 'center' },
   // Other columns...
  ];
-  
+  const data = [
+  { id: 1, naturemouvement: 'Achat', /* other fields... */ },
+  { id: 2, naturemouvement: 'Vente', /* other fields... */ },
+  { id: 3, naturemouvement: 'Transfert', /* other fields... */ },
+  { id: 4, naturemouvement: 'Don', /* other fields... */ },
+  { id: 5, naturemouvement: 'Perte', /* other fields... */ },
+  { id: 6, naturemouvement: 'Emprunt', /* other fields... */ },
+  // More rows...
+ ];
+
+
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
     };
@@ -87,7 +97,7 @@ import {
 
    const handleSelectColumn = (event) => {
      setSortColumn(event.target.value);
-     console.log(sortDirection);
+     
     };
     
   const filtredata=filtrenaturemouvement(data,naturemouvement);

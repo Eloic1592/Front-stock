@@ -22,7 +22,7 @@ import {
 
   
     
-   const Listedepot = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
@@ -38,6 +38,16 @@ import {
     { label: 'ID', field: 'id', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' },
     // Other columns...
+   ];
+
+   const data = [
+    { id: 5, depot: 'Depot 9', /* other fields... */ },
+    { id: 2, depot: 'Depot 70', /* other fields... */ },
+    { id: 1, depot: 'Depot 45', /* other fields... */ },
+    { id: 6, depot: 'Depot 17', /* other fields... */ },
+    { id: 4, depot: 'Depot 4', /* other fields... */ },
+    { id: 3, depot: 'Depot 3', /* other fields... */ },
+    // More rows...
    ];
   
     const handleChangePage = (_, newPage) => {

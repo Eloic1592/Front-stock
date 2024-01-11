@@ -22,13 +22,13 @@ import {
 
   
     
-   const Listemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
     const [editingId, setEditingId] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
     const [sortColumn, setSortColumn] = useState(["1"]);
-    const [sortDirection, setSortDirection] = useState([]);
+    const [sortDirection, setSortDirection] = useState("asc");
     const [isEditClicked, setIsEditClicked] = useState(false);
     const [selectedRowId, setSelectedRowId] = useState(null);
 
@@ -48,6 +48,21 @@ import {
 
   // Other columns...
  ];
+
+ const data = [
+  { id: 1, typemateriel: 'Test Data 1', /* other fields... */ },
+  { id: 2, typemateriel: 'Test Data 2', /* other fields... */ },
+  { id: 3, typemateriel: 'Test Data 3', /* other fields... */ },
+  { id: 4, typemateriel: 'Test Data 4', /* other fields... */ },
+  { id: 5, typemateriel: 'Test Data 5', /* other fields... */ },
+  { id: 6, typemateriel: 'Test Data 6', /* other fields... */ },
+  { id: 7, typemateriel: 'Test Data 7', /* other fields... */ },
+  { id: 8, typemateriel: 'Test Data 8', /* other fields... */ },
+  { id: 9, typemateriel: 'Test Data 9', /* other fields... */ },
+  { id: 10, typemateriel: 'Test Data 10', /* other fields... */ },
+  // Add more rows if needed
+ ];
+
   
     const handleChangePage = (_, newPage) => {
       setPage(newPage);
@@ -96,7 +111,7 @@ import {
    
    const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
-    console.log(sortDirection);
+    
    };
    
    const sortedData = data.sort((a, b) => {

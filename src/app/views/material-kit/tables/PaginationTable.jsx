@@ -61,11 +61,6 @@ import {
   }
  };
 
-//  Supprime une ligne
-
-//  Supprime toutes les lignes de cette liste
-
- //Select  toutes les checkboxes de la liste  
  const handleSelectAll = (event) => {
   if (event.target.checked) {
    setSelectedIds(data.map((row) => row.id));

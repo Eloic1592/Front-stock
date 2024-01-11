@@ -1,11 +1,12 @@
-  import {Box,Button,TableBody,TableCell,TableHead,TablePagination,TableRow,Icon, IconButton,TextField,Checkbox,Select,MenuItem,Grid,} from "@mui/material";
+  import {Box,Button,TableBody,TableCell,TableHead,TablePagination,TableRow,Icon,IconButton,TextField,Checkbox,Select,MenuItem,Grid} from "@mui/material";
    import Typography from '@mui/material/Typography';
    import { SimpleCard } from "app/components";
    import { StyledTable } from "app/views/style/style";
    import { filtretypemateriel } from "app/views/admin/Typemateriel/function";
    import { useListetypematerielFunctions } from "app/views/admin/Typemateriel/function";
+  //  import { handleChangePage, handleChangeRowsPerPage } from './frontutils';
 
-   const Listetypemateriel = ({data, rowsPerPageOptions = [5, 10, 25] }) => {
+   const Listetypemateriel = ({rowsPerPageOptions = [5, 10, 25] }) => {
 
     //   // Colonne
         const columns = [
@@ -14,7 +15,15 @@
           // Other columns...
     ];
 
-
+    const data = [
+      { id: 1, typemateriel: 'Depot 1', /* other fields... */ },
+      { id: 2, typemateriel: 'Depot 2', /* other fields... */ },
+      { id: 3, typemateriel: 'Depot 3', /* other fields... */ },
+      { id: 4, typemateriel: 'Depot 4', /* other fields... */ },
+      { id: 5, typemateriel: 'Depot 5', /* other fields... */ },
+      { id: 6, typemateriel: 'Depot 6', /* other fields... */ },
+      // More rows...
+     ];
 
     const {page,setPage,rowsPerPage,setRowsPerPage,editingId,setEditingId,selectedIds,setSelectedIds,sortColumn,setSortColumn,sortDirection,
       setSortDirection,isEditClicked,setIsEditClicked,selectedRowId,setSelectedRowId,typemateriel,setTypemateriel,handleChangePage,

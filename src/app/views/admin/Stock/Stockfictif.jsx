@@ -86,11 +86,6 @@ const [fileOpen, setFileOpen] = useState(false);
     
     // Other columns...
    ];
-
-   const donnees=[
-
-   ];
- 
     return (
         <Container>
         <Box className="breadcrumb">
@@ -314,7 +309,7 @@ const [fileOpen, setFileOpen] = useState(false);
              </Box>
              
       {/* Liste des donnees */}
-        <Listestockfictif  data={donnees} />
+        <Listestockfictif/>
       </Container>
     );
   };

@@ -35,16 +35,7 @@ const Commande = () => {
     useEffect(() => {
     },[]);
 
-    const donnees = [
-      { id: 1, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:23,prixunitaire:15,total:235,statut:"1" /* other fields... */ },
-      { id: 2, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:1,prixunitaire:234,total:34,statut:"1" /* other fields... */ },
-      { id: 3, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:10,prixunitaire:12,total:346,statut:"1" /* other fields... */ },
-      { id: 4, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:4,prixunitaire:25,total:45,statut:"1" /* other fields... */ },
-      { id: 5, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:6,total:456,statut:"1" /* other fields... */ },
-      { id: 6, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:45,prixunitaire:97,total:78,statut:"1" /* other fields... */ },
-      { id: 7, datecommande: 'COM1',marque:"CL1",modele:"DEV1",idcommande:"COMMAND1",description:"Description",quantite:6,prixunitaire:56,total:78,statut:"1" /* other fields... */ },
-     ];
- 
+
     return (
         <Container>
         <Box className="breadcrumb">
@@ -101,7 +92,7 @@ const Commande = () => {
                    {message.text}
                 </Alert>
               </Snackbar>
-        <Listecommande  data={donnees} />      
+        <Listecommande/>      
         </Container>
     );
   };

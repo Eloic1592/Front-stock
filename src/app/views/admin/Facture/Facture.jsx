@@ -74,9 +74,6 @@ const Facture = () => {
       { label: 'total', field: 'total', align: 'center' },
       // Other columns...
      ];
-
-     const donnees=[];
-
     return (
         <Container>
         <Box className="breadcrumb">
@@ -241,7 +238,7 @@ const Facture = () => {
                 </Alert>
               </Snackbar>
 
-        <Listefacture  data={donnees} />
+        <Listefacture  />
       </Container>
     );
   };

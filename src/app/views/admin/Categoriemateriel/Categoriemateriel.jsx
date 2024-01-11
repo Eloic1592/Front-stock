@@ -35,20 +35,6 @@ const Categoriemateriel = () => {
     useEffect(() => {
     },[]);
     
-      const donnees = [
-        { id: 1, categoriemateriel: 'Test Data 1', /* other fields... */ },
-        { id: 2, categoriemateriel: 'Test Data 2', /* other fields... */ },
-        { id: 3, categoriemateriel: 'Test Data 3', /* other fields... */ },
-        { id: 4, categoriemateriel: 'Test Data 4', /* other fields... */ },
-        { id: 5, categoriemateriel: 'Test Data 5', /* other fields... */ },
-        { id: 6, categoriemateriel: 'Test Data 6', /* other fields... */ },
-        { id: 7, categoriemateriel: 'Test Data 7', /* other fields... */ },
-        { id: 8, categoriemateriel: 'Test Data 8', /* other fields... */ },
-        { id: 9, categoriemateriel: 'Test Data 9', /* other fields... */ },
-        { id: 10, categoriemateriel: 'Test Data 10', /* other fields... */ },
-        // Add more rows if needed
-       ];
-
     return (
         <Container>
         <Box className="breadcrumb">
@@ -96,7 +82,7 @@ const Categoriemateriel = () => {
                 </Alert>
               </Snackbar>
 
-        <Listecategoriemateriel data={donnees} />
+        <Listecategoriemateriel  />
       </Container>
     );
   };
