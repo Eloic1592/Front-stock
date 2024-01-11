@@ -8,11 +8,11 @@
 
    const Listetypemateriel = ({rowsPerPageOptions = [5, 10, 25] }) => {
 
-    //   // Colonne
-        const columns = [
-          { label: 'ID', field: 'id', align: 'center' },
-          { label: 'type materiel', field: 'typemateriel', align: 'center' },
-          // Other columns...
+    // Colonne
+    const columns = [
+      { label: 'ID', field: 'id', align: 'center' },
+      { label: 'type materiel', field: 'typemateriel', align: 'center' },
+      // Other columns...
     ];
 
     const data = [

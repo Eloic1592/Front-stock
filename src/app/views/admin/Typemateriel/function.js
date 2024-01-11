@@ -60,16 +60,16 @@ import { useState,useEffect } from "react";
    
     // Tri de table
     const handleSelectColumn = (event) => {
-     setSortColumn(event.target.value);
+      setSortColumn(event.target.value);
     };
-   
+    
     const filtredata=filtretypemateriel(data,typemateriel);
     const sortedData = filtredata.sort((a, b) => {
-     if (a[sortColumn] < b[sortColumn]) {
+      if (a[sortColumn] < b[sortColumn]) {
      return sortDirection === 'asc' ? -1 : 1;
      }
      if (a[sortColumn] > b[sortColumn]) {
-     return sortDirection === 'asc' ? 1 : -1;
+       return sortDirection === 'asc' ? 1 : -1;
      }
      return 0;
     });
@@ -107,12 +107,14 @@ import { useState,useEffect } from "react";
      sortedData
     };
    };
+   
 
-  //  Filtre de recherche
+
+   //  Filtre de recherche
    export function filtretypemateriel(listetypemateriel, typemateriel) {
-    return listetypemateriel.filter((Item) => {
-      return Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
-    });
-  }
+     return listetypemateriel.filter((Item) => {
+       return Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
+      });
+    }
 
    
