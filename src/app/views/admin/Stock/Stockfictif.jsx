@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import Button from '@mui/material/Button';
 import Listestockfictif from './Listestockfictif';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 
 const Stockfictif = () => {
   // Input
@@ -33,6 +33,9 @@ const Stockfictif = () => {
   const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
+  const handlecancelOpen = () => setAlertOpen(true);
+  const handlecancelClose = () => setAlertOpen(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   // Data
   const [listemouvementstock, setListemouvementstock] = useState([]);
@@ -79,6 +82,7 @@ const Stockfictif = () => {
     setDescription('');
     setCommentaire('');
     setFormData([]);
+    handlecancelClose();
   };
 
   const columnsdetails = [
@@ -115,7 +119,7 @@ const Stockfictif = () => {
           </Button>
         </p>
       </Box>
-
+      {/* Form insertion */}
       <Box>
         <Dialog
           open={open}
@@ -267,11 +271,12 @@ const Stockfictif = () => {
                 />
               </Grid>
             </Grid>
+
             <CustomizedTable columns={columnsdetails} data={formData} />
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={resetData} color="inherit" variant="contained">
+            <Button onClick={handlecancelOpen} color="inherit" variant="contained">
               Reinitialiser
             </Button>
             <Button variant="contained" color="secondary" onClick={handleClose}>
@@ -283,6 +288,26 @@ const Stockfictif = () => {
           </DialogActions>
         </Dialog>
       </Box>
+
+      {/* Form validation */}
+      <Box>
+        <Dialog open={alertOpen} onClose={handlecancelClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">
+            Voulez-vous vraiment tout reinitialiser ?
+          </DialogTitle>
+          <DialogContent></DialogContent>
+
+          <DialogActions>
+            <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+              Annuler
+            </Button>
+            <Button onClick={resetData} color="primary">
+              Valider
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+
       <Box>
         <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>

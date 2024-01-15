@@ -31,6 +31,9 @@ const Stockphysique = () => {
   const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
+  const handlecancelOpen = () => setAlertOpen(true);
+  const handlecancelClose = () => setAlertOpen(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   // Data
   const [listemouvementstock, setListemouvementstock] = useState([]);
@@ -77,6 +80,7 @@ const Stockphysique = () => {
     setDescription('');
     setCommentaire('');
     setFormData([]);
+    handlecancelClose();
   };
 
   const columnsdetails = [
@@ -253,7 +257,7 @@ const Stockphysique = () => {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={resetData} color="inherit" variant="contained">
+            <Button onClick={handlecancelOpen} color="inherit" variant="contained">
               Reinitialiser
             </Button>
             <Button variant="contained" color="secondary" onClick={handleClose}>
@@ -265,6 +269,25 @@ const Stockphysique = () => {
           </DialogActions>
         </Dialog>
       </Box>
+
+      <Box>
+        <Dialog open={alertOpen} onClose={handlecancelClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">
+            Voulez-vous vraiment tout reinitialiser ?
+          </DialogTitle>
+          <DialogContent></DialogContent>
+
+          <DialogActions>
+            <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+              Annuler
+            </Button>
+            <Button onClick={resetData} color="primary">
+              Valider
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+
       <Box>
         <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
