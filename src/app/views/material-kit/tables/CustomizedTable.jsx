@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  IconButton,
   TableBody,
   TableCell,
   TableHead,
@@ -15,7 +17,7 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);
-  // const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [savedData, setSavedData] = useState(data);
   const indexedData = data.map((item, index) => ({ index, ...item }));
 
@@ -27,44 +29,15 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  // const handleEdit = (row) => {
-  //   setEditingId(row.id);
-  // };
-
   const handleSave = (value, id, field) => {
     // setData(data.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
     setEditingId(null);
   };
 
-  // const handleSelection = (event, id) => {
-  //   if (event.target.checked) {
-  //     setSelectedIds([...selectedIds, id]);
-  //   } else {
-  //     setSelectedIds(selectedIds.filter((i) => i !== id));
-  //   }
-  // };
-
   //  Supprime une ligne
-  // const handleDelete = (id) => {
-  //   // setData(data.filter((row) => !selectedIds.includes(row.id)));
-  //   setSelectedIds(selectedIds.filter((i) => i !== id));
-  // };
-
-  //  Supprime toutes les lignes de cette liste
-  //  const handleDeleteAll = () => {
-  //   // setData(data.filter((row) => !selectedIds.includes(row.id)));
-  //   setSelectedIds([]);
-  //  };
-
-  //Select  toutes les checkboxes de la liste
-  //  const handleSelectAll = (event) => {
-  //   if (event.target.checked) {
-  //    setSelectedIds(data.map((row) => row.id));
-  //   } else {
-  //    setSelectedIds([]);
-  //   }
-  //  };
+  const handleDelete = (index) => {
+    setSavedData(savedData.filter((_, i) => i !== index));
+  };
 
   useEffect(() => {
     setSavedData(indexedData);
@@ -75,6 +48,7 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
       <StyledTable>
         <TableHead>
           <TableRow>
+            <TableCell align="left"></TableCell>
             <TableCell align="center">Index</TableCell>
             {columns.map((column, index) => (
               <TableCell key={index} align={column.align || 'left'}>
@@ -88,6 +62,17 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row, index) => (
               <TableRow key={index}>
+                <TableCell align="center">
+                  <IconButton
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="error"
+                    onClick={() => handleDelete(index)}
+                  >
+                    -
+                  </IconButton>
+                </TableCell>
                 <TableCell align="center">{index + 1}</TableCell>
                 {columns.map((column, index) => (
                   <TableCell key={index} align={column.align || 'left'}>
