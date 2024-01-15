@@ -57,10 +57,10 @@ const Stockphysique = () => {
     event.preventDefault();
 
     const newData = {
-      article: '1',
+      article: +1,
       quantite: '2',
       prixunitaire: '4',
-      total: '8' // Remplacez par la valeur réelle du nom du client
+      total: +1 // Remplacez par la valeur réelle du nom du client
     };
 
     setFormData([...formData, newData]);

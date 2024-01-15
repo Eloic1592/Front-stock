@@ -13,12 +13,12 @@ import { useState, useEffect } from 'react';
 
 import { StyledTable } from 'app/views/style/style';
 
-const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, editable = true) => {
+const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
-  const [savedData, setSavedData] = useState(data);
+  const [savedData, setSavedData] = useState([]);
   const indexedData = data.map((item, index) => ({ index, ...item }));
 
   const handleChangePage = (_, newPage) => {
@@ -29,14 +29,11 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleSave = (value, id, field) => {
-    // setData(data.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
-    setEditingId(null);
-  };
-
   //  Supprime une ligne
   const handleDelete = (index) => {
-    setSavedData(savedData.filter((_, i) => i !== index));
+    let newSavedData = savedData.filter((_, i) => i !== index);
+    newSavedData = newSavedData.map((row, i) => ({ ...row, index: i }));
+    setSavedData(newSavedData);
   };
 
   useEffect(() => {
@@ -76,16 +73,7 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }, ed
                 <TableCell align="center">{index + 1}</TableCell>
                 {columns.map((column, index) => (
                   <TableCell key={index} align={column.align || 'left'}>
-                    {editingId === row.id ? (
-                      <TextField
-                        defaultValue={column.render ? column.render(row) : row[column.field]}
-                        onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                      />
-                    ) : column.render ? (
-                      column.render(row)
-                    ) : (
-                      row[column.field]
-                    )}
+                    {column.render ? column.render(row) : row[column.field]}
                   </TableCell>
                 ))}
               </TableRow>
