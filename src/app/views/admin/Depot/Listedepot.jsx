@@ -72,36 +72,36 @@ const Listedepot = () => {
   } = useListedepotFunctions(data);
 
   const handleSubmit = () => {
-    let depot = {
-      iddepot: editedIdDepot,
-      depot: editedNomDepot
-    };
-    console.log(editedIdDepot + editedNomDepot);
-    let url = baseUrl + '/depot/createdepot';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(depot),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch((err) => {
-        setMessage({
-          text: err,
-          severity: 'error',
-          open: true
-        });
-      });
+    //   let depot = {
+    //     iddepot: editedIdDepot,
+    //     depot: editedNomDepot
+    //   };
+    //   console.log(editedIdDepot + editedNomDepot);
+    //   let url = baseUrl + '/depot/createdepot';
+    //   fetch(url, {
+    //     crossDomain: true,
+    //     method: 'POST',
+    //     body: JSON.stringify(depot),
+    //     headers: { 'Content-Type': 'application/json' }
+    //   })
+    //     .then((response) => response.json())
+    //     .then((response) => {
+    //       setMessage({
+    //         text: 'Information modifiee',
+    //         severity: 'success',
+    //         open: true
+    //       });
+    //       setTimeout(() => {
+    //         window.location.reload();
+    //       }, 2000);
+    //     })
+    //     .catch((err) => {
+    //       setMessage({
+    //         text: err,
+    //         severity: 'error',
+    //         open: true
+    //       });
+    //     });
   };
 
   useEffect(() => {

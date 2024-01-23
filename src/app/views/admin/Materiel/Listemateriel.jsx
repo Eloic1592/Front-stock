@@ -15,16 +15,17 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/Materiel/function';
+import { baseUrl } from 'app/utils/constant';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
     { label: 'ID', field: 'id', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'Article', field: 'article', align: 'center' },
+    { label: 'modele', field: 'modele', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
     { label: 'Description', field: 'description', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
@@ -34,98 +35,30 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // Other columns...
   ];
+  const [data, setData] = useState([]);
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
 
-  const data = [
-    {
-      id: 1,
-      typemateriel: 'Laptop',
-      article: 'Laptop Model X',
-      numserie: '123456',
-      description: 'Powerful laptop',
-      prixvente: 999.99,
-      caution: 100,
-      couleur: 'Silver',
-      statut: 'Available'
-    },
-    {
-      id: 2,
-      typemateriel: 'Smartphone',
-      article: 'Phone Model Y',
-      numserie: '789012',
-      description: 'Feature-rich smartphone',
-      prixvente: 599.99,
-      caution: 50,
-      couleur: 'Black',
-      statut: 'In Use'
-    },
-    {
-      id: 3,
-      typemateriel: 'Tablet',
-      article: 'Tablet Z',
-      numserie: '345678',
-      description: 'Compact and portable',
-      prixvente: 299.99,
-      caution: 30,
-      couleur: 'Blue',
-      statut: 'Available'
-    },
-    {
-      id: 4,
-      typemateriel: 'Desktop',
-      article: 'Desktop Tower A',
-      numserie: '901234',
-      description: 'High-performance desktop',
-      prixvente: 1499.99,
-      caution: 150,
-      couleur: 'Black',
-      statut: 'Available'
-    },
-    {
-      id: 5,
-      typemateriel: 'Printer',
-      article: 'Printer Model P',
-      numserie: '567890',
-      description: 'Color laser printer',
-      prixvente: 399.99,
-      caution: 40,
-      couleur: 'White',
-      statut: 'Available'
-    },
-    {
-      id: 6,
-      typemateriel: 'Camera',
-      article: 'Camera Model C',
-      numserie: '123789',
-      description: 'High-resolution digital camera',
-      prixvente: 899.99,
-      caution: 80,
-      couleur: 'Silver',
-      statut: 'In Use'
-    },
-    {
-      id: 7,
-      typemateriel: 'Headphones',
-      article: 'Wireless Headphones H',
-      numserie: '456321',
-      description: 'Noise-canceling headphones',
-      prixvente: 129.99,
-      caution: 20,
-      couleur: 'Black',
-      statut: 'Available'
-    },
-    {
-      id: 8,
-      typemateriel: 'Monitor',
-      article: 'UltraWide Monitor U',
-      numserie: '789456',
-      description: 'Curved gaming monitor',
-      prixvente: 799.99,
-      caution: 60,
-      couleur: 'Blue',
-      statut: 'In Use'
-    }
-    // Add more rows as needed...
-  ];
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const handleAlertClose = () => setMessage({ open: false });
+
+  // Modification(Update)
+  const handleEdit = (row) => {
+    // setEditedIdtypemateriel('');
+    // setEditedTypemateriel('');
+    setIsEditClicked(true);
+    setSelectedRowId(row.idmateriel);
+  };
+
+  const cancelEdit = (row) => {
+    // setEditedIdtypemateriel('');
+    // setEditedTypemateriel('');
+    setIsEditClicked(false);
+  };
 
   const {
     editingId,
@@ -133,22 +66,13 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     page,
     rowsPerPage,
     setSortDirection,
-    isEditClicked,
-    selectedRowId,
     handleChangePage,
     sortColumn,
     selectedIds,
     setCouleur,
     setNumserie,
-    setModele,
-    setTypemateriel,
-    couleur,
-    modele,
-    typemateriel,
     numserie,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
     handleSave,
     handleSelection,
     handleSelectAll,
@@ -156,8 +80,20 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortedData
   } = useListematerielFunctions(data);
 
-  //  Use effect
-  useEffect(() => {}, [sortedData]);
+  useEffect(() => {
+    let url = baseUrl + '/materiel/contentmateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response);
+        console.log(data.materiels);
+      });
+  }, []);
 
   return (
     <Box width="100%" overflow="auto">
@@ -180,53 +116,65 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 />
                 <AutoComplete
                   fullWidth
-                  size="small"
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
+                  options={data.typemateriels}
+                  getOptionLabel={(option) => option.typemateriel}
                   renderInput={(params) => (
-                    <TextField {...params} label="Modele" variant="outlined" fullWidth />
+                    <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
                   )}
                   name="typemateriel"
                   id="typemateriel"
+                  // value={typemateriel}
+                  // onChange={(event, newValue) => {
+                  //   setTypemateriel(newValue ? newValue.idtypemateriel : '');
+                  // }}
+                  sx={{ mb: 3 }}
                 />
-
-                <Select
-                  size="small"
-                  labelId="select-label"
-                  value={typemateriel}
+                <AutoComplete
+                  fullWidth
+                  options={data.typemateriels}
+                  getOptionLabel={(option) => option.typemateriel}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
+                  )}
+                  name="typemateriel"
+                  id="typemateriel"
+                  // value={typemateriel}
+                  // onChange={(event, newValue) => {
+                  //   setTypemateriel(newValue ? newValue.idtypemateriel : '');
+                  // }}
                   sx={{ mb: 3 }}
-                  onChange={(event) => setTypemateriel(event.target.value)}
-                >
-                  <MenuItem value=" ">Choisir une categorie</MenuItem>
-                  <MenuItem value="1">Ordinateur</MenuItem>
-                  <MenuItem value="2">Materiel sonore</MenuItem>
-                  <MenuItem value="3">Alimentation</MenuItem>
-                  <MenuItem value="4">Baffles</MenuItem>
-                </Select>
+                />
+                <AutoComplete
+                  fullWidth
+                  options={data.categoriemateriels}
+                  getOptionLabel={(option) => option.categoriemateriel}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Categorie de materiel"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  )}
+                  name="categoriemateriel"
+                  id="idcategoriemateriel"
+                  // value={categoriemateriel}
+                  // onChange={(event, newValue) => {
+                  //   setCategorietmateriel(newValue ? newValue.idcategoriemateriel : '');
+                  // }}
+                  sx={{ mb: 3 }}
+                />
                 <Select
                   labelId="select-label"
-                  value={couleur}
                   size="small"
                   sx={{ mb: 3 }}
-                  onChange={(event) => setCouleur(event.target.value)}
+                  // value={couleur}
+                  // onChange={(event) => setCouleur(event.target.value)}
                 >
                   <MenuItem value=" ">Choisir une couleur</MenuItem>
                   <MenuItem value="Black">Noir</MenuItem>
                   <MenuItem value="White">Blanc</MenuItem>
                   <MenuItem value="Grey">Gris</MenuItem>
-                </Select>
-                <Select
-                  size="small"
-                  labelId="select-label"
-                  value={''}
-                  sx={{ mb: 3 }}
-                  //  onChange={handleChange}
-                >
-                  <MenuItem value=" ">Choisir un type</MenuItem>
-                  <MenuItem value="1">Materiel bureautique</MenuItem>
-                  <MenuItem value="2"> Materiel informatique</MenuItem>
-                  <MenuItem value="3"> Materiel sonore</MenuItem>
-                  <MenuItem value="4"> Alimentation</MenuItem>
                 </Select>
               </div>
             </form>
@@ -288,13 +236,33 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                  <TableCell>Action</TableCell>
+                  <TableHead>
+                    {/* Listage de Donnees */}
+                    <TableRow>
+                      <TableCell key="idmateriel" align="left">
+                        idmateriel
+                      </TableCell>
+                      <TableCell key="typemateriel" align="left">
+                        typemateriel
+                      </TableCell>
+                      <TableCell key="modele" align="left">
+                        modele
+                      </TableCell>
+                      <TableCell key="numserie" align="left">
+                        numserie
+                      </TableCell>
+                      <TableCell key="prixvente" align="left">
+                        prixvente
+                      </TableCell>
+                      <TableCell key="caution" align="left">
+                        caution
+                      </TableCell>
+                      <TableCell key="couleur" align="left">
+                        couleur
+                      </TableCell>
+                      <TableCell>Action</TableCell>
+                    </TableRow>
+                  </TableHead>
                 </TableRow>
               </TableHead>
               <TableBody>

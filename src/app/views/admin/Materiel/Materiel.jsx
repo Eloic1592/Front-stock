@@ -25,7 +25,7 @@ const Materiel = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [typemateriel, setTypemateriel] = useState('');
-  const [article, setArticle] = useState('Choisir un article');
+  const [article, setArticle] = useState('');
   const [categoriemateriel, setCategorietmateriel] = useState('');
   const [couleur, setCouleur] = useState(' ');
   const [numserie, setNumserie] = useState('');
@@ -61,32 +61,32 @@ const Materiel = () => {
     console.log(typemateriel);
     console.log(categoriemateriel);
     console.log(article);
-    // let url = baseUrl + '/materiel/createmateriel';
-    // fetch(url, {
-    //   crossDomain: true,
-    //   method: 'POST',
-    //   body: JSON.stringify(params),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 2000);
-    //     handleClose();
-    //     setMessage({
-    //       text: 'Information enregistree',
-    //       severity: 'success',
-    //       open: true
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     setMessage({
-    //       text: err,
-    //       severity: 'error',
-    //       open: true
-    //     });
-    //   });
+    let url = baseUrl + '/materiel/createmateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
   };
   useEffect(() => {
     let url = baseUrl + '/materiel/contentmateriel';

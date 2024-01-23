@@ -58,8 +58,8 @@ export const useListematerielFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtremateriel(data, numserie, modele, couleur, typemateriel);
-  const sortedData = filtredata.sort((a, b) => {
+  // const filtredata = filtremateriel(data, numserie, modele, couleur, typemateriel);
+  const sortedData = data.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
     }
@@ -68,8 +68,6 @@ export const useListematerielFunctions = (data) => {
     }
     return 0;
   });
-
-  useEffect(() => {}, [sortedData]);
 
   return {
     page,
@@ -108,13 +106,13 @@ export const useListematerielFunctions = (data) => {
   };
 };
 // Filtre
-export function filtremateriel(listemateriel, numserie, article, couleur, typemateriel) {
-  return listemateriel.filter((Item) => {
-    return (
-      Item.numserie.toLowerCase().includes(numserie.toLowerCase()) &&
-      Item.couleur.toLowerCase().includes(couleur.toLowerCase()) &&
-      Item.article.toLowerCase().includes(article.toLowerCase()) &&
-      Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
-    );
-  });
-}
+// export function filtremateriel(listemateriel, numserie, modele, couleur, typemateriel) {
+//   return listemateriel.filter((Item) => {
+//     return (
+//       Item.numserie.toLowerCase().includes(numserie.toLowerCase()) &&
+//       Item.couleur.toLowerCase().includes(couleur.toLowerCase()) &&
+//       Item.modele.toLowerCase().includes(modele.toLowerCase()) &&
+//       Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
+//     );
+//   });
+// }
