@@ -9,11 +9,11 @@ import {
   Dialog
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listedepot from './Listedepot';
 import { Container } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Depot = () => {
   // Form dialog
@@ -21,36 +21,60 @@ const Depot = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-
-  // Input
-  const [depot, setDepot] = useState('');
-
-  // Message
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  // Validation form
-  const handleSubmit = async () => {};
+  // Input
+  const [depot, setDepot] = useState('');
 
-  useEffect(() => {}, []);
+  const handleSubmit = () => {
+    let params = {
+      depot: depot
+    };
+    let url = baseUrl + '/depot/createdepot';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouveau Depot
-        </Button>
-        &nbsp;&nbsp;
-        {/* <Button variant="contained" color="secondary">
-            Importer les donnees
-          </Button> */}
-      </p>
+      <Box>
+        <p>
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+            Nouveau Depot
+          </Button>
+          &nbsp;&nbsp;
+        </p>
+      </Box>
       <Box>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>

@@ -1,13 +1,11 @@
 import {
   Box,
-  Button,
   IconButton,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
-  TableRow,
-  TextField
+  TableRow
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 
@@ -16,8 +14,6 @@ import { StyledTable } from 'app/views/style/style';
 const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
-  const [editingId, setEditingId] = useState(null);
-  const [selectedIds, setSelectedIds] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const indexedData = data.map((item, index) => ({ index, ...item }));
 

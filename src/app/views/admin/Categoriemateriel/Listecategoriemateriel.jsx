@@ -1,215 +1,318 @@
 import {
-    Box,
-    Button,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Icon, 
-    IconButton,
-    TextField,
-    Checkbox,
-    Select,
-    MenuItem,
-    Grid,
-   } from "@mui/material";
-   import Typography from '@mui/material/Typography';
-   import { useEffect } from "react";
-   import { SimpleCard } from "app/components";
-   import { StyledTable } from "app/views/style/style";
-   import { useListecategoriematerielFunctions } from "app/views/admin/Categoriemateriel/function";
-  
-    
-   const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
-  
+  Box,
+  Button,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Icon,
+  IconButton,
+  TextField,
+  Select,
+  MenuItem,
+  Grid
+} from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { useEffect } from 'react';
+import { SimpleCard } from 'app/components';
+import { StyledTable } from 'app/views/style/style';
+import { useListecategoriematerielFunctions } from 'app/views/admin/Categoriemateriel/function';
+import { useState } from 'react';
+import { baseUrl } from 'app/utils/constant';
+
+const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' },
+    { label: 'idcategoriemateriel', field: 'idcategoriemateriel', align: 'center' },
+    { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' }
     // Other columns...
-   ];
+  ];
 
-   const data = [
-    { id: 1, categoriemateriel: 'Test Data 1', /* other fields... */ },
-    { id: 2, categoriemateriel: 'Test Data 2', /* other fields... */ },
-    { id: 3, categoriemateriel: 'Test Data 3', /* other fields... */ },
-    { id: 4, categoriemateriel: 'Test Data 4', /* other fields... */ },
-    { id: 5, categoriemateriel: 'Test Data 5', /* other fields... */ },
-    { id: 6, categoriemateriel: 'Test Data 6', /* other fields... */ },
-    { id: 7, categoriemateriel: 'Test Data 7', /* other fields... */ },
-    { id: 8, categoriemateriel: 'Test Data 8', /* other fields... */ },
-    { id: 9, categoriemateriel: 'Test Data 9', /* other fields... */ },
-    { id: 10, categoriemateriel: 'Test Data 10', /* other fields... */ },
-    // Add more rows if needed
-   ];
+  const [editedIdCategorieMateriel, setEditedIdCategorieMateriel] = useState(null);
+  const [editedCategorieMateriel, setEditedCategorieMateriel] = useState(null);
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
 
-   const {editingId,sortDirection,page,rowsPerPage,
-    setSortDirection,isEditClicked,selectedRowId,setCategoriemateriel,categoriemateriel,handleChangePage,sortColumn,selectedIds,
-    handleChangeRowsPerPage,handleEdit,cancelEdit,handleSave,handleSelection,handleSelectAll,handleSelectColumn,sortedData
-   } = useListecategoriematerielFunctions(data);
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const handleAlertClose = () => setMessage({ open: false });
+  const [data, setData] = useState([]);
 
-   
+  // Modification(Update)
+  const handleEdit = (row) => {
+    setEditedIdCategorieMateriel('');
+    setEditedCategorieMateriel('');
+    setIsEditClicked(true);
+    setSelectedRowId(row.idcategoriemateriel);
+  };
+
+  const cancelEdit = (row) => {
+    setEditedIdCategorieMateriel('');
+    setEditedCategorieMateriel('');
+    setIsEditClicked(false);
+  };
+
+  const {
+    sortDirection,
+    page,
+    rowsPerPage,
+    setSortDirection,
+    setCategoriemateriel,
+    categoriemateriel,
+    handleChangePage,
+    sortColumn,
+    selectedIds,
+    handleChangeRowsPerPage,
+    handleSelectColumn,
+    sortedData
+  } = useListecategoriematerielFunctions(data);
+
+  const handleSubmit = () => {
+    // let depot = {
+    //   iddepot: editedIdDepot,
+    //   depot: editedNomDepot
+    // };
+    // console.log(editedIdDepot + editedNomDepot);
+    // let url = baseUrl + '/depot/createdepot';
+    // fetch(url, {
+    //   crossDomain: true,
+    //   method: 'POST',
+    //   body: JSON.stringify(depot),
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setMessage({
+    //       text: 'Information modifiee',
+    //       severity: 'success',
+    //       open: true
+    //     });
+    //     setTimeout(() => {
+    //       window.location.reload();
+    //     }, 2000);
+    //   })
+    //   .catch((err) => {
+    //     setMessage({
+    //       text: err,
+    //       severity: 'error',
+    //       open: true
+    //     });
+    //   });
+  };
   //  Use effect
   useEffect(() => {
-  },[sortedData]);
-   
-  
-   
-    return (
-      <Box width="100%" overflow="auto">
-        <Grid container direction="column" spacing={2}>
+    let url = baseUrl + '/categoriemateriel/listcategoriemateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response);
+      });
+  }, []);
+
+  return (
+    <Box width="100%" overflow="auto">
+      <Grid container direction="column" spacing={2}>
         <Grid item>
-        <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>        
-              <form >
+          <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>
+            <form>
               <div style={{ display: 'flex', gap: '16px' }}>
-              <TextField
-               fullWidth
-               size="small"
-               type="text"
-               name="categoriemateriel"
-               label="categorie de materiel"
-               variant="outlined"
-               value={categoriemateriel}
-               onChange={(event) => setCategoriemateriel(event.target.value)}
-               sx={{ mb: 3 }}
-             />
-            </div>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="categoriemateriel"
+                  label="categorie de materiel"
+                  variant="outlined"
+                  value={categoriemateriel}
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </div>
             </form>
           </SimpleCard>
         </Grid>
 
-        
         <Grid item>
-        <SimpleCard title="Liste des categories de materiel">
-
-          {/* Tri de tables */}
-          <Grid container spacing={2}>
-             <Grid item xs={2}>
-               <Select
-                fullWidth
-                 labelId="select-label"
-                 value={sortColumn}
-                 size="small"
-                 onChange={handleSelectColumn}
-
-               >
-                 <MenuItem value="1">Colonne</MenuItem>
-                 {columns.map((column) => (
-                   <MenuItem value={column.field}>{column.label}</MenuItem>
-                 ))}
-               </Select>
-             </Grid>
-             <Grid item xs={2}>
-               <Select
-                fullWidth
-                 labelId="select-direction-label"
-                 value={sortDirection}
-                 size="small"
-                onChange={(event) => setSortDirection(event.target.value)}
-               >
-                 <MenuItem value="asc">ASC</MenuItem>
-                 <MenuItem value="desc">DESC</MenuItem>
-               </Select>
-             </Grid>
-             <Grid item xs={2}>
-             <Button className="button" variant="contained" aria-label="Edit" color="error" disabled={selectedIds.length == 0}>
-                <Icon>delete</Icon>
-              </Button>
-             </Grid>
-  
-            </Grid> 
-        <StyledTable>
-          <TableHead>
-            {/* Listage de Donnees */}
-            <TableRow>
-            <TableCell>
-            <Checkbox
-              checked={data.every((row) => selectedIds.includes(row.id))}
-              indeterminate={data.some((row) => selectedIds.includes(row.id)) && !data.every((row) => selectedIds.includes(row.id))}
-              onChange={handleSelectAll}
-             />
-            </TableCell>
-              {columns.map((column, index) => (
-                // Nom des colonnes du tableau
-                <TableCell key={index} align={column.align || "left"}>
-                  {column.label}
-                </TableCell>
-  
-              ))}
-              <TableCell>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            
-            {/* Donnees du tableau */}
-            {sortedData && sortedData.length > 0 ? sortedData
-               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-               .map((row, index) => (
-                   <TableRow key={index}>
-                       <TableCell>
-                           <Checkbox
-                              checked={selectedIds.includes(row.id)}
-                              onChange={(event) => handleSelection(event, row.id)}
-                           />
-                       </TableCell>
-                       {columns.map((column, index) => (
-                           <TableCell key={index} align={column.align || "left"}>
-                              {editingId === row.id ? (
-                                  <TextField
-                                      defaultValue={column.render ? column.render(row) : row[column.field]}
-                                      name={row.field}
-                                      onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                                  />
-                              ) : (
-                                  column.render ? column.render(row) : row[column.field]
-                              )}
-                           </TableCell>
-                       ))}
-            
-                       <TableCell>
-                           <IconButton className="button" variant="contained" aria-label="Edit" color="primary" onClick={() => handleEdit(row)}>
-                              <Icon>edit_icon</Icon>
-                           </IconButton>
-                           {isEditClicked && row.id=== selectedRowId && (
+          <SimpleCard title="Liste des categories de materiel">
+            {/* Tri de tables */}
+            <Grid container spacing={2}>
+              <Grid item xs={2}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={sortColumn}
+                  size="small"
+                  onChange={handleSelectColumn}
+                >
+                  <MenuItem value="1">Colonne</MenuItem>
+                  {columns.map((column) => (
+                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Select
+                  fullWidth
+                  labelId="select-direction-label"
+                  value={sortDirection}
+                  size="small"
+                  onChange={(event) => setSortDirection(event.target.value)}
+                >
+                  <MenuItem value="asc">ASC</MenuItem>
+                  <MenuItem value="desc">DESC</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="error"
+                  disabled={selectedIds.length == 0}
+                >
+                  <Icon>delete</Icon>
+                </Button>
+              </Grid>
+            </Grid>
+            <StyledTable>
+              <TableHead>
+                {/* Listage de Donnees */}
+                <TableRow>
+                  <TableCell key="idcategoriemateriel" align="left">
+                    idcategoriemateriel
+                  </TableCell>
+                  <TableCell key="categoriemateriel" align="left">
+                    categoriemateriel
+                  </TableCell>
+                  <TableCell>Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* Donnees du tableau */}
+                {sortedData && sortedData.length > 0 ? (
+                  sortedData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <TableRow key={index}>
+                        {isEditClicked && row.idcategoriemateriel === selectedRowId ? (
+                          <>
+                            <TableCell>
+                              <TextField
+                                value={
+                                  editedIdCategorieMateriel !== ''
+                                    ? editedIdCategorieMateriel
+                                    : row.idcategoriemateriel
+                                }
+                                onChange={(event) =>
+                                  setEditedIdCategorieMateriel(
+                                    editedIdCategorieMateriel !== ''
+                                      ? event.target.value
+                                      : row.idcategoriemateriel
+                                  )
+                                }
+                                onFocus={() =>
+                                  setEditedIdCategorieMateriel(row.idcategoriemateriel)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TableCell>
+                                <TextField
+                                  value={
+                                    editedCategorieMateriel !== ''
+                                      ? editedCategorieMateriel
+                                      : row.categoriemateriel
+                                  }
+                                  onChange={(event) =>
+                                    setEditedCategorieMateriel(
+                                      editedCategorieMateriel !== ''
+                                        ? event.target.value
+                                        : row.categoriemateriel
+                                    )
+                                  }
+                                  onFocus={() => setEditedCategorieMateriel(row.categoriemateriel)}
+                                />
+                              </TableCell>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell>{row.idcategoriemateriel}</TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
+                          </>
+                        )}
+                        <TableCell>
+                          <IconButton
+                            className="button"
+                            variant="contained"
+                            aria-label="Edit"
+                            color="primary"
+                            onClick={() => handleEdit(row)}
+                          >
+                            <Icon>edit_icon</Icon>
+                          </IconButton>
+                          {isEditClicked && row.idcategoriemateriel === selectedRowId && (
                             <>
-                           <IconButton  className="button" variant="contained" aria-label="Edit" color="secondary">
-                              <Icon>arrow_forward</Icon>
-                           </IconButton>
-                           <IconButton  className="button" variant="contained" aria-label="Edit" color="error" onClick={() => cancelEdit(row)}>
-                              <Icon>close</Icon>
-                           </IconButton>
-                           </>
-                           )}
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="secondary"
+                                onClick={() => handleSubmit()}
+                              >
+                                <Icon>arrow_forward</Icon>
+                              </IconButton>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="error"
+                                onClick={() => cancelEdit(row)}
+                              >
+                                <Icon>close</Icon>
+                              </IconButton>
+                            </>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                ) : (
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Aucune donnee disponible
+                  </Typography>
+                )}{' '}
+              </TableBody>
+            </StyledTable>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TablePagination
+                  sx={{ px: 2 }}
+                  page={page}
+                  component="div"
+                  rowsPerPage={rowsPerPage}
+                  count={data.length}
+                  onPageChange={handleChangePage}
+                  rowsPerPageOptions={rowsPerPageOptions}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                />
+              </Grid>
+            </Grid>
+          </SimpleCard>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
 
-                       </TableCell>
-                   </TableRow>
-               )) : <p><Typography variant="subtitle1" color="textSecondary">Aucune donnee disponible</Typography></p>}
-  
-          </TableBody>
-        </StyledTable>
-        <Grid container spacing={2}>
-        <Grid item xs={12}>
-        <TablePagination
-          sx={{ px: 2 }}
-          page={page}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          count={data.length}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={rowsPerPageOptions}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          nextIconButtonProps={{ "aria-label": "Next Page" }}
-          backIconButtonProps={{ "aria-label": "Previous Page" }}
-          />
-          </Grid>
-        </Grid>
-        </SimpleCard>
-        </Grid>
-        </Grid>
-      </Box>
-    );
-   };
-   
-   export default Listecategoriemateriel;
-   
+export default Listecategoriemateriel;

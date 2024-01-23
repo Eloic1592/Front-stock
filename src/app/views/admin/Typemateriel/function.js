@@ -13,6 +13,7 @@ export const useListetypematerielFunctions = (data) => {
   const [typemateriel, setTypemateriel] = useState('');
 
   // Pagination
+  // Pagination
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -20,22 +21,6 @@ export const useListetypematerielFunctions = (data) => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  // Modification(Update)
-  const handleEdit = (row) => {
-    setEditingId(row.id);
-    setIsEditClicked(true);
-    setSelectedRowId(row.id);
-  };
-
-  const cancelEdit = (row) => {
-    setEditingId(null);
-    setIsEditClicked(false);
-  };
-
-  const handleSave = (value, id, field) => {
-    setEditingId(null);
   };
 
   // Suppression(Delete)
@@ -59,7 +44,6 @@ export const useListetypematerielFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-
   const filtredata = filtretypemateriel(data, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
@@ -70,7 +54,6 @@ export const useListetypematerielFunctions = (data) => {
     }
     return 0;
   });
-
   useEffect(() => {}, [sortedData]);
 
   return {
@@ -94,9 +77,6 @@ export const useListetypematerielFunctions = (data) => {
     setTypemateriel,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,

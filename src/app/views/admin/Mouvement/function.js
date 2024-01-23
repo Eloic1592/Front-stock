@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export const useListemouvementFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -21,19 +21,13 @@ export const useListemouvementFunctions = (data) => {
     setPage(0);
   };
 
-  // Modification(Update)
-  const handleEdit = (row) => {
-    setEditingId(row.id);
-    setIsEditClicked(true);
-    setSelectedRowId(row.id);
-  };
-  const cancelEdit = (row) => {
-    setEditingId(null);
-    setIsEditClicked(false);
-  };
-
-  const handleSave = (value, id, field) => {
-    setEditingId(null);
+  // Suppression(Delete)
+  const handleSelection = (event, id) => {
+    if (event.target.checked) {
+      setSelectedIds([...selectedIds, id]);
+    } else {
+      setSelectedIds(selectedIds.filter((i) => i !== id));
+    }
   };
 
   const handleSelectAll = (event) => {
@@ -44,18 +38,10 @@ export const useListemouvementFunctions = (data) => {
     }
   };
 
-  const handleSelection = (event, id) => {
-    if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
-    } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
-    }
-  };
-
+  // Tri de table
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-
   const filtredata = filtrenaturemouvement(data, naturemouvement);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
@@ -66,8 +52,6 @@ export const useListemouvementFunctions = (data) => {
     }
     return 0;
   });
-
-  useEffect(() => {}, [sortedData]);
 
   return {
     page,
@@ -88,9 +72,6 @@ export const useListemouvementFunctions = (data) => {
     setSelectedRowId,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,

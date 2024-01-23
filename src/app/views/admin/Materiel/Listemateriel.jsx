@@ -15,7 +15,7 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/Materiel/function';
@@ -36,17 +36,95 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   ];
 
   const data = [
-    // { id: 1, typemateriel: 'Test Data 1', /* other fields... */ },
-    // { id: 2, typemateriel: 'Test Data 2', /* other fields... */ },
-    // { id: 3, typemateriel: 'Test Data 3', /* other fields... */ },
-    // { id: 4, typemateriel: 'Test Data 4', /* other fields... */ },
-    // { id: 5, typemateriel: 'Test Data 5', /* other fields... */ },
-    // { id: 6, typemateriel: 'Test Data 6', /* other fields... */ },
-    // { id: 7, typemateriel: 'Test Data 7', /* other fields... */ },
-    // { id: 8, typemateriel: 'Test Data 8', /* other fields... */ },
-    // { id: 9, typemateriel: 'Test Data 9', /* other fields... */ },
-    // { id: 10, typemateriel: 'Test Data 10', /* other fields... */ },
-    // Add more rows if needed
+    {
+      id: 1,
+      typemateriel: 'Laptop',
+      article: 'Laptop Model X',
+      numserie: '123456',
+      description: 'Powerful laptop',
+      prixvente: 999.99,
+      caution: 100,
+      couleur: 'Silver',
+      statut: 'Available'
+    },
+    {
+      id: 2,
+      typemateriel: 'Smartphone',
+      article: 'Phone Model Y',
+      numserie: '789012',
+      description: 'Feature-rich smartphone',
+      prixvente: 599.99,
+      caution: 50,
+      couleur: 'Black',
+      statut: 'In Use'
+    },
+    {
+      id: 3,
+      typemateriel: 'Tablet',
+      article: 'Tablet Z',
+      numserie: '345678',
+      description: 'Compact and portable',
+      prixvente: 299.99,
+      caution: 30,
+      couleur: 'Blue',
+      statut: 'Available'
+    },
+    {
+      id: 4,
+      typemateriel: 'Desktop',
+      article: 'Desktop Tower A',
+      numserie: '901234',
+      description: 'High-performance desktop',
+      prixvente: 1499.99,
+      caution: 150,
+      couleur: 'Black',
+      statut: 'Available'
+    },
+    {
+      id: 5,
+      typemateriel: 'Printer',
+      article: 'Printer Model P',
+      numserie: '567890',
+      description: 'Color laser printer',
+      prixvente: 399.99,
+      caution: 40,
+      couleur: 'White',
+      statut: 'Available'
+    },
+    {
+      id: 6,
+      typemateriel: 'Camera',
+      article: 'Camera Model C',
+      numserie: '123789',
+      description: 'High-resolution digital camera',
+      prixvente: 899.99,
+      caution: 80,
+      couleur: 'Silver',
+      statut: 'In Use'
+    },
+    {
+      id: 7,
+      typemateriel: 'Headphones',
+      article: 'Wireless Headphones H',
+      numserie: '456321',
+      description: 'Noise-canceling headphones',
+      prixvente: 129.99,
+      caution: 20,
+      couleur: 'Black',
+      statut: 'Available'
+    },
+    {
+      id: 8,
+      typemateriel: 'Monitor',
+      article: 'UltraWide Monitor U',
+      numserie: '789456',
+      description: 'Curved gaming monitor',
+      prixvente: 799.99,
+      caution: 60,
+      couleur: 'Blue',
+      statut: 'In Use'
+    }
+    // Add more rows as needed...
   ];
 
   const {
@@ -96,8 +174,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   label="Numero de serie"
                   name="numserie"
                   variant="outlined"
-                  // value={numserie}
-                  // onChange={(event) => setnumserie(event.target.value)}
+                  value={numserie}
+                  onChange={(event) => setNumserie(event.target.value)}
                   sx={{ mb: 3 }}
                 />
                 <AutoComplete
@@ -115,36 +193,40 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <Select
                   size="small"
                   labelId="select-label"
-                  value={'1'}
+                  value={typemateriel}
                   sx={{ mb: 3 }}
-                  //  onChange={handleChange}
+                  onChange={(event) => setTypemateriel(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir une categorie</MenuItem>
                   <MenuItem value="1">Ordinateur</MenuItem>
-                  <MenuItem value="-1">Materiel sonore</MenuItem>
-                  <MenuItem value="-1">Alimentation</MenuItem>
-                  <MenuItem value="-1">Baffles</MenuItem>
+                  <MenuItem value="2">Materiel sonore</MenuItem>
+                  <MenuItem value="3">Alimentation</MenuItem>
+                  <MenuItem value="4">Baffles</MenuItem>
                 </Select>
                 <Select
                   labelId="select-label"
-                  value={'1'}
+                  value={couleur}
                   size="small"
                   sx={{ mb: 3 }}
-                  //  onChange={handleChange}
+                  onChange={(event) => setCouleur(event.target.value)}
                 >
-                  <MenuItem value="1">Noir</MenuItem>
-                  <MenuItem value="1">Gris</MenuItem>
+                  <MenuItem value=" ">Choisir une couleur</MenuItem>
+                  <MenuItem value="Black">Noir</MenuItem>
+                  <MenuItem value="White">Blanc</MenuItem>
+                  <MenuItem value="Grey">Gris</MenuItem>
                 </Select>
                 <Select
                   size="small"
                   labelId="select-label"
-                  value={'1'}
+                  value={''}
                   sx={{ mb: 3 }}
                   //  onChange={handleChange}
                 >
+                  <MenuItem value=" ">Choisir un type</MenuItem>
                   <MenuItem value="1">Materiel bureautique</MenuItem>
-                  <MenuItem value="-1"> Materiel informatique</MenuItem>
-                  <MenuItem value="-1"> Materiel sonore</MenuItem>
-                  <MenuItem value="-1"> Alimentation</MenuItem>
+                  <MenuItem value="2"> Materiel informatique</MenuItem>
+                  <MenuItem value="3"> Materiel sonore</MenuItem>
+                  <MenuItem value="4"> Alimentation</MenuItem>
                 </Select>
               </div>
             </form>

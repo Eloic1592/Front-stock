@@ -30,8 +30,6 @@ const Devis = () => {
 
   // Input
   const [datedevis, setDatedevis] = useState('');
-  const [idcommande, setIdcommande] = useState('');
-  const [idclient, setIdclient] = useState('');
 
   // Message
   const [message, setMessage] = useState({
@@ -103,41 +101,6 @@ const Devis = () => {
           </DialogActions>
         </Dialog>
       </Box>
-      <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
-        <form>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datedevis"
-                  variant="outlined"
-                  value={materielfilter}
-                  onChange={(event) => setMaterielfilter(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
-                  size="small"
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                  )}
-                  name="idmateriel"
-                  id="idmateriel"
-                />
-              </Grid>
-            </Grid>
-          </div>
-        </form>
-      </SimpleCard>
-      <p></p>
-      <p></p>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

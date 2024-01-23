@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Autocomplete,
   MenuItem,
   Select,
   Grid
@@ -15,9 +14,9 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listemateriel from './Listemateriel';
 import { Container, AutoComplete } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Materiel = () => {
   // Form dialog
@@ -25,11 +24,9 @@ const Materiel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-
-  // Data
-
-  // Input
-  const [catmateriel, setCatmateriel] = useState(' ');
+  const [typemateriel, setTypemateriel] = useState('');
+  const [article, setArticle] = useState('Choisir un article');
+  const [categoriemateriel, setCategorietmateriel] = useState('');
   const [couleur, setCouleur] = useState(' ');
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
@@ -47,11 +44,64 @@ const Materiel = () => {
     open: false
   });
 
+  const [data, setData] = useState('');
+
   // Validation form
-  const handleSubmit = async () => {};
-
-  useEffect(() => {}, []);
-
+  const handleSubmit = () => {
+    let params = {
+      idtypemateriel: typemateriel,
+      idcategoriemateriel: categoriemateriel,
+      idarticle: article,
+      numserie: numserie,
+      prixvente: prixvente,
+      caution: caution,
+      couleur: couleur,
+      description: description
+    };
+    console.log(typemateriel);
+    console.log(categoriemateriel);
+    console.log(article);
+    // let url = baseUrl + '/materiel/createmateriel';
+    // fetch(url, {
+    //   crossDomain: true,
+    //   method: 'POST',
+    //   body: JSON.stringify(params),
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setTimeout(() => {
+    //       window.location.reload();
+    //     }, 2000);
+    //     handleClose();
+    //     setMessage({
+    //       text: 'Information enregistree',
+    //       severity: 'success',
+    //       open: true
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     setMessage({
+    //       text: err,
+    //       severity: 'error',
+    //       open: true
+    //     });
+    //   });
+  };
+  useEffect(() => {
+    let url = baseUrl + '/materiel/contentmateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response);
+        console.log(data);
+      });
+  }, []);
   return (
     <Container>
       <Box className="breadcrumb">
@@ -82,48 +132,59 @@ const Materiel = () => {
               <Grid item xs={6}>
                 <AutoComplete
                   fullWidth
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
+                  options={data.typemateriels}
+                  getOptionLabel={(option) => option.typemateriel}
                   renderInput={(params) => (
                     <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
                   )}
                   name="typemateriel"
                   id="typemateriel"
+                  value={typemateriel}
+                  onChange={(event, newValue) => {
+                    setTypemateriel(newValue ? newValue.idtypemateriel : '');
+                  }}
                   sx={{ mb: 3 }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <Select
+                <AutoComplete
                   fullWidth
-                  labelId="select-label"
-                  value={catmateriel}
-                  onChange={(event) => setCatmateriel(event.target.value)}
+                  options={data.articles}
+                  getOptionLabel={(option) => option.marque + '-' + option.modele}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Article" variant="outlined" fullWidth />
+                  )}
+                  name="article"
+                  id="idarticle"
+                  value={article}
+                  onChange={(event, newValue) => {
+                    setArticle(newValue ? newValue.idarticle : '');
+                  }}
                   sx={{ mb: 3 }}
-                >
-                  <MenuItem value=" ">Choisir la categorie de materiel</MenuItem>
-                  <MenuItem value="1">Materiel bureautique</MenuItem>
-                  <MenuItem value="-1"> Materiel informatique</MenuItem>
-                  <MenuItem value="-1"> Materiel sonore</MenuItem>
-                  <MenuItem value="-1"> Alimentation</MenuItem>
-                </Select>
+                />
               </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <AutoComplete
                   fullWidth
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
+                  options={data.categoriemateriels}
+                  getOptionLabel={(option) => option.categoriemateriel}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Modele du materiel"
+                      label="Categorie de materiel"
                       variant="outlined"
                       fullWidth
                     />
                   )}
-                  name="typemateriel"
-                  id="typemateriel"
+                  name="categoriemateriel"
+                  id="idcategoriemateriel"
+                  value={categoriemateriel}
+                  onChange={(event, newValue) => {
+                    setCategorietmateriel(newValue ? newValue.idcategoriemateriel : '');
+                  }}
+                  sx={{ mb: 3 }}
                 />
               </Grid>
               <Grid item xs={6}>

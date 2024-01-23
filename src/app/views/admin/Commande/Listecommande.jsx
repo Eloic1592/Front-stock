@@ -158,42 +158,46 @@ const Listecommande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           <SimpleCard title="Rechercher un bon de commande" sx={{ marginBottom: '16px' }}>
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  id="datedevis"
-                  type="date"
-                  margin="dense"
-                  name="datedevis"
-                  value={date}
-                  onChange={(event) => setDate(event.target.value)}
-                />
-                <AutoComplete
-                  fullWidth
-                  size="small"
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
-                  // onChange={(event) => setIdclient(event.target.value)}
-                  // value={idclient}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                  )}
-                  name="idclient"
-                  id="idclient"
-                />
-                <AutoComplete
-                  size="small"
-                  fullWidth
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
-                  // onChange={(event) => setIdclient(event.target.value)}
-                  // value={idclient}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Modele" variant="outlined" fullWidth />
-                  )}
-                  name="modele"
-                  id="modele"
-                />
+                <Grid container spacing={1}>
+                  <Grid item xs={4}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="date"
+                      name="datedevis"
+                      variant="outlined"
+                      // value={materielfilter}
+                      // onChange={(event) => setMaterielfilter(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <AutoComplete
+                      fullWidth
+                      size="small"
+                      // options={suggestions}
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
+                      )}
+                      name="idmateriel"
+                      id="idmateriel"
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <AutoComplete
+                      fullWidth
+                      size="small"
+                      // options={suggestions}
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Modele" variant="outlined" fullWidth />
+                      )}
+                      name="idmateriel"
+                      id="idmateriel"
+                    />
+                  </Grid>
+                </Grid>
               </div>
             </form>
           </SimpleCard>

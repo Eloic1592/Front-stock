@@ -49,39 +49,6 @@ const Proforma = () => {
           Exporter des données
         </Button>
       </p>
-      <SimpleCard title="Rechercher un proforma" sx={{ marginBottom: '16px' }}>
-        <form>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datedevis"
-                  variant="outlined"
-                  value={datedevis}
-                  onChange={(event) => setDatedevis(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
-                  size="small"
-                  // options={suggestions}
-                  getOptionLabel={(option) => option.label}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                  )}
-                  name="idmateriel"
-                  id="idmateriel"
-                />
-              </Grid>
-            </Grid>
-          </div>
-        </form>
-      </SimpleCard>
       <Box>
         <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>

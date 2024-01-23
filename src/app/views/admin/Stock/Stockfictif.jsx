@@ -15,6 +15,7 @@ import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import Button from '@mui/material/Button';
 import Listestockfictif from './Listestockfictif';
 import { Container } from 'app/views/style/style';
+import id from 'date-fns/esm/locale/id/index.js';
 
 const Stockfictif = () => {
   // Input
@@ -24,9 +25,9 @@ const Stockfictif = () => {
   const [caution, setCaution] = useState(0);
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
-  const [depot, setDepot] = useState('');
-  const [idetudiant, setIdetudiant] = useState('');
-  const [idmateriel, setIdmateriel] = useState('');
+  const [depot, setDepot] = useState(' ');
+  const [idetudiant, setIdetudiant] = useState(' ');
+  const [idmateriel, setIdmateriel] = useState(' ');
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [file, setFile] = useState('');
@@ -62,10 +63,13 @@ const Stockfictif = () => {
     event.preventDefault();
 
     const newData = {
-      article: '1',
-      quantite: '2',
-      prixunitaire: '4',
-      total: '8' // Remplacez par la valeur réelle du nom du client
+      materiel: idmateriel,
+      datedeb: datedeb,
+      datefin: datefin,
+      idetudiant: idetudiant,
+      caution: caution,
+      depot: depot,
+      statut: 0
     };
 
     setFormData([...formData, newData]);
@@ -73,11 +77,14 @@ const Stockfictif = () => {
 
   // Reset data to null
   const resetData = () => {
+    setIdmateriel(' ');
+    setIdetudiant(' ');
+    setDepot(' ');
     setDatedepot(0);
     setDatedeb('');
     setDatefin('');
     setCaution(0);
-    setTypemouvement('1');
+    setTypemouvement('');
     setNaturemouvement('1');
     setDescription('');
     setCommentaire('');
@@ -86,13 +93,13 @@ const Stockfictif = () => {
   };
 
   const columnsdetails = [
-    { label: 'article', field: 'article', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
-    { label: 'prix stock', field: 'prixunitaire', align: 'center' },
-    { label: 'depot', field: 'prixunitaire', align: 'center' },
-    { label: 'total', field: 'total', align: 'center' },
-    { label: 'statut', field: 'prixunitaire', align: 'center' }
+    { label: 'materiel', field: 'materiel', align: 'center' },
+    { label: 'date debut', field: 'datedeb', align: 'center' },
+    { label: 'date fin', field: 'datefin', align: 'center' },
+    { label: 'ID Etudiant', field: 'idetudiant', align: 'center' },
+    { label: 'caution', field: 'caution', align: 'center' },
+    { label: 'depot', field: 'depot', align: 'center' },
+    { label: 'statut', field: 'statut', align: 'center' }
 
     // Other columns...
   ];
@@ -161,13 +168,14 @@ const Stockfictif = () => {
                   fullWidth
                   size="small"
                   labelId="select-label"
-                  value={'1'}
+                  value={idmateriel}
                   margin="dense"
                   label="Materiel"
                   onChange={(event) => setIdmateriel(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir un materiel</MenuItem>
                   <MenuItem value="1">Materiel 1</MenuItem>
-                  <MenuItem value="2">Materiel 1</MenuItem>
+                  <MenuItem value="2">Materiel 2</MenuItem>
                 </Select>
               </Grid>
               <Grid item xs={3}>
@@ -216,11 +224,12 @@ const Stockfictif = () => {
                   fullWidth
                   autoFocus
                   labelId="select-label"
-                  value={'1'}
+                  value={depot}
                   margin="dense"
                   size="small"
                   onChange={(event) => setDepot(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir un depot</MenuItem>
                   <MenuItem value="1">Depot 1</MenuItem>
                   <MenuItem value="2">Depot 2</MenuItem>
                 </Select>
@@ -230,10 +239,12 @@ const Stockfictif = () => {
                   fullWidth
                   autoFocus
                   labelId="select-label"
-                  value={'1'}
+                  value={idetudiant}
                   margin="dense"
                   size="small"
+                  onChange={(event) => setIdetudiant(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir un etudiant</MenuItem>
                   <MenuItem value="1">Etudiant 1</MenuItem>
                   <MenuItem value="2">Etudiant 2</MenuItem>
                 </Select>
@@ -295,8 +306,7 @@ const Stockfictif = () => {
           <DialogTitle id="form-dialog-title">
             Voulez-vous vraiment tout reinitialiser ?
           </DialogTitle>
-          <DialogContent></DialogContent>
-
+          \
           <DialogActions>
             <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
               Annuler
@@ -313,13 +323,19 @@ const Stockfictif = () => {
           <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
           <DialogContent>
             <TextField
+              variant="outlined"
               fullWidth
-              size="small"
-              type="file"
-              name="filename"
-              label="Fichier"
+              label="Nom du fichier"
               value={file}
-              onChange={(event) => setFile(event.target.value)}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <Button variant="contained" component="label">
+                    Importer
+                    <input type="file" hidden onChange={(event) => setFile(event.target.value)} />
+                  </Button>
+                )
+              }}
             />
           </DialogContent>
 

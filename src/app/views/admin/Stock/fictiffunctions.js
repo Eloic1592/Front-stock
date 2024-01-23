@@ -9,7 +9,7 @@ export const useMfictifFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [materiel, setMateriel] = useState(false);
+  const [materiel, setMateriel] = useState('');
   const [date, setDate] = useState(null);
   const [mouvement, setMouvement] = useState('');
   const [depot, setDepot] = useState('');

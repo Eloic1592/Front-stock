@@ -7,16 +7,16 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Select,
-  MenuItem,
+  // Select,
+  // MenuItem,
   Button
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 
-import { useState, useEffect } from 'react';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import { useState } from 'react';
 import Listenaturemouvement from './Listenaturemouvement';
 import { Container } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Naturemouvement = () => {
   // Form dialog
@@ -25,12 +25,9 @@ const Naturemouvement = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
 
-  // Data
-  const [materielfilter, setMaterielfilter] = useState('');
-
   // Input
-  const [typemouvement, setTypemouvement] = useState('');
-  const [categoriemouvement, setCategoriemouvement] = useState('1');
+  const [naturemouvement, setNaturemouvement] = useState('');
+  // const [categoriemouvement, setCategoriemouvement] = useState('1');
 
   // Message
   const [message, setMessage] = useState({
@@ -40,9 +37,38 @@ const Naturemouvement = () => {
   });
 
   // Validation form
-  const handleSubmit = async () => {};
+  const handleSubmit = () => {
+    let params = {
+      naturemouvement: naturemouvement
+    };
+    let url = baseUrl + '/naturemouvement/createnatmouvement';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
-  useEffect(() => {}, []);
   return (
     <Container>
       <Box className="breadcrumb">
@@ -53,15 +79,14 @@ const Naturemouvement = () => {
           ]}
         />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouveau type de mouvement
-        </Button>
-        &nbsp;&nbsp;
-        {/* <Button variant="contained" color="secondary">
-            Importer des données
-            </Button> */}
-      </p>
+      <Box>
+        <p>
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+            Nouveau type de mouvement
+          </Button>
+          &nbsp;&nbsp;
+        </p>
+      </Box>
       <Box>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nouveau type de mouvement</DialogTitle>
@@ -74,10 +99,10 @@ const Naturemouvement = () => {
               margin="dense"
               label="type de mouvement"
               name="typemouvement"
-              value={typemouvement}
-              onChange={(event) => setTypemouvement(event.target.value)}
+              value={naturemouvement}
+              onChange={(event) => setNaturemouvement(event.target.value)}
             />
-            <Select
+            {/* <Select
               fullWidth
               labelId="select-label"
               value={categoriemouvement}
@@ -85,7 +110,7 @@ const Naturemouvement = () => {
             >
               <MenuItem value="1">Physique</MenuItem>
               <MenuItem value="2">Fictif</MenuItem>
-            </Select>
+            </Select> */}
           </DialogContent>
 
           <DialogActions>

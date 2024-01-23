@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 export const useListematerielFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -11,7 +11,7 @@ export const useListematerielFunctions = (data) => {
   const [numserie, setNumserie] = useState('');
   const [modele, setModele] = useState('');
   const [couleur, setCouleur] = useState('');
-  const [typemateriel, setTypemateriel] = useState('');
+  const [typemateriel, setTypemateriel] = useState(' ');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -68,6 +68,9 @@ export const useListematerielFunctions = (data) => {
     }
     return 0;
   });
+
+  useEffect(() => {}, [sortedData]);
+
   return {
     page,
     setPage,
@@ -105,13 +108,13 @@ export const useListematerielFunctions = (data) => {
   };
 };
 // Filtre
-export function filtremateriel(listemateriel, numserie, modele, couleur, typemateriel) {
+export function filtremateriel(listemateriel, numserie, article, couleur, typemateriel) {
   return listemateriel.filter((Item) => {
     return (
       Item.numserie.toLowerCase().includes(numserie.toLowerCase()) &&
-      Item.couleur.toLowerCase().includes(modele.toLowerCase()) &&
-      Item.modele.toLowerCase().includes(couleur.toLowerCase()) &&
-      Item.idtypemateriel.toLowerCase().includes(typemateriel.toLowerCase())
+      Item.couleur.toLowerCase().includes(couleur.toLowerCase()) &&
+      Item.article.toLowerCase().includes(article.toLowerCase()) &&
+      Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
     );
   });
 }

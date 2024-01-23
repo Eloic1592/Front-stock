@@ -9,81 +9,131 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
+  Snackbar,
+  Alert,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListedepotFunctions } from 'app/views/admin/Depot/function';
+import { baseUrl } from 'app/utils/constant';
 
-const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedepot = () => {
   // Colonne
   const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
+    { label: 'Iddepot', field: 'iddepot', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
     // Other columns...
   ];
+  const [data, setData] = useState([]);
+  const [editedIdDepot, setEditedIdDepot] = useState(null);
+  const [editedNomDepot, setEditedNomDepot] = useState(null);
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
 
-  const data = [
-    { id: 5, depot: 'Depot 9' /* other fields... */ },
-    { id: 2, depot: 'Depot 70' /* other fields... */ },
-    { id: 1, depot: 'Depot 45' /* other fields... */ },
-    { id: 6, depot: 'Depot 17' /* other fields... */ },
-    { id: 4, depot: 'Depot 4' /* other fields... */ },
-    { id: 3, depot: 'Depot 3' /* other fields... */ }
-    // More rows...
-  ];
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const handleAlertClose = () => setMessage({ open: false });
+
+  // Modification(Update)
+  const handleEdit = (row) => {
+    setEditedIdDepot('');
+    setEditedNomDepot('');
+    setIsEditClicked(true);
+    setSelectedRowId(row.iddepot);
+  };
+
+  const cancelEdit = (row) => {
+    setEditedIdDepot('');
+    setEditedNomDepot('');
+    setIsEditClicked(false);
+  };
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
-    isEditClicked,
-    selectedRowId,
     setNomdepot,
     nomdepot,
     handleChangePage,
     sortColumn,
     selectedIds,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useListedepotFunctions(data);
 
-  //  Use effect
-  useEffect(() => {}, [sortedData]);
+  const handleSubmit = () => {
+    let depot = {
+      iddepot: editedIdDepot,
+      depot: editedNomDepot
+    };
+    console.log(editedIdDepot + editedNomDepot);
+    let url = baseUrl + '/depot/createdepot';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(depot),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
+
+  useEffect(() => {
+    let url = baseUrl + '/depot/listdepot';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response);
+      });
+  }, []);
 
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="materielfiltre"
-                  label="Nom du depot"
-                  variant="outlined"
-                  value={nomdepot}
-                  onChange={(event) => setNomdepot(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </div>
-            </form>
+            <TextField
+              fullWidth
+              size="small"
+              type="text"
+              name="materielfiltre"
+              label="Nom du depot"
+              variant="outlined"
+              value={nomdepot}
+              onChange={(event) => setNomdepot(event.target.value)}
+              sx={{ mb: 3 }}
+            />
           </SimpleCard>
         </Grid>
 
@@ -133,22 +183,12 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
-                    <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.id))}
-                      indeterminate={
-                        data.some((row) => selectedIds.includes(row.id)) &&
-                        !data.every((row) => selectedIds.includes(row.id))
-                      }
-                      onChange={handleSelectAll}
-                    />
+                  <TableCell key="iddepot" align="left">
+                    iddepot
                   </TableCell>
-                  {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell key="depot" align="left">
+                    depot
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -159,30 +199,39 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.id)}
-                            onChange={(event) => handleSelection(event, row.id)}
-                          />
-                        </TableCell>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
-                            {editingId === row.id ? (
+                        {isEditClicked && row.iddepot === selectedRowId ? (
+                          <>
+                            <TableCell>
                               <TextField
-                                defaultValue={
-                                  column.render ? column.render(row) : row[column.field]
+                                value={editedIdDepot !== '' ? editedIdDepot : row.iddepot}
+                                onChange={(event) =>
+                                  setEditedIdDepot(
+                                    editedIdDepot !== '' ? event.target.value : row.iddepot
+                                  )
                                 }
-                                name={row.field}
-                                onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
+                                onFocus={() => setEditedIdDepot(row.iddepot)}
                               />
-                            ) : column.render ? (
-                              column.render(row)
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-
+                            </TableCell>
+                            <TableCell>
+                              <TableCell>
+                                <TextField
+                                  value={editedNomDepot !== '' ? editedNomDepot : row.depot}
+                                  onChange={(event) =>
+                                    setEditedNomDepot(
+                                      editedNomDepot !== '' ? event.target.value : row.depot
+                                    )
+                                  }
+                                  onFocus={() => setEditedNomDepot(row.depot)}
+                                />
+                              </TableCell>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell>{row.iddepot}</TableCell>
+                            <TableCell>{row.depot}</TableCell>
+                          </>
+                        )}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -193,13 +242,14 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-                          {isEditClicked && row.id === selectedRowId && (
+                          {isEditClicked && row.iddepot === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
+                                onClick={() => handleSubmit()}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -218,11 +268,9 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Aucune donnee disponible
+                  </Typography>
                 )}
               </TableBody>
             </StyledTable>
@@ -235,7 +283,7 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   rowsPerPage={rowsPerPage}
                   count={data.length}
                   onPageChange={handleChangePage}
-                  rowsPerPageOptions={rowsPerPageOptions}
+                  rowsPerPageOptions={[5, 10, 25]}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   nextIconButtonProps={{ 'aria-label': 'Next Page' }}
                   backIconButtonProps={{ 'aria-label': 'Previous Page' }}
@@ -245,6 +293,11 @@ const Listedepot = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

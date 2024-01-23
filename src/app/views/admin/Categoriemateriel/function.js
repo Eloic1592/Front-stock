@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export const useListecategoriematerielFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -10,6 +10,7 @@ export const useListecategoriematerielFunctions = (data) => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [categoriemateriel, setCategoriemateriel] = useState('');
 
+  // Pagination
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -19,21 +20,7 @@ export const useListecategoriematerielFunctions = (data) => {
     setPage(0);
   };
 
-  // Active la modification
-  const handleEdit = (row) => {
-    setEditingId(row.id);
-    setIsEditClicked(true);
-    setSelectedRowId(row.id);
-  };
-  const cancelEdit = (row) => {
-    setEditingId(null);
-    setIsEditClicked(false);
-  };
-
-  const handleSave = (value, id, field) => {
-    setEditingId(null);
-  };
-
+  // Suppression(Delete)
   const handleSelection = (event, id) => {
     if (event.target.checked) {
       setSelectedIds([...selectedIds, id]);
@@ -42,7 +29,6 @@ export const useListecategoriematerielFunctions = (data) => {
     }
   };
 
-  //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
       setSelectedIds(data.map((row) => row.id));
@@ -51,10 +37,10 @@ export const useListecategoriematerielFunctions = (data) => {
     }
   };
 
+  // Tri de table
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-
   const filtredata = filtercategoriemateriel(data, categoriemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
@@ -85,9 +71,6 @@ export const useListecategoriematerielFunctions = (data) => {
     setSelectedRowId,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,

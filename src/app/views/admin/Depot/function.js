@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export const useListedepotFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -9,6 +9,7 @@ export const useListedepotFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [typemateriel, setTypemateriel] = useState('');
+  const [iddepot, setIddepot] = useState('');
   const [nomdepot, setNomdepot] = useState('');
 
   // Pagination
@@ -19,22 +20,6 @@ export const useListedepotFunctions = (data) => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  // Modification(Update)
-  const handleEdit = (row) => {
-    setEditingId(row.id);
-    setIsEditClicked(true);
-    setSelectedRowId(row.id);
-  };
-
-  const cancelEdit = (row) => {
-    setEditingId(null);
-    setIsEditClicked(false);
-  };
-
-  const handleSave = (value, id, field) => {
-    setEditingId(null);
   };
 
   // Suppression(Delete)
@@ -58,8 +43,7 @@ export const useListedepotFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-
-  const filtredata = filterdepot(data, nomdepot);
+  const filtredata = filtredepot(data, nomdepot);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -69,8 +53,6 @@ export const useListedepotFunctions = (data) => {
     }
     return 0;
   });
-
-  useEffect(() => {}, [sortedData]);
 
   return {
     page,
@@ -93,20 +75,18 @@ export const useListedepotFunctions = (data) => {
     setTypemateriel,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setNomdepot
+    setNomdepot,
+    setIddepot,
+    iddepot
   };
 };
 
-// Filtre
-function filterdepot(listedepot, nomdepot) {
+export function filtredepot(listedepot, depot) {
   return listedepot.filter((Item) => {
-    return Item.depot.toLowerCase().includes(nomdepot.toLowerCase());
+    return Item.depot.toLowerCase().includes(depot.toLowerCase());
   });
 }

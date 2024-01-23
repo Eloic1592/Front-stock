@@ -9,39 +9,58 @@ import {
   Dialog
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listetypemateriel from './Listetypemateriel';
 import { Container } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Typemateriel = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
-  const [fileOpen, setFileOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
-  const handleFileOpen = () => setFileOpen(true);
   const handleClose = () => setOpen(false);
-  const handleFileClose = () => setFileOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-
-  // Data
-  const [file, setFile] = useState('');
-
-  // Input
-  const [typemateriel, setTypemateriel] = useState('');
-
-  // Message
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  // Validation form
-  const handleSubmit = async () => {};
+  const [typemateriel, setTypemateriel] = useState('');
 
-  useEffect(() => {}, []);
+  // Validation form
+  const handleSubmit = () => {
+    let params = {
+      typemateriel: typemateriel
+    };
+    let url = baseUrl + '/typemateriel/createtypemateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   return (
     <Container>
@@ -53,15 +72,14 @@ const Typemateriel = () => {
           ]}
         />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouveau type de materiel
-        </Button>
-        &nbsp;&nbsp;
-        {/* <Button variant="contained" onClick={handleFileOpen} color="secondary">
-          Importer des données
-          </Button> */}
-      </p>
+      <Box>
+        <p>
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+            Nouveau type de materiel
+          </Button>
+          &nbsp;&nbsp;
+        </p>
+      </Box>
       <Box>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>

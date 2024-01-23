@@ -1,29 +1,30 @@
 import {
   Box,
+  Button,
   TextField,
   DialogContent,
   DialogActions,
   DialogTitle,
   Dialog,
   Select,
-  MenuItem
+  MenuItem,
+  Grid
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
-import Button from '@mui/material/Button';
 import Listestockphysique from './Listestockphysique';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 
 const Stockphysique = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
   const [typemouvement, setTypemouvement] = useState('');
   const [idnaturemouvement, setIdnaturemouvement] = useState('');
+  const [article, setArticle] = useState(' ');
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
-  const [depot, setDepot] = useState('');
+  const [depot, setDepot] = useState(' ');
   const [prixstock, setPrixstock] = useState(0);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
@@ -60,10 +61,14 @@ const Stockphysique = () => {
     event.preventDefault();
 
     const newData = {
-      article: +1,
-      quantite: '2',
-      prixunitaire: '4',
-      total: +1 // Remplacez par la valeur réelle du nom du client
+      article: article,
+      quantite: quantite,
+      prixunitaire: prixunitaire,
+      prixstock: prixstock,
+      depot: depot,
+      total: quantite * prixunitaire,
+      statut: 0
+      // Remplacez par la valeur réelle du nom du client
     };
 
     setFormData([...formData, newData]);
@@ -71,6 +76,7 @@ const Stockphysique = () => {
 
   // Reset data to null
   const resetData = () => {
+    setArticle(' ');
     setDatedepot('');
     setQuantite(0);
     setPrixstock(0);
@@ -79,6 +85,7 @@ const Stockphysique = () => {
     setNaturemouvement('1');
     setDescription('');
     setCommentaire('');
+    setDepot(' ');
     setFormData([]);
     handlecancelClose();
   };
@@ -87,10 +94,10 @@ const Stockphysique = () => {
     { label: 'article', field: 'article', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
     { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
-    { label: 'prix stock', field: 'prixunitaire', align: 'center' },
-    { label: 'depot', field: 'prixunitaire', align: 'center' },
+    { label: 'prix stock', field: 'prixstock', align: 'center' },
+    { label: 'depot', field: 'depot', align: 'center' },
     { label: 'total', field: 'total', align: 'center' },
-    { label: 'statut', field: 'prixunitaire', align: 'center' }
+    { label: 'statut', field: 'statut', align: 'center' }
 
     // Other columns...
   ];
@@ -160,12 +167,14 @@ const Stockphysique = () => {
                   fullWidth
                   size="small"
                   labelId="select-label"
-                  value={'1'}
                   margin="dense"
                   label="Article"
+                  value={article}
+                  onChange={(event) => setArticle(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir un article</MenuItem>
                   <MenuItem value="1">Article 1</MenuItem>
-                  <MenuItem value="2">Article 1</MenuItem>
+                  <MenuItem value="2">Article 2</MenuItem>
                 </Select>
               </Grid>
               <Grid item xs={2}>
@@ -212,10 +221,12 @@ const Stockphysique = () => {
                   fullWidth
                   autoFocus
                   labelId="select-label"
-                  value={'1'}
+                  value={depot}
                   margin="dense"
                   size="small"
+                  onChange={(event) => setDepot(event.target.value)}
                 >
+                  <MenuItem value=" ">Choisir un depot</MenuItem>
                   <MenuItem value="1">Depot 1</MenuItem>
                   <MenuItem value="2">Depot 2</MenuItem>
                 </Select>
@@ -275,7 +286,6 @@ const Stockphysique = () => {
           <DialogTitle id="form-dialog-title">
             Voulez-vous vraiment tout reinitialiser ?
           </DialogTitle>
-          <DialogContent></DialogContent>
 
           <DialogActions>
             <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
@@ -293,13 +303,19 @@ const Stockphysique = () => {
           <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
           <DialogContent>
             <TextField
+              variant="outlined"
               fullWidth
-              size="small"
-              type="file"
-              name="filename"
-              label="Fichier"
+              label="Nom du fichier"
               value={file}
-              onChange={(event) => setFile(event.target.value)}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <Button variant="contained" component="label">
+                    Importer
+                    <input type="file" hidden onChange={(event) => setFile(event.target.value)} />
+                  </Button>
+                )
+              }}
             />
           </DialogContent>
 

@@ -9,11 +9,11 @@ import {
   Dialog
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listecategoriemateriel from './Listecategoriemateriel';
 import { Container } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Categoriemateriel = () => {
   // Form dialog
@@ -33,9 +33,37 @@ const Categoriemateriel = () => {
   });
 
   // Validation form
-  const handleSubmit = async () => {};
-
-  useEffect(() => {}, []);
+  const handleSubmit = () => {
+    let params = {
+      categoriemateriel: categoriemateriel
+    };
+    let url = baseUrl + '/categoriemateriel/createcategoriemateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   return (
     <Container>
@@ -47,15 +75,14 @@ const Categoriemateriel = () => {
           ]}
         />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouvelle categorie de materiel
-        </Button>
-        &nbsp;&nbsp;
-        {/* <Button variant="contained" color="secondary">
-            Importer des données
-          </Button> */}
-      </p>
+      <Box>
+        <p>
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+            Nouvelle categorie de materiel
+          </Button>
+          &nbsp;&nbsp;
+        </p>
+      </Box>
       <Box>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Nouvelle categorie de materiel</DialogTitle>
