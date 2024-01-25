@@ -9,9 +9,10 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
+  Snackbar,
+  Alert,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -30,6 +31,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     // Other columns...
   ];
   const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdNaturemouvement, setEditedIdNaturemouvement] = useState(null);
   const [editedNaturemouvement, setEditedNaturemouvement] = useState(null);
   const [message, setMessage] = useState({
@@ -61,8 +63,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     page,
     rowsPerPage,
     setSortDirection,
-    setCategoriemouvement,
-    categoriemouvement,
     naturemouvement,
     setNaturemouvement,
     handleChangePage,
@@ -74,51 +74,80 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListemouvementFunctions(data);
 
   const handleSubmit = () => {
-    // let depot = {
-    //   iddepot: editedIdDepot,
-    //   depot: editedNomDepot
-    // };
-    // console.log(editedIdDepot + editedNomDepot);
-    // let url = baseUrl + '/depot/createdepot';
-    // fetch(url, {
-    //   crossDomain: true,
-    //   method: 'POST',
-    //   body: JSON.stringify(depot),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setMessage({
-    //       text: 'Information modifiee',
-    //       severity: 'success',
-    //       open: true
-    //     });
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 2000);
-    //   })
-    //   .catch((err) => {
-    //     setMessage({
-    //       text: err,
-    //       severity: 'error',
-    //       open: true
-    //     });
-    //   });
-  };
-  //  Use effect
-  useEffect(() => {
-    let url = baseUrl + '/naturemouvement/listnatmouvement';
+    let depot = {
+      idnaturemouvement: editedIdNaturemouvement,
+      naturemouvement: editedNaturemouvement
+    };
+    let url = baseUrl + '/naturemouvement/createnatmouvement';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify(depot),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
       .then((response) => {
-        setData(response);
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
       });
-  }, []);
+  };
+  //  Use effect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/naturemouvement/listnatmouvement';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        'Error fetching data:', error;
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idnaturemouvement === selectedRowId);
+
+      if (selectedRow) {
+        setEditedIdNaturemouvement(selectedRow.idnaturemouvement);
+        setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -141,18 +170,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       sx={{ mb: 3 }}
                     />
                   </Grid>
-                  {/* <Grid item xs={6}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={categoriemouvement}
-                      onChange={(event) => setCategoriemouvement(event.target.value)}
-                    >
-                      <MenuItem value="1">Physique</MenuItem>
-                      <MenuItem value="2">Fictif</MenuItem>
-                    </Select>
-                  </Grid> */}
                 </Grid>
               </div>
             </form>
@@ -220,44 +237,27 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.idnaturemouvement}>
                         {isEditClicked && row.idnaturemouvement === selectedRowId ? (
                           <>
-                            <TableCell>
+                            <TableCell key={row.idnaturemouvement}>
                               <TextField
-                                value={
-                                  editedIdNaturemouvement !== ''
-                                    ? editedIdNaturemouvement
-                                    : row.idnaturemouvement
-                                }
-                                onChange={(event) =>
-                                  setEditedIdNaturemouvement(
-                                    editedIdNaturemouvement !== ''
-                                      ? event.target.value
-                                      : row.idnaturemouvement
-                                  )
-                                }
-                                onFocus={() => setEditedIdNaturemouvement(row.idnaturemouvement)}
+                                value={editedIdNaturemouvement}
+                                onChange={(event) => setEditedIdNaturemouvement(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
-                              <TableCell>
-                                <TextField
-                                  value={
-                                    editedNaturemouvement !== ''
+                              <TextField
+                                value={editedNaturemouvement}
+                                onChange={(event) => setEditedNaturemouvement(event.target.value)}
+                                onBlur={() =>
+                                  setEditedNaturemouvement(
+                                    editedNaturemouvement !== ' '
                                       ? editedNaturemouvement
                                       : row.naturemouvement
-                                  }
-                                  onChange={(event) =>
-                                    setEditedNaturemouvement(
-                                      editedNaturemouvement !== ''
-                                        ? event.target.value
-                                        : row.naturemouvement
-                                    )
-                                  }
-                                  onFocus={() => setEditedNaturemouvement(row.naturemouvement)}
-                                />
-                              </TableCell>
+                                  )
+                                }
+                              />
                             </TableCell>
                           </>
                         ) : (
@@ -265,7 +265,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.idnaturemouvement}</TableCell>
                             <TableCell>{row.naturemouvement}</TableCell>
                           </>
-                        )}
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -327,6 +327,11 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -35,66 +35,111 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // Other columns...
   ];
-  const [data, setData] = useState([]);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
+  const [data, setData] = useState({
+    materiels: [],
+    articles: [],
+    typemateriels: [],
+    categoriemateriels: [],
+    listemateriels: []
+  });
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
   const handleEdit = (row) => {
-    // setEditedIdtypemateriel('');
-    // setEditedTypemateriel('');
     setIsEditClicked(true);
     setSelectedRowId(row.idmateriel);
   };
 
   const cancelEdit = (row) => {
-    // setEditedIdtypemateriel('');
-    // setEditedTypemateriel('');
     setIsEditClicked(false);
   };
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
     handleChangePage,
     sortColumn,
-    selectedIds,
     setCouleur,
+    setModele,
+    setTypemateriel,
+    setCategoriemateriel,
+    categoriemateriel,
+    couleur,
+    modele,
+    typemateriel,
+    selectedIds,
     setNumserie,
     numserie,
     handleChangeRowsPerPage,
-    handleSave,
-    handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useListematerielFunctions(data);
 
+  //  Use effect
   useEffect(() => {
-    let url = baseUrl + '/materiel/contentmateriel';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify({}),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setData(response);
-        console.log(data.materiels);
-      });
-  }, []);
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/materiel/contentmateriel';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
 
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        // Assuming data is an object with properties materiels, articles, typemateriels, categoriemateriels, and listemateriels
+        const newData = {
+          materiels: responseData.materiels || [],
+          articles: responseData.articles || [],
+          typemateriels: responseData.typemateriels || [],
+          categoriemateriels: responseData.categoriemateriels || [],
+          listemateriels: responseData.listemateriels || []
+        };
+
+        setData(newData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
+
+      if (selectedRow) {
+        // setEditedidmateriel(selectedRow.idmateriel);
+        // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
@@ -115,66 +160,69 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sx={{ mb: 3 }}
                 />
                 <AutoComplete
+                  size="small"
                   fullWidth
-                  options={data.typemateriels}
-                  getOptionLabel={(option) => option.typemateriel}
+                  options={data.articles}
+                  getOptionLabel={(option) => option.modele}
                   renderInput={(params) => (
-                    <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
+                    <TextField {...params} label="Article" variant="outlined" fullWidth />
                   )}
-                  name="typemateriel"
-                  id="typemateriel"
-                  // value={typemateriel}
-                  // onChange={(event, newValue) => {
-                  //   setTypemateriel(newValue ? newValue.idtypemateriel : '');
-                  // }}
-                  sx={{ mb: 3 }}
-                />
-                <AutoComplete
-                  fullWidth
-                  options={data.typemateriels}
-                  getOptionLabel={(option) => option.typemateriel}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
-                  )}
-                  name="typemateriel"
-                  id="typemateriel"
-                  // value={typemateriel}
-                  // onChange={(event, newValue) => {
-                  //   setTypemateriel(newValue ? newValue.idtypemateriel : '');
-                  // }}
-                  sx={{ mb: 3 }}
-                />
-                <AutoComplete
-                  fullWidth
-                  options={data.categoriemateriels}
-                  getOptionLabel={(option) => option.categoriemateriel}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Categorie de materiel"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  name="categoriemateriel"
-                  id="idcategoriemateriel"
-                  // value={categoriemateriel}
-                  // onChange={(event, newValue) => {
-                  //   setCategorietmateriel(newValue ? newValue.idcategoriemateriel : '');
-                  // }}
+                  name="article"
+                  id="article"
+                  value={categoriemateriel}
+                  onChange={(event, newValue) => {
+                    setCategoriemateriel(newValue ? newValue.idcategoriemateriel : '');
+                  }}
                   sx={{ mb: 3 }}
                 />
                 <Select
                   labelId="select-label"
                   size="small"
                   sx={{ mb: 3 }}
-                  // value={couleur}
-                  // onChange={(event) => setCouleur(event.target.value)}
+                  value={categoriemateriel}
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir une couleur</MenuItem>
-                  <MenuItem value="Black">Noir</MenuItem>
-                  <MenuItem value="White">Blanc</MenuItem>
-                  <MenuItem value="Grey">Gris</MenuItem>
+                  <MenuItem value="1">Choisir une categorie</MenuItem>
+                  {data.categoriemateriels.map((row) => (
+                    <MenuItem value={row.idcategoriemateriel}>{row.categoriemateriel}</MenuItem>
+                  ))}
+                </Select>
+
+                <Select
+                  labelId="select-label"
+                  size="small"
+                  sx={{ mb: 3 }}
+                  value={typemateriel}
+                  onChange={(event) => setTypemateriel(event.target.value)}
+                >
+                  <MenuItem value="1">Choisir un type</MenuItem>
+                  {data.typemateriels.map((row) => (
+                    <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
+                  ))}
+                </Select>
+                <Select
+                  labelId="select-label"
+                  size="small"
+                  sx={{ mb: 3 }}
+                  value={couleur}
+                  onChange={(event) => setCouleur(event.target.value)}
+                >
+                  <MenuItem value="1">Choisir une couleur</MenuItem>
+                  <MenuItem value="Noir">Noir</MenuItem>
+                  <MenuItem value="Blanc">Blanc</MenuItem>
+                  <MenuItem value="Gris">Gris</MenuItem>
+                  <MenuItem value="Rouge">Rouge</MenuItem>
+                  <MenuItem value="Bleu">Bleu</MenuItem>
+                  <MenuItem value="Vert">Vert</MenuItem>
+                  <MenuItem value="Jaune">Jaune</MenuItem>
+                  <MenuItem value="Marron">Marron</MenuItem>
+                  <MenuItem value="Violet">Violet</MenuItem>
+                  <MenuItem value="Rose">Rose</MenuItem>
+                  <MenuItem value="Orange">Orange</MenuItem>
+                  <MenuItem value="Beige">Beige</MenuItem>
+                  <MenuItem value="Turquoise">Turquoise</MenuItem>
+                  <MenuItem value="Argenté">Argenté</MenuItem>
+                  <MenuItem value="Doré">Doré</MenuItem>
                 </Select>
               </div>
             </form>
@@ -226,43 +274,39 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
+                  <TableCell align="left">
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.id))}
+                      checked={data.listemateriels.every((row) => selectedIds.includes(row.id))}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.id)) &&
-                        !data.every((row) => selectedIds.includes(row.id))
+                        data.listemateriels.some((row) => selectedIds.includes(row.id)) &&
+                        !data.listemateriels.every((row) => selectedIds.includes(row.id))
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableHead>
-                    {/* Listage de Donnees */}
-                    <TableRow>
-                      <TableCell key="idmateriel" align="left">
-                        idmateriel
-                      </TableCell>
-                      <TableCell key="typemateriel" align="left">
-                        typemateriel
-                      </TableCell>
-                      <TableCell key="modele" align="left">
-                        modele
-                      </TableCell>
-                      <TableCell key="numserie" align="left">
-                        numserie
-                      </TableCell>
-                      <TableCell key="prixvente" align="left">
-                        prixvente
-                      </TableCell>
-                      <TableCell key="caution" align="left">
-                        caution
-                      </TableCell>
-                      <TableCell key="couleur" align="left">
-                        couleur
-                      </TableCell>
-                      <TableCell>Action</TableCell>
-                    </TableRow>
-                  </TableHead>
+                  {/* Listage de Donnees */}
+                  <TableCell key="idmateriel" align="left">
+                    idmateriel
+                  </TableCell>
+                  <TableCell key="typemateriel" align="left">
+                    typemateriel
+                  </TableCell>
+                  <TableCell key="modele" align="left">
+                    modele
+                  </TableCell>
+                  <TableCell key="numserie" align="left">
+                    numserie
+                  </TableCell>
+                  <TableCell key="prixvente" align="left">
+                    prixvente
+                  </TableCell>
+                  <TableCell key="caution" align="left">
+                    caution
+                  </TableCell>
+                  <TableCell key="couleur" align="left">
+                    couleur
+                  </TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -270,32 +314,42 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.id)}
-                            onChange={(event) => handleSelection(event, row.id)}
-                          />
-                        </TableCell>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
-                            {editingId === row.id ? (
+                    .map((row) => (
+                      <TableRow key={row.idmateriel}>
+                        {isEditClicked && row.idmateriel === selectedRowId ? (
+                          <>
+                            {/* <TableCell key={row.idmateriel}>
                               <TextField
-                                defaultValue={
-                                  column.render ? column.render(row) : row[column.field]
-                                }
-                                name={row.field}
-                                onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
+                                value={editedidmateriel}
+                                onChange={(event) => setEditedidmateriel(event.target.value)}
                               />
-                            ) : column.render ? (
-                              column.render(row)
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={editedNaturemouvement}
+                                onChange={(event) => setEditedNaturemouvement(event.target.value)}
+                                onBlur={() =>
+                                  setEditedNaturemouvement(
+                                    editedNaturemouvement !== ' '
+                                      ? editedNaturemouvement
+                                      : row.naturemouvement
+                                  )
+                                }
+                              />
+                            </TableCell> */}
+                          </>
+                        ) : (
+                          <>
+                            <TableCell></TableCell>
+                            <TableCell>{row.idmateriel}</TableCell>
+                            <TableCell>{row.typemateriel}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>{row.numserie}</TableCell>
+                            <TableCell>{row.prixvente}</TableCell>
+                            <TableCell>{row.caution}</TableCell>
+                            <TableCell>{row.couleur}</TableCell>
+                          </>
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -315,7 +369,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <Icon>info</Icon>
                           </IconButton>
 
-                          {isEditClicked && row.id === selectedRowId && (
+                          {isEditClicked && row.idmateriel === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
@@ -355,7 +409,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.length}
+                  count={data.listemateriels.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}

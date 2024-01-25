@@ -11,6 +11,8 @@ import {
   TextField,
   Select,
   MenuItem,
+  Snackbar,
+  Alert,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -29,6 +31,8 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     // Other columns...
   ];
 
+  const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdCategorieMateriel, setEditedIdCategorieMateriel] = useState(null);
   const [editedCategorieMateriel, setEditedCategorieMateriel] = useState(null);
   const [message, setMessage] = useState({
@@ -40,7 +44,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
-  const [data, setData] = useState([]);
 
   // Modification(Update)
   const handleEdit = (row) => {
@@ -71,52 +74,81 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortedData
   } = useListecategoriematerielFunctions(data);
 
+  // Update
   const handleSubmit = () => {
-    // let depot = {
-    //   iddepot: editedIdDepot,
-    //   depot: editedNomDepot
-    // };
-    // console.log(editedIdDepot + editedNomDepot);
-    // let url = baseUrl + '/depot/createdepot';
-    // fetch(url, {
-    //   crossDomain: true,
-    //   method: 'POST',
-    //   body: JSON.stringify(depot),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setMessage({
-    //       text: 'Information modifiee',
-    //       severity: 'success',
-    //       open: true
-    //     });
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 2000);
-    //   })
-    //   .catch((err) => {
-    //     setMessage({
-    //       text: err,
-    //       severity: 'error',
-    //       open: true
-    //     });
-    //   });
-  };
-  //  Use effect
-  useEffect(() => {
-    let url = baseUrl + '/categoriemateriel/listcategoriemateriel';
+    let categoriemateriel = {
+      idcategoriemateriel: editedIdCategorieMateriel,
+      categoriemateriel: editedCategorieMateriel
+    };
+    let url = baseUrl + '/categoriemateriel/createcategoriemateriel';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify(categoriemateriel),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
       .then((response) => {
-        setData(response);
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
       });
-  }, []);
+  };
+  //  Use effect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/categoriemateriel/listcategoriemateriel';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idcategoriemateriel === selectedRowId);
+
+      if (selectedRow) {
+        setEditedIdCategorieMateriel(selectedRow.idcategoriemateriel);
+        setEditedCategorieMateriel((prev) => (prev != null ? prev : selectedRow.categoriemateriel));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -202,46 +234,29 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.idcategoriemateriel}>
                         {isEditClicked && row.idcategoriemateriel === selectedRowId ? (
                           <>
-                            <TableCell>
+                            <TableCell key={row.idcategoriemateriel}>
                               <TextField
-                                value={
-                                  editedIdCategorieMateriel !== ''
-                                    ? editedIdCategorieMateriel
-                                    : row.idcategoriemateriel
-                                }
+                                value={editedIdCategorieMateriel}
                                 onChange={(event) =>
-                                  setEditedIdCategorieMateriel(
-                                    editedIdCategorieMateriel !== ''
-                                      ? event.target.value
-                                      : row.idcategoriemateriel
-                                  )
-                                }
-                                onFocus={() =>
-                                  setEditedIdCategorieMateriel(row.idcategoriemateriel)
+                                  setEditedIdCategorieMateriel(event.target.value)
                                 }
                               />
                             </TableCell>
                             <TableCell>
-                              <TableCell>
-                                <TextField
-                                  value={
-                                    editedCategorieMateriel !== ''
+                              <TextField
+                                value={editedCategorieMateriel}
+                                onChange={(event) => setEditedCategorieMateriel(event.target.value)}
+                                onBlur={() =>
+                                  setEditedCategorieMateriel(
+                                    editedCategorieMateriel !== ' '
                                       ? editedCategorieMateriel
                                       : row.categoriemateriel
-                                  }
-                                  onChange={(event) =>
-                                    setEditedCategorieMateriel(
-                                      editedCategorieMateriel !== ''
-                                        ? event.target.value
-                                        : row.categoriemateriel
-                                    )
-                                  }
-                                  onFocus={() => setEditedCategorieMateriel(row.categoriemateriel)}
-                                />
-                              </TableCell>
+                                  )
+                                }
+                              />
                             </TableCell>
                           </>
                         ) : (
@@ -249,7 +264,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.idcategoriemateriel}</TableCell>
                             <TableCell>{row.categoriemateriel}</TableCell>
                           </>
-                        )}
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -311,6 +326,11 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

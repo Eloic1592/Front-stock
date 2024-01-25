@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export const useListematerielFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -10,8 +10,9 @@ export const useListematerielFunctions = (data) => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [numserie, setNumserie] = useState('');
   const [modele, setModele] = useState('');
-  const [couleur, setCouleur] = useState('');
-  const [typemateriel, setTypemateriel] = useState(' ');
+  const [couleur, setCouleur] = useState('1');
+  const [typemateriel, setTypemateriel] = useState('1');
+  const [categoriemateriel, setCategoriemateriel] = useState('1');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -58,8 +59,8 @@ export const useListematerielFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  // const filtredata = filtremateriel(data, numserie, modele, couleur, typemateriel);
-  const sortedData = data.sort((a, b) => {
+  const filtredata = filtremateriel(data.listemateriels, numserie, modele, couleur, typemateriel);
+  const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
     }
@@ -99,6 +100,8 @@ export const useListematerielFunctions = (data) => {
     setModele,
     setNumserie,
     setTypemateriel,
+    setCategoriemateriel,
+    categoriemateriel,
     couleur,
     modele,
     numserie,
@@ -106,13 +109,13 @@ export const useListematerielFunctions = (data) => {
   };
 };
 // Filtre
-// export function filtremateriel(listemateriel, numserie, modele, couleur, typemateriel) {
-//   return listemateriel.filter((Item) => {
-//     return (
-//       Item.numserie.toLowerCase().includes(numserie.toLowerCase()) &&
-//       Item.couleur.toLowerCase().includes(couleur.toLowerCase()) &&
-//       Item.modele.toLowerCase().includes(modele.toLowerCase()) &&
-//       Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
-//     );
-//   });
-// }
+export function filtremateriel(listemateriel, numserie, modele, couleur, typemateriel) {
+  return listemateriel.filter((Item) => {
+    return (
+      Item.numserie.toLowerCase().includes(numserie.toLowerCase()) &&
+      Item.couleur.toLowerCase().includes(couleur.toLowerCase())
+      // Item.modele.toLowerCase().includes(modele.toLowerCase()) &&
+      // Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
+    );
+  });
+}

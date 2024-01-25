@@ -11,6 +11,8 @@ import {
   TextField,
   Select,
   MenuItem,
+  Snackbar,
+  Alert,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -29,6 +31,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     // Other columns...
   ];
   const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdtypemateriel, setEditedIdtypemateriel] = useState(null);
   const [editedTypemateriel, setEditedTypemateriel] = useState(null);
   const [message, setMessage] = useState({
@@ -71,50 +74,81 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListetypematerielFunctions(data);
 
   const handleSubmit = () => {
-    // let depot = {
-    //   iddepot: editedIdDepot,
-    //   depot: editedNomDepot
-    // };
-    // console.log(editedIdDepot + editedNomDepot);
-    // let url = baseUrl + '/depot/createdepot';
-    // fetch(url, {
-    //   crossDomain: true,
-    //   method: 'POST',
-    //   body: JSON.stringify(depot),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setMessage({
-    //       text: 'Information modifiee',
-    //       severity: 'success',
-    //       open: true
-    //     });
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 2000);
-    //   })
-    //   .catch((err) => {
-    //     setMessage({
-    //       text: err,
-    //       severity: 'error',
-    //       open: true
-    //     });
-    //   });
-  };
-  useEffect(() => {
-    let url = baseUrl + '/typemateriel/listtypemateriel';
+    let typemateriel = {
+      idtypemateriel: editedIdtypemateriel,
+      typemateriel: editedTypemateriel
+    };
+
+    let url = baseUrl + '/typemateriel/createtypemateriel';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify(typemateriel),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
       .then((response) => {
-        setData(response);
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
       });
-  }, []);
+  };
+  //  Use effect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/typemateriel/listtypemateriel';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        'Error fetching data:', error;
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idtypemateriel === selectedRowId);
+
+      if (selectedRow) {
+        setEditedIdtypemateriel(selectedRow.idtypemateriel);
+        setEditedTypemateriel((prev) => (prev != null ? prev : selectedRow.typemateriel));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -201,44 +235,27 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.idtypemateriel}>
                         {isEditClicked && row.idtypemateriel === selectedRowId ? (
                           <>
-                            <TableCell>
+                            <TableCell key={row.idtypemateriel}>
                               <TextField
-                                value={
-                                  editedIdtypemateriel !== ''
-                                    ? editedIdtypemateriel
-                                    : row.idtypemateriel
-                                }
-                                onChange={(event) =>
-                                  setEditedIdtypemateriel(
-                                    editedIdtypemateriel !== ''
-                                      ? event.target.value
-                                      : row.idtypemateriel
-                                  )
-                                }
-                                onFocus={() => setEditedIdtypemateriel(row.idtypemateriel)}
+                                value={editedIdtypemateriel}
+                                onChange={(event) => setEditedIdtypemateriel(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
-                              <TableCell>
-                                <TextField
-                                  value={
-                                    editedTypemateriel !== ''
+                              <TextField
+                                value={editedTypemateriel}
+                                onChange={(event) => setEditedTypemateriel(event.target.value)}
+                                onBlur={() =>
+                                  setEditedTypemateriel(
+                                    editedTypemateriel !== ' '
                                       ? editedTypemateriel
                                       : row.typemateriel
-                                  }
-                                  onChange={(event) =>
-                                    setEditedTypemateriel(
-                                      editedTypemateriel !== ''
-                                        ? event.target.value
-                                        : row.typemateriel
-                                    )
-                                  }
-                                  onFocus={() => setEditedTypemateriel(row.typemateriel)}
-                                />
-                              </TableCell>
+                                  )
+                                }
+                              />
                             </TableCell>
                           </>
                         ) : (
@@ -246,7 +263,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.idtypemateriel}</TableCell>
                             <TableCell>{row.typemateriel}</TableCell>
                           </>
-                        )}
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -309,6 +326,11 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

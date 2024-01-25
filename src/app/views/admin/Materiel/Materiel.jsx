@@ -24,10 +24,10 @@ const Materiel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-  const [typemateriel, setTypemateriel] = useState('');
+  const [typemateriel, setTypemateriel] = useState(['1']);
+  const [categoriemateriel, setCategoriemateriel] = useState(['1']);
+  const [couleur, setCouleur] = useState(['1']);
   const [article, setArticle] = useState('');
-  const [categoriemateriel, setCategorietmateriel] = useState('');
-  const [couleur, setCouleur] = useState(' ');
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
   const [prixvente, setPrixvente] = useState(0);
@@ -44,7 +44,7 @@ const Materiel = () => {
     open: false
   });
 
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
 
   // Validation form
   const handleSubmit = () => {
@@ -58,9 +58,6 @@ const Materiel = () => {
       couleur: couleur,
       description: description
     };
-    console.log(typemateriel);
-    console.log(categoriemateriel);
-    console.log(article);
     let url = baseUrl + '/materiel/createmateriel';
     fetch(url, {
       crossDomain: true,
@@ -89,19 +86,25 @@ const Materiel = () => {
       });
   };
   useEffect(() => {
-    let url = baseUrl + '/materiel/contentmateriel';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify({}),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setData(response);
-        console.log(data);
-      });
-  }, []);
+    // Charger les données de votre API ou de toute autre source de données
+    // Remplacez cette logique par la manière dont vous chargez vos catégories de matériel
+    const fetchData = async () => {
+      try {
+        // Exemple de requête fetch pour obtenir les catégories de matériel depuis une API
+        const response = await fetch('/materiel/contenmateriel');
+        const data = await response.json();
+
+        // Mettre à jour l'état avec les catégories de matériel récupérées
+        setCategoriemateriel(data.categoriemateriels);
+      } catch (error) {
+        console.error('Erreur lors du chargement des catégories de matériel :', error);
+      }
+    };
+
+    // Appeler la fonction fetchData lors du montage du composant
+    fetchData();
+  }, []); // Le tableau vide en tant que deuxième argument signifie que cela ne doit être exécuté qu'une seule fois lors du montage
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -132,23 +135,6 @@ const Materiel = () => {
               <Grid item xs={6}>
                 <AutoComplete
                   fullWidth
-                  options={data.typemateriels}
-                  getOptionLabel={(option) => option.typemateriel}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Type de materiel" variant="outlined" fullWidth />
-                  )}
-                  name="typemateriel"
-                  id="typemateriel"
-                  value={typemateriel}
-                  onChange={(event, newValue) => {
-                    setTypemateriel(newValue ? newValue.idtypemateriel : '');
-                  }}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
                   options={data.articles}
                   getOptionLabel={(option) => option.marque + '-' + option.modele}
                   renderInput={(params) => (
@@ -163,29 +149,39 @@ const Materiel = () => {
                   sx={{ mb: 3 }}
                 />
               </Grid>
+              <Grid item xs={6}>
+                <Select
+                  labelId="select-label"
+                  sx={{ mb: 3 }}
+                  value={categoriemateriel}
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value="1" disabled>
+                    Choisir une categorie
+                  </MenuItem>
+                  {data.categoriemateriels.map((row) => (
+                    <MenuItem value={row.idcategoriemateriel}>{row.categoriemateriel}</MenuItem>
+                  ))}
+                </Select>
+              </Grid>
             </Grid>
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
-                  options={data.categoriemateriels}
-                  getOptionLabel={(option) => option.categoriemateriel}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Categorie de materiel"
-                      variant="outlined"
-                      fullWidth
-                    />
-                  )}
-                  name="categoriemateriel"
-                  id="idcategoriemateriel"
-                  value={categoriemateriel}
-                  onChange={(event, newValue) => {
-                    setCategorietmateriel(newValue ? newValue.idcategoriemateriel : '');
-                  }}
+                <Select
+                  labelId="select-label"
                   sx={{ mb: 3 }}
-                />
+                  value={typemateriel}
+                  onChange={(event) => setTypemateriel(event.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value="1" disabled>
+                    Choisir un type
+                  </MenuItem>
+                  {/* {data.typemateriels.map((row) => (
+                    <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
+                  ))} */}
+                </Select>
               </Grid>
               <Grid item xs={6}>
                 <Select
@@ -194,9 +190,24 @@ const Materiel = () => {
                   value={couleur}
                   onChange={(event) => setCouleur(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir une couleur</MenuItem>
-                  <MenuItem value="1">Noir</MenuItem>
-                  <MenuItem value="1">Gris</MenuItem>
+                  <MenuItem value="1" disabled>
+                    Choisir une couleur
+                  </MenuItem>
+                  <MenuItem value="Noir">Noir</MenuItem>
+                  <MenuItem value="Blanc">Blanc</MenuItem>
+                  <MenuItem value="Gris">Gris</MenuItem>
+                  <MenuItem value="Rouge">Rouge</MenuItem>
+                  <MenuItem value="Bleu">Bleu</MenuItem>
+                  <MenuItem value="Vert">Vert</MenuItem>
+                  <MenuItem value="Jaune">Jaune</MenuItem>
+                  <MenuItem value="Marron">Marron</MenuItem>
+                  <MenuItem value="Violet">Violet</MenuItem>
+                  <MenuItem value="Rose">Rose</MenuItem>
+                  <MenuItem value="Orange">Orange</MenuItem>
+                  <MenuItem value="Beige">Beige</MenuItem>
+                  <MenuItem value="Turquoise">Turquoise</MenuItem>
+                  <MenuItem value="Argenté">Argenté</MenuItem>
+                  <MenuItem value="Doré">Doré</MenuItem>
                 </Select>
               </Grid>
             </Grid>

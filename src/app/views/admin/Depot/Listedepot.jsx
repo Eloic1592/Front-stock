@@ -30,6 +30,7 @@ const Listedepot = () => {
     // Other columns...
   ];
   const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdDepot, setEditedIdDepot] = useState(null);
   const [editedNomDepot, setEditedNomDepot] = useState(null);
   const [message, setMessage] = useState({
@@ -72,54 +73,83 @@ const Listedepot = () => {
   } = useListedepotFunctions(data);
 
   const handleSubmit = () => {
-    //   let depot = {
-    //     iddepot: editedIdDepot,
-    //     depot: editedNomDepot
-    //   };
-    //   console.log(editedIdDepot + editedNomDepot);
-    //   let url = baseUrl + '/depot/createdepot';
-    //   fetch(url, {
-    //     crossDomain: true,
-    //     method: 'POST',
-    //     body: JSON.stringify(depot),
-    //     headers: { 'Content-Type': 'application/json' }
-    //   })
-    //     .then((response) => response.json())
-    //     .then((response) => {
-    //       setMessage({
-    //         text: 'Information modifiee',
-    //         severity: 'success',
-    //         open: true
-    //       });
-    //       setTimeout(() => {
-    //         window.location.reload();
-    //       }, 2000);
-    //     })
-    //     .catch((err) => {
-    //       setMessage({
-    //         text: err,
-    //         severity: 'error',
-    //         open: true
-    //       });
-    //     });
-  };
-
-  useEffect(() => {
-    let url = baseUrl + '/depot/listdepot';
+    let depot = {
+      iddepot: editedIdDepot,
+      depot: editedNomDepot
+    };
+    let url = baseUrl + '/depot/createdepot';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify(depot),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
       .then((response) => {
-        setData(response);
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/depot/listdepot';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        'Error fetching data:', error;
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.iddepot === selectedRowId);
+
+      if (selectedRow) {
+        setEditedIdDepot(selectedRow.iddepot);
+        setEditedNomDepot((prev) => (prev != null ? prev : selectedRow.depot));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
-    <Box width="100%" overflow="auto">
+    <Box width="100%" overflow="auto" key="Box1">
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
@@ -198,32 +228,25 @@ const Listedepot = () => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.iddepot}>
                         {isEditClicked && row.iddepot === selectedRowId ? (
                           <>
-                            <TableCell>
+                            <TableCell key={row.iddepot}>
                               <TextField
-                                value={editedIdDepot !== '' ? editedIdDepot : row.iddepot}
-                                onChange={(event) =>
-                                  setEditedIdDepot(
-                                    editedIdDepot !== '' ? event.target.value : row.iddepot
-                                  )
-                                }
-                                onFocus={() => setEditedIdDepot(row.iddepot)}
+                                value={editedIdDepot}
+                                onChange={(event) => setEditedIdDepot(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
-                              <TableCell>
-                                <TextField
-                                  value={editedNomDepot !== '' ? editedNomDepot : row.depot}
-                                  onChange={(event) =>
-                                    setEditedNomDepot(
-                                      editedNomDepot !== '' ? event.target.value : row.depot
-                                    )
-                                  }
-                                  onFocus={() => setEditedNomDepot(row.depot)}
-                                />
-                              </TableCell>
+                              <TextField
+                                value={editedNomDepot}
+                                onChange={(event) => setEditedNomDepot(event.target.value)}
+                                onBlur={() =>
+                                  setEditedNomDepot(
+                                    editedNomDepot !== ' ' ? editedNomDepot : row.depot
+                                  )
+                                }
+                              />
                             </TableCell>
                           </>
                         ) : (
@@ -231,7 +254,7 @@ const Listedepot = () => {
                             <TableCell>{row.iddepot}</TableCell>
                             <TableCell>{row.depot}</TableCell>
                           </>
-                        )}
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -269,7 +292,7 @@ const Listedepot = () => {
                     ))
                 ) : (
                   <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnee disponible
+                    Aucune donnée disponible
                   </Typography>
                 )}
               </TableBody>
