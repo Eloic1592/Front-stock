@@ -60,48 +60,48 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useMphysiqueFunctions(data);
 
   //  Use effect
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let url = baseUrl + '/mouvementstock/contentstock';
-  //       const response = await fetch(url, {
-  //         crossDomain: true,
-  //         method: 'POST',
-  //         body: JSON.stringify({}),
-  //         headers: { 'Content-Type': 'application/json' }
-  //       });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/mouvementstock/contentstockphysique';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
 
-  //       if (!response.ok) {
-  //         throw new Error(`Request failed with status: ${response.status}`);
-  //       }
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
 
-  //       const responseData = await response.json();
-  //       setData(responseData);
-  //     } catch (error) {
-  //       console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-  //       // Gérer les erreurs de requête Fetch ici
-  //     }
-  //   };
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
 
-  //   // Charger les données initiales uniquement si elles n'ont pas encore été chargées
-  //   if (!initialDataFetched) {
-  //     fetchData(); // Appel initial
-  //     setInitialDataFetched(true);
-  //   }
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
 
-  //   // La logique conditionnelle
-  //   if (isEditClicked && selectedRowId !== null) {
-  //     const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
 
-  //     // if (selectedRow) {
-  //     //   setEditedIdArticle(selectedRow.idarticle);
-  //     //   setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
-  //     //   setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
-  //     //   setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
-  //     //   setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
-  //     // }
-  //   }
-  // }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+      // if (selectedRow) {
+      //   setEditedIdArticle(selectedRow.idarticle);
+      //   setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
+      //   setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
+      //   setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
+      //   setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
+      // }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -111,7 +111,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <TextField
                       fullWidth
                       size="small"
@@ -119,57 +119,36 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       name="materielfiltre"
                       label="Nom du materiel"
                       variant="outlined"
-                      //  value={materielfilter}
-                      //  onChange={(event) => setMaterielfilter(event.target.value)}
                       sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <TextField
                       fullWidth
                       size="small"
                       type="date"
                       name="date"
                       variant="outlined"
-                      //  value={materielfilter}
-                      //  onChange={(event) => setMaterielfilter(event.target.value)}
                       sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={handleChange}
-                    >
+                  <Grid item xs={2}>
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Entree</MenuItem>
-                      <MenuItem value="-1"> Sortie</MenuItem>
+                      <MenuItem value="-1">Sortie</MenuItem>
                     </Select>
                   </Grid>
                   <Grid item xs={2}>
-                    <Select
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={(event) => setDepot(event.target.value)}
-                    >
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Depot</MenuItem>
-                      <MenuItem value="-1"> Salle 6</MenuItem>
+                      <MenuItem value="-1">Salle 6</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={handleChange}
-                    >
+                  <Grid item xs={2}>
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Don</MenuItem>
-                      <MenuItem value="-1"> Transfert</MenuItem>
-                      <MenuItem value="-1"> Perte</MenuItem>
+                      <MenuItem value="-1">Transfert</MenuItem>
+                      <MenuItem value="-1">Perte</MenuItem>
                     </Select>
                   </Grid>
                 </Grid>

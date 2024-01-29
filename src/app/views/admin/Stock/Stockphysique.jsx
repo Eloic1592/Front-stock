@@ -8,6 +8,8 @@ import {
   Dialog,
   Select,
   MenuItem,
+  Alert,
+  Snackbar,
   Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
@@ -136,18 +138,18 @@ const Stockphysique = () => {
   };
 
   const columnsdetails = [
-    { label: 'article', field: 'article', align: 'center' },
+    { label: 'article', field: 'idarticle', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
+    { label: 'prix unitaire', field: 'pu', align: 'center' },
     { label: 'prix stock', field: 'prixstock', align: 'center' },
-    { label: 'depot', field: 'depot', align: 'center' },
+    { label: 'depot', field: 'iddepot', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
     // Other columns...
   ];
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/mouvementstock/contentstock';
+        let url = baseUrl + '/mouvementstock/contentstockphysique';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -189,21 +191,26 @@ const Stockphysique = () => {
             { name: 'mouvement de stock physique' }
           ]}
         />
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau mouvement
-          </Button>
-          &nbsp;&nbsp;
-          <Button variant="contained" color="inherit">
-            Exporter les mouvements
-          </Button>
-          &nbsp;&nbsp;
-          <Button variant="contained" onClick={handleFileOpen} color="secondary">
-            Importer des données
-          </Button>
-        </p>
       </Box>
-
+      <Box>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button variant="contained" onClick={handleClickOpen} color="primary">
+              Nouveau mouvement
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="inherit">
+              Exporter les mouvements
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" onClick={handleFileOpen} color="secondary">
+              Importer des données
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
       <Box>
         <Dialog
           open={open}
@@ -322,7 +329,9 @@ const Stockphysique = () => {
                 >
                   <MenuItem value="1">Choisir un depot</MenuItem>
                   {data.depot.map((row) => (
-                    <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
+                    <MenuItem value={row.iddepot}>
+                      {row.iddepot}-{row.depot}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -424,7 +433,11 @@ const Stockphysique = () => {
           </DialogActions>
         </Dialog>
       </Box>
-
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
       {/* Liste des donnees */}
       <Listestockphysique />
     </Container>
