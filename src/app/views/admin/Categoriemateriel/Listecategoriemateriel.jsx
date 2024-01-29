@@ -53,7 +53,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setSelectedRowId(row.idcategoriemateriel);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditedIdCategorieMateriel('');
     setEditedCategorieMateriel('');
     setIsEditClicked(false);

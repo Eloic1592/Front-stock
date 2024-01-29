@@ -60,7 +60,7 @@ const ListeArticle = () => {
     setSelectedRowId(row.idarticle);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditedIdArticle('');
     setEditedCodearticle('');
     setEditedDescription('');

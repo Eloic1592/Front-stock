@@ -56,13 +56,13 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const handleAlertClose = () => setMessage({ open: false });
 
   // Update
-  const [isEditedarticle, setIsEditedarticle] = useState(null);
+  const [isEditedmateriel, setIsEditedmateriel] = useState(null);
   const [isEditedtypemat, setIsEditedtypemat] = useState(null);
   const [isEditedcatemat, setIsEditedcatemat] = useState(null);
-  const [isEditednumserie, setIsEditednumserie] = useState(null);
-  const [isEditedprixvente, setIsEditedprixvente] = useState(null);
-  const [isEditedcolor, setIsEditedcolor] = useState(null);
-  const [isEditedcaution, setisEditedcaution] = useState(null);
+  const [isEditednumserie, setIsEditednumserie] = useState('');
+  const [isEditedprixvente, setIsEditedprixvente] = useState(0);
+  const [isEditedcolor, setIsEditedcolor] = useState(['1']);
+  const [isEditedcaution, setisEditedcaution] = useState(0);
 
   // Modification(Update)
   const handleEdit = (row) => {
@@ -70,7 +70,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setSelectedRowId(row.idmateriel);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setIsEditClicked(false);
   };
 
@@ -99,6 +99,41 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortedData
   } = useListematerielFunctions(data);
 
+  const handleSubmit = () => {
+    let article = {
+      idmateriel: isEditedmateriel,
+      numserie: isEditednumserie,
+      prixvente: isEditedprixvente,
+      caution: isEditedcaution,
+      couleur: isEditedcolor
+    };
+
+    let url = baseUrl + '/materiel/createmateriel';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(article),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
+  };
   //  Use effect
   useEffect(() => {
     const fetchData = async () => {
@@ -144,7 +179,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
 
       if (selectedRow) {
-        // setEditedidmateriel(selectedRow.idmateriel);
+        setIsEditedmateriel(selectedRow.idmateriel);
         // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
       }
     }
@@ -336,7 +371,88 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           />
                         </TableCell>
                         {isEditClicked && row.idmateriel === selectedRowId ? (
-                          <></>
+                          <>
+                            {/* <TableCell key={row.idmateriel}>
+                              <TextField
+                                value={isEditedmateriel}
+                                onChange={(event) => setIsEditedmateriel(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
+                            <TableCell>{row.typemateriel}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>
+                              <TextField
+                                value={isEditednumserie}
+                                onChange={(event) => setIsEditednumserie(event.target.value)}
+                                onBlur={() =>
+                                  setIsEditednumserie(
+                                    isEditednumserie !== ' ' ? isEditednumserie : row.numserie
+                                  )
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={isEditedprixvente}
+                                onChange={(event) => setIsEditedprixvente(event.target.value)}
+                                onBlur={() =>
+                                  setIsEditedprixvente(
+                                    isEditedprixvente !== ' ' ? isEditedprixvente : row.prixvente
+                                  )
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={isEditedcaution}
+                                onChange={(event) => setisEditedcaution(event.target.value)}
+                                onBlur={() =>
+                                  setisEditedcaution(
+                                    isEditedcaution !== ' ' ? isEditedcaution : row.caution
+                                  )
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                labelId="select-label"
+                                sx={{ mb: 3 }}
+                                value={isEditedcolor}
+                                onChange={(event) => setIsEditedcolor(event.target.value)}
+                                onBlur={() =>
+                                  setIsEditedcolor(
+                                    isEditedcolor !== ' ' ? isEditedcolor : row.couleur
+                                  )
+                                }
+                              >
+                                <MenuItem value="1">Toutes couleurs</MenuItem>
+                                <MenuItem value="Noir">Noir</MenuItem>
+                                <MenuItem value="Blanc">Blanc</MenuItem>
+                                <MenuItem value="Gris">Gris</MenuItem>
+                                <MenuItem value="Rouge">Rouge</MenuItem>
+                                <MenuItem value="Bleu">Bleu</MenuItem>
+                                <MenuItem value="Vert">Vert</MenuItem>
+                                <MenuItem value="Jaune">Jaune</MenuItem>
+                                <MenuItem value="Marron">Marron</MenuItem>
+                                <MenuItem value="Violet">Violet</MenuItem>
+                                <MenuItem value="Rose">Rose</MenuItem>
+                                <MenuItem value="Orange">Orange</MenuItem>
+                                <MenuItem value="Beige">Beige</MenuItem>
+                                <MenuItem value="Turquoise">Turquoise</MenuItem>
+                                <MenuItem value="Argenté">Argenté</MenuItem>
+                                <MenuItem value="Doré">Doré</MenuItem>
+                              </Select>
+                            </TableCell> */}
+                            <TableCell key={row.idmateriel}>{row.idmateriel}</TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
+                            <TableCell>{row.typemateriel}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>{row.numserie}</TableCell>
+                            <TableCell>{row.prixvente}</TableCell>
+                            <TableCell>{row.caution}</TableCell>
+                            <TableCell>{row.couleur}</TableCell>
+                          </>
                         ) : (
                           <>
                             <TableCell key={row.idmateriel}>{row.idmateriel}</TableCell>
@@ -367,6 +483,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
+                                onClick={() => handleSubmit()}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -412,6 +529,11 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -19,21 +19,16 @@ import { useEffect } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useMphysiqueFunctions } from 'app/views/admin/Stock/function';
+import { baseUrl } from 'app/utils/constant';
 
 const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
 
   const columns = [
-    { label: 'M.stock', field: 'idmouvementdestock', align: 'center' },
+    { label: 'Mouv stock', field: 'idmouvementdestock', align: 'center' },
     { label: 'Date de depot', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' },
-    { label: 'Prix', field: 'P.U', align: 'center' },
-    { label: 'Total', field: 'total', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' }
+    { label: 'Nature', field: 'naturemouvement', align: 'center' }
     // Other columns...
   ];
 
@@ -65,7 +60,48 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useMphysiqueFunctions(data);
 
   //  Use effect
-  useEffect(() => {}, [sortedData]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let url = baseUrl + '/mouvementstock/contentstock';
+  //       const response = await fetch(url, {
+  //         crossDomain: true,
+  //         method: 'POST',
+  //         body: JSON.stringify({}),
+  //         headers: { 'Content-Type': 'application/json' }
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error(`Request failed with status: ${response.status}`);
+  //       }
+
+  //       const responseData = await response.json();
+  //       setData(responseData);
+  //     } catch (error) {
+  //       console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+  //       // Gérer les erreurs de requête Fetch ici
+  //     }
+  //   };
+
+  //   // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+  //   if (!initialDataFetched) {
+  //     fetchData(); // Appel initial
+  //     setInitialDataFetched(true);
+  //   }
+
+  //   // La logique conditionnelle
+  //   if (isEditClicked && selectedRowId !== null) {
+  //     const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
+
+  //     // if (selectedRow) {
+  //     //   setEditedIdArticle(selectedRow.idarticle);
+  //     //   setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
+  //     //   setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
+  //     //   setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
+  //     //   setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
+  //     // }
+  //   }
+  // }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -198,12 +234,19 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
+
+                  <TableCell key="idmouvementdestock" align="left">
+                    idmouvementdestock
+                  </TableCell>
+                  <TableCell key="nature" align="left">
+                    Nature mouvement
+                  </TableCell>
+                  <TableCell key="modele" align="left">
+                    mouvement
+                  </TableCell>
+                  <TableCell key="datedepot" align="left">
+                    datedepot
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -217,18 +260,26 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(row.id)}
-                            onChange={(event) => handleSelection(event, row.id)}
+                            onChange={(event) =>
+                              handleSelection(event, row.iddetailmouvementphysique)
+                            }
                           />
                         </TableCell>
                         {columns.map((column, index) => (
                           <TableCell key={index} align={column.align || 'left'}>
-                            {editingId === row.id ? (
+                            {editingId === row.iddetailmouvementphysique ? (
                               <TextField
                                 defaultValue={
                                   column.render ? column.render(row) : row[column.field]
                                 }
                                 name={row.field}
-                                onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
+                                onBlur={(e) =>
+                                  handleSave(
+                                    e.target.value,
+                                    row.iddetailmouvementphysique,
+                                    column.field
+                                  )
+                                }
                               />
                             ) : column.render ? (
                               column.render(row)
@@ -249,7 +300,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <Icon>edit_icon</Icon>
                           </IconButton>
 
-                          {isEditClicked && row.id === selectedRowId && (
+                          {isEditClicked && row.iddetailmouvementphysique === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"

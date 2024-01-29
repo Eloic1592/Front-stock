@@ -28,7 +28,7 @@ export const useListefactureFunctions = (data) => {
     setIsEditClicked(true);
     setSelectedRowId(row.id);
   };
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditingId(null);
     setIsEditClicked(false);
   };

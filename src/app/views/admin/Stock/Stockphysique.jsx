@@ -22,10 +22,10 @@ const Stockphysique = () => {
   const [datedepot, setDatedepot] = useState('');
   const [typemouvement, setTypemouvement] = useState(['0']);
   const [naturemouvement, setNaturemouvement] = useState(['1']);
-  const [article, setArticle] = useState(' ');
+  const [article, setArticle] = useState(['1']);
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
-  const [depot, setDepot] = useState(' ');
+  const [depot, setDepot] = useState(['1']);
   const [prixstock, setPrixstock] = useState(0);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
@@ -45,7 +45,6 @@ const Stockphysique = () => {
     listemateriels: [],
     articles: []
   });
-  let newData = {};
 
   // Data
   const [formData, setFormData] = useState([]);
@@ -68,12 +67,13 @@ const Stockphysique = () => {
   // Validation form
   const handledetails = () => {
     const newData = {
-      article: article,
+      idarticle: article,
       quantite: quantite,
-      prixunitaire: prixunitaire,
+      pu: prixunitaire,
       prixstock: prixstock,
-      depot: depot,
       total: quantite * prixunitaire,
+      iddepot: depot,
+      statut: 0,
       description: description,
       commentaire: commentaire
       // Remplacez par la valeur réelle du nom du client
@@ -89,6 +89,8 @@ const Stockphysique = () => {
       statut: 0,
       mouvementphysiques: formData
     };
+    console.log(params.mouvementphysiques.length);
+
     let url = baseUrl + '/mouvementstock/createstockphysique';
     fetch(url, {
       crossDomain: true,
@@ -119,16 +121,16 @@ const Stockphysique = () => {
 
   // Reset data to null
   const resetData = () => {
-    setArticle('');
+    setArticle(['1']);
     setDatedepot('');
     setQuantite(0);
     setPrixstock(0);
     setPrixunitaire(0);
     setTypemouvement(['0']);
-    setNaturemouvement('1');
+    setNaturemouvement(['1']);
     setDescription('');
     setCommentaire('');
-    setDepot('');
+    setDepot(['1']);
     setFormData([]);
     handlecancelClose();
   };
@@ -261,7 +263,7 @@ const Stockphysique = () => {
                   value={article}
                   onChange={(event) => setArticle(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir un article</MenuItem>
+                  <MenuItem value="1">Choisir un article</MenuItem>
                   {data.articles.map((row) => (
                     <MenuItem value={row.idarticle}>
                       {row.modele}/{row.codearticle}
@@ -318,7 +320,7 @@ const Stockphysique = () => {
                   size="small"
                   onChange={(event) => setDepot(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir un depot</MenuItem>
+                  <MenuItem value="1">Choisir un depot</MenuItem>
                   {data.depot.map((row) => (
                     <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
                   ))}

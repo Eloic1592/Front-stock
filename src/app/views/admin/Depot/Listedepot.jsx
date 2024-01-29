@@ -51,7 +51,7 @@ const Listedepot = () => {
     setSelectedRowId(row.iddepot);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditedIdDepot('');
     setEditedNomDepot('');
     setIsEditClicked(false);

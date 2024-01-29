@@ -52,7 +52,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setSelectedRowId(row.idtypemateriel);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditedIdtypemateriel('');
     setEditedTypemateriel('');
     setIsEditClicked(false);

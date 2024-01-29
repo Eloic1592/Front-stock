@@ -52,7 +52,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setSelectedRowId(row.idnaturemouvement);
   };
 
-  const cancelEdit = (row) => {
+  const cancelEdit = () => {
     setEditedIdNaturemouvement('');
     setEditedNaturemouvement('');
     setIsEditClicked(false);
