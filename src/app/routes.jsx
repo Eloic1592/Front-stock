@@ -14,37 +14,41 @@ const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPass
 const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
 
 // Admin
-const LoginAdmin  = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
+const LoginAdmin = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
 
-const Dashboard  = Loadable(lazy(() => import('app/views/admin/Dashboard/Dashboard')));
+const Dashboard = Loadable(lazy(() => import('app/views/admin/Dashboard/Dashboard')));
 
-const Bilan  = Loadable(lazy(() => import('app/views/admin/Dashboard/Bilan')));
+const Bilan = Loadable(lazy(() => import('app/views/admin/Dashboard/Bilan')));
 
-const TypeMouvement  = Loadable(lazy(() => import('app/views/admin/Mouvement/Naturemouvement')));
+const Article = Loadable(lazy(() => import('app/views/admin/article/Article')));
 
-const TypeMateriel  = Loadable(lazy(() => import('app/views/admin/Typemateriel/Typemateriel')));
+const TypeMouvement = Loadable(lazy(() => import('app/views/admin/Mouvement/Naturemouvement')));
 
-const Categoriemateriel  = Loadable(lazy(() => import('app/views/admin/Categoriemateriel/Categoriemateriel')));
+const TypeMateriel = Loadable(lazy(() => import('app/views/admin/Typemateriel/Typemateriel')));
 
-const Stockphysique  = Loadable(lazy(() => import('app/views/admin/Stock/Stockphysique')));
+const Categoriemateriel = Loadable(
+  lazy(() => import('app/views/admin/Categoriemateriel/Categoriemateriel'))
+);
 
-const Stockfictif  = Loadable(lazy(() => import('app/views/admin/Stock/Stockfictif')));
+const Stockphysique = Loadable(lazy(() => import('app/views/admin/Stock/Stockphysique')));
 
-const Materiel  = Loadable(lazy(() => import('app/views/admin/Materiel/Materiel')));
+const Stockfictif = Loadable(lazy(() => import('app/views/admin/Stock/Stockfictif')));
 
-const Facture  = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
+const Materiel = Loadable(lazy(() => import('app/views/admin/Materiel/Materiel')));
 
-const Proforma  = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
+const Facture = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
 
-const Devis  = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
+const Proforma = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
 
-const Commande  = Loadable(lazy(() => import('app/views/admin/Commande/Commande')));
+const Devis = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
 
-const Depot  = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
+const Commande = Loadable(lazy(() => import('app/views/admin/Commande/Commande')));
 
-const Archives  = Loadable(lazy(() => import('app/views/admin/Archives/Archives')));
+const Depot = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
 
-const Historique  = Loadable(lazy(() => import('app/views/admin/Archives/Historique')));
+const Archives = Loadable(lazy(() => import('app/views/admin/Archives/Archives')));
+
+const Historique = Loadable(lazy(() => import('app/views/admin/Archives/Historique')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
@@ -52,8 +56,6 @@ const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart
 // admin page
 // const Analytics = Loadable(lazy(() => import('app/views/user/Analytics')));
 // Acceuil user
-
-
 
 const routes = [
   {
@@ -83,7 +85,11 @@ const routes = [
         element: <Bilan />,
         auth: authRoles.admindefault
       },
-
+      {
+        path: '/admin/article',
+        element: <Article />,
+        auth: authRoles.admindefault
+      },
       {
         path: '/admin/typemouvement',
         element: <TypeMouvement />,
@@ -150,19 +156,17 @@ const routes = [
         auth: authRoles.admindefault
       },
 
-      
       {
         path: '/admin/archives',
         element: <Archives />,
         auth: authRoles.admindefault
       },
-      
-            
+
       {
         path: '/admin/historique',
         element: <Historique />,
         auth: authRoles.admindefault
-      },
+      }
     ]
   },
 
@@ -171,26 +175,26 @@ const routes = [
   { path: '/session/signin', element: <JwtLogin /> },
   { path: '/session/signup', element: <JwtRegister /> },
   { path: '/session/forgot-password', element: <ForgotPassword /> },
-  { path: '/session/signin-tech', element: < JwtLoginTech/> },
-
+  { path: '/session/signin-tech', element: <JwtLoginTech /> },
 
   // Admin
-  { path: '/admin/connexion', element: < LoginAdmin/> },
-  { path: '/admin/dashboard', element: < Dashboard/> },
-  { path: '/admin/bilan', element: < Bilan/> },
-  { path: '/admin/typemouvement', element: < TypeMouvement/> },
-  { path: '/admin/typemateriel', element: < TypeMateriel/> },
-  { path: '/admin/categoriemateriel', element: < Categoriemateriel/> },
-  { path: '/admin/mouvementphysique', element: < Stockphysique/> },
-  { path: '/admin/mouvementfictif', element: < Stockfictif/> },
-  { path: '/admin/listemateriel', element: < Materiel/> },
-  { path: '/admin/facture', element: < Facture/> },
-  { path: '/admin/devis', element: < Devis/> },
-  { path: '/admin/proforma', element: < Proforma/> },
-  { path: '/admin/commande', element: < Commande/> },
-  { path: '/admin/depot', element: < Depot/> },
-  { path: '/admin/archives', element: < Archives/> },
-  { path: '/admin/historique', element: < Historique/> },
+  { path: '/admin/connexion', element: <LoginAdmin /> },
+  { path: '/admin/dashboard', element: <Dashboard /> },
+  { path: '/admin/bilan', element: <Bilan /> },
+  { path: '/admin/article', element: <Article /> },
+  { path: '/admin/typemouvement', element: <TypeMouvement /> },
+  { path: '/admin/typemateriel', element: <TypeMateriel /> },
+  { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
+  { path: '/admin/mouvementphysique', element: <Stockphysique /> },
+  { path: '/admin/mouvementfictif', element: <Stockfictif /> },
+  { path: '/admin/listemateriel', element: <Materiel /> },
+  { path: '/admin/facture', element: <Facture /> },
+  { path: '/admin/devis', element: <Devis /> },
+  { path: '/admin/proforma', element: <Proforma /> },
+  { path: '/admin/commande', element: <Commande /> },
+  { path: '/admin/depot', element: <Depot /> },
+  { path: '/admin/archives', element: <Archives /> },
+  { path: '/admin/historique', element: <Historique /> },
 
   { path: '/', element: <Navigate to="/admin/dashboard" /> },
   { path: '*', element: <NotFound /> }

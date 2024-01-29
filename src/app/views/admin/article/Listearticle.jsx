@@ -16,24 +16,29 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListemouvementFunctions } from 'app/views/admin/Mouvement/function';
+import { useListeArticlefunctions } from 'app/views/admin/article/function';
 import { baseUrl } from 'app/utils/constant';
 
-const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const ListeArticle = () => {
   // Colonne
-
   const columns = [
-    { label: 'idnaturemouvement', field: 'idnaturemouvement', align: 'center' },
-    { label: 'Nature du mouvement', field: 'naturemouvement', align: 'center' }
+    { label: 'ID article', field: 'idarticle', align: 'center' },
+    { label: 'modele', field: 'modele', align: 'center' },
+    { label: 'marque', field: 'marque', align: 'center' },
+    { label: 'code article', field: 'codearticle', align: 'center' },
+    { label: 'description', field: 'description', align: 'center' }
     // Other columns...
   ];
   const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editedIdNaturemouvement, setEditedIdNaturemouvement] = useState(null);
-  const [editedNaturemouvement, setEditedNaturemouvement] = useState(null);
+  const [editedIdArticle, setEditedIdArticle] = useState(null);
+  const [editedModele, setEditedModele] = useState(null);
+  const [editedMarque, setEditedMarque] = useState(null);
+  const [editedCodearticle, setEditedCodearticle] = useState(null);
+  const [editedDescription, setEditedDescription] = useState(null);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -46,15 +51,21 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
   // Modification(Update)
   const handleEdit = (row) => {
-    setEditedIdNaturemouvement('');
-    setEditedNaturemouvement('');
+    setEditedIdArticle('');
+    setEditedCodearticle('');
+    setEditedDescription('');
+    setEditedMarque('');
+    setEditedModele('');
     setIsEditClicked(true);
-    setSelectedRowId(row.idnaturemouvement);
+    setSelectedRowId(row.idarticle);
   };
 
   const cancelEdit = (row) => {
-    setEditedIdNaturemouvement('');
-    setEditedNaturemouvement('');
+    setEditedIdArticle('');
+    setEditedCodearticle('');
+    setEditedDescription('');
+    setEditedMarque('');
+    setEditedModele('');
     setIsEditClicked(false);
   };
 
@@ -63,26 +74,34 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     page,
     rowsPerPage,
     setSortDirection,
-    naturemouvement,
-    setNaturemouvement,
     handleChangePage,
     sortColumn,
     selectedIds,
     handleChangeRowsPerPage,
     handleSelectColumn,
-    sortedData
-  } = useListemouvementFunctions(data);
+    sortedData,
+    modele,
+    marque,
+    codearticle,
+    setIdarticle,
+    setModele,
+    setCodearticle,
+    setMarque
+  } = useListeArticlefunctions(data);
 
   const handleSubmit = () => {
-    let depot = {
-      idnaturemouvement: editedIdNaturemouvement,
-      naturemouvement: editedNaturemouvement
+    let article = {
+      idarticle: editedIdArticle,
+      modele: editedModele,
+      marque: editedMarque,
+      codearticle: editedCodearticle,
+      description: editedDescription
     };
-    let url = baseUrl + '/naturemouvement/createnatmouvement';
+    let url = baseUrl + '/article/createarticle';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify(depot),
+      body: JSON.stringify(article),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
@@ -104,11 +123,11 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
       });
   };
-  //  Use effect
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/naturemouvement/listnatmouvement';
+        let url = baseUrl + '/article/listarticle';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -136,40 +155,69 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idnaturemouvement === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
 
       if (selectedRow) {
-        setEditedIdNaturemouvement(selectedRow.idnaturemouvement);
-        setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
+        setEditedIdArticle(selectedRow.idarticle);
+        setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
+        setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
+        setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
+        setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
-    <Box width="100%" overflow="auto">
+    <Box width="100%" overflow="auto" key="Box1">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un type de mouvement" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
+          <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
+            <Grid container spacing={1}>
+              <Grid item xs={4}>
                 <TextField
                   fullWidth
                   size="small"
                   type="text"
-                  name="typemouvement"
-                  label="type de mouvement"
+                  name="marque"
+                  label="Marque"
                   variant="outlined"
-                  value={naturemouvement}
-                  onChange={(event) => setNaturemouvement(event.target.value)}
+                  value={marque}
+                  onChange={(event) => setMarque(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-              </div>
-            </form>
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="modele"
+                  label="Modele"
+                  variant="outlined"
+                  value={modele}
+                  onChange={(event) => setModele(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="codearticle"
+                  label="Code article"
+                  variant="outlined"
+                  value={codearticle}
+                  onChange={(event) => setCodearticle(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des mouvements">
+          <SimpleCard title="Liste des depots ">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -204,7 +252,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length === 0}
+                  disabled={selectedIds.length == 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -214,11 +262,20 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idnaturemouvement" align="left">
-                    idnaturemouvement
+                  <TableCell key="idarticle" align="left">
+                    idarticle
                   </TableCell>
-                  <TableCell key="naturemouvement" align="left">
-                    naturemouvement
+                  <TableCell key="marque" align="left">
+                    marque
+                  </TableCell>
+                  <TableCell key="modele" align="left">
+                    modele
+                  </TableCell>
+                  <TableCell key="codearticle" align="left">
+                    codearticle
+                  </TableCell>
+                  <TableCell key="description" align="left">
+                    description
                   </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -229,24 +286,51 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={row.idnaturemouvement}>
-                        {isEditClicked && row.idnaturemouvement === selectedRowId ? (
+                      <TableRow key={row.idarticle}>
+                        {isEditClicked && row.idarticle === selectedRowId ? (
                           <>
-                            <TableCell key={row.idnaturemouvement}>
+                            <TableCell key={row.idarticle}>
                               <TextField
-                                value={editedIdNaturemouvement}
-                                onChange={(event) => setEditedIdNaturemouvement(event.target.value)}
+                                value={editedIdArticle}
+                                onChange={(event) => setEditedIdArticle(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
                               <TextField
-                                value={editedNaturemouvement}
-                                onChange={(event) => setEditedNaturemouvement(event.target.value)}
+                                value={editedModele}
+                                onChange={(event) => setEditedModele(event.target.value)}
                                 onBlur={() =>
-                                  setEditedNaturemouvement(
-                                    editedNaturemouvement !== ' '
-                                      ? editedNaturemouvement
-                                      : row.naturemouvement
+                                  setEditedModele(editedModele !== ' ' ? editedModele : row.modele)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={editedMarque}
+                                onChange={(event) => setEditedMarque(event.target.value)}
+                                onBlur={() =>
+                                  setEditedMarque(editedMarque !== ' ' ? editedMarque : row.marque)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={editedCodearticle}
+                                onChange={(event) => setEditedCodearticle(event.target.value)}
+                                onBlur={() =>
+                                  setEditedCodearticle(
+                                    editedCodearticle !== ' ' ? editedCodearticle : row.codearticle
+                                  )
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={editedDescription}
+                                onChange={(event) => setEditedDescription(event.target.value)}
+                                onBlur={() =>
+                                  setEditedDescription(
+                                    editedDescription !== ' ' ? editedDescription : row.description
                                   )
                                 }
                               />
@@ -254,10 +338,13 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idnaturemouvement}</TableCell>
-                            <TableCell>{row.naturemouvement}</TableCell>
+                            <TableCell>{row.idarticle}</TableCell>
+                            <TableCell>{row.marque}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>{row.codearticle}</TableCell>
+                            <TableCell>{row.description}</TableCell>
                           </>
-                        )}{' '}
+                        )}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -268,14 +355,14 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-                          {isEditClicked && row.idnaturemouvement === selectedRowId && (
+                          {isEditClicked && row.idarticle === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
-                                onClick={() => handleSubmit()}
+                                onClick={handleSubmit}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -295,7 +382,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     ))
                 ) : (
                   <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnee disponible
+                    Aucune donnée disponible
                   </Typography>
                 )}
               </TableBody>
@@ -309,7 +396,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   rowsPerPage={rowsPerPage}
                   count={data.length}
                   onPageChange={handleChangePage}
-                  rowsPerPageOptions={rowsPerPageOptions}
+                  rowsPerPageOptions={[5, 10, 25]}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   nextIconButtonProps={{ 'aria-label': 'Next Page' }}
                   backIconButtonProps={{ 'aria-label': 'Previous Page' }}
@@ -328,4 +415,4 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Listenaturemouvement;
+export default ListeArticle;

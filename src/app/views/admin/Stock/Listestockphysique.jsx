@@ -75,7 +75,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3}>
+                  <Grid item xs={2}>
                     <TextField
                       fullWidth
                       size="small"
@@ -88,7 +88,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={2}>
                     <TextField
                       fullWidth
                       size="small"
@@ -112,7 +112,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       <MenuItem value="-1"> Sortie</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={1}>
+                  <Grid item xs={2}>
                     <Select
                       size="small"
                       labelId="select-label"
@@ -123,7 +123,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       <MenuItem value="-1"> Salle 6</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <Select
                       fullWidth
                       size="small"

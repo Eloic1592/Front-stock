@@ -1,18 +1,19 @@
 export const navigations = [
-
   {
     name: 'Administrateur',
     icon: 'arrows-right',
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Mouvement de stock', iconText: 'arrows-right',
+      {
+        name: 'Mouvement de stock',
+        iconText: 'arrows-right',
         children: [
-          {name: 'Mouvement physique', iconText: 'SI', path:'/admin/mouvementphysique'},
-          {name: 'Mouvement fictif', iconText: 'SI',path:'/admin/mouvementfictif'},
-
+          { name: 'Mouvement physique', iconText: 'SI', path: '/admin/mouvementphysique' },
+          { name: 'Mouvement fictif', iconText: 'SI', path: '/admin/mouvementfictif' }
         ]
       },
+      { name: 'Article', iconText: 'SI', path: '/admin/article' },
       { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
       // { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
@@ -23,11 +24,9 @@ export const navigations = [
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
       { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },
       { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
-      { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' },
-
+      { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
     ]
   },
-
 
   {
     name: 'Components',
@@ -46,7 +45,7 @@ export const navigations = [
       { name: 'Radio', path: '/material/radio', iconText: 'R' },
       { name: 'Switch', path: '/material/switch', iconText: 'S' },
       { name: 'Slider', path: '/material/slider', iconText: 'S' },
-      { name: 'Snackbar', path: '/material/snackbar', iconText: 'S' },
+      { name: 'Snackbar', path: '/material/snackbar', iconText: 'S' }
       // { name: 'Table', path: '/material/table', iconText: 'T' }
     ]
   },
@@ -54,6 +53,5 @@ export const navigations = [
     name: 'Charts',
     icon: 'trending_up',
     children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }]
-  },
-
+  }
 ];

@@ -15,12 +15,13 @@ import { useState, useEffect } from 'react';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import Listestockphysique from './Listestockphysique';
 import { Container } from 'app/views/style/style';
+import { baseUrl } from 'app/utils/constant';
 
 const Stockphysique = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
-  const [typemouvement, setTypemouvement] = useState('');
-  const [idnaturemouvement, setIdnaturemouvement] = useState('');
+  const [typemouvement, setTypemouvement] = useState(['0']);
+  const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [article, setArticle] = useState(' ');
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
@@ -35,10 +36,18 @@ const Stockphysique = () => {
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [data, setData] = useState({
+    mouvementStocks: [],
+    mouvementphysiques: [],
+    mouvementfictifs: [],
+    naturemouvements: [],
+    depot: [],
+    listemateriels: [],
+    articles: []
+  });
+  let newData = {};
 
   // Data
-  const [listemouvementstock, setListemouvementstock] = useState([]);
-  const [naturemouvement, setNaturemouvement] = useState([]);
   const [formData, setFormData] = useState([]);
 
   // Message
@@ -57,9 +66,7 @@ const Stockphysique = () => {
   const handleClose = () => setOpen(false);
 
   // Validation form
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handledetails = () => {
     const newData = {
       article: article,
       quantite: quantite,
@@ -67,25 +74,61 @@ const Stockphysique = () => {
       prixstock: prixstock,
       depot: depot,
       total: quantite * prixunitaire,
-      statut: 0
+      description: description,
+      commentaire: commentaire
       // Remplacez par la valeur réelle du nom du client
     };
-
     setFormData([...formData, newData]);
+  };
+
+  const handleSubmit = () => {
+    let params = {
+      datedepot: datedepot,
+      typemouvement: typemouvement,
+      idnaturemouvement: naturemouvement,
+      statut: 0,
+      mouvementphysiques: formData
+    };
+    let url = baseUrl + '/mouvementstock/createstockphysique';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
   };
 
   // Reset data to null
   const resetData = () => {
-    setArticle(' ');
+    setArticle('');
     setDatedepot('');
     setQuantite(0);
     setPrixstock(0);
     setPrixunitaire(0);
-    setTypemouvement('1');
+    setTypemouvement(['0']);
     setNaturemouvement('1');
     setDescription('');
     setCommentaire('');
-    setDepot(' ');
+    setDepot('');
     setFormData([]);
     handlecancelClose();
   };
@@ -96,11 +139,44 @@ const Stockphysique = () => {
     { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
     { label: 'prix stock', field: 'prixstock', align: 'center' },
     { label: 'depot', field: 'depot', align: 'center' },
-    { label: 'total', field: 'total', align: 'center' },
-    { label: 'statut', field: 'statut', align: 'center' }
-
+    { label: 'total', field: 'total', align: 'center' }
     // Other columns...
   ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/mouvementstock/contentstock';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        const newData = {
+          materiels: responseData.materiels || [],
+          mouvementphysiques: responseData.mouvementphysiques || [],
+          mouvementfictifs: responseData.mouvementfictifs || [],
+          naturemouvements: responseData.naturemouvements || [],
+          depot: responseData.depots || [],
+          articles: responseData.articles || [],
+          listemateriels: responseData.listemateriels || []
+        };
+
+        setData(newData);
+      } catch (error) {
+        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container>
@@ -138,9 +214,16 @@ const Stockphysique = () => {
           <DialogContent>
             <Grid container spacing={3}>
               <Grid item xs={4}>
-                <Select fullWidth labelId="select-label" value={'1'}>
-                  <MenuItem value="1">Perte</MenuItem>
-                  <MenuItem value="2">Transfert</MenuItem>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                >
+                  <MenuItem value="1">Choisir un mouvement</MenuItem>
+                  {data.naturemouvements.map((row) => (
+                    <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={4}>
@@ -154,9 +237,15 @@ const Stockphysique = () => {
                 />
               </Grid>
               <Grid item xs={4}>
-                <Select fullWidth labelId="select-label" value={'1'}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={typemouvement}
+                  onChange={(event) => setTypemouvement(event.target.value)}
+                >
+                  <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
                   <MenuItem value="1">Entree</MenuItem>
-                  <MenuItem value="2">Sortie</MenuItem>
+                  <MenuItem value="-1">Sortie</MenuItem>
                 </Select>
               </Grid>
             </Grid>
@@ -173,8 +262,11 @@ const Stockphysique = () => {
                   onChange={(event) => setArticle(event.target.value)}
                 >
                   <MenuItem value=" ">Choisir un article</MenuItem>
-                  <MenuItem value="1">Article 1</MenuItem>
-                  <MenuItem value="2">Article 2</MenuItem>
+                  {data.articles.map((row) => (
+                    <MenuItem value={row.idarticle}>
+                      {row.modele}/{row.codearticle}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={2}>
@@ -227,12 +319,13 @@ const Stockphysique = () => {
                   onChange={(event) => setDepot(event.target.value)}
                 >
                   <MenuItem value=" ">Choisir un depot</MenuItem>
-                  <MenuItem value="1">Depot 1</MenuItem>
-                  <MenuItem value="2">Depot 2</MenuItem>
+                  {data.depot.map((row) => (
+                    <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={2}>
-                <Button variant="outlined" color="secondary" sx={{ mb: 3 }} onClick={handleSubmit}>
+                <Button variant="outlined" color="secondary" sx={{ mb: 3 }} onClick={handledetails}>
                   Inserer
                 </Button>
               </Grid>

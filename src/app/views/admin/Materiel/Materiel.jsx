@@ -120,10 +120,7 @@ const Materiel = () => {
 
         setData(newData);
       } catch (error) {
-        console.log(
-          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
-          error
-        );
+        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
         // Gérer les erreurs de requête Fetch ici
       }
     };

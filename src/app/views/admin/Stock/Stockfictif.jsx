@@ -20,19 +20,16 @@ import { baseUrl } from 'app/utils/constant';
 const Stockfictif = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
-  const [typemouvement, setTypemouvement] = useState(['1']);
-  const [idnaturemouvement, setIdnaturemouvement] = useState(['1']);
+  const [typemouvement, setTypemouvement] = useState(['0']);
   const [caution, setCaution] = useState(0);
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
   const [depot, setDepot] = useState(['1']);
   const [idetudiant, setIdetudiant] = useState(['1']);
   const [idmateriel, setIdmateriel] = useState(['1']);
-  const [article, setArticle] = useState(['1']);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
-  const [listemouvementstock, setListemouvementstock] = useState([]);
   const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
@@ -94,7 +91,7 @@ const Stockfictif = () => {
     setDatedeb('');
     setDatefin('');
     setCaution(0);
-    setTypemouvement(['1']);
+    setTypemouvement(['0']);
     setNaturemouvement('1');
     setDescription('');
     setCommentaire('');
@@ -108,8 +105,7 @@ const Stockfictif = () => {
     { label: 'date fin', field: 'datefin', align: 'center' },
     { label: 'ID Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'caution', field: 'caution', align: 'center' },
-    { label: 'depot', field: 'depot', align: 'center' },
-    { label: 'statut', field: 'statut', align: 'center' }
+    { label: 'depot', field: 'depot', align: 'center' }
 
     // Other columns...
   ];
@@ -143,10 +139,7 @@ const Stockfictif = () => {
 
         setData(newData);
       } catch (error) {
-        console.log(
-          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
-          error
-        );
+        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -218,8 +211,9 @@ const Stockfictif = () => {
                   value={typemouvement}
                   onChange={(event) => setTypemouvement(event.target.value)}
                 >
+                  <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
                   <MenuItem value="1">Entree</MenuItem>
-                  <MenuItem value="2">Sortie</MenuItem>
+                  <MenuItem value="-1">Sortie</MenuItem>
                 </Select>
               </Grid>
             </Grid>
