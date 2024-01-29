@@ -15,33 +15,44 @@ import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import Button from '@mui/material/Button';
 import Listestockfictif from './Listestockfictif';
 import { Container } from 'app/views/style/style';
-import id from 'date-fns/esm/locale/id/index.js';
+import { baseUrl } from 'app/utils/constant';
 
 const Stockfictif = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
-  const [typemouvement, setTypemouvement] = useState('');
-  const [idnaturemouvement, setIdnaturemouvement] = useState('');
+  const [typemouvement, setTypemouvement] = useState(['1']);
+  const [idnaturemouvement, setIdnaturemouvement] = useState(['1']);
   const [caution, setCaution] = useState(0);
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
-  const [depot, setDepot] = useState(' ');
-  const [idetudiant, setIdetudiant] = useState(' ');
-  const [idmateriel, setIdmateriel] = useState(' ');
+  const [depot, setDepot] = useState(['1']);
+  const [idetudiant, setIdetudiant] = useState(['1']);
+  const [idmateriel, setIdmateriel] = useState(['1']);
+  const [article, setArticle] = useState(['1']);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [listemouvementstock, setListemouvementstock] = useState([]);
+  const [naturemouvement, setNaturemouvement] = useState(['1']);
+  const [formData, setFormData] = useState([]);
+  const [data, setData] = useState({
+    mouvementStocks: [],
+    mouvementphysiques: [],
+    mouvementfictifs: [],
+    naturemouvements: [],
+    depot: [],
+    listemateriels: [],
+    articles: []
+  });
+
   const [file, setFile] = useState('');
+  const [fileOpen, setFileOpen] = useState(false);
+
   const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
-  const [fileOpen, setFileOpen] = useState(false);
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
-  const [alertOpen, setAlertOpen] = useState(false);
-
-  // Data
-  const [listemouvementstock, setListemouvementstock] = useState([]);
-  const [naturemouvement, setNaturemouvement] = useState([]);
-  const [formData, setFormData] = useState([]);
+  const handleAlertClose = () => setMessage({ open: false });
 
   // Message
   const [message, setMessage] = useState({
@@ -49,7 +60,6 @@ const Stockfictif = () => {
     severity: 'success',
     open: false
   });
-  const handleAlertClose = () => setMessage({ open: false });
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -77,14 +87,14 @@ const Stockfictif = () => {
 
   // Reset data to null
   const resetData = () => {
-    setIdmateriel(' ');
-    setIdetudiant(' ');
-    setDepot(' ');
+    setIdmateriel(['1']);
+    setIdetudiant(['1']);
+    setDepot(['1']);
     setDatedepot(0);
     setDatedeb('');
     setDatefin('');
     setCaution(0);
-    setTypemouvement('');
+    setTypemouvement(['1']);
     setNaturemouvement('1');
     setDescription('');
     setCommentaire('');
@@ -103,6 +113,46 @@ const Stockfictif = () => {
 
     // Other columns...
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/mouvementstock/contentstock';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        const newData = {
+          materiels: responseData.materiels || [],
+          mouvementphysiques: responseData.mouvementphysiques || [],
+          mouvementfictifs: responseData.mouvementfictifs || [],
+          naturemouvements: responseData.naturemouvements || [],
+          depot: responseData.depots || [],
+          articles: responseData.articles || [],
+          listemateriels: responseData.listemateriels || []
+        };
+
+        setData(newData);
+      } catch (error) {
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -118,7 +168,7 @@ const Stockfictif = () => {
           </Button>
           &nbsp;&nbsp;
           <Button variant="contained" color="inherit">
-            Exporter les mouvements
+            PDF
           </Button>
           &nbsp;&nbsp;
           <Button variant="contained" onClick={handleFileOpen} color="secondary">
@@ -139,9 +189,16 @@ const Stockfictif = () => {
           <DialogContent>
             <Grid container spacing={3}>
               <Grid item xs={4}>
-                <Select fullWidth labelId="select-label" value={'1'}>
-                  <MenuItem value="1">Perte</MenuItem>
-                  <MenuItem value="2">Transfert</MenuItem>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                >
+                  <MenuItem value="1">Choisir un mouvement</MenuItem>
+                  {data.naturemouvements.map((row) => (
+                    <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={4}>
@@ -155,7 +212,12 @@ const Stockfictif = () => {
                 />
               </Grid>
               <Grid item xs={4}>
-                <Select fullWidth labelId="select-label" value={'1'}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={typemouvement}
+                  onChange={(event) => setTypemouvement(event.target.value)}
+                >
                   <MenuItem value="1">Entree</MenuItem>
                   <MenuItem value="2">Sortie</MenuItem>
                 </Select>
@@ -170,12 +232,14 @@ const Stockfictif = () => {
                   labelId="select-label"
                   value={idmateriel}
                   margin="dense"
-                  label="Materiel"
                   onChange={(event) => setIdmateriel(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir un materiel</MenuItem>
-                  <MenuItem value="1">Materiel 1</MenuItem>
-                  <MenuItem value="2">Materiel 2</MenuItem>
+                  <MenuItem value="1">Choisir un materiel</MenuItem>
+                  {data.listemateriels.map((row) => (
+                    <MenuItem value={row.idmateriel}>
+                      {row.marque}/{row.modele}-{row.numserie}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={3}>
@@ -222,16 +286,16 @@ const Stockfictif = () => {
               <Grid item xs={3}>
                 <Select
                   fullWidth
+                  size="small"
                   autoFocus
                   labelId="select-label"
                   value={depot}
-                  margin="dense"
-                  size="small"
                   onChange={(event) => setDepot(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir un depot</MenuItem>
-                  <MenuItem value="1">Depot 1</MenuItem>
-                  <MenuItem value="2">Depot 2</MenuItem>
+                  <MenuItem value="1">Choisir un depot</MenuItem>
+                  {data.depot.map((row) => (
+                    <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={3}>
@@ -244,9 +308,10 @@ const Stockfictif = () => {
                   size="small"
                   onChange={(event) => setIdetudiant(event.target.value)}
                 >
-                  <MenuItem value=" ">Choisir un etudiant</MenuItem>
-                  <MenuItem value="1">Etudiant 1</MenuItem>
-                  <MenuItem value="2">Etudiant 2</MenuItem>
+                  <MenuItem value="1">Choisir un etudiant</MenuItem>
+                  {data.depot.map((row) => (
+                    <MenuItem value={row.id}>{row.id}</MenuItem>
+                  ))}
                 </Select>
               </Grid>
 

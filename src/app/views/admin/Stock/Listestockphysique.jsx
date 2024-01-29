@@ -24,7 +24,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
 
   const columns = [
-    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
+    { label: 'M.stock', field: 'idmouvementdestock', align: 'center' },
     { label: 'Date de depot', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Nature', field: 'naturemouvement', align: 'center' },

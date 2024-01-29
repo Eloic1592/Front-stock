@@ -15,7 +15,7 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Listemateriel from './Listemateriel';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 
 const Materiel = () => {
@@ -24,10 +24,12 @@ const Materiel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-  const [typemateriel, setTypemateriel] = useState(['1']);
-  const [categoriemateriel, setCategoriemateriel] = useState(['1']);
+
   const [couleur, setCouleur] = useState(['1']);
-  const [article, setArticle] = useState('');
+  const [article, setArticle] = useState(['1']);
+  const [categoriemateriel, setCategoriemateriel] = useState(['1']);
+  const [typemateriel, setTypemateriel] = useState(['1']);
+
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
   const [prixvente, setPrixvente] = useState(0);
@@ -44,7 +46,13 @@ const Materiel = () => {
     open: false
   });
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    materiels: [],
+    articles: [],
+    typemateriels: [],
+    categoriemateriels: [],
+    listemateriels: []
+  });
 
   // Validation form
   const handleSubmit = () => {
@@ -86,24 +94,41 @@ const Materiel = () => {
       });
   };
   useEffect(() => {
-    // Charger les données de votre API ou de toute autre source de données
-    // Remplacez cette logique par la manière dont vous chargez vos catégories de matériel
     const fetchData = async () => {
       try {
-        // Exemple de requête fetch pour obtenir les catégories de matériel depuis une API
-        const response = await fetch('/materiel/contenmateriel');
-        const data = await response.json();
+        let url = baseUrl + '/materiel/contentmateriel';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
 
-        // Mettre à jour l'état avec les catégories de matériel récupérées
-        setCategoriemateriel(data.categoriemateriels);
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        const newData = {
+          materiels: responseData.materiels || [],
+          articles: responseData.articles || [],
+          typemateriels: responseData.typemateriels || [],
+          categoriemateriels: responseData.categoriemateriels || [],
+          listemateriels: responseData.listemateriels || []
+        };
+
+        setData(newData);
       } catch (error) {
-        console.error('Erreur lors du chargement des catégories de matériel :', error);
+        console.log(
+          "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          error
+        );
+        // Gérer les erreurs de requête Fetch ici
       }
     };
-
-    // Appeler la fonction fetchData lors du montage du composant
     fetchData();
-  }, []); // Le tableau vide en tant que deuxième argument signifie que cela ne doit être exécuté qu'une seule fois lors du montage
+  }, []);
 
   return (
     <Container>
@@ -118,7 +143,7 @@ const Materiel = () => {
         </Button>
         &nbsp;&nbsp;
         <Button variant="contained" onClick={handleFileOpen} color="secondary">
-          Exporter des données
+          PDF
         </Button>
       </p>
       <Box>
@@ -133,21 +158,22 @@ const Materiel = () => {
           <DialogContent>
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <AutoComplete
-                  fullWidth
-                  options={data.articles}
-                  getOptionLabel={(option) => option.marque + '-' + option.modele}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Article" variant="outlined" fullWidth />
-                  )}
-                  name="article"
-                  id="idarticle"
-                  value={article}
-                  onChange={(event, newValue) => {
-                    setArticle(newValue ? newValue.idarticle : '');
-                  }}
+                <Select
+                  labelId="select-label"
                   sx={{ mb: 3 }}
-                />
+                  value={article}
+                  onChange={(event) => setArticle(event.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value="1" disabled>
+                    Choisir un article
+                  </MenuItem>
+                  {data.articles.map((row) => (
+                    <MenuItem value={row.idarticle}>
+                      {row.modele}/{row.codearticle}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={6}>
                 <Select
@@ -178,9 +204,9 @@ const Materiel = () => {
                   <MenuItem value="1" disabled>
                     Choisir un type
                   </MenuItem>
-                  {/* {data.typemateriels.map((row) => (
+                  {data.typemateriels.map((row) => (
                     <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
-                  ))} */}
+                  ))}
                 </Select>
               </Grid>
               <Grid item xs={6}>

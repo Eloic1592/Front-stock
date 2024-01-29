@@ -12,20 +12,22 @@ import {
   Checkbox,
   Select,
   MenuItem,
+  Alert,
+  Snackbar,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/Materiel/function';
 import { baseUrl } from 'app/utils/constant';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
+    { label: 'ID', field: 'idmateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
+    { label: 'article', field: 'article', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
     { label: 'Description', field: 'description', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
@@ -53,6 +55,15 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
+  // Update
+  const [isEditedarticle, setIsEditedarticle] = useState(null);
+  const [isEditedtypemat, setIsEditedtypemat] = useState(null);
+  const [isEditedcatemat, setIsEditedcatemat] = useState(null);
+  const [isEditednumserie, setIsEditednumserie] = useState(null);
+  const [isEditedprixvente, setIsEditedprixvente] = useState(null);
+  const [isEditedcolor, setIsEditedcolor] = useState(null);
+  const [isEditedcaution, setisEditedcaution] = useState(null);
+
   // Modification(Update)
   const handleEdit = (row) => {
     setIsEditClicked(true);
@@ -71,18 +82,19 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     setCouleur,
-    setModele,
+    setArticle,
     setTypemateriel,
     setCategoriemateriel,
     categoriemateriel,
     couleur,
-    modele,
+    article,
     typemateriel,
     selectedIds,
     setNumserie,
     numserie,
     handleChangeRowsPerPage,
     handleSelectAll,
+    handleSelection,
     handleSelectColumn,
     sortedData
   } = useListematerielFunctions(data);
@@ -159,22 +171,21 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setNumserie(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-                <AutoComplete
-                  size="small"
-                  fullWidth
-                  options={data.articles}
-                  getOptionLabel={(option) => option.modele}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Article" variant="outlined" fullWidth />
-                  )}
-                  name="article"
-                  id="article"
-                  value={categoriemateriel}
-                  onChange={(event, newValue) => {
-                    setCategoriemateriel(newValue ? newValue.idcategoriemateriel : '');
-                  }}
+                <Select
+                  labelId="select-label"
                   sx={{ mb: 3 }}
-                />
+                  value={article}
+                  onChange={(event) => setArticle(event.target.value)}
+                  fullWidth
+                  size="small"
+                >
+                  <MenuItem value="1">Toutes articles</MenuItem>
+                  {data.articles.map((row) => (
+                    <MenuItem value={row.idarticle}>
+                      {row.modele}/{row.codearticle}
+                    </MenuItem>
+                  ))}
+                </Select>
                 <Select
                   labelId="select-label"
                   size="small"
@@ -182,7 +193,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={categoriemateriel}
                   onChange={(event) => setCategoriemateriel(event.target.value)}
                 >
-                  <MenuItem value="1">Choisir une categorie</MenuItem>
+                  <MenuItem value="1">Toutes categories</MenuItem>
                   {data.categoriemateriels.map((row) => (
                     <MenuItem value={row.idcategoriemateriel}>{row.categoriemateriel}</MenuItem>
                   ))}
@@ -195,7 +206,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={typemateriel}
                   onChange={(event) => setTypemateriel(event.target.value)}
                 >
-                  <MenuItem value="1">Choisir un type</MenuItem>
+                  <MenuItem value="1">Tous types</MenuItem>
                   {data.typemateriels.map((row) => (
                     <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
                   ))}
@@ -207,7 +218,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={couleur}
                   onChange={(event) => setCouleur(event.target.value)}
                 >
-                  <MenuItem value="1">Choisir une couleur</MenuItem>
+                  <MenuItem value="1">Toutes couleurs</MenuItem>
                   <MenuItem value="Noir">Noir</MenuItem>
                   <MenuItem value="Blanc">Blanc</MenuItem>
                   <MenuItem value="Gris">Gris</MenuItem>
@@ -276,10 +287,12 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell align="left">
                     <Checkbox
-                      checked={data.listemateriels.every((row) => selectedIds.includes(row.id))}
+                      checked={data.listemateriels.every((row) =>
+                        selectedIds.includes(row.idmateriel)
+                      )}
                       indeterminate={
-                        data.listemateriels.some((row) => selectedIds.includes(row.id)) &&
-                        !data.listemateriels.every((row) => selectedIds.includes(row.id))
+                        data.listemateriels.some((row) => selectedIds.includes(row.idmateriel)) &&
+                        !data.listemateriels.every((row) => selectedIds.includes(row.idmateriel))
                       }
                       onChange={handleSelectAll}
                     />
@@ -287,6 +300,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   {/* Listage de Donnees */}
                   <TableCell key="idmateriel" align="left">
                     idmateriel
+                  </TableCell>
+                  <TableCell key="typemateriel" align="left">
+                    categorie
                   </TableCell>
                   <TableCell key="typemateriel" align="left">
                     typemateriel
@@ -316,32 +332,18 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
                       <TableRow key={row.idmateriel}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedIds.includes(row.idmateriel)}
+                            onChange={(event) => handleSelection(event, row.idmateriel)}
+                          />
+                        </TableCell>
                         {isEditClicked && row.idmateriel === selectedRowId ? (
-                          <>
-                            {/* <TableCell key={row.idmateriel}>
-                              <TextField
-                                value={editedidmateriel}
-                                onChange={(event) => setEditedidmateriel(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={editedNaturemouvement}
-                                onChange={(event) => setEditedNaturemouvement(event.target.value)}
-                                onBlur={() =>
-                                  setEditedNaturemouvement(
-                                    editedNaturemouvement !== ' '
-                                      ? editedNaturemouvement
-                                      : row.naturemouvement
-                                  )
-                                }
-                              />
-                            </TableCell> */}
-                          </>
+                          <></>
                         ) : (
                           <>
-                            <TableCell></TableCell>
-                            <TableCell>{row.idmateriel}</TableCell>
+                            <TableCell key={row.idmateriel}>{row.idmateriel}</TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
                             <TableCell>{row.typemateriel}</TableCell>
                             <TableCell>{row.modele}</TableCell>
                             <TableCell>{row.numserie}</TableCell>
@@ -359,14 +361,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onClick={() => handleEdit(row)}
                           >
                             <Icon>edit_icon</Icon>
-                          </IconButton>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                          >
-                            <Icon>info</Icon>
                           </IconButton>
 
                           {isEditClicked && row.idmateriel === selectedRowId && (

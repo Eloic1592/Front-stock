@@ -24,15 +24,14 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
 
   const columns = [
-    { label: 'ID', field: 'idmouvementdestock', align: 'center' },
-    { label: 'Date de depot', field: 'datedepot', align: 'center' },
-    { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'M.Stock', field: 'idmouvementdestock', align: 'center' },
+    { label: 'Date depot', field: 'datedepot', align: 'center' },
     { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
+    { label: 'Date debut', field: 'datedeb', align: 'center' },
+    { label: 'Date fin', field: 'datefin', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' },
-    { label: 'Prix', field: 'P.U', align: 'center' },
-    { label: 'Total', field: 'total', align: 'center' },
+    { label: 'Numserie', field: 'numserie', align: 'center' },
+    { label: 'Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
     // Other columns...
   ];
