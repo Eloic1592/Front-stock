@@ -79,61 +79,29 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     <TextField
                       fullWidth
                       size="small"
-                      type="text"
-                      name="materiel"
-                      label="Nom du materiel"
-                      variant="outlined"
-                      value={materiel}
-                      onChange={(event) => setMateriel(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      fullWidth
-                      size="small"
                       type="date"
                       name="date"
                       variant="outlined"
-                      value={date}
-                      onChange={(event) => setDate(event.target.value)}
                       sx={{ mb: 3 }}
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={handleChange}
-                    >
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Entree</MenuItem>
-                      <MenuItem value="-1"> Sortie</MenuItem>
+                      <MenuItem value="-1">Sortie</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={1}>
-                    <Select
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={(event) => setDepot(event.target.value)}
-                    >
+                  <Grid item xs={3}>
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Depot</MenuItem>
-                      <MenuItem value="-1"> Salle 6</MenuItem>
+                      <MenuItem value="-1">Salle 6</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={'1'}
-                      //  onChange={handleChange}
-                    >
+                  <Grid item xs={3}>
+                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
                       <MenuItem value="1">Don</MenuItem>
-                      <MenuItem value="-1"> Transfert</MenuItem>
-                      <MenuItem value="-1"> Perte</MenuItem>
+                      <MenuItem value="-1">Transfert</MenuItem>
+                      <MenuItem value="-1">Perte</MenuItem>
                     </Select>
                   </Grid>
                 </Grid>

@@ -87,7 +87,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setCategoriemateriel,
     categoriemateriel,
     couleur,
-    article,
+    // article,
     typemateriel,
     selectedIds,
     setNumserie,
@@ -203,21 +203,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setNumserie(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-                <Select
-                  labelId="select-label"
-                  sx={{ mb: 3 }}
-                  value={article}
-                  onChange={(event) => setArticle(event.target.value)}
-                  fullWidth
-                  size="small"
-                >
-                  <MenuItem value="1">Toutes articles</MenuItem>
-                  {data.articles.map((row) => (
-                    <MenuItem value={row.idarticle}>
-                      {row.modele}/{row.codearticle}
-                    </MenuItem>
-                  ))}
-                </Select>
                 <Select
                   labelId="select-label"
                   size="small"

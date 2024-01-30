@@ -6,7 +6,8 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  Dialog
+  Dialog,
+  Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState } from 'react';
@@ -67,42 +68,44 @@ const Depot = () => {
       <Box className="breadcrumb">
         <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
       </Box>
-      <Box>
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau Depot
-          </Button>
-          &nbsp;&nbsp;
-        </p>
-      </Box>
-      <Box>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              autoFocus
-              id="depot"
-              type="text"
-              margin="dense"
-              label="depot"
-              name="depot"
-              value={depot}
-              onChange={(event) => setDepot(event.target.value)}
-            />
-          </DialogContent>
-
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Box>
+            <Button variant="contained" onClick={handleClickOpen} color="primary">
+              Nouveau Depot
             </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  autoFocus
+                  id="depot"
+                  type="text"
+                  margin="dense"
+                  label="depot"
+                  name="depot"
+                  value={depot}
+                  onChange={(event) => setDepot(event.target.value)}
+                />
+              </DialogContent>
 
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

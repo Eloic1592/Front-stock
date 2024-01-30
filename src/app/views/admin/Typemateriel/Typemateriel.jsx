@@ -6,7 +6,8 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  Dialog
+  Dialog,
+  Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState } from 'react';
@@ -72,39 +73,42 @@ const Typemateriel = () => {
           ]}
         />
       </Box>
-      <Box>
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau type de materiel
-          </Button>
-          &nbsp;&nbsp;
-        </p>
-      </Box>
-      <Box>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="typemateriel"
-              label="type de materiel"
-              value={typemateriel}
-              onChange={(event) => setTypemateriel(event.target.value)}
-            />
-          </DialogContent>
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Box>
+            <Button variant="contained" onClick={handleClickOpen} color="primary">
+              Nouveau type de materiel
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="typemateriel"
+                  label="type de materiel"
+                  value={typemateriel}
+                  onChange={(event) => setTypemateriel(event.target.value)}
+                />
+              </DialogContent>
 
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

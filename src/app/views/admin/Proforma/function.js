@@ -9,7 +9,8 @@ export const useListedevisFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [date, setDate] = useState('');
+  const [dateval, setDateval] = useState('');
+  const [datedevis, setDatedevis] = useState('');
   const [client, setClient] = useState('');
 
   const handleChangePage = (_, newPage) => {
@@ -53,7 +54,7 @@ export const useListedevisFunctions = (data) => {
     }
   };
 
-  const filtredata = filtredevis(data, date, client);
+  const filtredata = filterproforma(data, datedevis, dateval);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -95,17 +96,16 @@ export const useListedevisFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     setClient,
-    setDate,
-    date,
+    setDatedevis,
+    datedevis,
+    setDateval,
+    dateval,
     client
   };
 };
 
-export function filtredevis(listedevis, date, client) {
-  return listedevis.filter((Item) => {
-    return (
-      Item.date.toLowerCase().includes(date.toLowerCase()) &&
-      Item.client.toLowerCase().includes(client.toLowerCase())
-    );
+export function filterproforma(listeproforma, datedevis, datevalidation) {
+  return listeproforma.filter((Item) => {
+    return Item.datedevis == datedevis && Item.datevalidation == datevalidation;
   });
 }

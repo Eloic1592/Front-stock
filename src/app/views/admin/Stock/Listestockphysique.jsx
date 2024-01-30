@@ -15,7 +15,7 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useMphysiqueFunctions } from 'app/views/admin/Stock/function';
@@ -31,11 +31,13 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Nature', field: 'naturemouvement', align: 'center' }
     // Other columns...
   ];
-
-  const data = [];
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [data, setData] = useState({
+    mouvementStocks: [],
+    naturemouvement: []
+  });
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
@@ -46,13 +48,15 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortColumn,
     selectedIds,
     setDate,
-    setDepot,
-    setArticle,
     setMouvement,
+    date,
+    naturemouvement,
+    setNaturemouvement,
+    mouvement,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
-    handleSave,
+    // handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
@@ -76,7 +80,11 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          mouvementStocks: responseData.mouvementStocks || [],
+          naturemouvement: responseData.naturemouvements || []
+        };
+        setData(newData);
       } catch (error) {
         console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
         // Gérer les erreurs de requête Fetch ici
@@ -91,15 +99,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
-
-      // if (selectedRow) {
-      //   setEditedIdArticle(selectedRow.idarticle);
-      //   setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
-      //   setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
-      //   setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
-      //   setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
-      // }
+      const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
@@ -111,18 +111,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="text"
-                      name="materielfiltre"
-                      label="Nom du materiel"
-                      variant="outlined"
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
+                  <Grid item xs={4}>
                     <TextField
                       fullWidth
                       size="small"
@@ -130,25 +119,36 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       name="date"
                       variant="outlined"
                       sx={{ mb: 3 }}
+                      value={date}
+                      onChange={(event) => setDate(event.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={2}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
+                  <Grid item xs={4}>
+                    <Select
+                      fullWidth
+                      size="small"
+                      labelId="select-label"
+                      value={mouvement}
+                      onChange={(event) => setMouvement(event.target.value)}
+                    >
+                      <MenuItem value="0">Tous types</MenuItem>
                       <MenuItem value="1">Entree</MenuItem>
                       <MenuItem value="-1">Sortie</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                      <MenuItem value="1">Depot</MenuItem>
-                      <MenuItem value="-1">Salle 6</MenuItem>
-                    </Select>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                      <MenuItem value="1">Don</MenuItem>
-                      <MenuItem value="-1">Transfert</MenuItem>
-                      <MenuItem value="-1">Perte</MenuItem>
+                  <Grid item xs={4}>
+                    <Select
+                      fullWidth
+                      size="small"
+                      labelId="select-label"
+                      value={naturemouvement}
+                      onChange={(event) => setNaturemouvement(event.target.value)}
+                    >
+                      {' '}
+                      <MenuItem value="1">Toutes natures</MenuItem>
+                      {data.naturemouvement.map((row) => (
+                        <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                      ))}
                     </Select>
                   </Grid>
                 </Grid>
@@ -205,23 +205,23 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.id))}
+                      checked={data.mouvementStocks.every((row) => selectedIds.includes(row.id))}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.id)) &&
-                        !data.every((row) => selectedIds.includes(row.id))
+                        data.mouvementStocks.some((row) => selectedIds.includes(row.id)) &&
+                        !data.mouvementStocks.every((row) => selectedIds.includes(row.id))
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
 
                   <TableCell key="idmouvementdestock" align="left">
-                    idmouvementdestock
+                    ID mouvement
                   </TableCell>
                   <TableCell key="nature" align="left">
-                    Nature mouvement
+                    Nature
                   </TableCell>
                   <TableCell key="modele" align="left">
-                    mouvement
+                    Type
                   </TableCell>
                   <TableCell key="datedepot" align="left">
                     datedepot
@@ -244,30 +244,21 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             }
                           />
                         </TableCell>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
-                            {editingId === row.iddetailmouvementphysique ? (
-                              <TextField
-                                defaultValue={
-                                  column.render ? column.render(row) : row[column.field]
-                                }
-                                name={row.field}
-                                onBlur={(e) =>
-                                  handleSave(
-                                    e.target.value,
-                                    row.iddetailmouvementphysique,
-                                    column.field
-                                  )
-                                }
-                              />
-                            ) : column.render ? (
-                              column.render(row)
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-
+                        {isEditClicked && row.idmouvementstock === selectedRowId ? (
+                          <>
+                            <TableCell key={row.idmouvementstock}>{row.idmouvementstock}</TableCell>
+                            <TableCell>{row.datedepot}</TableCell>
+                            <TableCell>{row.typemouvement}</TableCell>
+                            <TableCell>{row.idnaturemouvement}</TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell key={row.idmouvementstock}>{row.idmouvementstock}</TableCell>
+                            <TableCell>{row.datedepot}</TableCell>
+                            <TableCell>{row.typemouvement}</TableCell>
+                            <TableCell>{row.idnaturemouvement}</TableCell>
+                          </>
+                        )}{' '}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -319,7 +310,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.length}
+                  count={data.mouvementStocks.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}

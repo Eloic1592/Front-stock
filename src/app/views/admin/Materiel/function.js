@@ -116,28 +116,16 @@ export const useListematerielFunctions = (data) => {
   };
 };
 // Filtre
-export function filtremateriel(
-  listemateriel,
-  numserie,
-  article,
-  couleur,
-  typemateriel,
-  categoriemateriel
-) {
+export function filtremateriel(listemateriel, numserie, couleur, typemateriel, categoriemateriel) {
   // Vérifier s'il y a des critères de filtrage définis
   if (numserie != 1 || typemateriel != 1 || categoriemateriel != 1 || couleur != 1) {
     return listemateriel.filter((Item) => {
       // Vérifier si chaque critère est différent de 1 avant de l'appliquer
       const numserieMatch =
         numserie != 1 ? Item.numserie.toLowerCase().includes(numserie.toLowerCase()) : true;
-      const typematerielMatch =
-        typemateriel != 1
-          ? Item.idtypemateriel.toLowerCase().includes(typemateriel.toLowerCase())
-          : true;
+      const typematerielMatch = typemateriel != 1 ? Item.idtypemateriel == typemateriel : true;
       const categoriematerielMatch =
-        categoriemateriel != 1
-          ? Item.idcategoriemateriel.toLowerCase().includes(categoriemateriel.toLowerCase())
-          : true;
+        categoriemateriel != 1 ? Item.idcategoriemateriel == categoriemateriel : true;
       const couleurMatch =
         couleur != 1 ? Item.couleur.toLowerCase().includes(couleur.toLowerCase()) : true;
 

@@ -11,23 +11,24 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { StyledTable } from 'app/views/style/style';
 import { useListedevisFunctions } from 'app/views/admin/Proforma/function';
+import { baseUrl } from 'app/utils/constant';
 
 // Proforma tsy afaka ovaina intsony
 const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'Commande', field: 'idcommande', align: 'center' },
+    { label: 'ID', field: 'idproforma', align: 'center' },
     { label: 'Client', field: 'idclient', align: 'center' },
-    { label: 'devis', field: 'iddevis', align: 'center' },
-    { label: 'statut', field: 'statut', align: 'center' }
+    { label: 'date devis', field: 'datedevis', align: 'center' },
+    { label: 'date validation', field: 'datevalidation', align: 'center' }
   ];
 
-  const data = [];
+  const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
 
   const {
     editingId,
@@ -40,10 +41,10 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setClient,
-    setDate,
-    client,
-    date,
+    setDatedevis,
+    setDateval,
+    dateval,
+    datedevis,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -55,7 +56,45 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListedevisFunctions(data);
 
   //  Use effect
-  useEffect(() => {}, [sortedData]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/devis/proformaclient';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+      } catch (error) {
+        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
+
+      if (selectedRow) {
+        // setIsEditedmateriel(selectedRow.idmateriel);
+        // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -72,22 +111,21 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       type="date"
                       name="datedevis"
                       variant="outlined"
-                      value={date}
-                      onChange={(event) => setDate(event.target.value)}
+                      value={datedevis}
+                      onChange={(event) => setDatedevis(event.target.value)}
                       sx={{ mb: 3 }}
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <AutoComplete
+                    <TextField
                       fullWidth
                       size="small"
-                      // options={suggestions}
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                      )}
-                      name="idmateriel"
-                      id="idmateriel"
+                      type="date"
+                      name="dateval"
+                      variant="outlined"
+                      value={dateval}
+                      onChange={(event) => setDateval(event.target.value)}
+                      sx={{ mb: 3 }}
                     />
                   </Grid>
                 </Grid>
@@ -129,12 +167,18 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell key="idproforma" align="left">
+                    idproforma
+                  </TableCell>
+                  <TableCell key="nom" align="left">
+                    Nom client
+                  </TableCell>
+                  <TableCell key="datedevis" align="left">
+                    date devis
+                  </TableCell>
+                  <TableCell key="datevalidation" align="left">
+                    date validation
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -144,11 +188,10 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
-                            {column.render ? column.render(row) : row[column.field]}
-                          </TableCell>
-                        ))}
+                        <TableCell key={index}>{row.idproforma}</TableCell>
+                        <TableCell key={index}>{row.nom}</TableCell>
+                        <TableCell key={index}>{row.datedevis}</TableCell>
+                        <TableCell key={index}>{row.datevalidation}</TableCell>
                       </TableRow>
                     ))
                 ) : (

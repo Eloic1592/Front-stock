@@ -13,13 +13,25 @@ export const navigations = [
           { name: 'Mouvement fictif', iconText: 'SI', path: '/admin/mouvementfictif' }
         ]
       },
-      { name: 'Article', iconText: 'SI', path: '/admin/article' },
-      { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
-      // { name: 'Achat et vente', iconText: 'SI', path: '/admin/entreesortie' },
-      { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
-      { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
-      { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
-      { name: 'Depot', iconText: 'SI', path: '/admin/depot' },
+      {
+        name: 'Demande',
+        iconText: 'arrows-right',
+        children: [
+          { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
+          { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
+          { name: 'Devis', iconText: 'SI', path: '/admin/devis' }
+        ]
+      },
+      {
+        name: 'Materiels',
+        iconText: 'arrows-right',
+        children: [
+          { name: 'Article', iconText: 'SI', path: '/admin/article' },
+          { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
+          { name: 'Depot', iconText: 'SI', path: '/admin/depot' }
+        ]
+      },
+
       { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
       { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },

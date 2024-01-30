@@ -6,7 +6,8 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  Dialog
+  Dialog,
+  Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState } from 'react';
@@ -75,41 +76,43 @@ const Categoriemateriel = () => {
           ]}
         />
       </Box>
-      <Box>
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouvelle categorie de materiel
-          </Button>
-          &nbsp;&nbsp;
-        </p>
-      </Box>
-      <Box>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nouvelle categorie de materiel</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="categoriemateriel"
-              label="categorie de materiel"
-              variant="outlined"
-              value={categoriemateriel}
-              onChange={(event) => setCategoriemateriel(event.target.value)}
-            />
-          </DialogContent>
-
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Box>
+            <Button variant="contained" onClick={handleClickOpen} color="primary">
+              Nouvelle categorie de materiel
             </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Nouvelle categorie de materiel</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="categoriemateriel"
+                  label="categorie de materiel"
+                  variant="outlined"
+                  value={categoriemateriel}
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                />
+              </DialogContent>
 
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

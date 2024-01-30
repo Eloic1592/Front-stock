@@ -6,7 +6,9 @@ import {
   DialogTitle,
   Dialog,
   Select,
-  MenuItem
+  MenuItem,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Breadcrumb } from 'app/components';
@@ -39,7 +41,7 @@ const Stockfictif = () => {
     naturemouvements: [],
     depot: [],
     listemateriels: [],
-    articles: []
+    etudiants: []
   });
 
   const [file, setFile] = useState('');
@@ -66,20 +68,58 @@ const Stockfictif = () => {
   const handleClose = () => setOpen(false);
 
   // Validation form
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handledetails = () => {
     const newData = {
-      materiel: idmateriel,
       datedeb: datedeb,
       datefin: datefin,
       idetudiant: idetudiant,
       caution: caution,
-      depot: depot,
-      statut: 0
+      idmateriel: idmateriel,
+      iddepot: depot,
+      statut: 0,
+      description: description,
+      commentaire: commentaire
+      // Remplacez par la valeur réelle du nom du client
     };
-
     setFormData([...formData, newData]);
+  };
+
+  const handleSubmit = () => {
+    let params = {
+      datedepot: datedepot,
+      typemouvement: typemouvement,
+      idnaturemouvement: naturemouvement,
+      statut: 0,
+      mouvementfictifs: formData
+    };
+    console.log(params.mouvementfictifs.length);
+
+    let url = baseUrl + '/mouvementstock/createstockfictif';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        handleClose();
+        setMessage({
+          text: 'Information enregistree',
+          severity: 'success',
+          open: true
+        });
+      })
+      .catch((err) => {
+        setMessage({
+          text: err,
+          severity: 'error',
+          open: true
+        });
+      });
   };
 
   // Reset data to null
@@ -100,12 +140,12 @@ const Stockfictif = () => {
   };
 
   const columnsdetails = [
-    { label: 'materiel', field: 'materiel', align: 'center' },
+    { label: 'materiel', field: 'idmateriel', align: 'center' },
     { label: 'date debut', field: 'datedeb', align: 'center' },
     { label: 'date fin', field: 'datefin', align: 'center' },
     { label: 'ID Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'caution', field: 'caution', align: 'center' },
-    { label: 'depot', field: 'depot', align: 'center' }
+    { label: 'depot', field: 'iddepot', align: 'center' }
 
     // Other columns...
   ];
@@ -113,7 +153,7 @@ const Stockfictif = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/mouvementstock/contentstock';
+        let url = baseUrl + '/mouvementstock/contentstockfictif';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -128,13 +168,11 @@ const Stockfictif = () => {
         const responseData = await response.json();
 
         const newData = {
-          materiels: responseData.materiels || [],
-          mouvementphysiques: responseData.mouvementphysiques || [],
           mouvementfictifs: responseData.mouvementfictifs || [],
           naturemouvements: responseData.naturemouvements || [],
           depot: responseData.depots || [],
-          articles: responseData.articles || [],
-          listemateriels: responseData.listemateriels || []
+          listemateriels: responseData.listemateriels || [],
+          etudiants: responseData.etudiants || []
         };
 
         setData(newData);
@@ -155,227 +193,250 @@ const Stockfictif = () => {
             { name: 'mouvement de stock fictif' }
           ]}
         />
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau mouvement
-          </Button>
-          &nbsp;&nbsp;
-          <Button variant="contained" color="inherit">
-            PDF
-          </Button>
-          &nbsp;&nbsp;
-          <Button variant="contained" onClick={handleFileOpen} color="secondary">
-            Importer des données
-          </Button>
-        </p>
       </Box>
-      {/* Form insertion */}
-      <Box>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-          fullWidth
-          maxWidth="xl"
-        >
-          <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
-          <DialogContent>
-            <Grid container spacing={3}>
-              <Grid item xs={4}>
-                <Select
-                  fullWidth
-                  labelId="select-label"
-                  value={naturemouvement}
-                  onChange={(event) => setNaturemouvement(event.target.value)}
-                >
-                  <MenuItem value="1">Choisir un mouvement</MenuItem>
-                  {data.naturemouvements.map((row) => (
-                    <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
-                  ))}
-                </Select>
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Button variant="contained" onClick={handleClickOpen} color="primary">
+                  Nouveau mouvement
+                </Button>
               </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="datedepot"
-                  type="date"
-                  name="datedepot"
-                  value={datedepot}
-                  onChange={(event) => setDatedepot(event.target.value)}
-                />
+              <Grid item>
+                <Button variant="contained" color="inherit">
+                  Exporter les mouvements
+                </Button>
               </Grid>
-              <Grid item xs={4}>
-                <Select
-                  fullWidth
-                  labelId="select-label"
-                  value={typemouvement}
-                  onChange={(event) => setTypemouvement(event.target.value)}
-                >
-                  <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
-                  <MenuItem value="1">Entree</MenuItem>
-                  <MenuItem value="-1">Sortie</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
-            <h3>Details du mouvement fictif</h3>
-            <Grid container spacing={3}>
-              <Grid item xs={3}>
-                <Select
-                  fullWidth
-                  size="small"
-                  labelId="select-label"
-                  value={idmateriel}
-                  margin="dense"
-                  onChange={(event) => setIdmateriel(event.target.value)}
-                >
-                  <MenuItem value="1">Choisir un materiel</MenuItem>
-                  {data.listemateriels.map((row) => (
-                    <MenuItem value={row.idmateriel}>
-                      {row.marque}/{row.modele}-{row.numserie}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datedebut"
-                  label="Date debut"
-                  focused
-                  variant="outlined"
-                  value={datedeb}
-                  onChange={(event) => setDatedeb(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datefin"
-                  label="Date fin"
-                  focused
-                  variant="outlined"
-                  value={datefin}
-                  onChange={(event) => setDatefin(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="number"
-                  name="caution"
-                  label="Caution"
-                  variant="outlined"
-                  value={caution}
-                  onChange={(event) => setCaution(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Select
-                  fullWidth
-                  size="small"
-                  autoFocus
-                  labelId="select-label"
-                  value={depot}
-                  onChange={(event) => setDepot(event.target.value)}
-                >
-                  <MenuItem value="1">Choisir un depot</MenuItem>
-                  {data.depot.map((row) => (
-                    <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={3}>
-                <Select
-                  fullWidth
-                  autoFocus
-                  labelId="select-label"
-                  value={idetudiant}
-                  margin="dense"
-                  size="small"
-                  onChange={(event) => setIdetudiant(event.target.value)}
-                >
-                  <MenuItem value="1">Choisir un etudiant</MenuItem>
-                  {data.depot.map((row) => (
-                    <MenuItem value={row.id}>{row.id}</MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-
-              <Grid item xs={3}>
-                <Button variant="outlined" color="secondary" sx={{ mb: 3 }} onClick={handleSubmit}>
-                  Inserer
+              <Grid item>
+                <Button variant="contained" onClick={handleFileOpen} color="secondary">
+                  Importer des données
                 </Button>
               </Grid>
             </Grid>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  placeholder="Description"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={4}
-                  variant="outlined"
-                  placeholder="Remarques"
-                  value={commentaire}
-                  onChange={(event) => setCommentaire(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-            </Grid>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              fullWidth
+              maxWidth="xl"
+            >
+              <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
+              <DialogContent>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={naturemouvement}
+                      onChange={(event) => setNaturemouvement(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un mouvement</MenuItem>
+                      {data.naturemouvements.map((row) => (
+                        <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                      fullWidth
+                      id="datedepot"
+                      type="date"
+                      name="datedepot"
+                      value={datedepot}
+                      onChange={(event) => setDatedepot(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={typemouvement}
+                      onChange={(event) => setTypemouvement(event.target.value)}
+                    >
+                      <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
+                      <MenuItem value="1">Entree</MenuItem>
+                      <MenuItem value="-1">Sortie</MenuItem>
+                    </Select>
+                  </Grid>
+                </Grid>
+                <h3>Details du mouvement fictif</h3>
+                <Grid container spacing={3}>
+                  <Grid item xs={3}>
+                    <Select
+                      fullWidth
+                      size="small"
+                      labelId="select-label"
+                      value={idmateriel}
+                      margin="dense"
+                      onChange={(event) => setIdmateriel(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un materiel</MenuItem>
+                      {data.listemateriels.map((row) => (
+                        <MenuItem value={row.idmateriel}>
+                          {row.marque}/{row.modele}-{row.numserie}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="date"
+                      name="datedebut"
+                      label="Date debut"
+                      focused
+                      variant="outlined"
+                      value={datedeb}
+                      onChange={(event) => setDatedeb(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="date"
+                      name="datefin"
+                      label="Date fin"
+                      focused
+                      variant="outlined"
+                      value={datefin}
+                      onChange={(event) => setDatefin(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="number"
+                      name="caution"
+                      label="Caution"
+                      variant="outlined"
+                      value={caution}
+                      onChange={(event) => setCaution(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Select
+                      fullWidth
+                      size="small"
+                      autoFocus
+                      labelId="select-label"
+                      value={depot}
+                      onChange={(event) => setDepot(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un depot</MenuItem>
+                      {data.depot.map((row) => (
+                        <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Select
+                      fullWidth
+                      autoFocus
+                      labelId="select-label"
+                      value={idetudiant}
+                      margin="dense"
+                      size="small"
+                      onChange={(event) => setIdetudiant(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un etudiant</MenuItem>
+                      {data.etudiants.map((row) => (
+                        <MenuItem value={row.idetudiant}>{row.idetudiant}</MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
 
-            <CustomizedTable columns={columnsdetails} data={formData} />
-          </DialogContent>
+                  <Grid item xs={3}>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      sx={{ mb: 3 }}
+                      onClick={handledetails}
+                    >
+                      Inserer
+                    </Button>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={3}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      placeholder="Description"
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      placeholder="Remarques"
+                      value={commentaire}
+                      onChange={(event) => setCommentaire(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <CustomizedTable columns={columnsdetails} data={formData} />
+                  </Grid>
+                </Grid>
+              </DialogContent>
 
-          <DialogActions>
-            <Button onClick={handlecancelOpen} color="inherit" variant="contained">
-              Reinitialiser
-            </Button>
-            <Button variant="contained" color="secondary" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Enregistrer
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+              <DialogActions>
+                <Button onClick={handlecancelOpen} color="inherit" variant="contained">
+                  Reinitialiser
+                </Button>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary" variant="contained">
+                  Enregistrer
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
 
-      {/* Form validation */}
-      <Box>
-        <Dialog open={alertOpen} onClose={handlecancelClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">
-            Voulez-vous vraiment tout reinitialiser ?
-          </DialogTitle>
-          \
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
-              Annuler
-            </Button>
-            <Button onClick={resetData} color="primary">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+          {/* Form validation */}
+          <Box>
+            <Dialog
+              open={alertOpen}
+              onClose={handlecancelClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">
+                Voulez-vous vraiment tout reinitialiser ?
+              </DialogTitle>
+              \
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+                  Annuler
+                </Button>
+                <Button onClick={resetData} color="primary">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
 
       <Box>
         <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
@@ -408,7 +469,11 @@ const Stockfictif = () => {
           </DialogActions>
         </Dialog>
       </Box>
-
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
       {/* Liste des donnees */}
       <Listestockfictif />
     </Container>

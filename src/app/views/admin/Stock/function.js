@@ -9,9 +9,8 @@ export const useMphysiqueFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [mouvement, setMouvement] = useState('');
-  const [depot, setDepot] = useState('');
-  const [article, setArticle] = useState('');
+  const [mouvement, setMouvement] = useState(['0']);
+  const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [date, setDate] = useState('');
 
   const handleChangePage = (_, newPage) => {
@@ -59,8 +58,8 @@ export const useMphysiqueFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtrestockphysique(data, article, mouvement, depot, date);
-  const sortedData = data.sort((a, b) => {
+  const filtredata = filtrestockphysique(data.mouvementStocks, date, mouvement, naturemouvement);
+  const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
     }
@@ -96,23 +95,28 @@ export const useMphysiqueFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    article,
-    date,
-    depot,
     mouvement,
     setDate,
-    setDepot,
-    setArticle,
+    date,
+    setNaturemouvement,
+    naturemouvement,
+    mouvement,
     setMouvement
   };
 };
-function filtrestockphysique(listestockphysique, article, mouvement, depot, date) {
-  return listestockphysique.filter((Item) => {
-    return (
-      Item.date.toLowerCase().includes(date.toLowerCase()) &&
-      Item.article.toLowerCase().includes(article.toLowerCase()) &&
-      Item.mouvement.toLowerCase().includes(mouvement.toLowerCase()) &&
-      Item.depot.toLowerCase().includes(depot.toLowerCase())
-    );
-  });
+function filtrestockphysique(mouvementStocks, datedepot, typemouvement, naturemouvement) {
+  if (datedepot != null || typemouvement != 0 || naturemouvement != 1) {
+    return mouvementStocks.filter((Item) => {
+      // Vérifier si chaque critère est différent de 1 avant de l'appliquer
+      const datedepotdepotMatch = datedepot != null ? Item.datedepot == datedepot : true;
+      const typemouvementMatch = typemouvement != 0 ? Item.typemouvement == typemouvement : true;
+      const naturemouvementMatch =
+        naturemouvement != 1 ? Item.naturemouvemen == naturemouvement : true;
+      // Retourner vrai si l'élément répond à tous les critères
+      return datedepotdepotMatch && typemouvementMatch && naturemouvementMatch;
+    });
+  } else {
+    // Si tous les critères sont égaux à 1, retourner la liste de matériel complète
+    return mouvementStocks;
+  }
 }

@@ -7,8 +7,7 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  // Select,
-  // MenuItem,
+  Grid,
   Button
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
@@ -79,30 +78,31 @@ const Naturemouvement = () => {
           ]}
         />
       </Box>
-      <Box>
-        <p>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau type de mouvement
-          </Button>
-          &nbsp;&nbsp;
-        </p>
-      </Box>
-      <Box>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nouveau type de mouvement</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              autoFocus
-              id="typemouvement"
-              type="text"
-              margin="dense"
-              label="type de mouvement"
-              name="typemouvement"
-              value={naturemouvement}
-              onChange={(event) => setNaturemouvement(event.target.value)}
-            />
-            {/* <Select
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Box>
+            <Button variant="contained" onClick={handleClickOpen} color="primary">
+              Nouveau type de mouvement
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Nouveau type de mouvement</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  autoFocus
+                  id="typemouvement"
+                  type="text"
+                  margin="dense"
+                  label="type de mouvement"
+                  name="typemouvement"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                />
+                {/* <Select
               fullWidth
               labelId="select-label"
               value={categoriemouvement}
@@ -111,19 +111,20 @@ const Naturemouvement = () => {
               <MenuItem value="1">Physique</MenuItem>
               <MenuItem value="2">Fictif</MenuItem>
             </Select> */}
-          </DialogContent>
+              </DialogContent>
 
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}
