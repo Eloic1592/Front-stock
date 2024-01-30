@@ -66,11 +66,10 @@ const Devis = () => {
       idclient: client,
       datedevis: datedevis,
       statut: 0,
-      mouvementphysiques: formData
+      detaildevis: formData
     };
-    console.log(params.mouvementphysiques.length);
 
-    let url = baseUrl + '/mouvementstock/createstockphysique';
+    let url = baseUrl + '/devis/createdevis';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -112,7 +111,7 @@ const Devis = () => {
   const columnsdetails = [
     { label: 'article', field: 'idarticle', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'prix unitaire', field: 'pu', align: 'center' },
+    { label: 'prix unitaire', field: 'prix unitaire', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
     // Other columns...
   ];
