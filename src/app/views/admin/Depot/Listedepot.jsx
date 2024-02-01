@@ -95,9 +95,9 @@ const Listedepot = () => {
           window.location.reload();
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: 'La modification dans la base de données a échoué',
           severity: 'error',
           open: true
         });
@@ -116,13 +116,21 @@ const Listedepot = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`Request failed with status: ${response.status}`);
+          setMessage({
+            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+            severity: 'error',
+            open: true
+          });
         }
 
         const responseData = await response.json();
         setData(responseData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -177,7 +185,9 @@ const Listedepot = () => {
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                    <MenuItem key={column.field} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -192,17 +202,6 @@ const Listedepot = () => {
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length == 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
               </Grid>
             </Grid>
             <StyledTable>
@@ -223,7 +222,7 @@ const Listedepot = () => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
+                    .map((row) => (
                       <TableRow key={row.iddepot}>
                         {isEditClicked && row.iddepot === selectedRowId ? (
                           <>
@@ -239,7 +238,7 @@ const Listedepot = () => {
                                 onChange={(event) => setEditedNomDepot(event.target.value)}
                                 onBlur={() =>
                                   setEditedNomDepot(
-                                    editedNomDepot !== ' ' ? editedNomDepot : row.depot
+                                    editedNomDepot.trim() !== '' ? editedNomDepot : row.depot
                                   )
                                 }
                               />
@@ -250,7 +249,7 @@ const Listedepot = () => {
                             <TableCell>{row.iddepot}</TableCell>
                             <TableCell>{row.depot}</TableCell>
                           </>
-                        )}{' '}
+                        )}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -287,9 +286,13 @@ const Listedepot = () => {
                       </TableRow>
                     ))
                 ) : (
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnée disponible
-                  </Typography>
+                  <TableRow key="no-data">
+                    <TableCell colSpan={3}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>

@@ -9,7 +9,7 @@ export const useListedevisFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [dateval, setDateval] = useState('');
+  const [libelle, setLibelle] = useState('');
   const [datedevis, setDatedevis] = useState('');
   const [client, setClient] = useState('');
 
@@ -24,9 +24,9 @@ export const useListedevisFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.id);
+    setEditingId(row.iddevis);
     setIsEditClicked(true);
-    setSelectedRowId(row.id);
+    setSelectedRowId(row.iddevis);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -48,18 +48,18 @@ export const useListedevisFunctions = (data) => {
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.clientdevis.map((row) => row.iddevis));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filterproforma(data, datedevis, dateval);
+  const filtredata = filtredevis(data.clientdevis, datedevis, client, libelle);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
 
-  const sortedData = data.sort((a, b) => {
+  const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
     }
@@ -98,14 +98,24 @@ export const useListedevisFunctions = (data) => {
     setClient,
     setDatedevis,
     datedevis,
-    setDateval,
-    dateval,
+    libelle,
+    setLibelle,
     client
   };
 };
 
-export function filterproforma(listeproforma, datedevis, datevalidation) {
-  return listeproforma.filter((Item) => {
-    return Item.datedevis == datedevis && Item.datevalidation == datevalidation;
+export function filtredevis(listedevis, datedevis, nomclient, libelle) {
+  return listedevis.filter((devis) => {
+    // Vérifier si la date du devis correspond à la date spécifiée
+    const dateDevisMatch =
+      !datedevis || new Date(devis.datedevis).getTime() === new Date(datedevis).getTime();
+
+    // Vérifier si le nom du client correspond au nom spécifié
+    const nomClientMatch = !nomclient || devis.nom.toLowerCase().includes(nomclient.toLowerCase());
+
+    const libelleMatch = !libelle || devis.libelle.toLowerCase().includes(libelle.toLowerCase());
+
+    // Retourner true si les deux conditions sont remplies
+    return dateDevisMatch && nomClientMatch && libelleMatch;
   });
 }

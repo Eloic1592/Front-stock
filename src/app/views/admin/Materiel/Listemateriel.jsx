@@ -27,9 +27,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
     { label: 'ID', field: 'idmateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'article', field: 'article', align: 'center' },
+    { label: 'Categorie', field: 'categorie', align: 'center' },
+    { label: 'modele', field: 'modele', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
     { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Couleur', field: 'couleur', align: 'center' },
@@ -44,8 +44,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   });
 
   const [data, setData] = useState({
-    materiels: [],
-    articles: [],
     typemateriels: [],
     categoriemateriels: [],
     listemateriels: []
@@ -82,12 +80,10 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     setCouleur,
-    setArticle,
     setTypemateriel,
     setCategoriemateriel,
     categoriemateriel,
     couleur,
-    // article,
     typemateriel,
     selectedIds,
     setNumserie,
@@ -147,23 +143,26 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
 
         if (!response.ok) {
-          throw new Error(`Request failed with status: ${response.status}`);
+          setMessage({
+            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+            severity: 'error',
+            open: true
+          });
         }
-
         const responseData = await response.json();
-
         // Assuming data is an object with properties materiels, articles, typemateriels, categoriemateriels, and listemateriels
         const newData = {
-          materiels: responseData.materiels || [],
-          articles: responseData.articles || [],
           typemateriels: responseData.typemateriels || [],
           categoriemateriels: responseData.categoriemateriels || [],
           listemateriels: responseData.listemateriels || []
         };
-
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -204,53 +203,72 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sx={{ mb: 3 }}
                 />
                 <Select
-                  labelId="select-label"
+                  labelId="select-label-category"
                   size="small"
                   sx={{ mb: 3 }}
                   value={categoriemateriel}
-                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                  onChange={(event) => {
+                    const selectedValue = event.target.value;
+                    // Utilisez selectedValue comme vous le souhaitez, par exemple, pour mettre à jour l'état local
+                    setCategoriemateriel(selectedValue);
+                  }}
                 >
                   <MenuItem value="1">Toutes categories</MenuItem>
                   {data.categoriemateriels.map((row) => (
-                    <MenuItem value={row.idcategoriemateriel}>{row.categoriemateriel}</MenuItem>
+                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                      {row.categoriemateriel}
+                    </MenuItem>
                   ))}
                 </Select>
 
                 <Select
-                  labelId="select-label"
+                  labelId="select-label-type"
                   size="small"
                   sx={{ mb: 3 }}
                   value={typemateriel}
-                  onChange={(event) => setTypemateriel(event.target.value)}
+                  onChange={(event) => {
+                    const selectedValue = event.target.value;
+                    // Utilisez selectedValue comme vous le souhaitez, par exemple, pour mettre à jour l'état local
+                    setTypemateriel(selectedValue);
+                  }}
                 >
                   <MenuItem value="1">Tous types</MenuItem>
                   {data.typemateriels.map((row) => (
-                    <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
+                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                      {row.typemateriel}
+                    </MenuItem>
                   ))}
                 </Select>
+
                 <Select
-                  labelId="select-label"
+                  labelId="select-label-color"
                   size="small"
                   sx={{ mb: 3 }}
                   value={couleur}
                   onChange={(event) => setCouleur(event.target.value)}
                 >
                   <MenuItem value="1">Toutes couleurs</MenuItem>
-                  <MenuItem value="Noir">Noir</MenuItem>
-                  <MenuItem value="Blanc">Blanc</MenuItem>
-                  <MenuItem value="Gris">Gris</MenuItem>
-                  <MenuItem value="Rouge">Rouge</MenuItem>
-                  <MenuItem value="Bleu">Bleu</MenuItem>
-                  <MenuItem value="Vert">Vert</MenuItem>
-                  <MenuItem value="Jaune">Jaune</MenuItem>
-                  <MenuItem value="Marron">Marron</MenuItem>
-                  <MenuItem value="Violet">Violet</MenuItem>
-                  <MenuItem value="Rose">Rose</MenuItem>
-                  <MenuItem value="Orange">Orange</MenuItem>
-                  <MenuItem value="Beige">Beige</MenuItem>
-                  <MenuItem value="Turquoise">Turquoise</MenuItem>
-                  <MenuItem value="Argenté">Argenté</MenuItem>
-                  <MenuItem value="Doré">Doré</MenuItem>
+                  {[
+                    'Noir',
+                    'Blanc',
+                    'Gris',
+                    'Rouge',
+                    'Bleu',
+                    'Vert',
+                    'Jaune',
+                    'Marron',
+                    'Violet',
+                    'Rose',
+                    'Orange',
+                    'Beige',
+                    'Turquoise',
+                    'Argenté',
+                    'Doré'
+                  ].map((color, index) => (
+                    <MenuItem key={index} value={color}>
+                      {color}
+                    </MenuItem>
+                  ))}
                 </Select>
               </div>
             </form>
@@ -269,8 +287,10 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -292,7 +312,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -314,11 +334,10 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {/* Listage de Donnees */}
                   <TableCell key="idmateriel" align="left">
                     idmateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="left">
+                  <TableCell key="categorie" align="left">
                     categorie
                   </TableCell>
                   <TableCell key="typemateriel" align="left">
@@ -347,109 +366,22 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.idmateriel}>
+                    .map((row, index) => (
+                      <TableRow key={index}>
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(row.idmateriel)}
                             onChange={(event) => handleSelection(event, row.idmateriel)}
                           />
                         </TableCell>
-                        {isEditClicked && row.idmateriel === selectedRowId ? (
-                          <>
-                            {/* <TableCell key={row.idmateriel}>
-                              <TextField
-                                value={isEditedmateriel}
-                                onChange={(event) => setIsEditedmateriel(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>
-                              <TextField
-                                value={isEditednumserie}
-                                onChange={(event) => setIsEditednumserie(event.target.value)}
-                                onBlur={() =>
-                                  setIsEditednumserie(
-                                    isEditednumserie !== ' ' ? isEditednumserie : row.numserie
-                                  )
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={isEditedprixvente}
-                                onChange={(event) => setIsEditedprixvente(event.target.value)}
-                                onBlur={() =>
-                                  setIsEditedprixvente(
-                                    isEditedprixvente !== ' ' ? isEditedprixvente : row.prixvente
-                                  )
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={isEditedcaution}
-                                onChange={(event) => setisEditedcaution(event.target.value)}
-                                onBlur={() =>
-                                  setisEditedcaution(
-                                    isEditedcaution !== ' ' ? isEditedcaution : row.caution
-                                  )
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                labelId="select-label"
-                                sx={{ mb: 3 }}
-                                value={isEditedcolor}
-                                onChange={(event) => setIsEditedcolor(event.target.value)}
-                                onBlur={() =>
-                                  setIsEditedcolor(
-                                    isEditedcolor !== ' ' ? isEditedcolor : row.couleur
-                                  )
-                                }
-                              >
-                                <MenuItem value="1">Toutes couleurs</MenuItem>
-                                <MenuItem value="Noir">Noir</MenuItem>
-                                <MenuItem value="Blanc">Blanc</MenuItem>
-                                <MenuItem value="Gris">Gris</MenuItem>
-                                <MenuItem value="Rouge">Rouge</MenuItem>
-                                <MenuItem value="Bleu">Bleu</MenuItem>
-                                <MenuItem value="Vert">Vert</MenuItem>
-                                <MenuItem value="Jaune">Jaune</MenuItem>
-                                <MenuItem value="Marron">Marron</MenuItem>
-                                <MenuItem value="Violet">Violet</MenuItem>
-                                <MenuItem value="Rose">Rose</MenuItem>
-                                <MenuItem value="Orange">Orange</MenuItem>
-                                <MenuItem value="Beige">Beige</MenuItem>
-                                <MenuItem value="Turquoise">Turquoise</MenuItem>
-                                <MenuItem value="Argenté">Argenté</MenuItem>
-                                <MenuItem value="Doré">Doré</MenuItem>
-                              </Select>
-                            </TableCell> */}
-                            <TableCell key={row.idmateriel}>{row.idmateriel}</TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.numserie}</TableCell>
-                            <TableCell>{row.prixvente}</TableCell>
-                            <TableCell>{row.caution}</TableCell>
-                            <TableCell>{row.couleur}</TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell key={row.idmateriel}>{row.idmateriel}</TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.numserie}</TableCell>
-                            <TableCell>{row.prixvente}</TableCell>
-                            <TableCell>{row.caution}</TableCell>
-                            <TableCell>{row.couleur}</TableCell>
-                          </>
-                        )}{' '}
+                        <TableCell>{row.idmateriel}</TableCell>
+                        <TableCell>{row.categoriemateriel}</TableCell>
+                        <TableCell>{row.typemateriel}</TableCell>
+                        <TableCell>{row.modele}</TableCell>
+                        <TableCell>{row.numserie}</TableCell>
+                        <TableCell>{row.prixvente}</TableCell>
+                        <TableCell>{row.caution}</TableCell>
+                        <TableCell>{row.couleur}</TableCell>
                         <TableCell>
                           <IconButton
                             className="button"
@@ -460,7 +392,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-
                           {isEditClicked && row.idmateriel === selectedRowId && (
                             <>
                               <IconButton
@@ -487,11 +418,13 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={10}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnee disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>

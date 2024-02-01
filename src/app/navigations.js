@@ -19,7 +19,8 @@ export const navigations = [
         children: [
           { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
           { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
-          { name: 'Devis', iconText: 'SI', path: '/admin/devis' }
+          { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
+          { name: 'Detaildevis', iconText: 'SI', path: '/admin/detaildevis' }
         ]
       },
       {

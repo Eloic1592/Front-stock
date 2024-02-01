@@ -12,27 +12,42 @@ import {
   Checkbox,
   Select,
   MenuItem,
-  Grid
+  Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useListedevisFunctions } from 'app/views/admin/Proforma/function';
+import { baseUrl } from 'app/utils/constant';
+import { Link } from 'react-router-dom';
 
 const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
-    { label: 'ID', field: 'id', align: 'center' },
-    { label: 'Commande', field: 'idcommande', align: 'center' },
-    { label: 'Client', field: 'idclient', align: 'center' },
-    { label: 'devis', field: 'iddevis', align: 'center' },
-    { label: 'statut', field: 'statut', align: 'center' }
+    { label: 'ID', field: 'iddevis', align: 'center' },
+    { label: 'Nom client', field: 'nom', align: 'center' },
+    { label: 'Date devis', field: 'datedevis', align: 'center' },
+    { label: 'Libele', field: 'libele', align: 'center' }
 
     // Other columns...
   ];
 
-  const data = [];
+  const [data, setData] = useState({
+    clientdevis: [],
+    clients: [],
+    articles: []
+  });
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
+  const handleAlertClose = () => setMessage({ open: false });
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
+
   const {
     editingId,
     sortDirection,
@@ -45,58 +60,114 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortColumn,
     selectedIds,
     setClient,
-    setDate,
     client,
-    date,
+    datedevis,
+    setDatedevis,
+    libelle,
+    setLibelle,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useListedevisFunctions(data);
 
-  //  Use effect
-  useEffect(() => {}, [sortedData]);
+  const getInfo = (iddevis) => {
+    window.location.replace('/admin/detaildevis/' + iddevis);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/devis/contentdevis';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        const newData = {
+          clientdevis: responseData.clientdevis || [],
+          clients: responseData.clients || [],
+          articles: responseData.articles || []
+        };
+        setData(newData);
+      } catch (error) {
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.iddevisdevis === selectedRowId);
+
+      if (selectedRow) {
+        // setEditedIdDepot(selectedrow.iddevisdepot);
+      }
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="date"
-                      name="datedevis"
-                      variant="outlined"
-                      value={date}
-                      onChange={(event) => setDate(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <AutoComplete
-                      fullWidth
-                      size="small"
-                      // options={suggestions}
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Nom du client" variant="outlined" fullWidth />
-                      )}
-                      name="idclient"
-                      id="idclient"
-                    />
-                  </Grid>
-                </Grid>
-              </div>
-            </form>
+            <Grid container spacing={3}>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="date"
+                  name="datedevis"
+                  variant="outlined"
+                  value={datedevis}
+                  onChange={(event) => setDatedevis(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  id="nomclient"
+                  size="small"
+                  type="text"
+                  name="nomclient"
+                  label="Nom du client"
+                  value={client}
+                  onChange={(event) => setClient(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  id="libelle"
+                  size="small"
+                  type="text"
+                  name="libelle"
+                  label="Libelle du devis"
+                  value={libelle}
+                  onChange={(event) => setLibelle(event.target.value)}
+                />
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
         <Grid item>
@@ -112,8 +183,10 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -135,7 +208,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -147,20 +220,26 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.id))}
+                      checked={data.clientdevis.every((row) => selectedIds.includes(row.iddevis))}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.id)) &&
-                        !data.every((row) => selectedIds.includes(row.id))
+                        data.clientdevis.some((row) => selectedIds.includes(row.iddevis)) &&
+                        !data.clientdevis.every((row) => selectedIds.includes(row.iddevis))
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell key="iddevis" align="left">
+                    ID
+                  </TableCell>
+                  <TableCell key="nom" align="left">
+                    nom client
+                  </TableCell>
+                  <TableCell key="datedevis" align="left">
+                    date devis
+                  </TableCell>
+                  <TableCell key="libele" align="left">
+                    Libele
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -173,28 +252,14 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       <TableRow key={index}>
                         <TableCell>
                           <Checkbox
-                            checked={selectedIds.includes(row.id)}
-                            onChange={(event) => handleSelection(event, row.id)}
+                            checked={selectedIds.includes(row.iddevis)}
+                            onChange={(event) => handleSelection(event, row.iddevis)}
                           />
                         </TableCell>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
-                            {editingId === row.id ? (
-                              <TextField
-                                defaultValue={
-                                  column.render ? column.render(row) : row[column.field]
-                                }
-                                name={row.field}
-                                onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                              />
-                            ) : column.render ? (
-                              column.render(row)
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-
+                        <TableCell align="left">{row.iddevis}</TableCell>
+                        <TableCell align="left">{row.nom}</TableCell>
+                        <TableCell align="left">{row.datedevis}</TableCell>
+                        <TableCell align="left">{row.libelle}</TableCell>
                         <TableCell>
                           <IconButton
                             className="button"
@@ -205,7 +270,16 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-                          {isEditClicked && row.id === selectedRowId && (
+                          <IconButton
+                            className="button"
+                            variant="contained"
+                            aria-label="Edit"
+                            color="secondary"
+                            onClick={() => getInfo(row.iddevis)}
+                          >
+                            <Icon>info</Icon>
+                          </IconButton>
+                          {isEditClicked && row.iddevis === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
@@ -230,11 +304,13 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnee disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>
@@ -245,7 +321,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.length}
+                  count={data.clientdevis.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
@@ -256,7 +332,12 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>
+      </Grid>{' '}
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

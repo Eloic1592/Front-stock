@@ -18,7 +18,8 @@ import Listedevis from './Listedevis';
 import { Container, AutoComplete } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
-const Devis = () => {
+
+const Detaildevis = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
@@ -343,9 +344,9 @@ const Devis = () => {
         </Alert>
       </Snackbar>
 
-      <Listedevis />
+      {/* <Listedevis /> */}
     </Container>
   );
 };
 
-export default Devis;
+export default Detaildevis;

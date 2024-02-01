@@ -32,8 +32,8 @@ const Materiel = () => {
 
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
-  const [prixvente, setPrixvente] = useState(0);
-  const [caution, setCaution] = useState(0);
+  const [prixvente, setPrixvente] = useState();
+  const [caution, setCaution] = useState();
   const [file, setFile] = useState('');
   const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
@@ -56,6 +56,23 @@ const Materiel = () => {
 
   // Validation form
   const handleSubmit = () => {
+    if (
+      typemateriel == 1 ||
+      categoriemateriel == 1 ||
+      article == 1 ||
+      !numserie ||
+      !prixvente ||
+      !caution ||
+      couleur == 1
+    ) {
+      setMessage({
+        text: 'Les champs suivants sont obligatoires : typemateriel, categoriemateriel, article, numserie, prixvente, caution, couleur',
+        severity: 'error',
+        open: true
+      });
+      return; // Arrêter l'exécution de la fonction si un champ est vide
+    }
+
     let params = {
       idtypemateriel: typemateriel,
       idcategoriemateriel: categoriemateriel,
@@ -96,7 +113,7 @@ const Materiel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/materiel/contentmateriel';
+        let url = baseUrl + '/materiel/contentform';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -111,7 +128,6 @@ const Materiel = () => {
         const responseData = await response.json();
 
         const newData = {
-          materiels: responseData.materiels || [],
           articles: responseData.articles || [],
           typemateriels: responseData.typemateriels || [],
           categoriemateriels: responseData.categoriemateriels || [],
@@ -119,8 +135,12 @@ const Materiel = () => {
         };
 
         setData(newData);
-      } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+      } catch {
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -166,7 +186,7 @@ const Materiel = () => {
                     Choisir un article
                   </MenuItem>
                   {data.articles.map((row) => (
-                    <MenuItem value={row.idarticle}>
+                    <MenuItem key={row.idarticle} value={row.idarticle}>
                       {row.modele}/{row.codearticle}
                     </MenuItem>
                   ))}
@@ -184,7 +204,9 @@ const Materiel = () => {
                     Choisir une categorie
                   </MenuItem>
                   {data.categoriemateriels.map((row) => (
-                    <MenuItem value={row.idcategoriemateriel}>{row.categoriemateriel}</MenuItem>
+                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                      {row.categoriemateriel}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -202,7 +224,9 @@ const Materiel = () => {
                     Choisir un type
                   </MenuItem>
                   {data.typemateriels.map((row) => (
-                    <MenuItem value={row.idtypemateriel}>{row.typemateriel}</MenuItem>
+                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                      {row.typemateriel}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>

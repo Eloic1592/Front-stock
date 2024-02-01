@@ -32,6 +32,17 @@ const Depot = () => {
   const [depot, setDepot] = useState('');
 
   const handleSubmit = () => {
+    // Vérifier si le champ depot est vide
+    if (!depot) {
+      setMessage({
+        text: 'Veuillez saisir un nom de dépôt.',
+        severity: 'error',
+        open: true
+      });
+      return; // Arrêter la soumission du formulaire
+    }
+
+    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
       depot: depot
     };
@@ -42,27 +53,28 @@ const Depot = () => {
       body: JSON.stringify(params),
       headers: { 'Content-Type': 'application/json' }
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((response) => {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
         handleClose();
         setMessage({
-          text: 'Information enregistree',
+          text: 'Information enregistrée',
           severity: 'success',
           open: true
         });
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
           severity: 'error',
           open: true
         });
       });
   };
-
   return (
     <Container>
       <Box className="breadcrumb">
@@ -98,7 +110,7 @@ const Depot = () => {
                 <Button variant="outlined" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} color="primary">
+                <Button onClick={handleSubmit} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

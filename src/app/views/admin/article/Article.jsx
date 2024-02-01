@@ -35,10 +35,22 @@ const Article = () => {
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
+    // Vérifier si le champ depot est vide
+    // Vérifier si l'un des champs marque, modele ou codearticle est vide
+    if (!marque || !modele || !codearticle) {
+      setMessage({
+        text: 'Veuillez remplir tous les champs obligatoires.', // Message d'erreur pour champs manquants
+        severity: 'error',
+        open: true
+      });
+      return; // Arrêter la soumission du formulaire
+    }
+
+    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
-      article: codearticle,
       marque: marque,
       modele: modele,
+      codearticle: codearticle,
       description: description
     };
     let url = baseUrl + '/article/createarticle';
@@ -48,27 +60,28 @@ const Article = () => {
       body: JSON.stringify(params),
       headers: { 'Content-Type': 'application/json' }
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((response) => {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
         handleClose();
         setMessage({
-          text: 'Information enregistree',
+          text: 'Information enregistrée',
           severity: 'success',
           open: true
         });
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
           severity: 'error',
           open: true
         });
       });
   };
-
   return (
     <Container>
       <Box className="breadcrumb">
@@ -94,7 +107,7 @@ const Article = () => {
                   id="marque"
                   type="text"
                   margin="dense"
-                  label="Marque"
+                  label="Marque (obligatoire)"
                   name="marque"
                   value={marque}
                   onChange={(event) => setMarque(event.target.value)}
@@ -107,7 +120,7 @@ const Article = () => {
                   id="modele"
                   type="text"
                   margin="dense"
-                  label="Nom du modele"
+                  label="Nom du modele  (obligatoire)"
                   name="modele"
                   value={modele}
                   onChange={(event) => setModele(event.target.value)}
@@ -133,7 +146,7 @@ const Article = () => {
                   id="codearticle"
                   type="text"
                   margin="dense"
-                  label="Code article"
+                  label="Code article (obligatoire)"
                   name="codearticle"
                   value={codearticle}
                   onChange={(event) => setCodearticle(event.target.value)}

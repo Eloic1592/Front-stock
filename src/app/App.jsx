@@ -13,8 +13,7 @@ const App = () => {
     <SettingsProvider>
       <AuthProvider>
         <MatxTheme>
-          <CssBaseline />
-          {content}
+          <CssBaseline /> {content}
         </MatxTheme>
       </AuthProvider>
     </SettingsProvider>

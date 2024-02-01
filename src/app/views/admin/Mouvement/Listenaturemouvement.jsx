@@ -74,7 +74,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListemouvementFunctions(data);
 
   const handleSubmit = () => {
-    let depot = {
+    let naturemouvement = {
       idnaturemouvement: editedIdNaturemouvement,
       naturemouvement: editedNaturemouvement
     };
@@ -82,7 +82,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify(depot),
+      body: JSON.stringify(naturemouvement),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
@@ -96,14 +96,15 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           window.location.reload();
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: 'La modification dans la base de données a échoué',
           severity: 'error',
           open: true
         });
       });
   };
+
   //  Use effect
   useEffect(() => {
     const fetchData = async () => {
@@ -181,8 +182,10 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -197,17 +200,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
               </Grid>
             </Grid>
             <StyledTable>
@@ -228,7 +220,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
+                    .map((row) => (
                       <TableRow key={row.idnaturemouvement}>
                         {isEditClicked && row.idnaturemouvement === selectedRowId ? (
                           <>
@@ -244,7 +236,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 onChange={(event) => setEditedNaturemouvement(event.target.value)}
                                 onBlur={() =>
                                   setEditedNaturemouvement(
-                                    editedNaturemouvement !== ' '
+                                    editedNaturemouvement.trim() !== ''
                                       ? editedNaturemouvement
                                       : row.naturemouvement
                                   )
@@ -257,7 +249,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.idnaturemouvement}</TableCell>
                             <TableCell>{row.naturemouvement}</TableCell>
                           </>
-                        )}{' '}
+                        )}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -294,9 +286,13 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnee disponible
-                  </Typography>
+                  <TableRow key="no-data">
+                    <TableCell colSpan={3}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnee disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>

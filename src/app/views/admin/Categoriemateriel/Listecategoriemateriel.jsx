@@ -98,9 +98,9 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           window.location.reload();
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: 'La modification dans la base de données a échoué',
           severity: 'error',
           open: true
         });
@@ -119,13 +119,21 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
 
         if (!response.ok) {
-          throw new Error(`Request failed with status: ${response.status}`);
+          setMessage({
+            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+            severity: 'error',
+            open: true
+          });
         }
 
         const responseData = await response.json();
         setData(responseData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -183,8 +191,10 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -199,17 +209,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length == 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
               </Grid>
             </Grid>
             <StyledTable>
@@ -230,7 +229,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
+                    .map((row) => (
                       <TableRow key={row.idcategoriemateriel}>
                         {isEditClicked && row.idcategoriemateriel === selectedRowId ? (
                           <>
@@ -248,7 +247,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 onChange={(event) => setEditedCategorieMateriel(event.target.value)}
                                 onBlur={() =>
                                   setEditedCategorieMateriel(
-                                    editedCategorieMateriel !== ' '
+                                    editedCategorieMateriel.trim() !== ''
                                       ? editedCategorieMateriel
                                       : row.categoriemateriel
                                   )
@@ -261,7 +260,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.idcategoriemateriel}</TableCell>
                             <TableCell>{row.categoriemateriel}</TableCell>
                           </>
-                        )}{' '}
+                        )}
                         <TableCell>
                           <IconButton
                             className="button"
@@ -298,10 +297,14 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnee disponible
-                  </Typography>
-                )}{' '}
+                  <TableRow key="no-data">
+                    <TableCell colSpan={3}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnee disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </StyledTable>
             <Grid container spacing={2}>

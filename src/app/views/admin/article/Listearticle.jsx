@@ -92,11 +92,12 @@ const ListeArticle = () => {
   const handleSubmit = () => {
     let article = {
       idarticle: editedIdArticle,
-      modele: editedModele,
       marque: editedMarque,
-      codearticle: editedCodearticle,
-      description: editedDescription
+      modele: editedModele,
+      description: editedDescription,
+      codearticle: editedCodearticle
     };
+
     let url = baseUrl + '/article/createarticle';
     fetch(url, {
       crossDomain: true,
@@ -115,9 +116,9 @@ const ListeArticle = () => {
           window.location.reload();
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: 'La modification dans la base de données a échoué',
           severity: 'error',
           open: true
         });
@@ -229,8 +230,10 @@ const ListeArticle = () => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -252,7 +255,7 @@ const ListeArticle = () => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -286,10 +289,10 @@ const ListeArticle = () => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={row.idarticle}>
+                      <TableRow key={index}>
                         {isEditClicked && row.idarticle === selectedRowId ? (
                           <>
-                            <TableCell key={row.idarticle}>
+                            <TableCell>
                               <TextField
                                 value={editedIdArticle}
                                 onChange={(event) => setEditedIdArticle(event.target.value)}
@@ -300,7 +303,7 @@ const ListeArticle = () => {
                                 value={editedModele}
                                 onChange={(event) => setEditedModele(event.target.value)}
                                 onBlur={() =>
-                                  setEditedModele(editedModele !== ' ' ? editedModele : row.modele)
+                                  setEditedModele(editedModele !== '' ? editedModele : row.modele)
                                 }
                               />
                             </TableCell>
@@ -309,7 +312,7 @@ const ListeArticle = () => {
                                 value={editedMarque}
                                 onChange={(event) => setEditedMarque(event.target.value)}
                                 onBlur={() =>
-                                  setEditedMarque(editedMarque !== ' ' ? editedMarque : row.marque)
+                                  setEditedMarque(editedMarque !== '' ? editedMarque : row.marque)
                                 }
                               />
                             </TableCell>
@@ -319,7 +322,7 @@ const ListeArticle = () => {
                                 onChange={(event) => setEditedCodearticle(event.target.value)}
                                 onBlur={() =>
                                   setEditedCodearticle(
-                                    editedCodearticle !== ' ' ? editedCodearticle : row.codearticle
+                                    editedCodearticle !== '' ? editedCodearticle : row.codearticle
                                   )
                                 }
                               />
@@ -330,7 +333,7 @@ const ListeArticle = () => {
                                 onChange={(event) => setEditedDescription(event.target.value)}
                                 onBlur={() =>
                                   setEditedDescription(
-                                    editedDescription !== ' ' ? editedDescription : row.description
+                                    editedDescription !== '' ? editedDescription : row.description
                                   )
                                 }
                               />
@@ -381,9 +384,13 @@ const ListeArticle = () => {
                       </TableRow>
                     ))
                 ) : (
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Aucune donnée disponible
-                  </Typography>
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>
