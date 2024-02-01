@@ -42,9 +42,7 @@ const Proforma = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')
 
 const Devis = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
 
-const Detaildevis = Loadable(lazy(() => import('app/views/admin/Proforma/Detaildevis')));
-
-// const Commande = Loadable(lazy(() => import('app/views/admin/Commande/Commande')));
+const Detail = Loadable(lazy(() => import('app/views/admin/Proforma/Detail')));
 
 const Depot = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
 
@@ -147,8 +145,8 @@ const routes = [
       },
 
       {
-        path: '/admin/detaildevis',
-        component: <Detaildevis />,
+        path: '/admin/detaildevis/:iddevis',
+        element: <Detail />,
         auth: authRoles.admindefault
       },
 
@@ -192,9 +190,8 @@ const routes = [
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/facture', element: <Facture /> },
   { path: '/admin/devis', element: <Devis /> },
-  { path: '/admin/detaildevis', element: <Detaildevis /> },
+  { path: '/admin/detaildevis/:iddevis', element: <Detail /> },
   { path: '/admin/proforma', element: <Proforma /> },
-  // { path: '/admin/commande', element: <Commande /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
