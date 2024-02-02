@@ -22,6 +22,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useListedevisFunctions } from 'app/views/admin/Proforma/function';
 import { baseUrl } from 'app/utils/constant';
+import { converttodate } from 'app/utils/utils';
 
 const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
@@ -299,7 +300,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         </TableCell>
                         <TableCell align="left">{row.iddevis}</TableCell>
                         <TableCell align="left">{row.nom}</TableCell>
-                        <TableCell align="left">{row.datedevis}</TableCell>
+                        <TableCell align="left">{converttodate(row.datedevis)}</TableCell>
                         <TableCell align="left">{row.libelle}</TableCell>
                         <TableCell>
                           <IconButton
@@ -315,7 +316,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             className="button"
                             variant="contained"
                             aria-label="Edit"
-                            color="secondary"
+                            color="primary"
                             onClick={() => getInfo(row.iddevis)}
                           >
                             <Icon>info</Icon>

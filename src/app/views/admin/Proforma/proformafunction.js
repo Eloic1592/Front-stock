@@ -1,6 +1,7 @@
+import { formatDate } from 'app/utils/utils';
 import { useState } from 'react';
 
-export const useDetaildevisFunctions = (data) => {
+export const useListeproformafunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -10,7 +11,7 @@ export const useDetaildevisFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [libelle, setLibelle] = useState('');
-  const [datedevis, setDatedevis] = useState('');
+  const [datevalidation, setDatevalidation] = useState('');
   const [client, setClient] = useState('');
 
   const handleChangePage = (_, newPage) => {
@@ -24,9 +25,9 @@ export const useDetaildevisFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.iddetaildevis);
+    setEditingId(row.iddevis);
     setIsEditClicked(true);
-    setSelectedRowId(row.iddetaildevis);
+    setSelectedRowId(row.iddevis);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -37,24 +38,24 @@ export const useDetaildevisFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, iddetaildevis) => {
+  const handleSelection = (event, id) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, iddetaildevis]);
+      setSelectedIds([...selectedIds, id]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== iddetaildevis));
+      setSelectedIds(selectedIds.filter((i) => i !== id));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.iddetaildevis));
+      setSelectedIds(data.clientdevis.map((row) => row.iddevis));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtredetaildevis(data, datedevis, client, libelle);
+  const filtredata = filtreproforma(data, client, datevalidation);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -96,14 +97,22 @@ export const useDetaildevisFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     setClient,
-    setDatedevis,
-    datedevis,
-    libelle,
-    setLibelle,
-    client
+    client,
+    setDatevalidation,
+    datevalidation
   };
 };
 
-export function filtredetaildevis(listedetaildevis, datedevis, nomclient, libelle) {
-  return listedetaildevis;
+export function filtreproforma(listeproforma, nomclient, datevalidation) {
+  return listeproforma.filter((proforma) => {
+    const datevalidationmatch =
+      !datevalidation ||
+      new Date(formatDate(proforma.datevalidation)).getTime() ===
+        new Date(datevalidation).getTime();
+
+    const nomClientMatch =
+      !nomclient || proforma.nom.toLowerCase().includes(nomclient.toLowerCase());
+
+    return nomClientMatch && datevalidationmatch;
+  });
 }

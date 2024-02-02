@@ -62,8 +62,8 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     cancelEdit,
     handleSelection,
     handleSelectAll,
-    handleSelectColumn
-    // sortedData
+    handleSelectColumn,
+    sortedData
   } = useDetaildevisFunctions(data);
 
   const [message, setMessage] = useState({
@@ -159,10 +159,10 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.iddevis))}
+                      checked={data.every((row) => selectedIds.includes(row.iddetaildevis))}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.iddevis)) &&
-                        !data.every((row) => selectedIds.includes(row.iddevis))
+                        data.some((row) => selectedIds.includes(row.iddetaildevis)) &&
+                        !data.every((row) => selectedIds.includes(row.iddetaildevis))
                       }
                       onChange={handleSelectAll}
                     />
@@ -190,15 +190,15 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               </TableHead>
               <TableBody>
                 {/* Donnees du tableau */}
-                {data && data.length > 0 ? (
-                  data
+                {sortedData && sortedData.length > 0 ? (
+                  sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
                         <TableCell>
                           <Checkbox
-                            checked={selectedIds.includes(row.iddevis)}
-                            onChange={(event) => handleSelection(event, row.iddevis)}
+                            checked={selectedIds.includes(row.iddetaildevis)}
+                            onChange={(event) => handleSelection(event, row.iddetaildevis)}
                           />
                         </TableCell>
                         <TableCell align="left">{row.iddetaildevis}</TableCell>
@@ -217,7 +217,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-                          {isEditClicked && row.iddevis === selectedRowId && (
+                          {isEditClicked && row.iddetaildevis === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"

@@ -8,21 +8,24 @@ import {
   TableRow,
   Select,
   MenuItem,
-  Grid
+  Grid,
+  Icon,
+  IconButton
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListedevisFunctions } from 'app/views/admin/Proforma/function';
+import { useListeproformafunctions } from 'app/views/admin/Proforma/proformafunction';
 import { baseUrl } from 'app/utils/constant';
+import { converttodate } from 'app/utils/utils';
 
 // Proforma tsy afaka ovaina intsony
 const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
     { label: 'ID', field: 'idproforma', align: 'center' },
-    { label: 'Client', field: 'idclient', align: 'center' },
+    { label: 'Client', field: 'nom', align: 'center' },
     { label: 'date devis', field: 'datedevis', align: 'center' },
     { label: 'date validation', field: 'datevalidation', align: 'center' }
   ];
@@ -41,10 +44,10 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setDatedevis,
-    setDateval,
-    dateval,
-    datedevis,
+    client,
+    setClient,
+    datevalidation,
+    setDatevalidation,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -53,7 +56,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = useListedevisFunctions(data);
+  } = useListeproformafunctions(data);
 
   //  Use effect
   useEffect(() => {
@@ -87,7 +90,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.idproforma === selectedRowId);
 
       if (selectedRow) {
         // setIsEditedmateriel(selectedRow.idmateriel);
@@ -101,36 +104,35 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un proforma" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <Grid container spacing={3}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="date"
-                      name="datedevis"
-                      variant="outlined"
-                      value={datedevis}
-                      onChange={(event) => setDatedevis(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="date"
-                      name="dateval"
-                      variant="outlined"
-                      value={dateval}
-                      onChange={(event) => setDateval(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                </Grid>
-              </div>
-            </form>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="client"
+                  variant="outlined"
+                  value={client}
+                  onChange={(event) => setClient(event.target.value)}
+                  sx={{ mb: 3 }}
+                  label="Nom du client"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="date"
+                  name="dateval"
+                  variant="outlined"
+                  value={datevalidation}
+                  onChange={(event) => setDatevalidation(event.target.value)}
+                  sx={{ mb: 3 }}
+                  label="Date de validation"
+                  focused
+                />
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
         <Grid item>
@@ -145,8 +147,10 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -167,18 +171,11 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idproforma" align="left">
-                    idproforma
-                  </TableCell>
-                  <TableCell key="nom" align="left">
-                    Nom client
-                  </TableCell>
-                  <TableCell key="datedevis" align="left">
-                    date devis
-                  </TableCell>
-                  <TableCell key="datevalidation" align="left">
-                    date validation
-                  </TableCell>
+                  <TableCell align="left">ID proforma</TableCell>
+                  <TableCell align="left">Nom client</TableCell>
+                  <TableCell align="left">Date devis</TableCell>
+                  <TableCell align="left">Date validation</TableCell>
+                  <TableCell align="left">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -188,18 +185,31 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell key={index}>{row.idproforma}</TableCell>
-                        <TableCell key={index}>{row.nom}</TableCell>
-                        <TableCell key={index}>{row.datedevis}</TableCell>
-                        <TableCell key={index}>{row.datevalidation}</TableCell>
+                        <TableCell>{row.idproforma}</TableCell>
+                        <TableCell>{row.nom}</TableCell>
+                        <TableCell>{converttodate(row.datedevis)}</TableCell>
+                        <TableCell>{converttodate(row.datevalidation)}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            className="button"
+                            variant="contained"
+                            aria-label="Edit"
+                            color="primary"
+                            // onClick={() => getInfo(row.iddevis)}
+                          >
+                            <Icon>info</Icon>
+                          </IconButton>
+                        </TableCell>
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={4}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>

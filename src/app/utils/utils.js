@@ -1,5 +1,5 @@
 import { differenceInSeconds } from 'date-fns';
-import moment from "moment";
+import moment from 'moment';
 
 export const convertHexToRGB = (hex) => {
   // check if it's a rgba
@@ -135,58 +135,58 @@ export function getTimeDifference(date) {
 }
 
 // Traduction francais mois
- const frenchTranslations = {
+const frenchTranslations = {
   today: "Aujourd'hui",
-  previous: "Précédent",
-  next: "Suivant",
-  month: "Mois",
-  week: "Semaine",
-  day: "Jour",
-  agenda: "Agenda",
-  date: "Date",
-  time: "Heure",
-  event: "Événement",
-  allDay: "Toute la journée",
-  noEventsInRange: "Aucun événement à afficher",
-  "monthNames": [
-      "Janvier",
-      "Février",
-      "Mars",
-      "Avril",
-      "Mai",
-      "Juin",
-      "Juillet",
-      "Août",
-      "Septembre",
-      "Octobre",
-      "Novembre",
-      "Décembre",
-    ],
-    "dayNames": [
-      "Lundi",
-      "Mardi",
-      "Mercredi",
-      "Jeudi",
-      "Vendredi",
-      "Samedi",
-      "Dimanche",
-    ],
-    "weekNumbers": ["1", "2", "3", "4", "5", "6", "7"],
+  previous: 'Précédent',
+  next: 'Suivant',
+  month: 'Mois',
+  week: 'Semaine',
+  day: 'Jour',
+  agenda: 'Agenda',
+  date: 'Date',
+  time: 'Heure',
+  event: 'Événement',
+  allDay: 'Toute la journée',
+  noEventsInRange: 'Aucun événement à afficher',
+  monthNames: [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ],
+  dayNames: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+  weekNumbers: ['1', '2', '3', '4', '5', '6', '7']
 };
 
 // Traduction jour de la semaine
-const frenchdayNames = [
-  'Dimanche',
-  'Lundi',
-  'Mardi',
-  'Mercredi',
-  'Jeudi',
-  'Vendredi',
-  'Samedi'
-
-];
+const frenchdayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
 // Formattage de date en jour/mois/annee
-export function convertdate(date) {     
-  return  moment(date).locale("fr").format("DD MMMM YYYY HH:mm");
+export function convertdate(date) {
+  return moment(date).locale('fr').format('DD MMMM YYYY HH:mm');
+}
+
+export function converttodate(timestamp) {
+  const date = new Date(timestamp);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = date.toLocaleDateString('fr-FR', options);
+  return formattedDate;
+}
+
+export function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
 }
