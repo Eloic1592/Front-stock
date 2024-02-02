@@ -104,7 +104,7 @@ export const useListedevisFunctions = (data) => {
   };
 };
 
-export function filtredevis(listedevis, datedevis, nomclient, libelle) {
+export function filtredevis(listedevis, datedevis, nomclient, setlibelle) {
   return listedevis.filter((devis) => {
     // Vérifier si la date du devis correspond à la date spécifiée
     const dateDevisMatch =
@@ -113,9 +113,10 @@ export function filtredevis(listedevis, datedevis, nomclient, libelle) {
     // Vérifier si le nom du client correspond au nom spécifié
     const nomClientMatch = !nomclient || devis.nom.toLowerCase().includes(nomclient.toLowerCase());
 
-    const libelleMatch = !libelle || devis.libelle.toLowerCase().includes(libelle.toLowerCase());
+    // const libelleMatch =
+    //   !setlibelle || devis.libelle.toLowerCase().includes(setlibelle.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return dateDevisMatch && nomClientMatch && libelleMatch;
+    return dateDevisMatch && nomClientMatch;
   });
 }

@@ -42,7 +42,7 @@ const Proforma = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')
 
 const Devis = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
 
-const Detail = Loadable(lazy(() => import('app/views/admin/Proforma/Detail')));
+const Detail = Loadable(lazy(() => import('app/views/admin/Proforma/Detaildevis')));
 
 const Depot = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
 

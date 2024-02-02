@@ -85,9 +85,3 @@ const Proforma = () => {
 };
 
 export default Proforma;
-
-// function filtremateriel(listemateriel, materiel) {
-//   return listemateriel.filter((Item) => {
-//     return Item.materiel.toLowerCase().includes(materiel.toLowerCase());
-//   });
-// }

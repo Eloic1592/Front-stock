@@ -23,14 +23,19 @@ import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useDetaildevisFunctions } from 'app/views/admin/Proforma/detailfunction';
 import { baseUrl } from 'app/utils/constant';
+import { useParams } from 'react-router-dom';
 
-const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+  const iddevis = useParams();
+  // console.log(iddevis.iddevis);
   // Colonne
   const columns = [
-    { label: 'ID', field: 'iddevis', align: 'center' },
-    { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'Date devis', field: 'datedevis', align: 'center' },
-    { label: 'Libele', field: 'libele', align: 'center' }
+    { label: 'ID', field: 'iddetaildevis', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Prix unitaire', field: 'pu', align: 'center' },
+    { label: 'Total', field: 'total', align: 'center' }
 
     // Other columns...
   ];
@@ -72,11 +77,14 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let devisParams = {
+          iddevis: iddevis.iddevis
+        };
         let url = baseUrl + '/devis/detaildevis';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify({}),
+          body: JSON.stringify(devisParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -85,8 +93,8 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         }
 
         const responseData = await response.json();
-        // setData(responseData);
-        console.log(responseData);
+        setData(responseData);
+        console.log(data);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -95,55 +103,14 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
       }
     };
+    fetchData();
   }, []); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datedevis"
-                  variant="outlined"
-                  value={datedevis}
-                  onChange={(event) => setDatedevis(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="nomclient"
-                  size="small"
-                  type="text"
-                  name="nomclient"
-                  label="Nom du client"
-                  value={client}
-                  onChange={(event) => setClient(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="libelle"
-                  size="small"
-                  type="text"
-                  name="libelle"
-                  label="Libelle du devis"
-                  value={libelle}
-                  onChange={(event) => setLibelle(event.target.value)}
-                />
-              </Grid>
-            </Grid>
-          </SimpleCard>
-        </Grid>
-        <Grid item>
-          <SimpleCard title="Liste des devis">
+          <SimpleCard title="Details du devis">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -200,17 +167,23 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddevis" align="left">
+                  <TableCell key="iddetaildevis" align="left">
                     ID
                   </TableCell>
-                  <TableCell key="nom" align="left">
-                    nom client
+                  <TableCell key="marque" align="left">
+                    Marque
                   </TableCell>
-                  <TableCell key="datedevis" align="left">
-                    date devis
+                  <TableCell key="modele" align="left">
+                    Modele
                   </TableCell>
-                  <TableCell key="libele" align="left">
-                    Libele
+                  <TableCell key="quantite" align="left">
+                    Quantite
+                  </TableCell>
+                  <TableCell key="pu" align="left">
+                    Prix unitaire
+                  </TableCell>
+                  <TableCell key="total" align="left">
+                    Total
                   </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -228,10 +201,12 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onChange={(event) => handleSelection(event, row.iddevis)}
                           />
                         </TableCell>
-                        <TableCell align="left">{row.iddevis}</TableCell>
-                        <TableCell align="left">{row.nom}</TableCell>
-                        <TableCell align="left">{row.datedevis}</TableCell>
-                        <TableCell align="left">{row.libelle}</TableCell>
+                        <TableCell align="left">{row.iddetaildevis}</TableCell>
+                        <TableCell align="left">{row.marque}</TableCell>
+                        <TableCell align="left">{row.modele}</TableCell>
+                        <TableCell align="left">{row.quantite}</TableCell>
+                        <TableCell align="left">{row.pu}</TableCell>
+                        <TableCell align="left">{row.total}</TableCell>
                         <TableCell>
                           <IconButton
                             className="button"
@@ -257,7 +232,6 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="error"
-                                onClick={() => cancelEdit(row)}
                               >
                                 <Icon>close</Icon>
                               </IconButton>
@@ -305,4 +279,4 @@ const Detail = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Detail;
+export default Listedetaildevis;

@@ -22,7 +22,6 @@ import { SimpleCard } from 'app/components';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useListedevisFunctions } from 'app/views/admin/Proforma/function';
 import { baseUrl } from 'app/utils/constant';
-import { Link } from 'react-router-dom';
 
 const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
@@ -30,11 +29,13 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'ID', field: 'iddevis', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'Date devis', field: 'datedevis', align: 'center' },
-    { label: 'Libele', field: 'libele', align: 'center' }
+    { label: 'LibelLe', field: 'libelle', align: 'center' }
 
     // Other columns...
   ];
 
+  const handleAlertClose = () => setMessage({ open: false });
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [data, setData] = useState({
     clientdevis: [],
     clients: [],
@@ -45,11 +46,42 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     severity: 'success',
     open: false
   });
-  const handleAlertClose = () => setMessage({ open: false });
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
+
+  const handleSubmit = () => {
+    let proforma = [];
+    proforma = selectedIds.map((id) => ({
+      iddevis: id,
+      datevalidation: new Date()
+    }));
+
+    let url = baseUrl + '/proforma/createproforma';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(proforma),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
@@ -63,8 +95,6 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     client,
     datedevis,
     setDatedevis,
-    libelle,
-    setLibelle,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -73,10 +103,6 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectColumn,
     sortedData
   } = useListedevisFunctions(data);
-
-  const getInfo = (iddevis) => {
-    window.location.replace('/admin/detaildevis/' + iddevis);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,13 +151,16 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
+  const getInfo = (iddevis) => {
+    window.location.replace('/admin/detaildevis/' + iddevis);
+  };
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <TextField
                   fullWidth
                   size="small"
@@ -143,7 +172,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sx={{ mb: 3 }}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <TextField
                   fullWidth
                   id="nomclient"
@@ -155,7 +184,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setClient(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <TextField
                   fullWidth
                   id="libelle"
@@ -166,7 +195,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={libelle}
                   onChange={(event) => setLibelle(event.target.value)}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </SimpleCard>
         </Grid>
@@ -202,7 +231,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              {/* <Grid item xs={2}>
                 <Button
                   className="button"
                   variant="contained"
@@ -211,6 +240,18 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
+                </Button>
+              </Grid> */}
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  disabled={selectedIds.length === 0}
+                  onClick={handleSubmit}
+                >
+                  Generer un proforma
                 </Button>
               </Grid>
             </Grid>
@@ -237,7 +278,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableCell key="datedevis" align="left">
                     date devis
                   </TableCell>
-                  <TableCell key="libele" align="left">
+                  <TableCell key="libelle" align="left">
                     Libele
                   </TableCell>
                   <TableCell>Action</TableCell>

@@ -59,7 +59,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/devis/proformaclient';
+        let url = baseUrl + '/proforma/proformaclient';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
