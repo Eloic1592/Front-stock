@@ -40,7 +40,7 @@ const Facture = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
 
 const Proforma = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
 
-const Detailproforma = Loadable(lazy(() => import('app/views/admin/Proforma/Detailprofroma')));
+const Detailproforma = Loadable(lazy(() => import('app/views/admin/Proforma/Detailproforma')));
 
 const Devis = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
 
