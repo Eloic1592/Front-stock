@@ -98,6 +98,9 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  const getInfo = (iddevis) => {
+    window.location.replace('/admin/detailproforma/' + iddevis);
+  };
 
   return (
     <Box width="100%" overflow="auto">
@@ -195,7 +198,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             variant="contained"
                             aria-label="Edit"
                             color="primary"
-                            // onClick={() => getInfo(row.iddevis)}
+                            onClick={() => getInfo(row.iddevis)}
                           >
                             <Icon>info</Icon>
                           </IconButton>
