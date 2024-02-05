@@ -18,8 +18,10 @@ export const navigations = [
         iconText: 'arrows-right',
         children: [
           { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
+          { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
           { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
-          { name: 'Devis', iconText: 'SI', path: '/admin/devis' }
+          { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
+          { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
         ]
       },
       {

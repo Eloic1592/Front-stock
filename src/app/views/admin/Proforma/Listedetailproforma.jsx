@@ -8,6 +8,7 @@ import {
   TableRow,
   Icon,
   IconButton,
+  TextField,
   Checkbox,
   Select,
   MenuItem,
@@ -15,17 +16,17 @@ import {
   Snackbar,
   Alert
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
+import Typography from '@mui/material/Typography';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useDetaildevisFunctions } from 'app/views/admin/Proforma/detailfunction';
+import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
-  // console.log(iddevis.iddevis);
+  console.log(iddevis.iddevis);
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetaildevis', align: 'center' },
@@ -78,7 +79,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         let devisParams = {
           iddevis: iddevis.iddevis
         };
-        let url = baseUrl + '/devis/detaildevis';
+        let url = baseUrl + '/proforma/detailproforma';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -108,7 +109,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Details du devis">
+          <SimpleCard title="Details du proforma">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -183,7 +184,6 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableCell key="total" align="left">
                     Total
                   </TableCell>
-                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -205,37 +205,6 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         <TableCell align="left">{row.quantite}</TableCell>
                         <TableCell align="left">{row.pu}</TableCell>
                         <TableCell align="left">{row.total}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.iddetaildevis === selectedRowId && (
-                            <>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </>
-                          )}
-                        </TableCell>
                       </TableRow>
                     ))
                 ) : (
@@ -277,4 +246,4 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Listedetaildevis;
+export default Listedetailproforma;

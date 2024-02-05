@@ -25,6 +25,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
     { label: 'ID', field: 'idproforma', align: 'center' },
+    { label: 'N devis', field: 'iddetaildevis', align: 'center' },
     { label: 'Client', field: 'nom', align: 'center' },
     { label: 'date devis', field: 'datedevis', align: 'center' },
     { label: 'date validation', field: 'datevalidation', align: 'center' }
@@ -139,7 +140,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
         <Grid item>
-          <SimpleCard title="Liste des mouvements proformas">
+          <SimpleCard title="Liste des proformas">
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -175,6 +176,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell align="left">ID proforma</TableCell>
+                  <TableCell align="left">Num devis</TableCell>
                   <TableCell align="left">Nom client</TableCell>
                   <TableCell align="left">Date devis</TableCell>
                   <TableCell align="left">Date validation</TableCell>
@@ -189,6 +191,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .map((row, index) => (
                       <TableRow key={index}>
                         <TableCell>{row.idproforma}</TableCell>
+                        <TableCell>{row.iddevis}</TableCell>
                         <TableCell>{row.nom}</TableCell>
                         <TableCell>{converttodate(row.datedevis)}</TableCell>
                         <TableCell>{converttodate(row.datevalidation)}</TableCell>
