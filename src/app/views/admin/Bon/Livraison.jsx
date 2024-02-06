@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -19,8 +18,8 @@ import {
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
-import { Commandefunctions } from 'app/views/admin/Proforma/Commande';
+import { StyledTable, Container } from 'app/views/style/style';
+import { Livraisonfunctions } from 'app/views/admin/Bon/Livraisonfunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
@@ -44,40 +43,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     open: false
   });
 
-  const handleSubmit = () => {
-    let proforma = [];
-    proforma = selectedIds.map((id) => ({
-      idbonlivraison: id,
-      datevalidation: new Date()
-    }));
-
-    let url = baseUrl + '/proforma/createproforma';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(proforma),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
-
   const {
     sortDirection,
     page,
@@ -90,8 +55,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     selectedIds,
     setClient,
     client,
-    datedevis,
-    setDatedevis,
+    setDatelivraison,
+    datelivraison,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -99,7 +64,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = Commandefunctions(data);
+  } = Livraisonfunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,7 +83,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
         const responseData = await response.json();
         setData(responseData);
-        console.log(data.length);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -148,207 +112,198 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     window.location.replace('/admin/detaildevis/' + idbonlivraison);
   };
   return (
-    <Box width="100%" overflow="auto">
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="date"
-                  name="datedevis"
-                  variant="outlined"
-                  value={datedevis}
-                  onChange={(event) => setDatedevis(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
+    <Container>
+      <Box width="100%" overflow="auto">
+        <Grid container direction="column" spacing={2}>
+          <Grid item>
+            <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    type="date"
+                    name="datedevis"
+                    variant="outlined"
+                    value={datelivraison}
+                    onChange={(event) => setDatelivraison(event.target.value)}
+                    sx={{ mb: 3 }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    fullWidth
+                    id="nomclient"
+                    size="small"
+                    type="text"
+                    name="nomclient"
+                    label="Nom du client"
+                    value={client}
+                    onChange={(event) => setClient(event.target.value)}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="nomclient"
-                  size="small"
-                  type="text"
-                  name="nomclient"
-                  label="Nom du client"
-                  value={client}
-                  onChange={(event) => setClient(event.target.value)}
-                />
+            </SimpleCard>
+          </Grid>
+          <Grid item>
+            <SimpleCard title="Liste des livraisons">
+              {/* Tri de tables */}
+              <Grid container spacing={2}>
+                <Grid item xs={2}>
+                  <Select
+                    fullWidth
+                    labelId="select-label"
+                    value={sortColumn}
+                    size="small"
+                    onChange={handleSelectColumn}
+                  >
+                    <MenuItem value="1">Colonne</MenuItem>
+                    {columns.map((column, index) => (
+                      <MenuItem key={index} value={column.field}>
+                        {column.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={2}>
+                  <Select
+                    fullWidth
+                    labelId="select-direction-label"
+                    value={sortDirection}
+                    size="small"
+                    onChange={(event) => setSortDirection(event.target.value)}
+                  >
+                    <MenuItem value="asc">ASC</MenuItem>
+                    <MenuItem value="desc">DESC</MenuItem>
+                  </Select>
+                </Grid>
               </Grid>
-            </Grid>
-          </SimpleCard>
-        </Grid>
-        <Grid item>
-          <SimpleCard title="Liste des livraisons">
-            {/* Tri de tables */}
-            <Grid container spacing={2}>
-              <Grid item xs={2}>
-                <Select
-                  fullWidth
-                  labelId="select-label"
-                  value={sortColumn}
-                  size="small"
-                  onChange={handleSelectColumn}
-                >
-                  <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column, index) => (
-                    <MenuItem key={index} value={column.field}>
-                      {column.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Select
-                  fullWidth
-                  labelId="select-direction-label"
-                  value={sortDirection}
-                  size="small"
-                  onChange={(event) => setSortDirection(event.target.value)}
-                >
-                  <MenuItem value="asc">ASC</MenuItem>
-                  <MenuItem value="desc">DESC</MenuItem>
-                </Select>
-              </Grid>
-              {/* <Grid item xs={2}>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      aria-label="Edit"
-                      color="error"
-                      disabled={selectedIds.length === 0}
-                    >
-                      <Icon>delete</Icon>
-                    </Button>
-                  </Grid> */}
-            </Grid>
-            <StyledTable>
-              <TableHead>
-                {/* Listage de Donnees */}
-                <TableRow>
-                  <TableCell>
-                    <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.idbonlivraison))}
-                      indeterminate={
-                        data.some((row) => selectedIds.includes(row.idbonlivraison)) &&
-                        !data.every((row) => selectedIds.includes(row.idbonlivraison))
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell key="idbonlivraison" align="left">
-                    ID livraison
-                  </TableCell>
-                  <TableCell key="nom" align="left">
-                    Nom client
-                  </TableCell>
-                  <TableCell key="datelivraison" align="left">
-                    Date livraison
-                  </TableCell>
-                  <TableCell key="idboncommande" align="left">
-                    Commande
-                  </TableCell>
-                  <TableCell>Action</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* Donnees du tableau */}
-                {sortedData && sortedData.length > 0 ? (
-                  sortedData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.idbonlivraison)}
-                            onChange={(event) => handleSelection(event, row.idbonlivraison)}
-                          />
-                        </TableCell>
-                        <TableCell align="left">{row.idbonlivraison}</TableCell>
-                        <TableCell align="left">{row.nom}</TableCell>
-                        <TableCell align="left">{converttodate(row.dateboncommande)}</TableCell>
-                        <TableCell align="left">{row.idproforma}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => getInfo(row.idbonlivraison)}
-                          >
-                            <Icon>info</Icon>
-                          </IconButton>
-                          {isEditClicked && row.idbonlivraison === selectedRowId && (
-                            <>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
-                ) : (
+              <StyledTable>
+                <TableHead>
+                  {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell colSpan={6}>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Aucune donnee disponible
-                      </Typography>
+                    <TableCell>
+                      <Checkbox
+                        checked={data.every((row) => selectedIds.includes(row.idbonlivraison))}
+                        indeterminate={
+                          data.some((row) => selectedIds.includes(row.idbonlivraison)) &&
+                          !data.every((row) => selectedIds.includes(row.idbonlivraison))
+                        }
+                        onChange={handleSelectAll}
+                      />
                     </TableCell>
+                    <TableCell key="idbonlivraison" align="left">
+                      ID livraison
+                    </TableCell>
+                    <TableCell key="nom" align="left">
+                      Nom client
+                    </TableCell>
+                    <TableCell key="datelivraison" align="left">
+                      Date livraison
+                    </TableCell>
+                    <TableCell key="idboncommande" align="left">
+                      Commande
+                    </TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </StyledTable>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TablePagination
-                  sx={{ px: 2 }}
-                  page={page}
-                  component="div"
-                  rowsPerPage={rowsPerPage}
-                  count={data.length}
-                  onPageChange={handleChangePage}
-                  rowsPerPageOptions={rowsPerPageOptions}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-                />
+                </TableHead>
+                <TableBody>
+                  {/* Donnees du tableau */}
+                  {sortedData && sortedData.length > 0 ? (
+                    sortedData
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(row.idbonlivraison)}
+                              onChange={(event) => handleSelection(event, row.idbonlivraison)}
+                            />
+                          </TableCell>
+                          <TableCell align="left">{row.idbonlivraison}</TableCell>
+                          <TableCell align="left">{row.nom}</TableCell>
+                          <TableCell align="left">{converttodate(row.datebonlivraison)}</TableCell>
+                          <TableCell align="left">{row.idproforma}</TableCell>
+                          <TableCell>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => getInfo(row.idbonlivraison)}
+                            >
+                              <Icon>info</Icon>
+                            </IconButton>
+                            {isEditClicked && row.idbonlivraison === selectedRowId && (
+                              <>
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="secondary"
+                                >
+                                  <Icon>arrow_forward</Icon>
+                                </IconButton>
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="error"
+                                  onClick={() => cancelEdit(row)}
+                                >
+                                  <Icon>close</Icon>
+                                </IconButton>
+                              </>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6}>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          Aucune donnee disponible
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </StyledTable>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TablePagination
+                    sx={{ px: 2 }}
+                    page={page}
+                    component="div"
+                    rowsPerPage={rowsPerPage}
+                    count={data.length}
+                    onPageChange={handleChangePage}
+                    rowsPerPageOptions={rowsPerPageOptions}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                    backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  />
+                </Grid>
               </Grid>
-            </Grid>
-          </SimpleCard>
-        </Grid>
-      </Grid>{' '}
-      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
-        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
-          {message.text}
-        </Alert>
-      </Snackbar>
-    </Box>
+            </SimpleCard>
+          </Grid>
+        </Grid>{' '}
+        <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+          <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+            {message.text}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </Container>
   );
 };
 

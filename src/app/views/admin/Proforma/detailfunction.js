@@ -9,9 +9,8 @@ export const useDetaildevisFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [libelle, setLibelle] = useState('');
-  const [datedevis, setDatedevis] = useState('');
-  const [client, setClient] = useState('');
+  const [marque, setMarque] = useState('');
+  const [modele, setModele] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -54,7 +53,7 @@ export const useDetaildevisFunctions = (data) => {
     }
   };
 
-  const filtredata = filtredetaildevis(data, datedevis, client, libelle);
+  const filtredata = filtredetaildevis(data, marque, modele);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -95,15 +94,22 @@ export const useDetaildevisFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setClient,
-    setDatedevis,
-    datedevis,
-    libelle,
-    setLibelle,
-    client
+    marque,
+    setMarque,
+    modele,
+    setModele
   };
 };
 
-export function filtredetaildevis(listedetaildevis, datedevis, nomclient, libelle) {
-  return listedetaildevis;
+export function filtredetaildevis(listedetaildevis, marque, modele) {
+  return listedetaildevis.filter((detail) => {
+    // Vérifier si la date du devis correspond à la date spécifiée
+    const marquematch = !marque || detail.marque.toLowerCase().includes(marque.toLowerCase());
+
+    // Vérifier si le nom du client correspond au nom spécifié
+    const modeleMatch = !modele || detail.modele.toLowerCase().includes(modele.toLowerCase());
+
+    // Retourner true si les deux conditions sont remplies
+    return marquematch && modeleMatch;
+  });
 }

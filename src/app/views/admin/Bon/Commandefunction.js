@@ -1,5 +1,6 @@
 import { useState } from 'react';
-export const useListematerielFunctions = (data) => {
+
+export const Commandefunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -8,10 +9,9 @@ export const useListematerielFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [numserie, setNumserie] = useState('');
-  const [categoriemateriel, setCategoriemateriel] = useState('');
-  const [typemateriel, setTypemateriel] = useState('');
-  const [couleur, setCouleur] = useState(['1']);
+  const [libelle, setLibelle] = useState('');
+  const [datecommande, setDatecommande] = useState('');
+  const [client, setClient] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -24,9 +24,9 @@ export const useListematerielFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.id);
+    setEditingId(row.idboncommande);
     setIsEditClicked(true);
-    setSelectedRowId(row.id);
+    setSelectedRowId(row.idboncommande);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -37,34 +37,28 @@ export const useListematerielFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, id) => {
+  const handleSelection = (event, idboncommande) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
+      setSelectedIds([...selectedIds, idboncommande]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
+      setSelectedIds(selectedIds.filter((i) => i !== idboncommande));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.listemateriels.map((row) => row.idmateriel));
+      setSelectedIds(data.map((row) => row.idboncommande));
     } else {
       setSelectedIds([]);
     }
   };
 
+  const filtredata = filtrecommande(data, datecommande, client);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtremateriel(
-    data.listemateriels,
-    numserie,
-    categoriemateriel,
-    typemateriel,
-    couleur
-  );
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -101,28 +95,27 @@ export const useListematerielFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setCouleur,
-    setNumserie,
-    setTypemateriel,
-    setCategoriemateriel,
-    categoriemateriel,
-    couleur,
-    numserie,
-    typemateriel
+    setClient,
+    setDatecommande,
+    datecommande,
+    libelle,
+    setLibelle,
+    client
   };
 };
-// Filtre
-export function filtremateriel(listemateriel, numserie, categoriemateriel, typemateriel, couleur) {
-  return listemateriel.filter((Item) => {
-    const numSerieMatch = !numserie || Item.numserie.toLowerCase().includes(numserie.toLowerCase());
-    const categorieMatch =
-      !categoriemateriel ||
-      Item.categoriemateriel.toLowerCase().includes(categoriemateriel.toLowerCase());
 
-    const typeMatch =
-      !typemateriel || Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
-    const couleurtMatch = !couleur || Item.couleur.toLowerCase().includes(couleur.toLowerCase());
+export function filtrecommande(listeboncommande, datecommande, nomclient) {
+  return listeboncommande.filter((commande) => {
+    // Vérifier si la date du devis correspond à la date spécifiée
+    const dateMatch =
+      !datecommande ||
+      new Date(commande.dateboncommande).getTime() === new Date(datecommande).getTime();
 
-    return numSerieMatch && categorieMatch && typeMatch && couleurtMatch;
+    // Vérifier si le nom du client correspond au nom spécifié
+    const nomClientMatch =
+      !nomclient || commande.nom.toLowerCase().includes(nomclient.toLowerCase());
+
+    // Retourner true si les deux conditions sont remplies
+    return dateMatch && nomClientMatch;
   });
 }

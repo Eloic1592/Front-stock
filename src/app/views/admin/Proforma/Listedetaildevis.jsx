@@ -13,7 +13,8 @@ import {
   MenuItem,
   Grid,
   Snackbar,
-  Alert
+  Alert,
+  TextField
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -49,19 +50,17 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setClient,
-    client,
-    datedevis,
-    setDatedevis,
-    libelle,
-    setLibelle,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
-    sortedData
+    sortedData,
+    marque,
+    setMarque,
+    modele,
+    setModele
   } = useDetaildevisFunctions(data);
 
   const [message, setMessage] = useState({
@@ -107,6 +106,37 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="marque"
+                  variant="outlined"
+                  label="Marque"
+                  value={marque}
+                  onChange={(event) => setMarque(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  id="nomclient"
+                  size="small"
+                  type="text"
+                  name="nomclient"
+                  label="Modele"
+                  value={modele}
+                  onChange={(event) => setModele(event.target.value)}
+                />
+              </Grid>
+            </Grid>
+          </SimpleCard>
+        </Grid>
         <Grid item>
           <SimpleCard title="Details du devis">
             {/* Tri de tables */}
@@ -230,6 +260,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="error"
+                                onClick={cancelEdit}
                               >
                                 <Icon>close</Icon>
                               </IconButton>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
-export const Commandefunctions = (data) => {
+export const Livraisonfunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -10,7 +11,7 @@ export const Commandefunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [libelle, setLibelle] = useState('');
-  const [datecommande, setDatecommande] = useState('');
+  const [datelivraison, setDatelivraison] = useState('');
   const [client, setClient] = useState('');
 
   const handleChangePage = (_, newPage) => {
@@ -24,9 +25,9 @@ export const Commandefunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.idboncommande);
+    setEditingId(row.idbonlivraison);
     setIsEditClicked(true);
-    setSelectedRowId(row.idboncommande);
+    setSelectedRowId(row.idbonlivraison);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -37,24 +38,24 @@ export const Commandefunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, idboncommande) => {
+  const handleSelection = (event, idbonlivraison) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, idboncommande]);
+      setSelectedIds([...selectedIds, idbonlivraison]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== idboncommande));
+      setSelectedIds(selectedIds.filter((i) => i !== idbonlivraison));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.idboncommande));
+      setSelectedIds(data.map((row) => row.idbonlivraison));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtrecommande(data, datecommande, client);
+  const filtredata = filtrelivraison(data, datelivraison, client);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -96,14 +97,25 @@ export const Commandefunctions = (data) => {
     handleSelectColumn,
     sortedData,
     setClient,
-    setDatecommande,
-    datecommande,
-    libelle,
-    setLibelle,
-    client
+    client,
+    setDatelivraison,
+    datelivraison
   };
 };
 
-export function filtrecommande(listeboncommande, datecommande, nomclient) {
-  return listeboncommande;
+export function filtrelivraison(listelivraison, datelivraison, nomclient) {
+  return listelivraison.filter((livraison) => {
+    // Vérifier si la date du devis correspond à la date spécifiée
+    const dateMatch =
+      !datelivraison ||
+      new Date(formatDate(livraison.datebonlivraison)).getTime() ===
+        new Date(datelivraison).getTime();
+
+    // Vérifier si le nom du client correspond au nom spécifié
+    const nomClientMatch =
+      !nomclient || livraison.nom.toLowerCase().includes(nomclient.toLowerCase());
+
+    // Retourner true si les deux conditions sont remplies
+    return dateMatch && nomClientMatch;
+  });
 }

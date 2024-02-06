@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
 export const useListedevisFunctions = (data) => {
   const [page, setPage] = useState(0);
@@ -104,17 +105,16 @@ export const useListedevisFunctions = (data) => {
   };
 };
 
-export function filtredevis(listedevis, datedevis, nomclient, setlibelle) {
+export function filtredevis(listedevis, datedevis, nomclient) {
   return listedevis.filter((devis) => {
     // Vérifier si la date du devis correspond à la date spécifiée
     const dateDevisMatch =
-      !datedevis || new Date(devis.datedevis).getTime() === new Date(datedevis).getTime();
+      !datedevis ||
+      new Date(new Date(formatDate(devis.datedevis)).getTime()).getTime() ===
+        new Date(datedevis).getTime();
 
     // Vérifier si le nom du client correspond au nom spécifié
     const nomClientMatch = !nomclient || devis.nom.toLowerCase().includes(nomclient.toLowerCase());
-
-    // const libelleMatch =
-    //   !setlibelle || devis.libelle.toLowerCase().includes(setlibelle.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
     return dateDevisMatch && nomClientMatch;

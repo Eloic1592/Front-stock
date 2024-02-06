@@ -10,7 +10,11 @@ import {
   MenuItem,
   Grid,
   Icon,
-  IconButton
+  IconButton,
+  Button,
+  Snackbar,
+  Alert,
+  Checkbox
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -32,7 +36,47 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   ];
 
   const [data, setData] = useState([]);
+  const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
+
+  const handleSubmit = () => {
+    let commande = [];
+    commande = selectedIds.map((id) => ({
+      idproforma: id,
+      dateboncommande: new Date()
+    }));
+
+    let url = baseUrl + '/boncommande/createcommande';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(commande),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   const {
     editingId,
@@ -49,12 +93,9 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     setClient,
     datevalidation,
     setDatevalidation,
-    handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
+    handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
   } = useListeproformafunctions(data);
@@ -170,11 +211,33 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
+              <Grid item xs={3}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  disabled={selectedIds.length === 0}
+                  onClick={handleSubmit}
+                >
+                  Generer bon de commande
+                </Button>
+              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
+                  <TableCell align="left">
+                    <Checkbox
+                      checked={data.every((row) => selectedIds.includes(row.idproforma))}
+                      indeterminate={
+                        data.some((row) => selectedIds.includes(row.idproforma)) &&
+                        !data.every((row) => selectedIds.includes(row.idproforma))
+                      }
+                      onChange={handleSelectAll}
+                    />
+                  </TableCell>
                   <TableCell align="left">ID proforma</TableCell>
                   <TableCell align="left">Num devis</TableCell>
                   <TableCell align="left">Nom client</TableCell>
@@ -190,6 +253,12 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedIds.includes(row.idproforma)}
+                            onChange={(event) => handleSelection(event, row.idproforma)}
+                          />
+                        </TableCell>
                         <TableCell>{row.idproforma}</TableCell>
                         <TableCell>{row.iddevis}</TableCell>
                         <TableCell>{row.nom}</TableCell>
@@ -238,6 +307,11 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

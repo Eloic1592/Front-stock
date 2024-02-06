@@ -190,3 +190,15 @@ export function formatDate(timestamp) {
 
   return formattedDate;
 }
+
+export function formatNumber(nombre) {
+  nombre = nombre.toString();
+  let partieEntiere = nombre.split('.')[0];
+  let partieDecimale = nombre.split('.')[1];
+  partieEntiere = partieEntiere.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  if (partieDecimale) {
+    return partieEntiere + '.' + partieDecimale;
+  } else {
+    return partieEntiere;
+  }
+}

@@ -14,10 +14,8 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import { Container, AutoComplete } from 'app/views/style/style';
-import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
+import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import Listedetaildevis from './Listedetaildevis';
 import { useParams } from 'react-router-dom';
 import Listedetailproforma from './Listedetailproforma';
 

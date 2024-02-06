@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { formatNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/Materiel/function';
@@ -202,74 +203,43 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setNumserie(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-                <Select
-                  labelId="select-label-category"
+                <TextField
+                  fullWidth
                   size="small"
-                  sx={{ mb: 3 }}
+                  id="categoriemateriel"
+                  type="text"
+                  label="Categorie"
+                  name="numserie"
+                  variant="outlined"
                   value={categoriemateriel}
-                  onChange={(event) => {
-                    const selectedValue = event.target.value;
-                    // Utilisez selectedValue comme vous le souhaitez, par exemple, pour mettre à jour l'état local
-                    setCategoriemateriel(selectedValue);
-                  }}
-                >
-                  <MenuItem value="1">Toutes categories</MenuItem>
-                  {data.categoriemateriels.map((row) => (
-                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                      {row.categoriemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-
-                <Select
-                  labelId="select-label-type"
-                  size="small"
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
                   sx={{ mb: 3 }}
+                />
+                <TextField
+                  fullWidth
+                  size="small"
+                  id="typemateriel"
+                  type="text"
+                  label="Type"
+                  name="typemateriel"
+                  variant="outlined"
                   value={typemateriel}
-                  onChange={(event) => {
-                    const selectedValue = event.target.value;
-                    // Utilisez selectedValue comme vous le souhaitez, par exemple, pour mettre à jour l'état local
-                    setTypemateriel(selectedValue);
-                  }}
-                >
-                  <MenuItem value="1">Tous types</MenuItem>
-                  {data.typemateriels.map((row) => (
-                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                      {row.typemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-
-                <Select
-                  labelId="select-label-color"
-                  size="small"
+                  onChange={(event) => setTypemateriel(event.target.value)}
                   sx={{ mb: 3 }}
+                />
+
+                <TextField
+                  fullWidth
+                  size="small"
+                  id="couleur"
+                  type="text"
+                  label="Couleur"
+                  name="couleur"
+                  variant="outlined"
                   value={couleur}
                   onChange={(event) => setCouleur(event.target.value)}
-                >
-                  <MenuItem value="1">Toutes couleurs</MenuItem>
-                  {[
-                    'Noir',
-                    'Blanc',
-                    'Gris',
-                    'Rouge',
-                    'Bleu',
-                    'Vert',
-                    'Jaune',
-                    'Marron',
-                    'Violet',
-                    'Rose',
-                    'Orange',
-                    'Beige',
-                    'Turquoise',
-                    'Argenté',
-                    'Doré'
-                  ].map((color, index) => (
-                    <MenuItem key={index} value={color}>
-                      {color}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  sx={{ mb: 3 }}
+                />
               </div>
             </form>
           </SimpleCard>
@@ -379,8 +349,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         <TableCell>{row.typemateriel}</TableCell>
                         <TableCell>{row.modele}</TableCell>
                         <TableCell>{row.numserie}</TableCell>
-                        <TableCell>{row.prixvente}</TableCell>
-                        <TableCell>{row.caution}</TableCell>
+                        <TableCell>{formatNumber(row.prixvente)}</TableCell>
+                        <TableCell>{formatNumber(row.caution)}</TableCell>
                         <TableCell>{row.couleur}</TableCell>
                         <TableCell>
                           <IconButton

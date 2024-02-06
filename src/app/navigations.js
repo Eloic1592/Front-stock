@@ -37,7 +37,6 @@ export const navigations = [
       { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
       { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },
-      { name: 'Bon de commande', iconText: 'SI', path: '/admin/commande' },
       { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
     ]
   },

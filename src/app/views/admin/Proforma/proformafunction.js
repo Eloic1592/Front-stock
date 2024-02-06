@@ -10,7 +10,6 @@ export const useListeproformafunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [libelle, setLibelle] = useState('');
   const [datevalidation, setDatevalidation] = useState('');
   const [client, setClient] = useState('');
 
@@ -25,9 +24,9 @@ export const useListeproformafunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.iddevis);
+    setEditingId(row.idproforma);
     setIsEditClicked(true);
-    setSelectedRowId(row.iddevis);
+    setSelectedRowId(row.idproforma);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -49,7 +48,7 @@ export const useListeproformafunctions = (data) => {
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.clientdevis.map((row) => row.iddevis));
+      setSelectedIds(data.map((row) => row.idproforma));
     } else {
       setSelectedIds([]);
     }
