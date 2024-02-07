@@ -119,8 +119,11 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         const responseData = await response.json();
         setData(responseData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
 

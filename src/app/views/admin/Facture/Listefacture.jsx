@@ -12,16 +12,23 @@ import {
   Checkbox,
   Select,
   MenuItem,
-  Grid
+  Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListefactureFunctions } from 'app/views/admin/Facture/function';
 
 const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
-  // Colonne
+  const handleAlertClose = () => setMessage({ open: false });
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
 
   const columns = [
     { label: 'ID', field: 'idmouvementdestock', align: 'center' },
@@ -69,7 +76,13 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListefactureFunctions(data);
 
   //  Use effect
-  useEffect(() => {}, [sortedData]);
+  useEffect(() => {
+    setMessage({
+      text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+      severity: 'error',
+      open: true
+    });
+  }, []);
 
   return (
     <Box width="100%" overflow="auto">
@@ -284,7 +297,12 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>
+      </Grid>{' '}
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

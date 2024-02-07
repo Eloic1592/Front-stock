@@ -1,15 +1,25 @@
-import { Box, Icon } from '@mui/material';
+import { Box, Icon, Snackbar, Alert } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { Container } from 'app/views/style/style';
 
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
-
 const Archives = () => {
-  useEffect(() => {}, []);
+  const handleAlertClose = () => setMessage({ open: false });
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
+  useEffect(() => {
+    setMessage({
+      text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+      severity: 'error',
+      open: true
+    });
+  }, []);
 
   return (
     <Container>
@@ -74,6 +84,11 @@ const Archives = () => {
           </SimpleCard>
         </Grid>
       </Grid>
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
