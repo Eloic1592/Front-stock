@@ -8,7 +8,9 @@ import {
   DialogTitle,
   Dialog,
   Grid,
-  Button
+  Button,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 
@@ -26,7 +28,7 @@ const Naturemouvement = () => {
 
   // Input
   const [naturemouvement, setNaturemouvement] = useState('');
-  // const [categoriemouvement, setCategoriemouvement] = useState('1');
+  const [typemouvement, setTypemouvement] = useState('1');
 
   // Message
   const [message, setMessage] = useState({
@@ -116,15 +118,15 @@ const Naturemouvement = () => {
                   value={naturemouvement}
                   onChange={(event) => setNaturemouvement(event.target.value)}
                 />
-                {/* <Select
-              fullWidth
-              labelId="select-label"
-              value={categoriemouvement}
-              onChange={(event) => setCategoriemouvement(event.target.value)}
-            >
-              <MenuItem value="1">Physique</MenuItem>
-              <MenuItem value="2">Fictif</MenuItem>
-            </Select> */}
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={typemouvement}
+                  onChange={(event) => setTypemouvement(event.target.value)}
+                >
+                  <MenuItem value="1">Physique</MenuItem>
+                  <MenuItem value="2">Fictif</MenuItem>
+                </Select>
               </DialogContent>
 
               <DialogActions>

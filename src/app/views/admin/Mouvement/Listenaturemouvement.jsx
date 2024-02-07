@@ -34,6 +34,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdNaturemouvement, setEditedIdNaturemouvement] = useState(null);
   const [editedNaturemouvement, setEditedNaturemouvement] = useState(null);
+  const [editedTypemouvement, setEditedTypemouvement] = useState('1');
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -76,7 +77,8 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const handleSubmit = () => {
     let naturemouvement = {
       idnaturemouvement: editedIdNaturemouvement,
-      naturemouvement: editedNaturemouvement
+      naturemouvement: editedNaturemouvement,
+      typemouvement: editedTypemouvement
     };
     let url = baseUrl + '/naturemouvement/createnatmouvement';
     fetch(url, {
@@ -210,8 +212,8 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     idnaturemouvement
                   </TableCell>
                   <TableCell key="naturemouvement" align="left">
-                    naturemouvement
-                  </TableCell>
+                    nature mouvement
+                  </TableCell>{' '}
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -242,6 +244,21 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                   )
                                 }
                               />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editedTypemouvement}
+                                onChange={(event) => setEditedTypemouvement(event.target.value)}
+                              >
+                                <MenuItem value="1" key="1">
+                                  Physique
+                                </MenuItem>
+                                <MenuItem value="2" key="2">
+                                  Fictif
+                                </MenuItem>
+                              </Select>
                             </TableCell>
                           </>
                         ) : (
