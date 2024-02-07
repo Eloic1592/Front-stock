@@ -125,7 +125,7 @@ const Naturemouvement = () => {
                   onChange={(event) => setTypemouvement(event.target.value)}
                 >
                   <MenuItem value="1">Physique</MenuItem>
-                  <MenuItem value="2">Fictif</MenuItem>
+                  <MenuItem value="0">Fictif</MenuItem>
                 </Select>
               </DialogContent>
 

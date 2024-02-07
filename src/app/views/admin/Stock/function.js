@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
 export const useMphysiqueFunctions = (data) => {
   const [page, setPage] = useState(0);
@@ -9,9 +10,9 @@ export const useMphysiqueFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [mouvement, setMouvement] = useState(['0']);
-  const [naturemouvement, setNaturemouvement] = useState(['1']);
-  const [date, setDate] = useState('');
+  const [mouvement, setMouvement] = useState('');
+  const [naturemouvement, setNaturemouvement] = useState('');
+  const [datedepot, setDatedepot] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -24,9 +25,9 @@ export const useMphysiqueFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.id);
+    setEditingId(row.idmouvementstock);
     setIsEditClicked(true);
-    setSelectedRowId(row.id);
+    setSelectedRowId(row.idmouvementstock);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -37,18 +38,18 @@ export const useMphysiqueFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, id) => {
+  const handleSelection = (event, idmouvementstock) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
+      setSelectedIds([...selectedIds, idmouvementstock]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
+      setSelectedIds(selectedIds.filter((i) => i !== idmouvementstock));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.mouvementStocks.map((row) => row.idmouvementstock));
     } else {
       setSelectedIds([]);
     }
@@ -58,7 +59,12 @@ export const useMphysiqueFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtrestockphysique(data.mouvementStocks, date, mouvement, naturemouvement);
+  const filtredata = filtrestockphysique(
+    data.mouvementStocks,
+    datedepot,
+    mouvement,
+    naturemouvement
+  );
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -96,8 +102,8 @@ export const useMphysiqueFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     mouvement,
-    setDate,
-    date,
+    setDatedepot,
+    datedepot,
     setNaturemouvement,
     naturemouvement,
     mouvement,
@@ -105,18 +111,15 @@ export const useMphysiqueFunctions = (data) => {
   };
 };
 function filtrestockphysique(mouvementStocks, datedepot, typemouvement, naturemouvement) {
-  if (datedepot != null || typemouvement != 0 || naturemouvement != 1) {
-    return mouvementStocks.filter((Item) => {
-      // Vérifier si chaque critère est différent de 1 avant de l'appliquer
-      const datedepotdepotMatch = datedepot != null ? Item.datedepot == datedepot : true;
-      const typemouvementMatch = typemouvement != 0 ? Item.typemouvement == typemouvement : true;
-      const naturemouvementMatch =
-        naturemouvement != 1 ? Item.naturemouvemen == naturemouvement : true;
-      // Retourner vrai si l'élément répond à tous les critères
-      return datedepotdepotMatch && typemouvementMatch && naturemouvementMatch;
-    });
-  } else {
-    // Si tous les critères sont égaux à 1, retourner la liste de matériel complète
-    return mouvementStocks;
-  }
+  return mouvementStocks.filter((item) => {
+    // Check if each criterion is different from  1 before applying it
+    const datedepotMatch =
+      !datedepot ||
+      new Date(formatDate(item.datedepot)).getTime() === new Date(datedepot).getTime();
+    const typemouvementMatch = !typemouvement || item.type === parseInt(typemouvement);
+    const naturemouvementMatch = !naturemouvement || item.idnaturemouvement === naturemouvement;
+
+    // Return true if the item meets all the criteria
+    return datedepotMatch && typemouvementMatch && naturemouvementMatch;
+  });
 }

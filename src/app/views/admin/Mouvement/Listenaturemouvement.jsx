@@ -255,7 +255,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 <MenuItem value="1" key="1">
                                   Physique
                                 </MenuItem>
-                                <MenuItem value="2" key="2">
+                                <MenuItem value="0" key="0">
                                   Fictif
                                 </MenuItem>
                               </Select>
