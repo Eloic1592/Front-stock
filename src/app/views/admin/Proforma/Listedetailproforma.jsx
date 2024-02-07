@@ -140,32 +140,11 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
-                    <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.iddetaildevis))}
-                      indeterminate={
-                        data.some((row) => selectedIds.includes(row.iddetaildevis)) &&
-                        !data.every((row) => selectedIds.includes(row.iddetaildevis))
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
                   <TableCell key="iddetaildevis" align="left">
                     ID
                   </TableCell>
@@ -193,12 +172,6 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.iddetaildevis)}
-                            onChange={(event) => handleSelection(event, row.iddetaildevis)}
-                          />
-                        </TableCell>
                         <TableCell align="left">{row.iddetaildevis}</TableCell>
                         <TableCell align="left">{row.marque}</TableCell>
                         <TableCell align="left">{row.modele}</TableCell>

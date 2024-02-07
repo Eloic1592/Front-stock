@@ -235,9 +235,13 @@ const Stockfictif = () => {
                       value={naturemouvement}
                       onChange={(event) => setNaturemouvement(event.target.value)}
                     >
-                      <MenuItem value="1">Choisir un mouvement</MenuItem>
+                      <MenuItem value="1" key="1">
+                        Choisir un mouvement
+                      </MenuItem>
                       {data.naturemouvements.map((row) => (
-                        <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                        <MenuItem value={row.idnaturemouvement} key={row.idnaturemouvement}>
+                          {row.naturemouvement}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
@@ -259,8 +263,12 @@ const Stockfictif = () => {
                       onChange={(event) => setTypemouvement(event.target.value)}
                     >
                       <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
-                      <MenuItem value="1">Entree</MenuItem>
-                      <MenuItem value="-1">Sortie</MenuItem>
+                      <MenuItem value="1" key="1">
+                        Entree
+                      </MenuItem>
+                      <MenuItem value="-1" key="-1">
+                        Sortie
+                      </MenuItem>
                     </Select>
                   </Grid>
                 </Grid>
@@ -277,7 +285,7 @@ const Stockfictif = () => {
                     >
                       <MenuItem value="1">Choisir un materiel</MenuItem>
                       {data.listemateriels.map((row) => (
-                        <MenuItem value={row.idmateriel}>
+                        <MenuItem value={row.idmateriel} key={row.idmateriel}>
                           {row.marque}/{row.modele}-{row.numserie}
                         </MenuItem>
                       ))}
@@ -335,7 +343,9 @@ const Stockfictif = () => {
                     >
                       <MenuItem value="1">Choisir un depot</MenuItem>
                       {data.depot.map((row) => (
-                        <MenuItem value={row.iddepot}>{row.depot}</MenuItem>
+                        <MenuItem value={row.iddepot} key={row.iddepot}>
+                          {row.depot}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
@@ -351,7 +361,9 @@ const Stockfictif = () => {
                     >
                       <MenuItem value="1">Choisir un etudiant</MenuItem>
                       {data.etudiants.map((row) => (
-                        <MenuItem value={row.idetudiant}>{row.idetudiant}</MenuItem>
+                        <MenuItem value={row.idetudiant} key={row.idetudiant}>
+                          {row.idetudiant}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
@@ -424,7 +436,6 @@ const Stockfictif = () => {
               <DialogTitle id="form-dialog-title">
                 Voulez-vous vraiment tout reinitialiser ?
               </DialogTitle>
-              \
               <DialogActions>
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler

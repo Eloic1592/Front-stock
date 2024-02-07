@@ -107,7 +107,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
+          <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField

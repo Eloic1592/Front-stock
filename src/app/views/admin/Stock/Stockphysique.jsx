@@ -207,6 +207,8 @@ const Stockphysique = () => {
               </Grid>
             </Grid>
           </Box>
+        </Grid>
+        <Grid item>
           <Box>
             <Dialog
               open={open}
@@ -227,7 +229,9 @@ const Stockphysique = () => {
                     >
                       <MenuItem value="1">Choisir un mouvement</MenuItem>
                       {data.naturemouvements.map((row) => (
-                        <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                        <MenuItem value={row.idnaturemouvement} key={row.idnaturemouvement}>
+                          {row.naturemouvement}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
@@ -249,8 +253,12 @@ const Stockphysique = () => {
                       onChange={(event) => setTypemouvement(event.target.value)}
                     >
                       <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
-                      <MenuItem value="1">Entree</MenuItem>
-                      <MenuItem value="-1">Sortie</MenuItem>
+                      <MenuItem value="1" key="1">
+                        Entree
+                      </MenuItem>
+                      <MenuItem value="-1" key="-1">
+                        Sortie
+                      </MenuItem>
                     </Select>
                   </Grid>
                 </Grid>
@@ -268,7 +276,7 @@ const Stockphysique = () => {
                     >
                       <MenuItem value="1">Choisir un article</MenuItem>
                       {data.articles.map((row) => (
-                        <MenuItem value={row.idarticle}>
+                        <MenuItem value={row.idarticle} key={row.idarticle}>
                           {row.modele}/{row.codearticle}
                         </MenuItem>
                       ))}
@@ -325,7 +333,7 @@ const Stockphysique = () => {
                     >
                       <MenuItem value="1">Choisir un depot</MenuItem>
                       {data.depot.map((row) => (
-                        <MenuItem value={row.iddepot}>
+                        <MenuItem value={row.iddepot} key={row.iddepot}>
                           {row.iddepot}-{row.depot}
                         </MenuItem>
                       ))}
@@ -409,44 +417,40 @@ const Stockphysique = () => {
               </DialogActions>
             </Dialog>
           </Box>
-
-          <Box>
-            <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
-              <DialogContent>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  label="Nom du fichier"
-                  value={file}
-                  InputProps={{
-                    readOnly: true,
-                    endAdornment: (
-                      <Button variant="contained" component="label">
-                        Importer
-                        <input
-                          type="file"
-                          hidden
-                          onChange={(event) => setFile(event.target.value)}
-                        />
-                      </Button>
-                    )
-                  }}
-                />
-              </DialogContent>
-
-              <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handleFileClose}>
-                  Annuler
-                </Button>
-                <Button onClick={handleSubmit} color="primary">
-                  Valider
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
         </Grid>
       </Grid>
+      <Box>
+        <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
+          <DialogContent>
+            <TextField
+              variant="outlined"
+              fullWidth
+              label="Nom du fichier"
+              value={file}
+              InputProps={{
+                readOnly: true,
+                endAdornment: (
+                  <Button variant="contained" component="label">
+                    Importer
+                    <input type="file" hidden onChange={(event) => setFile(event.target.value)} />
+                  </Button>
+                )
+              }}
+            />
+          </DialogContent>
+
+          <DialogActions>
+            <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+              Annuler
+            </Button>
+            <Button onClick={handleSubmit} color="primary">
+              Valider
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

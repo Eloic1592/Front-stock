@@ -11,7 +11,7 @@ export const useListematerielFunctions = (data) => {
   const [numserie, setNumserie] = useState('');
   const [categoriemateriel, setCategoriemateriel] = useState('');
   const [typemateriel, setTypemateriel] = useState('');
-  const [couleur, setCouleur] = useState(['1']);
+  const [couleur, setCouleur] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);

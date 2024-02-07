@@ -182,16 +182,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell>
-                      <Checkbox
-                        checked={data.every((row) => selectedIds.includes(row.idbonlivraison))}
-                        indeterminate={
-                          data.some((row) => selectedIds.includes(row.idbonlivraison)) &&
-                          !data.every((row) => selectedIds.includes(row.idbonlivraison))
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
                     <TableCell key="idbonlivraison" align="left">
                       ID livraison
                     </TableCell>
@@ -214,12 +204,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(row.idbonlivraison)}
-                              onChange={(event) => handleSelection(event, row.idbonlivraison)}
-                            />
-                          </TableCell>
                           <TableCell align="left">{row.idbonlivraison}</TableCell>
                           <TableCell align="left">{row.nom}</TableCell>
                           <TableCell align="left">{converttodate(row.datebonlivraison)}</TableCell>

@@ -19,7 +19,14 @@ export const navigations = [
         children: [
           { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
           { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
-          { name: 'Proforma', iconText: 'SI', path: '/admin/proforma' },
+          {
+            name: 'Proforma',
+            iconText: 'arrows-right',
+            children: [
+              { name: 'Tous les proformas', iconText: 'SI', path: '/admin/proforma' },
+              { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
+            ]
+          },
           { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
           { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
         ]
@@ -36,8 +43,7 @@ export const navigations = [
 
       { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
-      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' },
-      { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
+      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
     ]
   },
 

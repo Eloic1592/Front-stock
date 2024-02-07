@@ -185,18 +185,6 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setClient(event.target.value)}
                 />
               </Grid>
-              {/* <Grid item xs={4}>
-                <TextField
-                  fullWidth
-                  id="libelle"
-                  size="small"
-                  type="text"
-                  name="libelle"
-                  label="Libelle du devis"
-                  value={libelle}
-                  onChange={(event) => setLibelle(event.target.value)}
-                />
-              </Grid> */}
             </Grid>
           </SimpleCard>
         </Grid>
@@ -287,6 +275,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onChange={(event) => handleSelection(event, row.iddevis)}
                           />
                         </TableCell>
+
                         <TableCell align="left">{row.iddevis}</TableCell>
                         <TableCell align="left">{row.nom}</TableCell>
                         <TableCell align="left">{converttodate(row.datedevis)}</TableCell>
@@ -310,6 +299,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>info</Icon>
                           </IconButton>
+
                           {isEditClicked && row.iddevis === selectedRowId && (
                             <>
                               <IconButton

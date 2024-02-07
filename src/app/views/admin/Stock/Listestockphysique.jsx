@@ -12,7 +12,9 @@ import {
   Checkbox,
   Select,
   MenuItem,
-  Grid
+  Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -31,10 +33,17 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Nature', field: 'naturemouvement', align: 'center' }
     // Other columns...
   ];
+
+  const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [data, setData] = useState({
     mouvementStocks: [],
     naturemouvement: []
+  });
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
   });
 
   const {
@@ -56,7 +65,6 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
-    // handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
@@ -86,7 +94,11 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         };
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
         // Gérer les erreurs de requête Fetch ici
       }
     };
@@ -106,7 +118,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
-        <Grid item>
+        <Grid item key="search">
           <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
@@ -144,10 +156,11 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       value={naturemouvement}
                       onChange={(event) => setNaturemouvement(event.target.value)}
                     >
-                      {' '}
                       <MenuItem value="1">Toutes natures</MenuItem>
                       {data.naturemouvement.map((row) => (
-                        <MenuItem value={row.idnaturemouvement}>{row.naturemouvement}</MenuItem>
+                        <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
+                          {row.naturemouvement}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Grid>
@@ -157,9 +170,8 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           </SimpleCard>
         </Grid>
 
-        <Grid item>
+        <Grid item key="movementList">
           <SimpleCard title="Liste des mouvements physiques actuels">
-            {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -171,7 +183,9 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                    <MenuItem key={column.field} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -193,7 +207,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -201,7 +215,6 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
             <StyledTable>
               <TableHead>
-                {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell>
                     <Checkbox
@@ -213,29 +226,19 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-
-                  <TableCell key="idmouvementdestock" align="left">
-                    ID mouvement
-                  </TableCell>
-                  <TableCell key="nature" align="left">
-                    Nature
-                  </TableCell>
-                  <TableCell key="modele" align="left">
-                    Type
-                  </TableCell>
-                  <TableCell key="datedepot" align="left">
-                    datedepot
-                  </TableCell>
+                  <TableCell>ID mouvement</TableCell>
+                  <TableCell>Nature</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>datedepot</TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Donnees du tableau */}
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.id}>
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(row.id)}
@@ -244,21 +247,10 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             }
                           />
                         </TableCell>
-                        {isEditClicked && row.idmouvementstock === selectedRowId ? (
-                          <>
-                            <TableCell key={row.idmouvementstock}>{row.idmouvementstock}</TableCell>
-                            <TableCell>{row.datedepot}</TableCell>
-                            <TableCell>{row.typemouvement}</TableCell>
-                            <TableCell>{row.idnaturemouvement}</TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell key={row.idmouvementstock}>{row.idmouvementstock}</TableCell>
-                            <TableCell>{row.datedepot}</TableCell>
-                            <TableCell>{row.typemouvement}</TableCell>
-                            <TableCell>{row.idnaturemouvement}</TableCell>
-                          </>
-                        )}{' '}
+                        <TableCell>{row.idmouvementstock}</TableCell>
+                        <TableCell>{row.datedepot}</TableCell>
+                        <TableCell>{row.typemouvement}</TableCell>
+                        <TableCell>{row.idnaturemouvement}</TableCell>
                         <TableCell>
                           <IconButton
                             className="button"
@@ -269,7 +261,6 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-
                           {isEditClicked && row.iddetailmouvementphysique === selectedRowId && (
                             <>
                               <IconButton
@@ -295,11 +286,13 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>
@@ -321,7 +314,12 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>
+      </Grid>{' '}
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

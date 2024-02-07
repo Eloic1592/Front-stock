@@ -248,20 +248,23 @@ const Listedepot = () => {
                           <>
                             <TableCell>{row.iddepot}</TableCell>
                             <TableCell>{row.depot}</TableCell>
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
                           </>
                         )}
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.iddepot === selectedRowId && (
-                            <>
+
+                        {isEditClicked && row.iddepot === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -280,9 +283,9 @@ const Listedepot = () => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (

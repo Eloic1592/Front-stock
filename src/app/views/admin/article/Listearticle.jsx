@@ -346,20 +346,23 @@ const ListeArticle = () => {
                             <TableCell>{row.modele}</TableCell>
                             <TableCell>{row.codearticle}</TableCell>
                             <TableCell>{row.description}</TableCell>
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
                           </>
                         )}
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.idarticle === selectedRowId && (
-                            <>
+
+                        {isEditClicked && row.idarticle === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -378,9 +381,9 @@ const ListeArticle = () => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (

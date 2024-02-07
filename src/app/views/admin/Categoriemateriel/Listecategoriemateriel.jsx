@@ -259,20 +259,23 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           <>
                             <TableCell>{row.idcategoriemateriel}</TableCell>
                             <TableCell>{row.categoriemateriel}</TableCell>
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
                           </>
                         )}
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.idcategoriemateriel === selectedRowId && (
-                            <>
+
+                        {isEditClicked && row.idcategoriemateriel === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -291,9 +294,9 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (

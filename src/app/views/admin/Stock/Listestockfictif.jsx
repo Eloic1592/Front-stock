@@ -12,10 +12,12 @@ import {
   Checkbox,
   Select,
   MenuItem,
-  Grid
+  Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useMfictifFunctions } from 'app/views/admin/Stock/fictiffunctions';
@@ -35,8 +37,14 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Depot', field: 'depot', align: 'center' }
     // Other columns...
   ];
-
+  const handleAlertClose = () => setMessage({ open: false });
   const data = [];
+  const [message, setMessage] = useState({
+    text: 'Information enregistree',
+    severity: 'success',
+    open: false
+  });
+
   const {
     editingId,
     sortDirection,
@@ -65,52 +73,54 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useMfictifFunctions(data);
 
   //  Use effect
-  useEffect(() => {}, [sortedData]);
+  useEffect(() => {
+    setMessage({
+      text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+      severity: 'error',
+      open: true
+    });
+  }, []);
 
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
-        <Grid item>
+        <Grid item key="search">
           <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={3}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="date"
-                      name="date"
-                      variant="outlined"
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                      <MenuItem value="1">Entree</MenuItem>
-                      <MenuItem value="-1">Sortie</MenuItem>
-                    </Select>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                      <MenuItem value="1">Depot</MenuItem>
-                      <MenuItem value="-1">Salle 6</MenuItem>
-                    </Select>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                      <MenuItem value="1">Don</MenuItem>
-                      <MenuItem value="-1">Transfert</MenuItem>
-                      <MenuItem value="-1">Perte</MenuItem>
-                    </Select>
-                  </Grid>
-                </Grid>
-              </div>
-            </form>
+            <Grid container spacing={2}>
+              <Grid item xs={3}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="date"
+                  name="date"
+                  variant="outlined"
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <Select fullWidth size="small" labelId="select-label" value={'1'}>
+                  <MenuItem value="1">Entree</MenuItem>
+                  <MenuItem value="-1">Sortie</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={3}>
+                <Select fullWidth size="small" labelId="select-label" value={'1'}>
+                  <MenuItem value="1">Depot</MenuItem>
+                  <MenuItem value="-1">Salle 6</MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={3}>
+                <Select fullWidth size="small" labelId="select-label" value={'1'}>
+                  <MenuItem value="1">Don</MenuItem>
+                  <MenuItem value="-1">Transfert</MenuItem>
+                  <MenuItem value="-1">Perte</MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 
-        <Grid item>
+        <Grid item key="movementList">
           <SimpleCard title="Liste des mouvements fictifs actuels">
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -122,8 +132,10 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -145,7 +157,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -154,7 +166,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
             <StyledTable>
               <TableHead>
-                {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell>
                     <Checkbox
@@ -167,7 +178,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     />
                   </TableCell>
                   {columns.map((column, index) => (
-                    // Nom des colonnes du tableau
                     <TableCell key={index} align={column.align || 'left'}>
                       {column.label}
                     </TableCell>
@@ -176,20 +186,19 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Donnees du tableau */}
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.id}>
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(row.id)}
                             onChange={(event) => handleSelection(event, row.id)}
                           />
                         </TableCell>
-                        {columns.map((column, index) => (
-                          <TableCell key={index} align={column.align || 'left'}>
+                        {columns.map((column, columnIndex) => (
+                          <TableCell key={columnIndex} align={column.align || 'left'}>
                             {editingId === row.id ? (
                               <TextField
                                 defaultValue={
@@ -242,11 +251,13 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={columns.length + 2}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>
@@ -268,7 +279,12 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>
+      </Grid>{' '}
+      <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
+        <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
+          {message.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
