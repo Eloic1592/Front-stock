@@ -8,24 +8,25 @@ import {
   TableRow,
   Icon,
   IconButton,
+  TextField,
   Checkbox,
   Select,
   MenuItem,
   Grid,
   Snackbar,
-  Alert,
-  TextField
+  Alert
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
+import Typography from '@mui/material/Typography';
 import { StyledTable, AutoComplete } from 'app/views/style/style';
-import { useDetaildevisFunctions } from 'app/views/admin/Proforma/detailfunction';
+import { useDetaildevisFunctions } from 'app/views/admin/demande/devis/detailfunction';
+import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
+  console.log(iddevis.iddevis);
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetaildevis', align: 'center' },
@@ -49,17 +50,19 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
+    setClient,
+    client,
+    datedevis,
+    setDatedevis,
+    libelle,
+    setLibelle,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
-    sortedData,
-    marque,
-    setMarque,
-    modele,
-    setModele
+    sortedData
   } = useDetaildevisFunctions(data);
 
   const [message, setMessage] = useState({
@@ -76,7 +79,7 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         let devisParams = {
           iddevis: iddevis.iddevis
         };
-        let url = baseUrl + '/devis/detaildevis';
+        let url = baseUrl + '/proforma/detailproforma';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -106,38 +109,7 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="marque"
-                  variant="outlined"
-                  label="Marque"
-                  value={marque}
-                  onChange={(event) => setMarque(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="nomclient"
-                  size="small"
-                  type="text"
-                  name="nomclient"
-                  label="Modele"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
-                />
-              </Grid>
-            </Grid>
-          </SimpleCard>
-        </Grid>
-        <Grid item>
-          <SimpleCard title="Details du devis">
+          <SimpleCard title="Details du proforma">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -168,32 +140,11 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
-                    <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.iddetaildevis))}
-                      indeterminate={
-                        data.some((row) => selectedIds.includes(row.iddetaildevis)) &&
-                        !data.every((row) => selectedIds.includes(row.iddetaildevis))
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
                   <TableCell key="iddetaildevis" align="left">
                     ID
                   </TableCell>
@@ -212,7 +163,6 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableCell key="total" align="left">
                     Total
                   </TableCell>
-                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -222,50 +172,12 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.iddetaildevis)}
-                            onChange={(event) => handleSelection(event, row.iddetaildevis)}
-                          />
-                        </TableCell>
                         <TableCell align="left">{row.iddetaildevis}</TableCell>
                         <TableCell align="left">{row.marque}</TableCell>
                         <TableCell align="left">{row.modele}</TableCell>
                         <TableCell align="left">{row.quantite}</TableCell>
                         <TableCell align="left">{row.pu}</TableCell>
                         <TableCell align="left">{row.total}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.iddetaildevis === selectedRowId && (
-                            <>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={cancelEdit}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </>
-                          )}
-                        </TableCell>
                       </TableRow>
                     ))
                 ) : (
@@ -307,4 +219,4 @@ const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Detailmphysique;
+export default Listedetailproforma;

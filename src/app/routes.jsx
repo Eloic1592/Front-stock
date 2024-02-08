@@ -16,49 +16,57 @@ const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech
 // Admin
 const LoginAdmin = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
 
-const Dashboard = Loadable(lazy(() => import('app/views/admin/Dashboard/Dashboard')));
+const Dashboard = Loadable(lazy(() => import('app/views/admin/dashboard/Dashboard')));
 
-const Bilan = Loadable(lazy(() => import('app/views/admin/Dashboard/Bilan')));
+const Bilan = Loadable(lazy(() => import('app/views/admin/dashboard/Bilan')));
 
 const Article = Loadable(lazy(() => import('app/views/admin/article/Article')));
 
-const TypeMouvement = Loadable(lazy(() => import('app/views/admin/Mouvement/Naturemouvement')));
-
-const TypeMateriel = Loadable(lazy(() => import('app/views/admin/Typemateriel/Typemateriel')));
-
-const Categoriemateriel = Loadable(
-  lazy(() => import('app/views/admin/Categoriemateriel/Categoriemateriel'))
+const TypeMouvement = Loadable(
+  lazy(() => import('app/views/admin/naturemouvement/Naturemouvement'))
 );
 
-const Stockphysique = Loadable(lazy(() => import('app/views/admin/Stock/Stockphysique')));
+const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 
-const Detailphysique = Loadable(lazy(() => import('app/views/admin/Stock/Detailmphysique')));
+const Categoriemateriel = Loadable(
+  lazy(() => import('app/views/admin/categoriemateriel/Categoriemateriel'))
+);
 
-const Detailfictif = Loadable(lazy(() => import('app/views/admin/Stock/Detailmfictif')));
+const Stockphysique = Loadable(lazy(() => import('app/views/admin/mouvementstock/Stockphysique')));
 
-const Stockfictif = Loadable(lazy(() => import('app/views/admin/Stock/Stockfictif')));
+const Detailphysique = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/ListeDetailphysique'))
+);
 
-const Materiel = Loadable(lazy(() => import('app/views/admin/Materiel/Materiel')));
+const Detailfictif = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/ListeDetailfictif'))
+);
 
-const Facture = Loadable(lazy(() => import('app/views/admin/Facture/Facture')));
+const Stockfictif = Loadable(lazy(() => import('app/views/admin/mouvementstock/Stockfictif')));
 
-const Devis = Loadable(lazy(() => import('app/views/admin/Proforma/Devis')));
+const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
 
-const Detaildevis = Loadable(lazy(() => import('app/views/admin/Proforma/Detaildevis')));
+const Facture = Loadable(lazy(() => import('app/views/admin/facture/Facture')));
 
-const Proforma = Loadable(lazy(() => import('app/views/admin/Proforma/Proforma')));
+const Devis = Loadable(lazy(() => import('app/views/admin/demande/devis/Devis')));
 
-const Detailproforma = Loadable(lazy(() => import('app/views/admin/Proforma/Detailproforma')));
+const Detaildevis = Loadable(lazy(() => import('app/views/admin/demande/devis/Detaildevis')));
 
-const Commande = Loadable(lazy(() => import('app/views/admin/Bon/Commande')));
+const Proforma = Loadable(lazy(() => import('app/views/admin/demande/proforma/Proforma')));
 
-const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/Livraison')));
+const Detailproforma = Loadable(
+  lazy(() => import('app/views/admin/demande/proforma/Detailproforma'))
+);
 
-const Depot = Loadable(lazy(() => import('app/views/admin/Depot/Depot')));
+const Commande = Loadable(lazy(() => import('app/views/admin/Bon/commande/Commande')));
 
-const Archives = Loadable(lazy(() => import('app/views/admin/Archives/Archives')));
+const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/livraison/Livraison')));
 
-const Historique = Loadable(lazy(() => import('app/views/admin/Archives/Historique')));
+const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
+
+const Archives = Loadable(lazy(() => import('app/views/admin/archives/Archives')));
+
+const Historique = Loadable(lazy(() => import('app/views/admin/archives/Historique')));
 
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));

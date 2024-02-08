@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListecategoriematerielFunctions } from 'app/views/admin/Categoriemateriel/function';
+import { useListecategoriematerielFunctions } from 'app/views/admin/categoriemateriel/function';
 import { useState } from 'react';
 import { baseUrl } from 'app/utils/constant';
 

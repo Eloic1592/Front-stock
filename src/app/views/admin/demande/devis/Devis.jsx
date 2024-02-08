@@ -14,7 +14,7 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import Listedevis from './Listedevis';
+import Listedevis from '../proforma/Listedevis';
 import { Container, AutoComplete } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';

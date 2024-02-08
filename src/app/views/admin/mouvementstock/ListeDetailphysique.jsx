@@ -19,21 +19,25 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
-import { Livraisonfunctions } from 'app/views/admin/Bon/Livraisonfunction';
+import { Commandefunctions } from 'app/views/admin/Bon/commande/Commandefunction';
 import { baseUrl } from 'app/utils/constant';
-import { converttodate } from 'app/utils/utils';
-
+import { useParams } from 'react-router-dom';
+import { formatNumber } from 'app/utils/utils';
 const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+  const idmouvementstock = useParams();
+
   // Colonne
   const columns = [
-    { label: 'ID Bon livraison', field: 'idbonlivraison', align: 'center' },
-    { label: 'Date livraison', field: 'datelivraison', align: 'center' },
-    { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'bon commande', field: 'idbonlivraison', align: 'center' }
-
+    { label: 'ID', field: 'iddetailmouvementphysique', align: 'center' },
+    { label: 'Date depot', field: 'datedepot', align: 'center' },
+    { label: 'Nature', field: 'naturemouvement', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Prix unitaire', field: 'pu', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' }
     // Other columns...
   ];
-
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [data, setData] = useState([]);
@@ -42,6 +46,40 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     severity: 'success',
     open: false
   });
+
+  const handleSubmit = () => {
+    let livraison = [];
+    livraison = selectedIds.map((id) => ({
+      idmouvementstock: id,
+      datebonlivraison: new Date()
+    }));
+
+    let url = baseUrl + '/bonlivraison/createlivraison';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(livraison),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   const {
     sortDirection,
@@ -55,25 +93,26 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     selectedIds,
     setClient,
     client,
-    setDatelivraison,
-    datelivraison,
+    setDatecommande,
+    datecommande,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = Livraisonfunctions(data);
+  } = Commandefunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/bonlivraison/listlivraison';
+        let mouvementstockParams = {
+          idmouvementstock: idmouvementstock.idmouvementstock
+        };
+        let url = baseUrl + '/mouvementstock/detailstockphysique/';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify({}),
+          body: JSON.stringify(mouvementstockParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -83,6 +122,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
         const responseData = await response.json();
         setData(responseData);
+        console.log(responseData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -100,23 +140,19 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idbonlivraison === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.iddetailmouvementphysique === selectedRowId);
 
       if (selectedRow) {
-        // setEditedIdDepot(selectedrow.idbonlivraisondepot);
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
-  const getInfo = (idbonlivraison) => {
-    window.location.replace('/admin/detaildevis/' + idbonlivraison);
-  };
   return (
     <Container>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <TextField
@@ -125,8 +161,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     type="date"
                     name="datedevis"
                     variant="outlined"
-                    value={datelivraison}
-                    onChange={(event) => setDatelivraison(event.target.value)}
+                    value={datecommande}
+                    onChange={(event) => setDatecommande(event.target.value)}
                     sx={{ mb: 3 }}
                   />
                 </Grid>
@@ -146,7 +182,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </SimpleCard>
           </Grid>
           <Grid item>
-            <SimpleCard title="Liste des livraisons">
+            <SimpleCard title="Details du mouvement">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -182,19 +218,40 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idbonlivraison" align="left">
-                      ID livraison
+                    <TableCell>
+                      <Checkbox
+                        checked={data.every((row) =>
+                          selectedIds.includes(row.iddetailmouvementphysique)
+                        )}
+                        indeterminate={
+                          data.some((row) => selectedIds.includes(row.iddetailmouvementphysique)) &&
+                          !data.every((row) => selectedIds.includes(row.iddetailmouvementphysique))
+                        }
+                        onChange={handleSelectAll}
+                      />
                     </TableCell>
-                    <TableCell key="nom" align="left">
-                      Nom client
+                    <TableCell key="iddetailmouvementphysique" align="left">
+                      ID
                     </TableCell>
-                    <TableCell key="datelivraison" align="left">
-                      Date livraison
+                    <TableCell key="marque" align="left">
+                      Marque
                     </TableCell>
-                    <TableCell key="idboncommande" align="left">
-                      Commande
+                    <TableCell key="modele" align="left">
+                      Modele
                     </TableCell>
-                    <TableCell>Action</TableCell>
+                    <TableCell key="naturemouvement" align="left">
+                      Nature
+                    </TableCell>
+                    <TableCell key="quantite" align="left">
+                      Quantite
+                    </TableCell>
+                    <TableCell key="pu" align="left">
+                      Prix unitaire
+                    </TableCell>
+                    <TableCell key="Depot" align="left">
+                      Depot
+                    </TableCell>
+                    {/* <TableCell>Action</TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -204,51 +261,31 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell align="left">{row.idbonlivraison}</TableCell>
-                          <TableCell align="left">{row.nom}</TableCell>
-                          <TableCell align="left">{converttodate(row.datebonlivraison)}</TableCell>
-                          <TableCell align="left">{row.idproforma}</TableCell>
                           <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(row.iddetailmouvementphysique)}
+                              onChange={(event) =>
+                                handleSelection(event, row.iddetailmouvementphysique)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell align="left">{row.iddetailmouvementphysique}</TableCell>
+                          <TableCell align="left">{row.marque}</TableCell>
+                          <TableCell align="left">{row.modele}</TableCell>
+                          <TableCell align="left">{row.naturemouvement}</TableCell>
+                          <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
+                          <TableCell align="left">{formatNumber(row.pu)}</TableCell>
+                          <TableCell align="left">{row.depot}</TableCell>
+                          {/* <TableCell>
                             <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
-                            >
-                              <Icon>edit_icon</Icon>
-                            </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => getInfo(row.idbonlivraison)}
                             >
                               <Icon>info</Icon>
                             </IconButton>
-                            {isEditClicked && row.idbonlivraison === selectedRowId && (
-                              <>
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="secondary"
-                                >
-                                  <Icon>arrow_forward</Icon>
-                                </IconButton>
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="error"
-                                  onClick={() => cancelEdit(row)}
-                                >
-                                  <Icon>close</Icon>
-                                </IconButton>
-                              </>
-                            )}
-                          </TableCell>
+                          </TableCell> */}
                         </TableRow>
                       ))
                   ) : (
@@ -261,7 +298,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     </TableRow>
                   )}
                 </TableBody>
-              </StyledTable>
+              </StyledTable>{' '}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TablePagination

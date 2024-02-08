@@ -13,24 +13,23 @@ import {
   MenuItem,
   Grid,
   Snackbar,
-  Alert,
-  Button
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
-import { Commandefunctions } from 'app/views/admin/Bon/Commandefunction';
+import { Livraisonfunctions } from 'app/views/admin/Bon/livraison/Livraisonfunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
 const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
   const columns = [
-    { label: 'ID Bon commande', field: 'idboncommande', align: 'center' },
-    { label: 'Date commande', field: 'dateboncommande', align: 'center' },
+    { label: 'ID Bon livraison', field: 'idbonlivraison', align: 'center' },
+    { label: 'Date livraison', field: 'datelivraison', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'proforma', field: 'idproforma', align: 'center' }
+    { label: 'bon commande', field: 'idbonlivraison', align: 'center' }
 
     // Other columns...
   ];
@@ -44,40 +43,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     open: false
   });
 
-  const handleSubmit = () => {
-    let livraison = [];
-    livraison = selectedIds.map((id) => ({
-      idboncommande: id,
-      datebonlivraison: new Date()
-    }));
-
-    let url = baseUrl + '/bonlivraison/createlivraison';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(livraison),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
-
   const {
     sortDirection,
     page,
@@ -90,8 +55,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     selectedIds,
     setClient,
     client,
-    setDatecommande,
-    datecommande,
+    setDatelivraison,
+    datelivraison,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -99,12 +64,12 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = Commandefunctions(data);
+  } = Livraisonfunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/boncommande/listcommande';
+        let url = baseUrl + '/bonlivraison/listlivraison';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -135,23 +100,23 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idboncommande === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.idbonlivraison === selectedRowId);
 
       if (selectedRow) {
-        // setEditedIdDepot(selectedrow.idboncommandedepot);
+        // setEditedIdDepot(selectedrow.idbonlivraisondepot);
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
-  const getInfo = (idboncommande) => {
-    window.location.replace('/admin/detaildevis/' + idboncommande);
+  const getInfo = (idbonlivraison) => {
+    window.location.replace('/admin/detaildevis/' + idbonlivraison);
   };
   return (
     <Container>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher une commande" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher une livraisons" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <TextField
@@ -160,8 +125,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     type="date"
                     name="datedevis"
                     variant="outlined"
-                    value={datecommande}
-                    onChange={(event) => setDatecommande(event.target.value)}
+                    value={datelivraison}
+                    onChange={(event) => setDatelivraison(event.target.value)}
                     sx={{ mb: 3 }}
                   />
                 </Grid>
@@ -181,7 +146,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </SimpleCard>
           </Grid>
           <Grid item>
-            <SimpleCard title="Liste des commandes">
+            <SimpleCard title="Liste des livraisons">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -212,44 +177,22 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
                 </Grid>
-                <Grid item xs={2}>
-                  <Button
-                    className="button"
-                    variant="contained"
-                    aria-label="Edit"
-                    color="secondary"
-                    disabled={selectedIds.length === 0}
-                    onClick={handleSubmit}
-                  >
-                    Generer bon de livraison
-                  </Button>
-                </Grid>
               </Grid>
               <StyledTable>
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell>
-                      <Checkbox
-                        checked={data.every((row) => selectedIds.includes(row.idboncommande))}
-                        indeterminate={
-                          data.some((row) => selectedIds.includes(row.idboncommande)) &&
-                          !data.every((row) => selectedIds.includes(row.idboncommande))
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
-                    <TableCell key="idboncommande" align="left">
-                      Bon commande
+                    <TableCell key="idbonlivraison" align="left">
+                      ID livraison
                     </TableCell>
                     <TableCell key="nom" align="left">
                       Nom client
                     </TableCell>
-                    <TableCell key="dateboncommande" align="left">
-                      Date commande
+                    <TableCell key="datelivraison" align="left">
+                      Date livraison
                     </TableCell>
-                    <TableCell key="idproforma" align="left">
-                      Proforma
+                    <TableCell key="idboncommande" align="left">
+                      Commande
                     </TableCell>
                     <TableCell>Action</TableCell>
                   </TableRow>
@@ -261,15 +204,9 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(row.idboncommande)}
-                              onChange={(event) => handleSelection(event, row.idboncommande)}
-                            />
-                          </TableCell>
-                          <TableCell align="left">{row.idboncommande}</TableCell>
+                          <TableCell align="left">{row.idbonlivraison}</TableCell>
                           <TableCell align="left">{row.nom}</TableCell>
-                          <TableCell align="left">{converttodate(row.dateboncommande)}</TableCell>
+                          <TableCell align="left">{converttodate(row.datebonlivraison)}</TableCell>
                           <TableCell align="left">{row.idproforma}</TableCell>
                           <TableCell>
                             <IconButton
@@ -277,40 +214,10 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
-                            >
-                              <Icon>edit_icon</Icon>
-                            </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => getInfo(row.idboncommande)}
+                              onClick={() => getInfo(row.idbonlivraison)}
                             >
                               <Icon>info</Icon>
                             </IconButton>
-                            {isEditClicked && row.idboncommande === selectedRowId && (
-                              <>
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="secondary"
-                                >
-                                  <Icon>arrow_forward</Icon>
-                                </IconButton>
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="error"
-                                  onClick={() => cancelEdit(row)}
-                                >
-                                  <Icon>close</Icon>
-                                </IconButton>
-                              </>
-                            )}
                           </TableCell>
                         </TableRow>
                       ))

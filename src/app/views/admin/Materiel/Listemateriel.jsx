@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { formatNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListematerielFunctions } from 'app/views/admin/Materiel/function';
+import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {

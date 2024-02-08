@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListetypematerielFunctions } from 'app/views/admin/Typemateriel/function';
+import { useListetypematerielFunctions } from 'app/views/admin/typemateriel/function';
 import { baseUrl } from 'app/utils/constant';
 
 const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {

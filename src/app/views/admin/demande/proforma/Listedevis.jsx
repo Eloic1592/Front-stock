@@ -19,33 +19,68 @@ import {
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable } from 'app/views/style/style';
-import { useMphysiqueFunctions } from 'app/views/admin/Stock/function';
+import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { useListedevisFunctions } from 'app/views/admin/demande/devis/function';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
-const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
-
   const columns = [
-    { label: 'Mouv stock', field: 'idmouvementstock', align: 'center' },
-    { label: 'Date de depot', field: 'datedepot', align: 'center' },
-    { label: 'Mouvement', field: 'mouvement', align: 'center' },
-    { label: 'Nature', field: 'naturemouvement', align: 'center' }
+    { label: 'ID', field: 'iddevis', align: 'center' },
+    { label: 'Nom client', field: 'nom', align: 'center' },
+    { label: 'Date devis', field: 'datedevis', align: 'center' },
+    { label: 'LibelLe', field: 'libelle', align: 'center' }
+
     // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [data, setData] = useState({
-    mouvementStocks: [],
-    naturemouvement: []
+    clientdevis: [],
+    clients: [],
+    articles: []
   });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
+
+  const handleSubmit = () => {
+    let proforma = [];
+    proforma = selectedIds.map((id) => ({
+      iddevis: id,
+      datevalidation: new Date()
+    }));
+
+    let url = baseUrl + '/proforma/createproforma';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(proforma),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   const {
     sortDirection,
@@ -57,12 +92,10 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setMouvement,
-    naturemouvement,
-    setNaturemouvement,
-    mouvement,
-    setDatedepot,
-    datedepot,
+    setClient,
+    client,
+    datedevis,
+    setDatedevis,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -70,13 +103,12 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = useMphysiqueFunctions(data);
+  } = useListedevisFunctions(data);
 
-  //  Use effect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/mouvementstock/contentstockphysique';
+        let url = baseUrl + '/devis/contentdevis';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -90,8 +122,9 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
         const responseData = await response.json();
         const newData = {
-          mouvementStocks: responseData.mouvementStocks || [],
-          naturemouvement: responseData.naturemouvements || []
+          clientdevis: responseData.clientdevis || [],
+          clients: responseData.clients || [],
+          articles: responseData.articles || []
         };
         setData(newData);
       } catch (error) {
@@ -100,7 +133,6 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
@@ -112,73 +144,53 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.iddevisdevis === selectedRowId);
+
+      if (selectedRow) {
+        // setEditedIdDepot(selectedrow.iddevisdepot);
+      }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
-  const getInfo = (idmouvementstock) => {
-    window.location.replace('/admin/detailphysique/' + idmouvementstock);
+  const getInfo = (iddevis) => {
+    window.location.replace('/admin/detaildevis/' + iddevis);
   };
-
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
-        <Grid item key="search">
-          <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
+        <Grid item>
+          <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
                 <TextField
                   fullWidth
                   size="small"
                   type="date"
-                  name="date"
+                  name="datedevis"
                   variant="outlined"
+                  value={datedevis}
+                  onChange={(event) => setDatedevis(event.target.value)}
                   sx={{ mb: 3 }}
-                  value={datedepot}
-                  onChange={(event) => setDatedepot(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Select
+              <Grid item xs={6}>
+                <TextField
                   fullWidth
+                  id="nomclient"
                   size="small"
-                  labelId="select-label"
-                  value={mouvement}
-                  onChange={(event) => setMouvement(event.target.value)}
-                >
-                  <MenuItem value="" key="">
-                    Tous types
-                  </MenuItem>
-                  <MenuItem value="1" key="1">
-                    Entree
-                  </MenuItem>
-                  <MenuItem value="-1" key="-1">
-                    Sortie
-                  </MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={4}>
-                <Select
-                  fullWidth
-                  size="small"
-                  labelId="select-label"
-                  value={naturemouvement}
-                  onChange={(event) => setNaturemouvement(event.target.value)}
-                >
-                  <MenuItem value="">Toutes natures</MenuItem>
-                  {data.naturemouvement.map((row) => (
-                    <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
-                      {row.naturemouvement}
-                    </MenuItem>
-                  ))}
-                </Select>
+                  type="text"
+                  name="nomclient"
+                  label="Nom du client"
+                  value={client}
+                  onChange={(event) => setClient(event.target.value)}
+                />
               </Grid>
             </Grid>
           </SimpleCard>
         </Grid>
-
-        <Grid item key="movementList">
-          <SimpleCard title="Liste des mouvements physiques actuels">
+        <Grid item>
+          <SimpleCard title="Liste des devis">
+            {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -189,8 +201,8 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={handleSelectColumn}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem key={column.field} value={column.field}>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
                       {column.label}
                     </MenuItem>
                   ))}
@@ -213,73 +225,62 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   className="button"
                   variant="contained"
                   aria-label="Edit"
-                  color="error"
+                  color="secondary"
                   disabled={selectedIds.length === 0}
+                  onClick={handleSubmit}
                 >
-                  <Icon>delete</Icon>
+                  Generer un proforma
                 </Button>
               </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
+                {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.mouvementStocks.every((row) =>
-                        selectedIds.includes(row.idmouvementstock)
-                      )}
+                      checked={data.clientdevis.every((row) => selectedIds.includes(row.iddevis))}
                       indeterminate={
-                        data.mouvementStocks.some((row) =>
-                          selectedIds.includes(row.idmouvementstock)
-                        ) &&
-                        !data.mouvementStocks.every((row) =>
-                          selectedIds.includes(row.idmouvementstock)
-                        )
+                        data.clientdevis.some((row) => selectedIds.includes(row.iddevis)) &&
+                        !data.clientdevis.every((row) => selectedIds.includes(row.iddevis))
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmouvementdestock" align="left">
+                  <TableCell key="iddevis" align="left">
                     ID
                   </TableCell>
-                  <TableCell key="datedepot" align="left">
-                    Date depot
+                  <TableCell key="nom" align="left">
+                    nom client
                   </TableCell>
-                  <TableCell key="mouvement" align="left">
-                    Mouvement
+                  <TableCell key="datedevis" align="left">
+                    date devis
                   </TableCell>
-                  <TableCell key="naturemouvement" align="left">
-                    Nature
+                  <TableCell key="libelle" align="left">
+                    Libele
                   </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
+                {/* Donnees du tableau */}
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={row.idmouvementstock}>
+                      <TableRow key={index}>
                         <TableCell>
                           <Checkbox
-                            checked={selectedIds.includes(row.idmouvementstock)}
-                            onChange={(event) => handleSelection(event, row.idmouvementstock)}
+                            checked={selectedIds.includes(row.iddevis)}
+                            onChange={(event) => handleSelection(event, row.iddevis)}
                           />
                         </TableCell>
-                        <TableCell>{row.idmouvementstock}</TableCell>
-                        <TableCell>{converttodate(row.datedepot)}</TableCell>
-                        <TableCell>{row.mouvement}</TableCell>
-                        <TableCell>{row.naturemouvement}</TableCell>
+
+                        <TableCell align="left">{row.iddevis}</TableCell>
+                        <TableCell align="left">{row.nom}</TableCell>
+                        <TableCell align="left">{converttodate(row.datedevis)}</TableCell>
+                        <TableCell align="left">{row.libelle}</TableCell>
                         <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => getInfo(row.idmouvementstock)}
-                          >
-                            <Icon>info</Icon>
-                          </IconButton>
                           <IconButton
                             className="button"
                             variant="contained"
@@ -289,7 +290,17 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-                          {isEditClicked && row.idmouvementstock === selectedRowId && (
+                          <IconButton
+                            className="button"
+                            variant="contained"
+                            aria-label="Edit"
+                            color="primary"
+                            onClick={() => getInfo(row.iddevis)}
+                          >
+                            <Icon>info</Icon>
+                          </IconButton>
+
+                          {isEditClicked && row.iddevis === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
@@ -317,7 +328,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableRow>
                     <TableCell colSpan={6}>
                       <Typography variant="subtitle1" color="textSecondary">
-                        Aucune donnée disponible
+                        Aucune donnee disponible
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -331,7 +342,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.mouvementStocks.length}
+                  count={data.clientdevis.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
@@ -352,4 +363,4 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Listestockphysique;
+export default Listedevis;

@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListemouvementFunctions } from 'app/views/admin/Mouvement/function';
+import { useListemouvementFunctions } from 'app/views/admin/naturemouvement/function';
 import { baseUrl } from 'app/utils/constant';
 
 const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {

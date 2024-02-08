@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListefactureFunctions } from 'app/views/admin/Facture/function';
+import { useListefactureFunctions } from 'app/views/admin/facture/function';
 
 const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const handleAlertClose = () => setMessage({ open: false });

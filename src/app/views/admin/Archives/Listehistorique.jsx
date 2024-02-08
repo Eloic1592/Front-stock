@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useHistoriqueFunctions } from 'app/views/admin/Archives/function';
+import { useHistoriqueFunctions } from 'app/views/admin/archives/function';
 
 const Listehistorique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   //Colonne

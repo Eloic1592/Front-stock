@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListeproformafunctions } from 'app/views/admin/Proforma/proformafunction';
+import { useListeproformafunctions } from 'app/views/admin/demande/proforma/proformafunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState, useEffect } from 'react';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
+import { deleteData, Finddata, insertData, UpdateData } from '../../../functions';
 import Listeproforma from './Listeproforma';
 import { Container, AutoComplete } from 'app/views/style/style';
 
