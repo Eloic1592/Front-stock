@@ -370,7 +370,7 @@ const Stockfictif = () => {
 
                   <Grid item xs={3}>
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       color="secondary"
                       sx={{ mb: 3 }}
                       onClick={handledetails}

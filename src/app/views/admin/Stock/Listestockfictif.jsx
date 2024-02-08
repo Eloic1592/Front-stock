@@ -21,24 +21,25 @@ import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useMfictifFunctions } from 'app/views/admin/Stock/fictiffunctions';
+import { baseUrl } from 'app/utils/constant';
+import { converttodate } from 'app/utils/utils';
 
 const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   // Colonne
-
   const columns = [
-    { label: 'M.Stock', field: 'idmouvementdestock', align: 'center' },
-    { label: 'Date depot', field: 'datedepot', align: 'center' },
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Date debut', field: 'datedeb', align: 'center' },
-    { label: 'Date fin', field: 'datefin', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Numserie', field: 'numserie', align: 'center' },
-    { label: 'Etudiant', field: 'idetudiant', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' }
+    { label: 'Mouv stock', field: 'idmouvementstock', align: 'center' },
+    { label: 'Date de depot', field: 'datedepot', align: 'center' },
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Nature', field: 'naturemouvement', align: 'center' }
     // Other columns...
   ];
+
   const handleAlertClose = () => setMessage({ open: false });
-  const data = [];
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [data, setData] = useState({
+    mouvementStocks: [],
+    naturemouvement: []
+  });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -56,12 +57,12 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setDate,
-    setDepot,
-    setMateriel,
+    datedepot,
+    setDatedepot,
+    mouvement,
     setMouvement,
-    materiel,
-    date,
+    naturemouvement,
+    setNaturemouvement,
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
@@ -74,12 +75,51 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
   //  Use effect
   useEffect(() => {
-    setMessage({
-      text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
-      severity: 'error',
-      open: true
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/mouvementstock/contentstockfictif';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        const newData = {
+          mouvementStocks: responseData.mouvementStocks || [],
+          naturemouvement: responseData.naturemouvements || []
+        };
+        setData(newData);
+      } catch (error) {
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
+        // Gérer les erreurs de requête Fetch ici
+      }
+    };
+
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+
+  const getInfo = (iddevis) => {
+    window.location.replace('/admin/detailfictif/' + iddevis);
+  };
 
   return (
     <Box width="100%" overflow="auto">
@@ -87,7 +127,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         <Grid item key="search">
           <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={2}>
-              <Grid item xs={3}>
+              <Grid item xs={4}>
                 <TextField
                   fullWidth
                   size="small"
@@ -95,25 +135,43 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   name="date"
                   variant="outlined"
                   sx={{ mb: 3 }}
+                  value={datedepot}
+                  onChange={(event) => setDatedepot(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={3}>
-                <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                  <MenuItem value="1">Entree</MenuItem>
-                  <MenuItem value="-1">Sortie</MenuItem>
+              <Grid item xs={4}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={mouvement}
+                  onChange={(event) => setMouvement(event.target.value)}
+                >
+                  <MenuItem value="" key="">
+                    Tous types
+                  </MenuItem>
+                  <MenuItem value="1" key="1">
+                    Entree
+                  </MenuItem>
+                  <MenuItem value="-1" key="-1">
+                    Sortie
+                  </MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={3}>
-                <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                  <MenuItem value="1">Depot</MenuItem>
-                  <MenuItem value="-1">Salle 6</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={3}>
-                <Select fullWidth size="small" labelId="select-label" value={'1'}>
-                  <MenuItem value="1">Don</MenuItem>
-                  <MenuItem value="-1">Transfert</MenuItem>
-                  <MenuItem value="-1">Perte</MenuItem>
+              <Grid item xs={4}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                >
+                  <MenuItem value="">Toutes natures</MenuItem>
+                  {data.naturemouvement.map((row) => (
+                    <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
+                      {row.naturemouvement}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
             </Grid>
@@ -169,19 +227,32 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.id))}
+                      checked={data.mouvementStocks.every((row) =>
+                        selectedIds.includes(row.idmouvementstock)
+                      )}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.id)) &&
-                        !data.every((row) => selectedIds.includes(row.id))
+                        data.mouvementStocks.some((row) =>
+                          selectedIds.includes(row.idmouvementstock)
+                        ) &&
+                        !data.mouvementStocks.every((row) =>
+                          selectedIds.includes(row.idmouvementstock)
+                        )
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {columns.map((column, index) => (
-                    <TableCell key={index} align={column.align || 'left'}>
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell key="idmouvementdestock" align="left">
+                    ID
+                  </TableCell>
+                  <TableCell key="datedepot" align="left">
+                    Date depot
+                  </TableCell>
+                  <TableCell key="mouvement" align="left">
+                    Mouvement
+                  </TableCell>
+                  <TableCell key="naturemouvement" align="left">
+                    Nature
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -190,32 +261,27 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={row.id}>
+                      <TableRow key={row.idmouvementstock}>
                         <TableCell>
                           <Checkbox
-                            checked={selectedIds.includes(row.id)}
-                            onChange={(event) => handleSelection(event, row.id)}
+                            checked={selectedIds.includes(row.idmouvementstock)}
+                            onChange={(event) => handleSelection(event, row.idmouvementstock)}
                           />
                         </TableCell>
-                        {columns.map((column, columnIndex) => (
-                          <TableCell key={columnIndex} align={column.align || 'left'}>
-                            {editingId === row.id ? (
-                              <TextField
-                                defaultValue={
-                                  column.render ? column.render(row) : row[column.field]
-                                }
-                                name={row.field}
-                                onBlur={(e) => handleSave(e.target.value, row.id, column.field)}
-                              />
-                            ) : column.render ? (
-                              column.render(row)
-                            ) : (
-                              row[column.field]
-                            )}
-                          </TableCell>
-                        ))}
-
+                        <TableCell>{row.idmouvementstock}</TableCell>
+                        <TableCell>{converttodate(row.datedepot)}</TableCell>
+                        <TableCell>{row.mouvement}</TableCell>
+                        <TableCell>{row.naturemouvement}</TableCell>
                         <TableCell>
+                          <IconButton
+                            className="button"
+                            variant="contained"
+                            aria-label="Edit"
+                            color="primary"
+                            onClick={() => getInfo(row.idmouvementstock)}
+                          >
+                            <Icon>info</Icon>
+                          </IconButton>
                           <IconButton
                             className="button"
                             variant="contained"
@@ -225,8 +291,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                           >
                             <Icon>edit_icon</Icon>
                           </IconButton>
-
-                          {isEditClicked && row.id === selectedRowId && (
+                          {isEditClicked && row.idmouvementstock === selectedRowId && (
                             <>
                               <IconButton
                                 className="button"
@@ -252,7 +317,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length + 2}>
+                    <TableCell colSpan={6}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnée disponible
                       </Typography>
@@ -268,7 +333,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.length}
+                  count={data.mouvementStocks.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}

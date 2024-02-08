@@ -116,64 +116,64 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
+  const getInfo = (idmouvementstock) => {
+    window.location.replace('/admin/detailphysique/' + idmouvementstock);
+  };
+
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item key="search">
           <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="date"
-                      name="date"
-                      variant="outlined"
-                      sx={{ mb: 3 }}
-                      value={datedepot}
-                      onChange={(event) => setDatedepot(event.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={mouvement}
-                      onChange={(event) => setMouvement(event.target.value)}
-                    >
-                      <MenuItem value="" key="">
-                        Tous types
-                      </MenuItem>
-                      <MenuItem value="1" key="1">
-                        Entree
-                      </MenuItem>
-                      <MenuItem value="-1" key="-1">
-                        Sortie
-                      </MenuItem>
-                    </Select>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={naturemouvement}
-                      onChange={(event) => setNaturemouvement(event.target.value)}
-                    >
-                      <MenuItem value="">Toutes natures</MenuItem>
-                      {data.naturemouvement.map((row) => (
-                        <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
-                          {row.naturemouvement}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                </Grid>
-              </div>
-            </form>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="date"
+                  name="date"
+                  variant="outlined"
+                  sx={{ mb: 3 }}
+                  value={datedepot}
+                  onChange={(event) => setDatedepot(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={mouvement}
+                  onChange={(event) => setMouvement(event.target.value)}
+                >
+                  <MenuItem value="" key="">
+                    Tous types
+                  </MenuItem>
+                  <MenuItem value="1" key="1">
+                    Entree
+                  </MenuItem>
+                  <MenuItem value="-1" key="-1">
+                    Sortie
+                  </MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={4}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                >
+                  <MenuItem value="">Toutes natures</MenuItem>
+                  {data.naturemouvement.map((row) => (
+                    <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
+                      {row.naturemouvement}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 
@@ -276,7 +276,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             variant="contained"
                             aria-label="Edit"
                             color="primary"
-                            // onClick={() => handleEdit(row)}
+                            onClick={() => getInfo(row.idmouvementstock)}
                           >
                             <Icon>info</Icon>
                           </IconButton>

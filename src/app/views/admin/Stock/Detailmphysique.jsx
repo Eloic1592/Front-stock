@@ -26,7 +26,6 @@ import { useParams } from 'react-router-dom';
 
 const Detailmphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
-  // console.log(iddevis.iddevis);
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetaildevis', align: 'center' },

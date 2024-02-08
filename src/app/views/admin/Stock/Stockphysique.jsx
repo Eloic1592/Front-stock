@@ -341,7 +341,7 @@ const Stockphysique = () => {
                   </Grid>
                   <Grid item xs={2}>
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       color="secondary"
                       sx={{ mb: 3 }}
                       onClick={handledetails}

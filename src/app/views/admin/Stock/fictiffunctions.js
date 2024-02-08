@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
 export const useMfictifFunctions = (data) => {
   const [page, setPage] = useState(0);
@@ -10,9 +11,9 @@ export const useMfictifFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [materiel, setMateriel] = useState('');
-  const [date, setDate] = useState(null);
+  const [datedepot, setDatedepot] = useState(null);
+  const [naturemouvement, setNaturemouvement] = useState('');
   const [mouvement, setMouvement] = useState('');
-  const [depot, setDepot] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -25,9 +26,9 @@ export const useMfictifFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.id);
+    setEditingId(row.idmouvementstock);
     setIsEditClicked(true);
-    setSelectedRowId(row.id);
+    setSelectedRowId(row.idmouvementstock);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -38,18 +39,18 @@ export const useMfictifFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, id) => {
+  const handleSelection = (event, idmouvementstock) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
+      setSelectedIds([...selectedIds, idmouvementstock]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== id));
+      setSelectedIds(selectedIds.filter((i) => i !== idmouvementstock));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.mouvementStocks.map((row) => row.idmouvementstock));
     } else {
       setSelectedIds([]);
     }
@@ -59,8 +60,8 @@ export const useMfictifFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtrestockfictif(data, materiel, mouvement, depot, date);
-  const sortedData = data.sort((a, b) => {
+  const filtredata = filtrestockfictif(data.mouvementStocks, datedepot, mouvement, naturemouvement);
+  const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
     }
@@ -96,25 +97,26 @@ export const useMfictifFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    materiel,
-    date,
-    depot,
+    datedepot,
+    setDatedepot,
     mouvement,
-    setDate,
-    setDepot,
-    setMateriel,
-    setMouvement
+    setMouvement,
+    naturemouvement,
+    setNaturemouvement
   };
 };
 
 // Filtre
-function filtrestockfictif(listestockfictif, materiel, mouvement, depot, date) {
-  return listestockfictif.filter((Item) => {
-    return (
-      Item.date.toLowerCase().includes(date.toLowerCase()) &&
-      Item.materiel.toLowerCase().includes(materiel.toLowerCase()) &&
-      Item.mouvement.toLowerCase().includes(mouvement.toLowerCase()) &&
-      Item.depot.toLowerCase().includes(depot.toLowerCase())
-    );
+function filtrestockfictif(mouvementStocks, datedepot, typemouvement, naturemouvement) {
+  return mouvementStocks.filter((item) => {
+    // Check if each criterion is different from  1 before applying it
+    const datedepotMatch =
+      !datedepot ||
+      new Date(formatDate(item.datedepot)).getTime() === new Date(datedepot).getTime();
+    const typemouvementMatch = !typemouvement || item.type === parseInt(typemouvement);
+    const naturemouvementMatch = !naturemouvement || item.idnaturemouvement === naturemouvement;
+
+    // Return true if the item meets all the criteria
+    return datedepotMatch && typemouvementMatch && naturemouvementMatch;
   });
 }
