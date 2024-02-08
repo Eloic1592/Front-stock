@@ -200,11 +200,6 @@ const Stockphysique = () => {
                   Exporter les mouvements
                 </Button>
               </Grid>
-              <Grid item>
-                <Button variant="contained" onClick={handleFileOpen} color="secondary">
-                  Importer des données
-                </Button>
-              </Grid>
             </Grid>
           </Box>
         </Grid>

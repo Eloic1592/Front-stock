@@ -9,9 +9,9 @@ export const useListematerielFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [numserie, setNumserie] = useState('');
-  const [categoriemateriel, setCategoriemateriel] = useState('');
-  const [typemateriel, setTypemateriel] = useState('');
-  const [couleur, setCouleur] = useState('');
+  const [categoriemateriel, setCategoriemateriel] = useState('0');
+  const [typemateriel, setTypemateriel] = useState('0');
+  const [couleur, setCouleur] = useState('0');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -115,14 +115,15 @@ export const useListematerielFunctions = (data) => {
 export function filtremateriel(listemateriel, numserie, categoriemateriel, typemateriel, couleur) {
   return listemateriel.filter((Item) => {
     const numSerieMatch = !numserie || Item.numserie.toLowerCase().includes(numserie.toLowerCase());
-    const categorieMatch =
-      !categoriemateriel ||
-      Item.categoriemateriel.toLowerCase().includes(categoriemateriel.toLowerCase());
+    let categorieMatch = true;
+    if (categoriemateriel !== '0') {
+      categorieMatch = Item.idcategoriemateriel === parseInt(categoriemateriel);
+    }
 
     const typeMatch =
       !typemateriel || Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
     const couleurtMatch = !couleur || Item.couleur.toLowerCase().includes(couleur.toLowerCase());
 
-    return numSerieMatch && categorieMatch && typeMatch && couleurtMatch;
+    return numSerieMatch && categorieMatch;
   });
 }

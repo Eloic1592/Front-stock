@@ -10,8 +10,8 @@ export const useMphysiqueFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [mouvement, setMouvement] = useState('');
-  const [naturemouvement, setNaturemouvement] = useState('');
+  const [mouvement, setMouvement] = useState('0');
+  const [naturemouvement, setNaturemouvement] = useState('0');
   const [datedepot, setDatedepot] = useState('');
 
   const handleChangePage = (_, newPage) => {
@@ -112,14 +112,19 @@ export const useMphysiqueFunctions = (data) => {
 };
 function filtrestockphysique(mouvementStocks, datedepot, typemouvement, naturemouvement) {
   return mouvementStocks.filter((item) => {
-    // Check if each criterion is different from  1 before applying it
     const datedepotMatch =
       !datedepot ||
       new Date(formatDate(item.datedepot)).getTime() === new Date(datedepot).getTime();
-    const typemouvementMatch = !typemouvement || item.type === parseInt(typemouvement);
-    const naturemouvementMatch = !naturemouvement || item.idnaturemouvement === naturemouvement;
+    let typemouvementMatch = true;
+    if (typemouvement !== '0') {
+      typemouvementMatch = item.type === parseInt(typemouvement);
+    }
 
-    // Return true if the item meets all the criteria
+    let naturemouvementMatch = true;
+    if (naturemouvement !== '0') {
+      naturemouvementMatch = item.idnaturemouvement === naturemouvement;
+    }
+
     return datedepotMatch && typemouvementMatch && naturemouvementMatch;
   });
 }

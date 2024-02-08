@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useMphysiqueFunctions } from 'app/views/admin/mouvementstock/function';
+import { useMphysiqueFunctions } from 'app/views/admin/mouvementstock/physiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
@@ -146,9 +146,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={mouvement}
                   onChange={(event) => setMouvement(event.target.value)}
                 >
-                  <MenuItem value="" key="">
-                    Tous types
-                  </MenuItem>
+                  <MenuItem value="0">Tous types</MenuItem>
                   <MenuItem value="1" key="1">
                     Entree
                   </MenuItem>
@@ -165,7 +163,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={naturemouvement}
                   onChange={(event) => setNaturemouvement(event.target.value)}
                 >
-                  <MenuItem value="">Toutes natures</MenuItem>
+                  <MenuItem value="0">Toutes natures</MenuItem>
                   {data.naturemouvement.map((row) => (
                     <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
                       {row.naturemouvement}

@@ -202,3 +202,31 @@ export function formatNumber(nombre) {
     return partieEntiere;
   }
 }
+
+export const colors = [
+  'Rouge',
+  'Vert',
+  'Bleu',
+  'Jaune',
+  'Cyan',
+  'Magenta',
+  'Orange',
+  'Violet',
+  'Rose',
+  'Citron vert',
+  'Turquoise',
+  'Aqua',
+  'Marron',
+  'Marine',
+  'Olive',
+  'Argent',
+  'Gris',
+  'Noir',
+  'Blanc',
+  'Brun',
+  'Bronze',
+  'Beige',
+  'Saumon',
+  'Indigo',
+  'Violet'
+];

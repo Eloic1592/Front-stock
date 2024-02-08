@@ -23,6 +23,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
+import { colors } from 'app/utils/utils';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
@@ -189,8 +190,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
+            <Grid container spacing={1}>
+              <Grid item xs={6} sm={3}>
                 <TextField
                   fullWidth
                   size="small"
@@ -203,45 +204,59 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onChange={(event) => setNumserie(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-                <TextField
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Select
                   fullWidth
-                  size="small"
-                  id="categoriemateriel"
-                  type="text"
-                  label="Categorie"
-                  name="numserie"
-                  variant="outlined"
+                  labelId="select-label"
                   value={categoriemateriel}
                   onChange={(event) => setCategoriemateriel(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-                <TextField
-                  fullWidth
                   size="small"
-                  id="typemateriel"
-                  type="text"
-                  label="Type"
-                  name="typemateriel"
-                  variant="outlined"
+                  sx={{ mb: 3 }}
+                >
+                  <MenuItem value="0">Toutes categories</MenuItem>
+                  {data.categoriemateriels.map((row) => (
+                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                      {row.categoriemateriel}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
                   value={typemateriel}
                   onChange={(event) => setTypemateriel(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-
-                <TextField
-                  fullWidth
                   size="small"
-                  id="couleur"
-                  type="text"
-                  label="Couleur"
-                  name="couleur"
-                  variant="outlined"
+                  sx={{ mb: 3 }}
+                >
+                  <MenuItem value="0">Tous types</MenuItem>
+                  {data.typemateriels.map((row) => (
+                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                      {row.typemateriel}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={6} sm={3}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
                   value={couleur}
                   onChange={(event) => setCouleur(event.target.value)}
+                  size="small"
                   sx={{ mb: 3 }}
-                />
-              </div>
-            </form>
+                >
+                  <MenuItem value="0">Toutes couleurs</MenuItem>
+                  {colors.map((color, index) => (
+                    <MenuItem key={index} value={color}>
+                      {color}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
         <Grid item>

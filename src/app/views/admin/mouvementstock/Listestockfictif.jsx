@@ -147,9 +147,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={mouvement}
                   onChange={(event) => setMouvement(event.target.value)}
                 >
-                  <MenuItem value="" key="">
-                    Tous types
-                  </MenuItem>
+                  <MenuItem value="0">Tous types</MenuItem>
                   <MenuItem value="1" key="1">
                     Entree
                   </MenuItem>
@@ -166,7 +164,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   value={naturemouvement}
                   onChange={(event) => setNaturemouvement(event.target.value)}
                 >
-                  <MenuItem value="">Toutes natures</MenuItem>
+                  <MenuItem value="0">Toutes natures</MenuItem>
                   {data.naturemouvement.map((row) => (
                     <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
                       {row.naturemouvement}

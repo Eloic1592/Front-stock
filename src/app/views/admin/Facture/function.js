@@ -8,10 +8,10 @@ export const useListefactureFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [client, setClient] = useState(null);
-  const [date, setDate] = useState(null);
-  const [numstat, setNumstat] = useState(null);
-  const [telephone, setTelephone] = useState(null);
+  const [client, setClient] = useState('');
+  const [date, setDate] = useState('');
+  const [numstat, setNumstat] = useState('');
+  const [telephone, setTelephone] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);

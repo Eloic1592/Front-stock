@@ -153,21 +153,17 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un type de mouvement" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="typemouvement"
-                  label="type de mouvement"
-                  variant="outlined"
-                  value={naturemouvement}
-                  onChange={(event) => setNaturemouvement(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </div>
-            </form>
+            <TextField
+              fullWidth
+              size="small"
+              type="text"
+              name="typemouvement"
+              label="type de mouvement"
+              variant="outlined"
+              value={naturemouvement}
+              onChange={(event) => setNaturemouvement(event.target.value)}
+              sx={{ mb: 3 }}
+            />
           </SimpleCard>
         </Grid>
 
@@ -213,7 +209,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   </TableCell>
                   <TableCell key="naturemouvement" align="left">
                     nature mouvement
-                  </TableCell>{' '}
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>

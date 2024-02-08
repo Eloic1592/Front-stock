@@ -1,32 +1,31 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  Checkbox,
+  Grid,
+  Icon,
+  IconButton,
+  MenuItem,
+  Select,
+  Snackbar,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Icon,
-  IconButton,
   TextField,
-  Checkbox,
-  Select,
-  MenuItem,
-  Grid,
-  Snackbar,
-  Alert
+  Typography
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListefactureFunctions } from 'app/views/admin/facture/function';
 
 const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
-  const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
-    text: 'Information enregistree',
-    severity: 'success',
+    text: "Aucune donnée n'a été récupérée, veuillez vérifier si le serveur est actif",
+    severity: 'error',
     open: false
   });
 
@@ -75,14 +74,16 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     sortedData
   } = useListefactureFunctions(data);
 
-  //  Use effect
+  // Use effect
   useEffect(() => {
     setMessage({
-      text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+      text: "Aucune donnée n'a été récupérée, veuillez vérifier si le serveur est actif",
       severity: 'error',
       open: true
     });
   }, []);
+
+  const handleAlertClose = () => setMessage({ ...message, open: false });
 
   return (
     <Box width="100%" overflow="auto">
@@ -153,7 +154,9 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column) => (
-                    <MenuItem value={column.field}>{column.label}</MenuItem>
+                    <MenuItem key={column.field} value={column.field}>
+                      {column.label}
+                    </MenuItem>
                   ))}
                 </Select>
               </Grid>
@@ -175,7 +178,7 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>
@@ -197,7 +200,7 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   </TableCell>
                   {columns.map((column, index) => (
                     // Nom des colonnes du tableau
-                    <TableCell key={index} align={column.align || 'left'}>
+                    <TableCell key={column.field} align={column.align || 'left'}>
                       {column.label}
                     </TableCell>
                   ))}
@@ -271,11 +274,13 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       </TableRow>
                     ))
                 ) : (
-                  <p>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Aucune donnee disponible
-                    </Typography>
-                  </p>
+                  <TableRow>
+                    <TableCell colSpan={columns.length + 1}>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Aucune donnée disponible
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </StyledTable>
@@ -297,7 +302,7 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>{' '}
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}
