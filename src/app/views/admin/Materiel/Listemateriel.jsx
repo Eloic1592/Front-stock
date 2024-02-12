@@ -48,7 +48,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const [data, setData] = useState({
     typemateriels: [],
     categoriemateriels: [],
-    listemateriels: []
+    listemateriels: [],
+    articles: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
@@ -56,16 +57,18 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const handleAlertClose = () => setMessage({ open: false });
 
   // Update
-  const [isEditedmateriel, setIsEditedmateriel] = useState(null);
-  const [isEditedtypemat, setIsEditedtypemat] = useState(null);
-  const [isEditedcatemat, setIsEditedcatemat] = useState(null);
+  const [isEditedIdmateriel, setIsEditedIdmateriel] = useState('');
+  const [isEditedtypemat, setIsEditedtypemat] = useState('');
+  const [isEditedcatemat, setIsEditedcatemat] = useState('');
+  const [isEditedmodele, setIsEditedmodele] = useState('');
   const [isEditednumserie, setIsEditednumserie] = useState('');
   const [isEditedprixvente, setIsEditedprixvente] = useState(0);
-  const [isEditedcolor, setIsEditedcolor] = useState(['1']);
+  const [isEditedcolor, setIsEditedcolor] = useState(['Rouge']);
   const [isEditedcaution, setisEditedcaution] = useState(0);
 
   // Modification(Update)
   const handleEdit = (row) => {
+    setIsEditedIdmateriel('');
     setIsEditClicked(true);
     setSelectedRowId(row.idmateriel);
   };
@@ -98,8 +101,11 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   } = useListematerielFunctions(data);
 
   const handleSubmit = () => {
-    let article = {
-      idmateriel: isEditedmateriel,
+    let materiel = {
+      idmateriel: isEditedIdmateriel,
+      idcategoriemateriel: isEditedcatemat,
+      idtypemateriel: isEditedtypemat,
+      idarticle: isEditedmodele,
       numserie: isEditednumserie,
       prixvente: isEditedprixvente,
       caution: isEditedcaution,
@@ -110,7 +116,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify(article),
+      body: JSON.stringify(materiel),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
@@ -124,9 +130,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           window.location.reload();
         }, 2000);
       })
-      .catch((err) => {
+      .catch(() => {
         setMessage({
-          text: err,
+          text: 'La modification dans la base de données a échoué',
           severity: 'error',
           open: true
         });
@@ -156,7 +162,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         const newData = {
           typemateriels: responseData.typemateriels || [],
           categoriemateriels: responseData.categoriemateriels || [],
-          listemateriels: responseData.listemateriels || []
+          listemateriels: responseData.listemateriels || [],
+          articles: responseData.articles || []
         };
         setData(newData);
       } catch (error) {
@@ -180,7 +187,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
 
       if (selectedRow) {
-        setIsEditedmateriel(selectedRow.idmateriel);
+        setIsEditedIdmateriel(selectedRow.idmateriel);
         // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
       }
     }
@@ -359,26 +366,168 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onChange={(event) => handleSelection(event, row.idmateriel)}
                           />
                         </TableCell>
-                        <TableCell>{row.idmateriel}</TableCell>
-                        <TableCell>{row.categoriemateriel}</TableCell>
-                        <TableCell>{row.typemateriel}</TableCell>
-                        <TableCell>{row.modele}</TableCell>
-                        <TableCell>{row.numserie}</TableCell>
-                        <TableCell>{formatNumber(row.prixvente)}</TableCell>
-                        <TableCell>{formatNumber(row.caution)}</TableCell>
-                        <TableCell>{row.couleur}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.idmateriel === selectedRowId && (
-                            <>
+
+                        {isEditClicked && row.idmateriel === selectedRowId ? (
+                          <>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <TextField
+                                    value={isEditedIdmateriel}
+                                    onChange={(event) => setIsEditedIdmateriel(event.target.value)}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <Select
+                                    labelId="select-label"
+                                    sx={{ mb: 3 }}
+                                    value={isEditedcatemat}
+                                    onChange={(event) => setIsEditedcatemat(event.target.value)}
+                                    fullWidth
+                                  >
+                                    <MenuItem value="1" disabled>
+                                      Choisir une categorie
+                                    </MenuItem>
+                                    {data.categoriemateriels.map((row) => (
+                                      <MenuItem
+                                        key={row.idcategoriemateriel}
+                                        value={row.idcategoriemateriel}
+                                      >
+                                        {row.categoriemateriel}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <Select
+                                    labelId="select-label"
+                                    sx={{ mb: 3 }}
+                                    value={isEditedtypemat}
+                                    onChange={(event) => setIsEditedtypemat(event.target.value)}
+                                    fullWidth
+                                  >
+                                    <MenuItem value="1" disabled>
+                                      Choisir un type
+                                    </MenuItem>
+                                    {data.typemateriels.map((row) => (
+                                      <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                                        {row.typemateriel}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <Select
+                                    labelId="select-label"
+                                    sx={{ mb: 3 }}
+                                    value={isEditedmodele}
+                                    onChange={(event) => setIsEditedmodele(event.target.value)}
+                                    fullWidth
+                                  >
+                                    <MenuItem value="1" disabled>
+                                      Choisir un article
+                                    </MenuItem>
+                                    {data.articles.map((row) => (
+                                      <MenuItem key={row.idarticle} value={row.idarticle}>
+                                        {row.modele}/{row.codearticle}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <TextField
+                                    value={isEditednumserie}
+                                    onChange={(event) => setIsEditednumserie(event.target.value)}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <TextField
+                                    type="number"
+                                    value={isEditedprixvente}
+                                    onChange={(event) => setIsEditedprixvente(event.target.value)}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <TextField
+                                    type="number"
+                                    value={isEditedcaution}
+                                    onChange={(event) => setisEditedcaution(event.target.value)}
+                                  />
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                            <TableCell>
+                              <Grid container alignItems="center">
+                                <Grid item>
+                                  <Select
+                                    fullWidth
+                                    labelId="select-label"
+                                    value={isEditedcolor}
+                                    onChange={(event) => setIsEditedcolor(event.target.value)}
+                                    sx={{ mb: 3 }}
+                                  >
+                                    <MenuItem value="0">Toutes couleurs</MenuItem>
+                                    {colors.map((color, index) => (
+                                      <MenuItem key={index} value={color}>
+                                        {color}
+                                      </MenuItem>
+                                    ))}
+                                  </Select>
+                                </Grid>
+                              </Grid>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell>{row.idmateriel}</TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
+                            <TableCell>{row.typemateriel}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>{row.numserie}</TableCell>
+                            <TableCell>{formatNumber(row.prixvente)}</TableCell>
+                            <TableCell>{formatNumber(row.caution)}</TableCell>
+                            <TableCell>{row.couleur}</TableCell>
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
+                          </>
+                        )}
+
+                        {isEditClicked && row.idmateriel === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -397,9 +546,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
@@ -420,7 +569,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.listemateriels.length}
+                  count={sortedData.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}

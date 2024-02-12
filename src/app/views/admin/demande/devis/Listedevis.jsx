@@ -30,13 +30,17 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'ID', field: 'iddevis', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'Date devis', field: 'datedevis', align: 'center' },
-    { label: 'LibelLe', field: 'libelle', align: 'center' }
+    { label: 'Libele', field: 'libelle', align: 'center' }
 
     // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [editedIddevis, setEditedIddevis] = useState('');
+  const [editeddatedevis, setEditeddatedevis] = useState('');
+  const [editednom, setEditedNom] = useState('');
+  const [editedLibelle, setEditedLibelle] = useState('');
   const [data, setData] = useState({
     clientdevis: [],
     clients: [],
@@ -47,6 +51,48 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     severity: 'success',
     open: false
   });
+
+  const handleEdit = (row) => {
+    setEditedIddevis('');
+    setIsEditClicked(true);
+    setSelectedRowId(row.iddevis);
+  };
+
+  const handleupdate = () => {
+    let devis = {
+      iddevis: editedIddevis,
+      idclient: editednom,
+      datedevis: editeddatedevis,
+      libelle: editedLibelle,
+      statut: 0
+    };
+
+    let url = baseUrl + '/devis/createdevis';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(devis),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   const handleSubmit = () => {
     let proforma = [];
@@ -94,10 +140,11 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     selectedIds,
     setClient,
     client,
+    setIsEditClicked,
+    setSelectedRowId,
     datedevis,
     setDatedevis,
     handleChangeRowsPerPage,
-    handleEdit,
     cancelEdit,
     handleSelection,
     handleSelectAll,
@@ -144,10 +191,10 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.iddevisdevis === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.iddevis === selectedRowId);
 
       if (selectedRow) {
-        // setEditedIdDepot(selectedrow.iddevisdepot);
+        setEditedIddevis(selectedRow.iddevis);
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
@@ -275,38 +322,84 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onChange={(event) => handleSelection(event, row.iddevis)}
                           />
                         </TableCell>
+                        {isEditClicked && row.iddevis === selectedRowId ? (
+                          <>
+                            <TableCell key={row.iddevis}>
+                              <TextField
+                                value={editedIddevis}
+                                onChange={(event) => setEditedIddevis(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                labelId="select-label"
+                                sx={{ mb: 3 }}
+                                value={editednom}
+                                onChange={(event) => setEditedNom(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir un article
+                                </MenuItem>
+                                {data.clients.map((row) => (
+                                  <MenuItem key={row.idClient} value={row.idClient}>
+                                    {row.nom}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="date"
+                                value={editeddatedevis}
+                                onChange={(event) => setEditeddatedevis(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                value={editedLibelle}
+                                onChange={(event) => setEditedLibelle(event.target.value)}
+                              />
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell>{row.iddevis}</TableCell>
+                            <TableCell>{row.nom}</TableCell>
+                            <TableCell>{converttodate(row.datedevis)}</TableCell>
+                            <TableCell>{row.libelle}</TableCell>
 
-                        <TableCell align="left">{row.iddevis}</TableCell>
-                        <TableCell align="left">{row.nom}</TableCell>
-                        <TableCell align="left">{converttodate(row.datedevis)}</TableCell>
-                        <TableCell align="left">{row.libelle}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => getInfo(row.iddevis)}
-                          >
-                            <Icon>info</Icon>
-                          </IconButton>
-
-                          {isEditClicked && row.iddevis === selectedRowId && (
-                            <>
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => getInfo(row.iddevis)}
+                              >
+                                <Icon>info</Icon>
+                              </IconButton>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
+                          </>
+                        )}
+                        {isEditClicked && row.iddevis === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
+                                onClick={() => handleupdate()}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -319,9 +412,9 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
@@ -342,7 +435,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.clientdevis.length}
+                  count={sortedData.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
@@ -353,7 +446,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>{' '}
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

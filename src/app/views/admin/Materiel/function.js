@@ -111,19 +111,24 @@ export const useListematerielFunctions = (data) => {
     typemateriel
   };
 };
+
 // Filtre
 export function filtremateriel(listemateriel, numserie, categoriemateriel, typemateriel, couleur) {
   return listemateriel.filter((Item) => {
     const numSerieMatch = !numserie || Item.numserie.toLowerCase().includes(numserie.toLowerCase());
     let categorieMatch = true;
     if (categoriemateriel !== '0') {
-      categorieMatch = Item.idcategoriemateriel === parseInt(categoriemateriel);
+      categorieMatch = Item.idcategoriemateriel === categoriemateriel;
     }
 
-    const typeMatch =
-      !typemateriel || Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
-    const couleurtMatch = !couleur || Item.couleur.toLowerCase().includes(couleur.toLowerCase());
-
-    return numSerieMatch && categorieMatch;
+    let typeMatch = true;
+    if (typemateriel !== '0') {
+      typeMatch = Item.idtypemateriel === typemateriel;
+    }
+    let couleurMatch = true;
+    if (couleur !== '0') {
+      couleurMatch = Item.couleur === couleur;
+    }
+    return numSerieMatch && categorieMatch && typeMatch && couleurMatch;
   });
 }

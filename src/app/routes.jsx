@@ -32,17 +32,21 @@ const Categoriemateriel = Loadable(
   lazy(() => import('app/views/admin/categoriemateriel/Categoriemateriel'))
 );
 
-const Stockphysique = Loadable(lazy(() => import('app/views/admin/mouvementstock/Stockphysique')));
+const Stockphysique = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/physique/Stockphysique'))
+);
 
 const Detailphysique = Loadable(
-  lazy(() => import('app/views/admin/mouvementstock/ListeDetailphysique'))
+  lazy(() => import('app/views/admin/mouvementstock/physique/ListeDetailphysique'))
 );
 
 const Detailfictif = Loadable(
-  lazy(() => import('app/views/admin/mouvementstock/ListeDetailfictif'))
+  lazy(() => import('app/views/admin/mouvementstock/fictif/ListeDetailfictif'))
 );
 
-const Stockfictif = Loadable(lazy(() => import('app/views/admin/mouvementstock/Stockfictif')));
+const Stockfictif = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/fictif/Stockfictif'))
+);
 
 const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
 

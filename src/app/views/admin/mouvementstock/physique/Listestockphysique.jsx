@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useMphysiqueFunctions } from 'app/views/admin/mouvementstock/physiquefunction';
+import { useMphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/physiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
@@ -329,7 +329,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.mouvementStocks.length}
+                  count={sortedData.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}

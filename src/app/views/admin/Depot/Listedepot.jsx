@@ -306,7 +306,7 @@ const Listedepot = () => {
                   page={page}
                   component="div"
                   rowsPerPage={rowsPerPage}
-                  count={data.length}
+                  count={sortedData.length}
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={[5, 10, 25]}
                   onRowsPerPageChange={handleChangeRowsPerPage}

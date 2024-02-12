@@ -307,7 +307,7 @@ const Detailmfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     page={page}
                     component="div"
                     rowsPerPage={rowsPerPage}
-                    count={data.length}
+                    count={sortedData.length}
                     onPageChange={handleChangePage}
                     rowsPerPageOptions={rowsPerPageOptions}
                     onRowsPerPageChange={handleChangeRowsPerPage}
