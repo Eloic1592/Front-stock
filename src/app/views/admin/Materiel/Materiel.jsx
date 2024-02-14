@@ -154,197 +154,196 @@ const Materiel = () => {
           routeSegments={[{ name: 'Materiel', path: 'admin/listemateriel' }, { name: 'Materiel' }]}
         />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleClickOpen} color="primary">
-          Nouveau materiel
-        </Button>
-        &nbsp;&nbsp;
-        <Button variant="contained" onClick={handleFileOpen} color="secondary">
-          PDF
-        </Button>
-      </p>
-      <Box>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title"
-          fullWidth
-          maxWidth="xl"
-        >
-          <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Select
-                  labelId="select-label"
-                  sx={{ mb: 3 }}
-                  value={article}
-                  onChange={(event) => setArticle(event.target.value)}
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Button variant="contained" onClick={handleClickOpen} color="primary">
+            Nouveau materiel
+          </Button>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              fullWidth
+              maxWidth="xl"
+            >
+              <DialogTitle id="form-dialog-title">Nouveau Materiel</DialogTitle>
+              <DialogContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Select
+                      labelId="select-label"
+                      sx={{ mb: 3 }}
+                      value={article}
+                      onChange={(event) => setArticle(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir un article
+                      </MenuItem>
+                      {data.articles.map((row) => (
+                        <MenuItem key={row.idarticle} value={row.idarticle}>
+                          {row.modele}/{row.codearticle}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      labelId="select-label"
+                      sx={{ mb: 3 }}
+                      value={categoriemateriel}
+                      onChange={(event) => setCategoriemateriel(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir une categorie
+                      </MenuItem>
+                      {data.categoriemateriels.map((row) => (
+                        <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                          {row.categoriemateriel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Select
+                      labelId="select-label"
+                      sx={{ mb: 3 }}
+                      value={typemateriel}
+                      onChange={(event) => setTypemateriel(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir un type
+                      </MenuItem>
+                      {data.typemateriels.map((row) => (
+                        <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                          {row.typemateriel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={couleur}
+                      onChange={(event) => setCouleur(event.target.value)}
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir une couleur
+                      </MenuItem>
+                      <MenuItem value="Noir">Noir</MenuItem>
+                      <MenuItem value="Blanc">Blanc</MenuItem>
+                      <MenuItem value="Gris">Gris</MenuItem>
+                      <MenuItem value="Rouge">Rouge</MenuItem>
+                      <MenuItem value="Bleu">Bleu</MenuItem>
+                      <MenuItem value="Vert">Vert</MenuItem>
+                      <MenuItem value="Jaune">Jaune</MenuItem>
+                      <MenuItem value="Marron">Marron</MenuItem>
+                      <MenuItem value="Violet">Violet</MenuItem>
+                      <MenuItem value="Rose">Rose</MenuItem>
+                      <MenuItem value="Orange">Orange</MenuItem>
+                      <MenuItem value="Beige">Beige</MenuItem>
+                      <MenuItem value="Turquoise">Turquoise</MenuItem>
+                      <MenuItem value="Argenté">Argenté</MenuItem>
+                      <MenuItem value="Doré">Doré</MenuItem>
+                    </Select>
+                  </Grid>
+                </Grid>
+
+                <TextField
                   fullWidth
-                >
-                  <MenuItem value="1" disabled>
-                    Choisir un article
-                  </MenuItem>
-                  {data.articles.map((row) => (
-                    <MenuItem key={row.idarticle} value={row.idarticle}>
-                      {row.modele}/{row.codearticle}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={6}>
-                <Select
-                  labelId="select-label"
-                  sx={{ mb: 3 }}
-                  value={categoriemateriel}
-                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                  autoFocus
+                  id="numeroserie"
+                  type="text"
+                  margin="dense"
+                  label="Numero de serie"
+                  name="numserie"
+                  value={numserie}
+                  onChange={(event) => setNumserie(event.target.value)}
+                />
+
+                <TextField
                   fullWidth
-                >
-                  <MenuItem value="1" disabled>
-                    Choisir une categorie
-                  </MenuItem>
-                  {data.categoriemateriels.map((row) => (
-                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                      {row.categoriemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Select
-                  labelId="select-label"
-                  sx={{ mb: 3 }}
-                  value={typemateriel}
-                  onChange={(event) => setTypemateriel(event.target.value)}
+                  autoFocus
+                  id="description"
+                  type="text"
+                  margin="dense"
+                  label="Description du materiel"
+                  rows={4}
+                  multiline
+                  name="description"
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+                />
+
+                <TextField
                   fullWidth
-                >
-                  <MenuItem value="1" disabled>
-                    Choisir un type
-                  </MenuItem>
-                  {data.typemateriels.map((row) => (
-                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                      {row.typemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={6}>
-                <Select
+                  autoFocus
+                  id="prixvente"
+                  type="number"
+                  margin="dense"
+                  label="Prix de vente"
+                  name="prixvente"
+                  value={prixvente}
+                  onChange={(event) => setPrixvente(event.target.value)}
+                />
+                <TextField
                   fullWidth
-                  labelId="select-label"
-                  value={couleur}
-                  onChange={(event) => setCouleur(event.target.value)}
-                >
-                  <MenuItem value="1" disabled>
-                    Choisir une couleur
-                  </MenuItem>
-                  <MenuItem value="Noir">Noir</MenuItem>
-                  <MenuItem value="Blanc">Blanc</MenuItem>
-                  <MenuItem value="Gris">Gris</MenuItem>
-                  <MenuItem value="Rouge">Rouge</MenuItem>
-                  <MenuItem value="Bleu">Bleu</MenuItem>
-                  <MenuItem value="Vert">Vert</MenuItem>
-                  <MenuItem value="Jaune">Jaune</MenuItem>
-                  <MenuItem value="Marron">Marron</MenuItem>
-                  <MenuItem value="Violet">Violet</MenuItem>
-                  <MenuItem value="Rose">Rose</MenuItem>
-                  <MenuItem value="Orange">Orange</MenuItem>
-                  <MenuItem value="Beige">Beige</MenuItem>
-                  <MenuItem value="Turquoise">Turquoise</MenuItem>
-                  <MenuItem value="Argenté">Argenté</MenuItem>
-                  <MenuItem value="Doré">Doré</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
+                  autoFocus
+                  id="caution"
+                  type="number"
+                  margin="dense"
+                  label="Caution"
+                  name="caution"
+                  value={caution}
+                  onChange={(event) => setCaution(event.target.value)}
+                />
+              </DialogContent>
 
-            <TextField
-              fullWidth
-              autoFocus
-              id="numeroserie"
-              type="text"
-              margin="dense"
-              label="Numero de serie"
-              name="numserie"
-              value={numserie}
-              onChange={(event) => setNumserie(event.target.value)}
-            />
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary" variant="contained">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+          <Box>
+            <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="filename"
+                  label="Nom du fichier"
+                  value={file}
+                  onChange={(event) => setFile(event.target.value)}
+                />
+              </DialogContent>
 
-            <TextField
-              fullWidth
-              autoFocus
-              id="description"
-              type="text"
-              margin="dense"
-              label="Description du materiel"
-              rows={4}
-              multiline
-              name="description"
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-            />
-
-            <TextField
-              fullWidth
-              autoFocus
-              id="prixvente"
-              type="number"
-              margin="dense"
-              label="Prix de vente"
-              name="prixvente"
-              value={prixvente}
-              onChange={(event) => setPrixvente(event.target.value)}
-            />
-            <TextField
-              fullWidth
-              autoFocus
-              id="caution"
-              type="number"
-              margin="dense"
-              label="Caution"
-              name="caution"
-              value={caution}
-              onChange={(event) => setCaution(event.target.value)}
-            />
-          </DialogContent>
-
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-      <Box>
-        <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="filename"
-              label="Nom du fichier"
-              value={file}
-              onChange={(event) => setFile(event.target.value)}
-            />
-          </DialogContent>
-
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleFileClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary" variant="contained">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

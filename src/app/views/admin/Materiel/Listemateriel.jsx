@@ -24,8 +24,8 @@ import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
 import { colors } from 'app/utils/utils';
-import { jsPDF } from 'jspdf'; //or use your library of choice here
-import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
@@ -142,16 +142,23 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   };
 
   const handleExportRows = () => {
-    const doc = new jsPDF();
-    const tableData = rows.map((row) => Object.values(row.original));
-    const tableHeaders = columns.map((c) => c.header);
+    const tableElement = document.getElementById('datatable'); // The ID of your table element
 
-    autoTable(doc, {
-      head: [tableHeaders],
-      body: tableData
+    html2canvas(tableElement).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      // Add a title to the PDF
+      pdf.setFontSize(16); // Set the font size for the title
+      pdf.text('Liste des materiels', 10, 10); // Add the title text
+
+      // Add the image of the table to the PDF
+      pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight); // Adjust the y position to leave space for the title
+      pdf.save('Liste_materiel.pdf');
     });
-
-    doc.save('mrt-pdf-example.pdf');
   };
 
   //  Use effect
@@ -326,12 +333,18 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 </Button>
               </Grid>
               <Grid item xs={2}>
-                <Button className="button" variant="contained" aria-label="Edit" color="secondary">
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  onClick={handleExportRows}
+                >
                   <Icon>picture_as_pdf</Icon>
                 </Button>
               </Grid>
             </Grid>
-            <StyledTable>
+            <StyledTable id="datatable">
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
