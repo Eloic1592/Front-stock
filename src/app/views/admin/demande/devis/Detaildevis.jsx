@@ -175,7 +175,6 @@ const Detaildevis = () => {
               maxWidth="md"
             >
               <DialogContent>
-                {' '}
                 <Grid container direction="column" spacing={1}>
                   <Grid item xs={4}>
                     <Select

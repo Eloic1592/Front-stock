@@ -40,6 +40,11 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     mouvementStocks: [],
     naturemouvement: []
   });
+  const [editedIdmouvement, setEditedIdmouvement] = useState('');
+  const [editdatemouvement, setEditdatemouvement] = useState('');
+  const [editnatmouvement, setEditnatmouvement] = useState(['1']);
+  const [edittypemouvement, setEdittypemouvement] = useState(['1']);
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -72,6 +77,42 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectColumn,
     sortedData
   } = useMfictifFunctions(data);
+
+  const handleupdate = () => {
+    let mouvementstock = {
+      idmouvementstock: editedIdmouvement,
+      datedepot: editdatemouvement,
+      typemouvement: edittypemouvement,
+      idnaturemouvement: editnatmouvement,
+      statut: 0
+    };
+
+    let url = baseUrl + '/mouvementstock/createstockfictif';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(mouvementstock),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   //  Use effect
   useEffect(() => {
@@ -114,6 +155,9 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
+      if (selectedRow) {
+        setEditedIdmouvement(selectedRow.idmouvementstock);
+      }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
@@ -266,36 +310,95 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             onChange={(event) => handleSelection(event, row.idmouvementstock)}
                           />
                         </TableCell>
-                        <TableCell>{row.idmouvementstock}</TableCell>
-                        <TableCell>{converttodate(row.datedepot)}</TableCell>
-                        <TableCell>{row.mouvement}</TableCell>
-                        <TableCell>{row.naturemouvement}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => getInfo(row.idmouvementstock)}
-                          >
-                            <Icon>info</Icon>
-                          </IconButton>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.idmouvementstock === selectedRowId && (
-                            <>
+                        {isEditClicked && row.idmouvementstock === selectedRowId ? (
+                          <>
+                            <TableCell key={row.idmouvementstock}>
+                              <TextField
+                                value={editedIdmouvement}
+                                onChange={(event) => setEditedIdmouvement(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="date"
+                                value={editdatemouvement}
+                                onChange={(event) => setEditdatemouvement(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={edittypemouvement}
+                                onChange={(event) => setEdittypemouvement(event.target.value)}
+                              >
+                                <MenuItem value="1" key="1">
+                                  Entree
+                                </MenuItem>
+                                <MenuItem value="-1" key="-1">
+                                  Sortie
+                                </MenuItem>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editnatmouvement}
+                                onChange={(event) => setEditnatmouvement(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  Nature
+                                </MenuItem>
+                                {data.naturemouvement.map((row) => (
+                                  <MenuItem
+                                    key={row.idnaturemouvement}
+                                    value={row.idnaturemouvement}
+                                  >
+                                    {row.naturemouvement}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell>{row.idmouvementstock}</TableCell>
+                            <TableCell>{converttodate(row.datedepot)}</TableCell>
+                            <TableCell>{row.mouvement}</TableCell>
+                            <TableCell>{row.naturemouvement}</TableCell>
+
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => getInfo(row.idmouvementstock)}
+                              >
+                                <Icon>info</Icon>
+                              </IconButton>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
+                          </>
+                        )}
+                        {isEditClicked && row.idmouvementstock === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
+                                onClick={() => handleupdate()}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -308,9 +411,9 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
@@ -335,8 +438,8 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                  backIconButtonProps={{ 'aria-label': 'Page precedente' }}
                 />
               </Grid>
             </Grid>

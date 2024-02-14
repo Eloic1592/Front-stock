@@ -75,10 +75,8 @@ const Detaildevis = () => {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
               <DialogTitle id="form-dialog-title">Exportation proforma</DialogTitle>
               <DialogContent>
-                {' '}
                 <Grid container direction="column" spacing={1}>
                   <Grid item xs={4}>
-                    {' '}
                     <TextField
                       fullWidth
                       id="filename"

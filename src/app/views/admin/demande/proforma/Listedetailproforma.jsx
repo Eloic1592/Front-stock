@@ -23,6 +23,7 @@ import { useDetaildevisFunctions } from 'app/views/admin/demande/devis/detailfun
 import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
+import { formatNumber } from 'app/utils/utils';
 
 const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
@@ -38,7 +39,7 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // Other columns...
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ detaildevis: [] });
   const {
     editingId,
     sortDirection,
@@ -90,10 +91,12 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         if (!response.ok) {
           throw new Error(`Request failed with status: ${response.status}`);
         }
-
         const responseData = await response.json();
-        setData(responseData);
-        console.log(data);
+        const newData = {
+          detaildevis: responseData.detaildevis || []
+        };
+
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -175,9 +178,9 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         <TableCell align="left">{row.iddetaildevis}</TableCell>
                         <TableCell align="left">{row.marque}</TableCell>
                         <TableCell align="left">{row.modele}</TableCell>
-                        <TableCell align="left">{row.quantite}</TableCell>
-                        <TableCell align="left">{row.pu}</TableCell>
-                        <TableCell align="left">{row.total}</TableCell>
+                        <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
+                        <TableCell align="left">{formatNumber(row.pu)}</TableCell>
+                        <TableCell align="left">{formatNumber(row.total)}</TableCell>
                       </TableRow>
                     ))
                 ) : (
@@ -202,14 +205,14 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                  backIconButtonProps={{ 'aria-label': 'Page precedente' }}
                 />
               </Grid>
             </Grid>
           </SimpleCard>
         </Grid>
-      </Grid>{' '}
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

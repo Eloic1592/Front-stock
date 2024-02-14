@@ -304,8 +304,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     onPageChange={handleChangePage}
                     rowsPerPageOptions={rowsPerPageOptions}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                    nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                    backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                    nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                    backIconButtonProps={{ 'aria-label': 'Page precedente' }}
                   />
                 </Grid>
               </Grid>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useDetaildevisFunctions = (data) => {
+export const useDFictifFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -23,9 +23,9 @@ export const useDetaildevisFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.iddetaildevis);
+    setEditingId(row.iddetailmouvementfictif);
     setIsEditClicked(true);
-    setSelectedRowId(row.iddetaildevis);
+    setSelectedRowId(row.iddetailmouvementfictif);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -36,28 +36,28 @@ export const useDetaildevisFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, iddetaildevis) => {
+  const handleSelection = (event, iddetailmouvementfictif) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, iddetaildevis]);
+      setSelectedIds([...selectedIds, iddetailmouvementfictif]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== iddetaildevis));
+      setSelectedIds(selectedIds.filter((i) => i !== iddetailmouvementfictif));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.detaildevis.map((row) => row.iddetaildevis));
+      setSelectedIds(data.mouvementfictifs.map((row) => row.iddetailmouvementfictif));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtredetaildevis(data.detaildevis, marque, modele);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
 
+  const filtredata = filtrestockfictif(data.mouvementfictifs, marque, modele);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -100,16 +100,15 @@ export const useDetaildevisFunctions = (data) => {
     setModele
   };
 };
-
-export function filtredetaildevis(listedetaildevis, marque, modele) {
-  return listedetaildevis.filter((detail) => {
+function filtrestockfictif(mouvementfictifs, marque, modele) {
+  return mouvementfictifs.filter((item) => {
     // Vérifier si la date du devis correspond à la date spécifiée
-    const marquematch = !marque || detail.marque.toLowerCase().includes(marque.toLowerCase());
+    const marqueMatch = !marque || item.marque.toLowerCase().includes(marque.toLowerCase());
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const modeleMatch = !modele || detail.modele.toLowerCase().includes(modele.toLowerCase());
+    const modeleMatch = !modele || item.modele.toLowerCase().includes(modele.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return marquematch && modeleMatch;
+    return marqueMatch && modeleMatch;
   });
 }

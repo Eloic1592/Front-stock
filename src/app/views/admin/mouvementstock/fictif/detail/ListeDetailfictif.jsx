@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -8,104 +7,78 @@ import {
   TableRow,
   Icon,
   IconButton,
-  TextField,
   Checkbox,
   Select,
   MenuItem,
   Grid,
   Snackbar,
-  Alert
+  Alert,
+  TextField
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
-import { useListedevisFunctions } from 'app/views/admin/demande/devis/function';
+import { StyledTable } from 'app/views/style/style';
+import { useDFictifFunctions } from 'app/views/admin/mouvementstock/fictif/detail/dfictiffunction';
 import { baseUrl } from 'app/utils/constant';
-import { converttodate } from 'app/utils/utils';
+import { useParams } from 'react-router-dom';
+import { formatNumber, converttodate } from 'app/utils/utils';
 
-const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+  const idmouvementstock = useParams();
+
   // Colonne
   const columns = [
-    { label: 'ID', field: 'iddevis', align: 'center' },
-    { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'Date devis', field: 'datedevis', align: 'center' },
-    { label: 'Libele', field: 'libelle', align: 'center' }
-
+    { label: 'ID', field: 'iddetailmouvementfictif', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Responsable', field: 'idetudiant', align: 'center' },
+    { label: 'Caution', field: 'caution', align: 'center' },
+    { label: 'Date debut', field: 'datedeb', align: 'center' },
+    { label: 'Date fin', field: 'datefin', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' }
     // Other columns...
   ];
-
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editedIddevis, setEditedIddevis] = useState('');
-  const [editeddatedevis, setEditeddatedevis] = useState('');
-  const [editednom, setEditedNom] = useState(['1']);
-  const [editedLibelle, setEditedLibelle] = useState('');
+  const [editiddetail, setEditedIddetail] = useState('');
+  const [materiel, setMateriel] = useState(['1']);
+  const [etudiant, setEtudiant] = useState(['1']);
+  const [depot, setDepot] = useState(['1']);
+  const [caution, setCaution] = useState('');
+  const [datedeb, setDatedeb] = useState('');
+  const [datefin, setDatefin] = useState('');
+
   const [data, setData] = useState({
-    clientdevis: [],
-    clients: [],
-    articles: []
+    materiels: [],
+    etudiants: [],
+    depots: [],
+    mouvementfictifs: []
   });
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const handleEdit = (row) => {
-    setEditedIddevis('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.iddevis);
-  };
-
   const handleupdate = () => {
-    let devis = {
-      iddevis: editedIddevis,
-      idclient: editednom,
-      datedevis: editeddatedevis,
-      libelle: editedLibelle,
+    let detailmouvementfictif = {
+      iddetailmouvementfictif: editiddetail,
+      idmouvement: idmouvementstock.idmouvementstock,
+      datedeb: datedeb,
+      datefin: datefin,
+      idetudiant: etudiant,
+      caution: caution,
+      idmateriel: materiel,
+      iddepot: depot,
       statut: 0
     };
-
-    let url = baseUrl + '/devis/createdevis';
+    let url = baseUrl + '/mouvementstock/createsingledetailfictif';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify(devis),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
-
-  const handleSubmit = () => {
-    let proforma = [];
-    proforma = selectedIds.map((id) => ({
-      iddevis: id,
-      datevalidation: new Date()
-    }));
-
-    let url = baseUrl + '/proforma/createproforma';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(proforma),
+      body: JSON.stringify(detailmouvementfictif),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
@@ -138,28 +111,30 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangePage,
     sortColumn,
     selectedIds,
-    setClient,
-    client,
-    setIsEditClicked,
-    setSelectedRowId,
-    datedevis,
-    setDatedevis,
-    handleChangeRowsPerPage,
+    setMarque,
+    marque,
+    modele,
     cancelEdit,
+    handleEdit,
+    setModele,
+    handleChangeRowsPerPage,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = useListedevisFunctions(data);
+  } = useDFictifFunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/devis/contentdevis';
+        let mouvementstockParams = {
+          idmouvementstock: idmouvementstock.idmouvementstock
+        };
+        let url = baseUrl + '/mouvementstock/detailstockfictif/';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify({}),
+          body: JSON.stringify(mouvementstockParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -169,10 +144,12 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
         const responseData = await response.json();
         const newData = {
-          clientdevis: responseData.clientdevis || [],
-          clients: responseData.clients || [],
-          articles: responseData.articles || []
+          mouvementfictifs: responseData.mouvementfictifs || [],
+          materiels: responseData.listemateriels || [],
+          depots: responseData.depots || [],
+          etudiants: responseData.etudiants || []
         };
+
         setData(newData);
       } catch (error) {
         setMessage({
@@ -191,32 +168,30 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
     // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.iddevis === selectedRowId);
+      const selectedRow = sortedData.find((row) => row.iddetailmouvementfictif === selectedRowId);
 
       if (selectedRow) {
-        setEditedIddevis(selectedRow.iddevis);
+        setEditedIddetail(selectedRow.iddetailmouvementfictif);
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
 
-  const getInfo = (iddevis) => {
-    window.location.replace('/admin/detaildevis/' + iddevis);
-  };
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un devis" sx={{ marginBottom: '16px' }}>
+          <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={3}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   size="small"
-                  type="date"
-                  name="datedevis"
+                  type="text"
+                  name="marque"
                   variant="outlined"
-                  value={datedevis}
-                  onChange={(event) => setDatedevis(event.target.value)}
+                  label="Marque"
+                  value={marque}
+                  onChange={(event) => setMarque(event.target.value)}
                   sx={{ mb: 3 }}
                 />
               </Grid>
@@ -227,16 +202,16 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   size="small"
                   type="text"
                   name="nomclient"
-                  label="Nom du client"
-                  value={client}
-                  onChange={(event) => setClient(event.target.value)}
+                  label="Modele"
+                  value={modele}
+                  onChange={(event) => setModele(event.target.value)}
                 />
               </Grid>
             </Grid>
           </SimpleCard>
         </Grid>
         <Grid item>
-          <SimpleCard title="Liste des devis">
+          <SimpleCard title="Details du mouvement">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -267,18 +242,6 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  disabled={selectedIds.length === 0}
-                  onClick={handleSubmit}
-                >
-                  Generer un proforma
-                </Button>
-              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
@@ -286,25 +249,43 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.clientdevis.every((row) => selectedIds.includes(row.iddevis))}
+                      checked={data.mouvementfictifs.every((row) =>
+                        selectedIds.includes(row.iddetailmouvementfictif)
+                      )}
                       indeterminate={
-                        data.clientdevis.some((row) => selectedIds.includes(row.iddevis)) &&
-                        !data.clientdevis.every((row) => selectedIds.includes(row.iddevis))
+                        data.mouvementfictifs.some((row) =>
+                          selectedIds.includes(row.iddetailmouvementfictif)
+                        ) &&
+                        !data.mouvementfictifs.every((row) =>
+                          selectedIds.includes(row.iddetailmouvementfictif)
+                        )
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddevis" align="left">
+                  <TableCell key="iddetailmouvementfictif" align="left">
                     ID
                   </TableCell>
-                  <TableCell key="nom" align="left">
-                    nom client
+                  <TableCell key="marque" align="left">
+                    Marque
                   </TableCell>
-                  <TableCell key="datedevis" align="left">
-                    date devis
+                  <TableCell key="modele" align="left">
+                    Modele
                   </TableCell>
-                  <TableCell key="libelle" align="left">
-                    Libele
+                  <TableCell key="idetudiant" align="left">
+                    Responsable
+                  </TableCell>
+                  <TableCell key="caution" align="left">
+                    Caution
+                  </TableCell>
+                  <TableCell key="datedeb" align="left">
+                    Date Debut
+                  </TableCell>
+                  <TableCell key="datefin" align="left">
+                    Date fin
+                  </TableCell>
+                  <TableCell key="depot" align="left">
+                    Depot
                   </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -318,31 +299,52 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                       <TableRow key={index}>
                         <TableCell>
                           <Checkbox
-                            checked={selectedIds.includes(row.iddevis)}
-                            onChange={(event) => handleSelection(event, row.iddevis)}
+                            checked={selectedIds.includes(row.iddetailmouvementfictif)}
+                            onChange={(event) =>
+                              handleSelection(event, row.iddetailmouvementfictif)
+                            }
                           />
                         </TableCell>
-                        {isEditClicked && row.iddevis === selectedRowId ? (
+                        {isEditClicked && row.iddetailmouvementfictif === selectedRowId ? (
                           <>
-                            <TableCell key={row.iddevis}>
+                            <TableCell key={row.iddetailmouvementfictif}>
                               <TextField
-                                value={editedIddevis}
-                                onChange={(event) => setEditedIddevis(event.target.value)}
+                                value={editiddetail}
+                                onChange={(event) => setEditedIddetail(event.target.value)}
+                                readOnly
                               />
+                            </TableCell>
+
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={etudiant}
+                                onChange={(event) => setEtudiant(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  Etudiants
+                                </MenuItem>
+                                {data.etudiants.map((row) => (
+                                  <MenuItem key={row.idetudiant} value={row.idetudiant}>
+                                    {row.idetudiant}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                             <TableCell>
                               <Select
-                                labelId="select-label"
-                                value={editednom}
-                                onChange={(event) => setEditedNom(event.target.value)}
                                 fullWidth
+                                labelId="select-label"
+                                value={materiel}
+                                onChange={(event) => setMateriel(event.target.value)}
                               >
                                 <MenuItem value="1" disabled>
-                                  Choisir un client
+                                  Materiels
                                 </MenuItem>
-                                {data.clients.map((row) => (
-                                  <MenuItem key={row.idClient} value={row.idClient}>
-                                    {row.nom}
+                                {data.materiels.map((row) => (
+                                  <MenuItem key={row.idmateriel} value={row.idmateriel}>
+                                    {row.marque}/{row.modele}-{row.numserie}
                                   </MenuItem>
                                 ))}
                               </Select>
@@ -350,34 +352,56 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>
                               <TextField
                                 type="date"
-                                value={editeddatedevis}
-                                onChange={(event) => setEditeddatedevis(event.target.value)}
+                                value={datedeb}
+                                onChange={(event) => setDatedeb(event.target.value)}
+                                sx={{ width: '100px' }}
                               />
                             </TableCell>
                             <TableCell>
                               <TextField
-                                value={editedLibelle}
-                                onChange={(event) => setEditedLibelle(event.target.value)}
+                                type="date"
+                                value={datefin}
+                                onChange={(event) => setDatefin(event.target.value)}
+                                sx={{ width: '100px' }}
                               />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="number"
+                                label="caution"
+                                value={caution}
+                                onChange={(event) => setCaution(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={depot}
+                                onChange={(event) => setDepot(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  depot
+                                </MenuItem>
+                                {data.depots.map((row) => (
+                                  <MenuItem key={row.iddepot} value={row.iddepot}>
+                                    {row.depot}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.iddevis}</TableCell>
-                            <TableCell>{row.nom}</TableCell>
-                            <TableCell>{converttodate(row.datedevis)}</TableCell>
-                            <TableCell>{row.libelle}</TableCell>
-
+                            <TableCell align="left">{row.iddetailmouvementfictif}</TableCell>
+                            <TableCell align="left">{row.marque}</TableCell>
+                            <TableCell align="left">{row.modele}</TableCell>
+                            <TableCell align="left">{row.idetudiant}</TableCell>
+                            <TableCell align="left">{formatNumber(row.caution)}</TableCell>
+                            <TableCell align="left">{converttodate(row.datedeb)}</TableCell>
+                            <TableCell align="left">{converttodate(row.datefin)}</TableCell>
+                            <TableCell align="left">{row.depot}</TableCell>
                             <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => getInfo(row.iddevis)}
-                              >
-                                <Icon>info</Icon>
-                              </IconButton>
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -385,12 +409,12 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 color="primary"
                                 onClick={() => handleEdit(row)}
                               >
-                                <Icon>edit_icon</Icon>
+                                <Icon>edit</Icon>
                               </IconButton>
                             </TableCell>
                           </>
                         )}
-                        {isEditClicked && row.iddevis === selectedRowId && (
+                        {isEditClicked && row.iddetailmouvementfictif === selectedRowId && (
                           <>
                             <TableCell>
                               <IconButton
@@ -455,4 +479,4 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   );
 };
 
-export default Listedevis;
+export default Detailfictif;

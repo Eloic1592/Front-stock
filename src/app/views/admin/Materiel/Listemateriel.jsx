@@ -58,9 +58,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
 
   // Update
   const [isEditedIdmateriel, setIsEditedIdmateriel] = useState('');
-  const [isEditedtypemat, setIsEditedtypemat] = useState('');
-  const [isEditedcatemat, setIsEditedcatemat] = useState('');
-  const [isEditedmodele, setIsEditedmodele] = useState('');
+  const [isEditedtypemat, setIsEditedtypemat] = useState(['1']);
+  const [isEditedcatemat, setIsEditedcatemat] = useState(['1']);
+  const [isEditedmodele, setIsEditedmodele] = useState(['1']);
   const [isEditednumserie, setIsEditednumserie] = useState('');
   const [isEditedprixvente, setIsEditedprixvente] = useState(0);
   const [isEditedcolor, setIsEditedcolor] = useState(['Rouge']);
@@ -370,135 +370,99 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         {isEditClicked && row.idmateriel === selectedRowId ? (
                           <>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <TextField
-                                    value={isEditedIdmateriel}
-                                    onChange={(event) => setIsEditedIdmateriel(event.target.value)}
-                                  />
-                                </Grid>
-                              </Grid>
+                              <TextField
+                                value={isEditedIdmateriel}
+                                onChange={(event) => setIsEditedIdmateriel(event.target.value)}
+                              />
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <Select
-                                    labelId="select-label"
-                                    sx={{ mb: 3 }}
-                                    value={isEditedcatemat}
-                                    onChange={(event) => setIsEditedcatemat(event.target.value)}
-                                    fullWidth
+                              <Select
+                                labelId="select-label"
+                                value={isEditedcatemat}
+                                onChange={(event) => setIsEditedcatemat(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir une categorie
+                                </MenuItem>
+                                {data.categoriemateriels.map((row) => (
+                                  <MenuItem
+                                    key={row.idcategoriemateriel}
+                                    value={row.idcategoriemateriel}
                                   >
-                                    <MenuItem value="1" disabled>
-                                      Choisir une categorie
-                                    </MenuItem>
-                                    {data.categoriemateriels.map((row) => (
-                                      <MenuItem
-                                        key={row.idcategoriemateriel}
-                                        value={row.idcategoriemateriel}
-                                      >
-                                        {row.categoriemateriel}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </Grid>
-                              </Grid>
+                                    {row.categoriemateriel}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <Select
-                                    labelId="select-label"
-                                    sx={{ mb: 3 }}
-                                    value={isEditedtypemat}
-                                    onChange={(event) => setIsEditedtypemat(event.target.value)}
-                                    fullWidth
-                                  >
-                                    <MenuItem value="1" disabled>
-                                      Choisir un type
-                                    </MenuItem>
-                                    {data.typemateriels.map((row) => (
-                                      <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                                        {row.typemateriel}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </Grid>
-                              </Grid>
+                              <Select
+                                labelId="select-label"
+                                value={isEditedtypemat}
+                                onChange={(event) => setIsEditedtypemat(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir un type
+                                </MenuItem>
+                                {data.typemateriels.map((row) => (
+                                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                                    {row.typemateriel}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <Select
-                                    labelId="select-label"
-                                    sx={{ mb: 3 }}
-                                    value={isEditedmodele}
-                                    onChange={(event) => setIsEditedmodele(event.target.value)}
-                                    fullWidth
-                                  >
-                                    <MenuItem value="1" disabled>
-                                      Choisir un article
-                                    </MenuItem>
-                                    {data.articles.map((row) => (
-                                      <MenuItem key={row.idarticle} value={row.idarticle}>
-                                        {row.modele}/{row.codearticle}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </Grid>
-                              </Grid>
+                              <Select
+                                labelId="select-label"
+                                value={isEditedmodele}
+                                onChange={(event) => setIsEditedmodele(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir un article
+                                </MenuItem>
+                                {data.articles.map((row) => (
+                                  <MenuItem key={row.idarticle} value={row.idarticle}>
+                                    {row.modele}/{row.codearticle}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <TextField
-                                    value={isEditednumserie}
-                                    onChange={(event) => setIsEditednumserie(event.target.value)}
-                                  />
-                                </Grid>
-                              </Grid>
+                              <TextField
+                                value={isEditednumserie}
+                                onChange={(event) => setIsEditednumserie(event.target.value)}
+                              />
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <TextField
-                                    type="number"
-                                    value={isEditedprixvente}
-                                    onChange={(event) => setIsEditedprixvente(event.target.value)}
-                                  />
-                                </Grid>
-                              </Grid>
+                              <TextField
+                                type="number"
+                                value={isEditedprixvente}
+                                onChange={(event) => setIsEditedprixvente(event.target.value)}
+                              />
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <TextField
-                                    type="number"
-                                    value={isEditedcaution}
-                                    onChange={(event) => setisEditedcaution(event.target.value)}
-                                  />
-                                </Grid>
-                              </Grid>
+                              <TextField
+                                type="number"
+                                value={isEditedcaution}
+                                onChange={(event) => setisEditedcaution(event.target.value)}
+                              />
                             </TableCell>
                             <TableCell>
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <Select
-                                    fullWidth
-                                    labelId="select-label"
-                                    value={isEditedcolor}
-                                    onChange={(event) => setIsEditedcolor(event.target.value)}
-                                    sx={{ mb: 3 }}
-                                  >
-                                    <MenuItem value="0">Toutes couleurs</MenuItem>
-                                    {colors.map((color, index) => (
-                                      <MenuItem key={index} value={color}>
-                                        {color}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </Grid>
-                              </Grid>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={isEditedcolor}
+                                onChange={(event) => setIsEditedcolor(event.target.value)}
+                              >
+                                <MenuItem value="0">Toutes couleurs</MenuItem>
+                                {colors.map((color, index) => (
+                                  <MenuItem key={index} value={color}>
+                                    {color}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                           </>
                         ) : (
@@ -573,8 +537,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                  backIconButtonProps={{ 'aria-label': 'Page precedente' }}
                 />
               </Grid>
             </Grid>

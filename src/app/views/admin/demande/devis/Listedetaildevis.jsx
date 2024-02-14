@@ -23,21 +23,36 @@ import { StyledTable, AutoComplete } from 'app/views/style/style';
 import { useDetaildevisFunctions } from 'app/views/admin/demande/devis/detailfunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
+import { formatNumber } from 'app/utils/utils';
 
 const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetaildevis', align: 'center' },
-    { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Article', field: 'marque', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
 
     // Other columns...
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    detaildevis: [],
+    articles: []
+  });
+  const [editiddetail, setEditedIddetail] = useState('');
+  const [editarticle, setEditarticle] = useState(['1']);
+  const [editquantite, setEditquantite] = useState(0);
+  const [editpu, setEditpu] = useState(0);
+  const [edittotal, setEdittotal] = useState(0);
+
+  const handleEdit = (row) => {
+    setEditedIddetail('');
+    setIsEditClicked(true);
+    setSelectedRowId(row.iddetaildevis);
+  };
+
   const {
     editingId,
     sortDirection,
@@ -45,12 +60,13 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     rowsPerPage,
     setSortDirection,
     isEditClicked,
+    setIsEditClicked,
+    setSelectedRowId,
     selectedRowId,
     handleChangePage,
     sortColumn,
     selectedIds,
     handleChangeRowsPerPage,
-    handleEdit,
     cancelEdit,
     handleSelection,
     handleSelectAll,
@@ -69,6 +85,43 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   });
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+
+  const handleupdate = () => {
+    let detaildevis = {
+      iddetaildevis: editiddetail,
+      iddevis: iddevis.iddevis,
+      idarticle: editarticle,
+      quantite: editquantite,
+      pu: editpu,
+      total: edittotal
+    };
+
+    let url = baseUrl + '/devis/singledetails';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(detaildevis),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,8 +142,12 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         }
 
         const responseData = await response.json();
-        setData(responseData);
-        console.log(data);
+        const newData = {
+          detaildevis: responseData.detaildevis || [],
+          articles: responseData.articles || []
+        };
+
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -99,8 +156,24 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
       }
     };
-    fetchData();
-  }, []); // Ajoutez initialDataFetched comme dépendance
+    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
+    if (!initialDataFetched) {
+      fetchData(); // Appel initial
+      setInitialDataFetched(true);
+    }
+
+    // La logique conditionnelle
+    if (isEditClicked && selectedRowId !== null) {
+      const selectedRow = sortedData.find((row) => row.iddetaildevis === selectedRowId);
+      if (selectedRow) {
+        setEditedIddetail(selectedRow.iddetaildevis);
+      }
+    }
+    const calcultotal = () => {
+      return editpu * editquantite;
+    };
+    setEdittotal(calcultotal);
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched, editpu, editquantite]); // Ajoutez initialDataFetched comme dépendance
 
   return (
     <Box width="100%" overflow="auto">
@@ -186,10 +259,12 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 <TableRow>
                   <TableCell>
                     <Checkbox
-                      checked={data.every((row) => selectedIds.includes(row.iddetaildevis))}
+                      checked={data.detaildevis.every((row) =>
+                        selectedIds.includes(row.iddetaildevis)
+                      )}
                       indeterminate={
-                        data.some((row) => selectedIds.includes(row.iddetaildevis)) &&
-                        !data.every((row) => selectedIds.includes(row.iddetaildevis))
+                        data.detaildevis.some((row) => selectedIds.includes(row.iddetaildevis)) &&
+                        !data.detaildevis.every((row) => selectedIds.includes(row.iddetaildevis))
                       }
                       onChange={handleSelectAll}
                     />
@@ -198,10 +273,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                     ID
                   </TableCell>
                   <TableCell key="marque" align="left">
-                    Marque
-                  </TableCell>
-                  <TableCell key="modele" align="left">
-                    Modele
+                    Article
                   </TableCell>
                   <TableCell key="quantite" align="left">
                     Quantite
@@ -221,36 +293,89 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={row.iddetaildevis}>
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(row.iddetaildevis)}
                             onChange={(event) => handleSelection(event, row.iddetaildevis)}
                           />
                         </TableCell>
-                        <TableCell align="left">{row.iddetaildevis}</TableCell>
-                        <TableCell align="left">{row.marque}</TableCell>
-                        <TableCell align="left">{row.modele}</TableCell>
-                        <TableCell align="left">{row.quantite}</TableCell>
-                        <TableCell align="left">{row.pu}</TableCell>
-                        <TableCell align="left">{row.total}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            className="button"
-                            variant="contained"
-                            aria-label="Edit"
-                            color="primary"
-                            onClick={() => handleEdit(row)}
-                          >
-                            <Icon>edit_icon</Icon>
-                          </IconButton>
-                          {isEditClicked && row.iddetaildevis === selectedRowId && (
-                            <>
+                        {isEditClicked && row.iddetaildevis === selectedRowId ? (
+                          <>
+                            <TableCell key={row.iddetaildevis}>
+                              <TextField
+                                value={editiddetail}
+                                onChange={(event) => setEditedIddetail(event.target.value)}
+                                readOnly
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editarticle}
+                                onChange={(event) => setEditarticle(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  article
+                                </MenuItem>
+                                {data.articles.map((row) => (
+                                  <MenuItem key={row.idarticle} value={row.idarticle}>
+                                    {row.marque}-{row.modele}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="number"
+                                value={editpu}
+                                onChange={(event) => setEditpu(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="number"
+                                value={editquantite}
+                                onChange={(event) => setEditquantite(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField type="number" value={edittotal} readOnly />
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            <TableCell align="left">{row.iddetaildevis}</TableCell>
+                            <TableCell align="left">
+                              {row.marque}-{row.modele}
+                            </TableCell>
+                            <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
+                            <TableCell align="left">{formatNumber(row.pu)}</TableCell>
+                            <TableCell align="left">{formatNumber(row.total)}</TableCell>
+
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
+                          </>
+                        )}
+                        {isEditClicked && row.iddetaildevis === selectedRowId && (
+                          <>
+                            <TableCell>
                               <IconButton
                                 className="button"
                                 variant="contained"
                                 aria-label="Edit"
                                 color="secondary"
+                                onClick={() => handleupdate()}
                               >
                                 <Icon>arrow_forward</Icon>
                               </IconButton>
@@ -259,20 +384,20 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="error"
-                                onClick={cancelEdit}
+                                onClick={() => cancelEdit(row)}
                               >
                                 <Icon>close</Icon>
                               </IconButton>
-                            </>
-                          )}
-                        </TableCell>
+                            </TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
                   <TableRow>
                     <TableCell colSpan={6}>
                       <Typography variant="subtitle1" color="textSecondary">
-                        Aucune donnee disponible
+                        Aucune donnée disponible
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -290,8 +415,8 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   onPageChange={handleChangePage}
                   rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                  backIconButtonProps={{ 'aria-label': 'Page precedente' }}
                 />
               </Grid>
             </Grid>
