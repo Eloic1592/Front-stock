@@ -338,7 +338,7 @@ const Materiel = () => {
             <Button variant="outlined" color="secondary" onClick={handleFileClose}>
               Annuler
             </Button>
-            <Button onClick={handleSubmit} color="primary">
+            <Button onClick={handleSubmit} color="primary" variant="contained">
               Valider
             </Button>
           </DialogActions>

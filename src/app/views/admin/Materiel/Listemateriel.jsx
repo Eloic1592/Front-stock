@@ -24,6 +24,8 @@ import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
 import { colors } from 'app/utils/utils';
+import { jsPDF } from 'jspdf'; //or use your library of choice here
+import autoTable from 'jspdf-autotable';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
@@ -138,6 +140,20 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
       });
   };
+
+  const handleExportRows = () => {
+    const doc = new jsPDF();
+    const tableData = rows.map((row) => Object.values(row.original));
+    const tableHeaders = columns.map((c) => c.header);
+
+    autoTable(doc, {
+      head: [tableHeaders],
+      body: tableData
+    });
+
+    doc.save('mrt-pdf-example.pdf');
+  };
+
   //  Use effect
   useEffect(() => {
     const fetchData = async () => {
@@ -307,6 +323,11 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button className="button" variant="contained" aria-label="Edit" color="secondary">
+                  <Icon>picture_as_pdf</Icon>
                 </Button>
               </Grid>
             </Grid>
