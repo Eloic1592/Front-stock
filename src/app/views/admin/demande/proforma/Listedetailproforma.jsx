@@ -1,15 +1,10 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Icon,
-  IconButton,
-  TextField,
-  Checkbox,
   Select,
   MenuItem,
   Grid,
@@ -41,27 +36,13 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   ];
   const [data, setData] = useState({ detaildevis: [] });
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
-    isEditClicked,
-    selectedRowId,
     handleChangePage,
     sortColumn,
-    selectedIds,
-    setClient,
-    client,
-    datedevis,
-    setDatedevis,
-    libelle,
-    setLibelle,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useDetaildevisFunctions(data);
@@ -72,7 +53,6 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     open: false
   });
   const handleAlertClose = () => setMessage({ open: false });
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {

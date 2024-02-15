@@ -23,8 +23,6 @@ import { StyledTable } from 'app/views/style/style';
 import { useListeproformafunctions } from 'app/views/admin/demande/proforma/proformafunction';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 // Proforma tsy afaka ovaina intsony
 const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
@@ -101,35 +99,6 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleSelectColumn,
     sortedData
   } = useListeproformafunctions(data);
-
-  const handleExportRows = () => {
-    const tableElement = document.getElementById('datatable'); // Assurez-vous que l'ID correspond à celui de votre tableau
-    html2canvas(tableElement).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      // Ajouter un titre au PDF
-      pdf.setFontSize(16); // Définir la taille de la police pour le titre
-      pdf.text('Proforma detaille', 10, 10); // Ajouter le texte du titre
-
-      // Calculer la hauteur maximale pour l'image
-      const maxImgHeight = pdf.internal.pageSize.getHeight() - 20; //  20 est la marge en bas pour le titre
-
-      // Si l'image est trop grande, redimensionner pour qu'elle tienne sur une page
-      if (pdfHeight > maxImgHeight) {
-        const ratio = maxImgHeight / pdfHeight;
-        pdfWidth *= ratio;
-        pdfHeight *= ratio;
-      }
-
-      // Ajouter l'image de la table au PDF
-      pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight); // Ajustez la position y pour laisser de l'espace pour le titre
-      pdf.save('Proforma.pdf');
-    });
-  };
 
   //  Use effect
   useEffect(() => {
