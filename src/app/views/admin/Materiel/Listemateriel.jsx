@@ -24,8 +24,8 @@ import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
 import { colors } from 'app/utils/utils';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+// import html2canvas from 'html2canvas';
+// import jsPDF from 'jspdf';
 
 const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
@@ -142,23 +142,28 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   };
 
   const handleExportRows = () => {
-    const tableElement = document.getElementById('datatable'); // The ID of your table element
-
-    html2canvas(tableElement).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      // Add a title to the PDF
-      pdf.setFontSize(16); // Set the font size for the title
-      pdf.text('Liste des materiels', 10, 10); // Add the title text
-
-      // Add the image of the table to the PDF
-      pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight); // Adjust the y position to leave space for the title
-      pdf.save('Liste_materiel.pdf');
-    });
+    // const tableElement = document.getElementById('datatable'); // Assurez-vous que l'ID correspond à celui de votre tableau
+    // html2canvas(tableElement).then((canvas) => {
+    //   const imgData = canvas.toDataURL('image/png');
+    //   const pdf = new jsPDF();
+    //   const imgProps = pdf.getImageProperties(imgData);
+    //   const pdfWidth = pdf.internal.pageSize.getWidth();
+    //   const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    //   // Ajouter un titre au PDF
+    //   pdf.setFontSize(16); // Définir la taille de la police pour le titre
+    //   pdf.text('Liste des matériels', 10, 10); // Ajouter le texte du titre
+    //   // Calculer la hauteur maximale pour l'image
+    //   const maxImgHeight = pdf.internal.pageSize.getHeight() - 20; //  20 est la marge en bas pour le titre
+    //   // Si l'image est trop grande, redimensionner pour qu'elle tienne sur une page
+    //   if (pdfHeight > maxImgHeight) {
+    //     const ratio = maxImgHeight / pdfHeight;
+    //     pdfWidth *= ratio;
+    //     pdfHeight *= ratio;
+    //   }
+    //   // Ajouter l'image de la table au PDF
+    //   pdf.addImage(imgData, 'PNG', 0, 20, pdfWidth, pdfHeight); // Ajustez la position y pour laisser de l'espace pour le titre
+    //   pdf.save('Liste_matériel.pdf');
+    // });
   };
 
   //  Use effect
@@ -323,6 +328,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
               </Grid>
               <Grid item xs={2}>
                 <Button
+                  fullWidth
                   className="button"
                   variant="contained"
                   aria-label="Edit"

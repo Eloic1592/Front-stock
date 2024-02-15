@@ -7,9 +7,7 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Grid,
-  Select,
-  MenuItem
+  Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -18,6 +16,9 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import Listedetailproforma from './Listedetailproforma';
+import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
 
 const Detaildevis = () => {
   const iddevis = useParams();
@@ -28,27 +29,53 @@ const Detaildevis = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-  const handlecancelOpen = () => setAlertOpen(true);
-  const handlecancelClose = () => setAlertOpen(false);
   const [filename, setFilename] = useState('');
-  const [alertOpen, setAlertOpen] = useState(false);
 
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'column',
+      backgroundColor: '#E4E4E4'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    }
+  });
 
-  // Message
+  const MyDocument = ({ proformaData }) => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Text>Facture Proforma</Text>
+          <Text>Client: {proformaData.clientName}</Text>
+          <Text>Date: {proformaData.date}</Text>
+        </View>
+        <View style={styles.section}>
+          {proformaData.items.map((item, index) => (
+            <View key={index}>
+              <Text>
+                {index + 1}. {item.description} x {item.quantity}
+              </Text>
+              <Text>Prix: {item.price}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.section}>
+          <Text>Total: {proformaData.total}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
 
-  // Validation form
-  const handleSubmit = () => {
-    // let url = baseUrl + '/devis/createdetaildevis';
-    setMessage({
-      text: "Aucune donnee n'a ete ajoutee!",
-      severity: 'error',
-      open: true
-    });
+  const generateProformaPDF = async () => {
+    const blob = await pdf(<MyDocument />).toBlob();
+    saveAs(blob, 'Facture_Proforma.pdf');
   };
 
   useEffect(() => {}, []);
@@ -94,27 +121,7 @@ const Detaildevis = () => {
                 <Button variant="outlined" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
-                <Button variant="contained" onClick={handleSubmit} color="primary">
-                  Valider
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-          <Box>
-            <Dialog
-              open={alertOpen}
-              onClose={handlecancelClose}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">
-                Voulez-vous vraiment tout reinitialiser ?
-              </DialogTitle>
-
-              <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
-                  Annuler
-                </Button>
-                <Button onClick={handleSubmit} color="primary">
+                <Button variant="contained" onClick={generateProformaPDF} color="primary">
                   Valider
                 </Button>
               </DialogActions>
