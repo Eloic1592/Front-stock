@@ -79,7 +79,6 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   };
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,

@@ -203,6 +203,78 @@ export function formatNumber(nombre) {
   }
 }
 
+// Transformation d'un nombre en toute lettre
+export function nombreEnLettres(nombre) {
+  const unites = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
+  const dixAvingt = [
+    'dix',
+    'onze',
+    'douze',
+    'treize',
+    'quatorze',
+    'quinze',
+    'seize',
+    'dix-sept',
+    'dix-huit',
+    'dix-neuf'
+  ];
+  const dizaines = [
+    '',
+    '',
+    'vingt',
+    'trente',
+    'quarante',
+    'cinquante',
+    'soixante',
+    'soixante-',
+    'quatre-vingt',
+    'quatre-vingt-'
+  ];
+
+  function enLettres(n) {
+    let resultat = '';
+    if (n >= 100) {
+      resultat += unites[Math.floor(n / 100)] + ' cent ';
+      n %= 100;
+    }
+    if (n >= 20) {
+      resultat += dizaines[Math.floor(n / 10)];
+      if (n % 10 !== 0) {
+        resultat += '-' + unites[n % 10];
+      }
+    } else if (n >= 10) {
+      resultat += dixAvingt[n - 10];
+    } else {
+      resultat += unites[n];
+    }
+    return resultat.trim();
+  }
+
+  if (nombre === 0) return 'zéro';
+
+  let resultatFinal = '';
+  const milliards = Math.floor(nombre / 1000000000);
+  const millions = Math.floor((nombre % 1000000000) / 1000000);
+  const milliers = Math.floor((nombre % 1000000) / 1000);
+  const restants = nombre % 1000;
+
+  if (milliards > 0) {
+    resultatFinal += enLettres(milliards) + ' milliard ';
+  }
+  if (millions > 0) {
+    resultatFinal += enLettres(millions) + ' million ';
+  }
+  if (milliers > 0) {
+    resultatFinal += enLettres(milliers) + ' mille ';
+  }
+  if (restants > 0) {
+    resultatFinal += enLettres(restants);
+  }
+
+  return resultatFinal.trim();
+}
+// affiche "cent vingt-trois millions quatre cent cinquante-six mille sept cent quatre-vingt-neuf"
+
 export const colors = [
   'Rouge',
   'Vert',

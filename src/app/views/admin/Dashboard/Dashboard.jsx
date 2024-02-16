@@ -2,8 +2,6 @@ import { Box, TextField, Select, MenuItem, Grid } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 
 import { useEffect, useState } from 'react';
-import PaginationTable from 'app/views/material-kit/tables/PaginationTable';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import { Container, AutoComplete } from 'app/views/style/style';
 
 const Dashboard = () => {

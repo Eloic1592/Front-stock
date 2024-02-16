@@ -13,16 +13,21 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
-import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import Listedetailproforma from './Listedetailproforma';
-import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import { pdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
 
 const Detaildevis = () => {
-  const iddevis = useParams();
-  console.log(iddevis.iddevis);
+  // Colonne
+  const columns = [
+    { label: 'ID', field: 'iddetaildevis', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Prix unitaire', field: 'pu', align: 'center' },
+    { label: 'Total', field: 'total', align: 'center' }
+
+    // Other columns...
+  ];
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -30,55 +35,16 @@ const Detaildevis = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [filename, setFilename] = useState('');
-
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'column',
-      backgroundColor: '#E4E4E4'
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1
-    }
-  });
 
-  const MyDocument = ({ proformaData }) => (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <Text>Facture Proforma</Text>
-          <Text>Client: {proformaData.clientName}</Text>
-          <Text>Date: {proformaData.date}</Text>
-        </View>
-        <View style={styles.section}>
-          {proformaData.items.map((item, index) => (
-            <View key={index}>
-              <Text>
-                {index + 1}. {item.description} x {item.quantity}
-              </Text>
-              <Text>Prix: {item.price}</Text>
-            </View>
-          ))}
-        </View>
-        <View style={styles.section}>
-          <Text>Total: {proformaData.total}</Text>
-        </View>
-      </Page>
-    </Document>
-  );
-
-  const generateProformaPDF = async () => {
-    const blob = await pdf(<MyDocument />).toBlob();
-    saveAs(blob, 'Facture_Proforma.pdf');
-  };
+  // Export pdf
 
   useEffect(() => {}, []);
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -90,13 +56,13 @@ const Detaildevis = () => {
         />
       </Box>
       <Grid container direction="column" spacing={2}>
-        <Grid item>
+        {/* <Grid item>
           <Box>
             <Button variant="contained" onClick={handleClickOpen} color="secondary">
               Exporter PDF
             </Button>
           </Box>
-        </Grid>
+        </Grid> */}
         <Grid item>
           <Box>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
@@ -121,7 +87,7 @@ const Detaildevis = () => {
                 <Button variant="outlined" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
-                <Button variant="contained" onClick={generateProformaPDF} color="primary">
+                <Button variant="contained" color="primary">
                   Valider
                 </Button>
               </DialogActions>

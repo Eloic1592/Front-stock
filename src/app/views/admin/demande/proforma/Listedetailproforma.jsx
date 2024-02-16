@@ -9,6 +9,8 @@ import {
   MenuItem,
   Grid,
   Snackbar,
+  Button,
+  Icon,
   Alert
 } from '@mui/material';
 import { SimpleCard } from 'app/components';
@@ -19,22 +21,26 @@ import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber } from 'app/utils/utils';
+import PDFproforma from './PDFproforma';
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import { useFetchProformaDetails } from 'app/views/admin/demande/proforma/proformafunction';
 
 const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const iddevis = useParams();
-  console.log(iddevis.iddevis);
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetaildevis', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
 
     // Other columns...
   ];
-  const [data, setData] = useState({ detaildevis: [] });
+  const [data, setData] = useState({ detaildevis: [], total: 0 });
   const {
     sortDirection,
     page,
@@ -53,6 +59,14 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     open: false
   });
   const handleAlertClose = () => setMessage({ open: false });
+
+  const proformaData = useFetchProformaDetails(iddevis.iddevis);
+  const generateProformaPDF = async () => {
+    const blob = await renderPdf(
+      <PDFproforma dataList={proformaData} columns={columns} />
+    ).toBlob();
+    saveAs(blob, 'Test.pdf');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +87,8 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         }
         const responseData = await response.json();
         const newData = {
-          detaildevis: responseData.detaildevis || []
+          detaildevis: responseData.detaildevis || [],
+          total: responseData.somme || 0
         };
 
         setData(newData);
@@ -123,6 +138,17 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  onClick={generateProformaPDF}
+                >
+                  <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
@@ -136,6 +162,9 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   </TableCell>
                   <TableCell key="modele" align="left">
                     Modele
+                  </TableCell>
+                  <TableCell key="description" align="left">
+                    Description
                   </TableCell>
                   <TableCell key="quantite" align="left">
                     Quantite
@@ -174,8 +203,14 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                 )}
               </TableBody>
             </StyledTable>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <span style={{ fontSize: '1 em', color: 'green' }}>
+                  SOMME: {formatNumber(data.total)}
+                </span>
+              </Grid>
+              <Grid item xs={6}>
                 <TablePagination
                   sx={{ px: 2 }}
                   page={page}

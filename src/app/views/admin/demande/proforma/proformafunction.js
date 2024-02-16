@@ -1,5 +1,6 @@
 import { formatDate } from 'app/utils/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { baseUrl } from 'app/utils/constant';
 
 export const useListeproformafunctions = (data) => {
   const [page, setPage] = useState(0);
@@ -114,4 +115,47 @@ export function filtreproforma(listeproforma, nomclient, datevalidation) {
 
     return nomClientMatch && datevalidationmatch;
   });
+}
+
+export function useFetchProformaDetails(iddevis) {
+  const [data, setData] = useState({
+    detaildevis: [],
+    somme: [],
+    clientdevis: []
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let devisParams = {
+          iddevis: iddevis
+        };
+        let url = baseUrl + '/proforma/detailproforma';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify(devisParams),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        const newData = {
+          detaildevis: responseData.detaildevis || [],
+          somme: responseData.somme || [],
+          clientdevis: responseData.clientdevis || []
+        };
+
+        setData(newData);
+      } catch (error) {
+        console.log('tsy mety');
+      }
+    };
+
+    fetchData();
+  }, [iddevis]);
+
+  return data;
 }
