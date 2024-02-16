@@ -70,11 +70,10 @@ const PDFproforma = ({ dataList, columns }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Proforma</Text>
+        <Text style={styles.title}>Bon de livraison</Text>
         <View style={styles.gridContainer}>
           {dataList.clientdevis.map((row, index) => (
             <View style={styles.infoBox}>
-              <Text style={styles.labelText}>Proforma N*: {row.iddevis}</Text>
               <Text style={styles.labelText}>Nom: {row.nom}</Text>
               <Text style={styles.labelText}>Numéro de statut: {row.numstat}</Text>
               <Text style={styles.labelText}>Téléphone: {row.telephone}</Text>
@@ -126,4 +125,4 @@ const PDFproforma = ({ dataList, columns }) => {
   );
 };
 
-export default PDFproforma;
+export default PDFLivraison;

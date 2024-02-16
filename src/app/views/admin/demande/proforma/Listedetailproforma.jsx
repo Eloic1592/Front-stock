@@ -187,6 +187,7 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         <TableCell align="left">{row.iddetaildevis}</TableCell>
                         <TableCell align="left">{row.marque}</TableCell>
                         <TableCell align="left">{row.modele}</TableCell>
+                        <TableCell align="left">{row.description}</TableCell>
                         <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
                         <TableCell align="left">{formatNumber(row.pu)}</TableCell>
                         <TableCell align="left">{formatNumber(row.total)}</TableCell>
