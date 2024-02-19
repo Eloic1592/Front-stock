@@ -8,8 +8,7 @@ import {
   DialogTitle,
   Dialog,
   MenuItem,
-  Select,
-  Autocomplete
+  Select
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -30,24 +29,15 @@ const Facture = () => {
   const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
-
-  // Data
-  const [listefacture, setListeFacture] = useState([]);
-  const [client, setClient] = useState([]);
-  // Message
+  const handleAlertClose = () => setMessage({ open: false });
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
-  const handleAlertClose = () => setMessage({ open: false });
-
-  // Form dialog
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
-
-  // Close form
-  const handleClose = () => setOpen(false);
 
   // Validation form
   const handleSubmit = (event) => {
@@ -73,16 +63,13 @@ const Facture = () => {
   };
 
   // Page onLoad
-  useEffect(() => {
-    setListeFacture([]);
-  }, []);
+  useEffect(() => {}, []);
 
   const columnsdetails = [
     { label: 'article', field: 'article', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
     { label: 'prix unitaire', field: 'prixunitaire', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
-    // Other columns...
   ];
   return (
     <Container>

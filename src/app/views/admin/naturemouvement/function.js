@@ -21,7 +21,6 @@ export const useListemouvementFunctions = (data) => {
     setPage(0);
   };
 
-  // Suppression(Delete)
   const handleSelection = (event, id) => {
     if (event.target.checked) {
       setSelectedIds([...selectedIds, id]);
@@ -88,7 +87,7 @@ export function filtrenaturemouvement(listenaturemouvement, naturemouvement, cat
   return listenaturemouvement.filter((Item) => {
     return (
       Item.naturemouvement.toLowerCase().includes(naturemouvement.toLowerCase()) &&
-      Item.categoriemouvement == categoriemouvement
+      Item.categoriemouvement === categoriemouvement
     );
   });
 }

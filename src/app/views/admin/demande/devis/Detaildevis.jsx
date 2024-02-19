@@ -14,7 +14,7 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
 import Listedetaildevis from './Listedetaildevis';
@@ -31,7 +31,7 @@ const Detaildevis = () => {
   const handleAlertClose = () => setMessage({ open: false });
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
-  const [fileOpen, setFileOpen] = useState(false);
+  // const [fileOpen, setFileOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
   // Data
@@ -49,13 +49,13 @@ const Detaildevis = () => {
     open: false
   });
   const handledetails = () => {
-    if (article == 1) {
+    if (article === 1) {
       setMessage({
         text: 'Les champs suivants sont obligatoires : article',
         severity: 'error',
         open: true
       });
-      return; // Arrêter l'exécution de la fonction si un champ est vide
+      return;
     }
     const newData = {
       iddevis: iddevis.iddevis,
@@ -72,7 +72,7 @@ const Detaildevis = () => {
   // Validation form
   const handleSubmit = () => {
     let url = baseUrl + '/devis/createdetaildevis';
-    if (formData.length != 0) {
+    if (formData.length !== 0) {
       fetch(url, {
         crossDomain: true,
         method: 'POST',
@@ -121,7 +121,6 @@ const Detaildevis = () => {
     { label: 'quantite', field: 'quantite', align: 'center' },
     { label: 'prix unitaire', field: 'pu', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
-    // Other columns...
   ];
 
   useEffect(() => {
@@ -147,7 +146,6 @@ const Detaildevis = () => {
         setData(newData);
       } catch (error) {
         console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
       }
     };
     fetchData();

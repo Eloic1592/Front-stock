@@ -30,7 +30,6 @@ const ListeArticle = () => {
     { label: 'marque', field: 'marque', align: 'center' },
     { label: 'code article', field: 'codearticle', align: 'center' },
     { label: 'description', field: 'description', align: 'center' }
-    // Other columns...
   ];
   const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);

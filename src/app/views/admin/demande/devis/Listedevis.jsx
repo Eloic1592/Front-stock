@@ -19,7 +19,7 @@ import {
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { StyledTable } from 'app/views/style/style';
 import { useListedevisFunctions } from 'app/views/admin/demande/devis/function';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
@@ -31,8 +31,6 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'Date devis', field: 'datedevis', align: 'center' },
     { label: 'Libele', field: 'libelle', align: 'center' }
-
-    // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -183,13 +181,11 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.iddevis === selectedRowId);
 
@@ -197,7 +193,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         setEditedIddevis(selectedRow.iddevis);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   const getInfo = (iddevis) => {
     window.location.replace('/admin/detaildevis/' + iddevis);

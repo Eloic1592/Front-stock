@@ -37,7 +37,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Date debut', field: 'datedeb', align: 'center' },
     { label: 'Date fin', field: 'datefin', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
-    // Other columns...
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -160,13 +159,11 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.iddetailmouvementfictif === selectedRowId);
 
@@ -174,7 +171,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         setEditedIddetail(selectedRow.iddetailmouvementfictif);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

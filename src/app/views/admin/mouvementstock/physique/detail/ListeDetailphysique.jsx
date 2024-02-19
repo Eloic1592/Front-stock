@@ -37,7 +37,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Prix stockage', field: 'prixstock', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
-    // Other columns...
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -52,7 +51,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     depots: [],
     mouvementphysiques: []
   });
-
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -71,6 +69,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       iddepot: depot,
       statut: 0
     };
+
     let url = baseUrl + '/mouvementstock/createsingledetailphysique';
     fetch(url, {
       crossDomain: true,
@@ -156,20 +155,18 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.iddetailmouvementphysique === selectedRowId);
       if (selectedRow) {
         setEditedIddetail(selectedRow.iddetailmouvementphysique);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

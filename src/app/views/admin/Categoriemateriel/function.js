@@ -20,7 +20,6 @@ export const useListecategoriematerielFunctions = (data) => {
     setPage(0);
   };
 
-  // Suppression(Delete)
   const handleSelection = (event, id) => {
     if (event.target.checked) {
       setSelectedIds([...selectedIds, id]);

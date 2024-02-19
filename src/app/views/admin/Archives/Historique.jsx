@@ -12,7 +12,6 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Listehistorique from './Listehistorique';
 import { Container } from 'app/views/style/style';
 
@@ -24,10 +23,6 @@ const Historique = () => {
   const [filename, setFilename] = useState('');
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [findmove, setFindmove] = useState('1');
-  const [findmonth, setFindmonth] = useState('1');
-  const [findmaterial, setFindmaterial] = useState('');
 
   // Validation form
   const handleSubmit = async () => {};

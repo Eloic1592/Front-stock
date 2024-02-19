@@ -131,7 +131,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
       fetchData();
       setInitialDataFetched(true);

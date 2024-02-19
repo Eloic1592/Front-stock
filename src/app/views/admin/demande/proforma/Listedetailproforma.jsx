@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { SimpleCard } from 'app/components';
 import Typography from '@mui/material/Typography';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { StyledTable } from 'app/views/style/style';
 import { useDetaildevisFunctions } from 'app/views/admin/demande/devis/detailfunction';
 import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
@@ -37,8 +37,6 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
-
-    // Other columns...
   ];
   const [data, setData] = useState({ detaildevis: [], total: 0 });
   const {
@@ -101,7 +99,7 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
     fetchData();
-  }, []); // Ajoutez initialDataFetched comme dépendance
+  }, []);
 
   return (
     <Box width="100%" overflow="auto">

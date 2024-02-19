@@ -30,15 +30,14 @@ const Listedepot = () => {
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdDepot, setEditedIdDepot] = useState(null);
   const [editedNomDepot, setEditedNomDepot] = useState(null);
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
-
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
-  const handleAlertClose = () => setMessage({ open: false });
 
   const handleEdit = (row) => {
     setEditedIdDepot('');

@@ -47,7 +47,6 @@ const Stockfictif = () => {
   const [file, setFile] = useState('');
   const [fileOpen, setFileOpen] = useState(false);
 
-  const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
@@ -79,7 +78,6 @@ const Stockfictif = () => {
       statut: 0,
       description: description,
       commentaire: commentaire
-      // Remplacez par la valeur réelle du nom du client
     };
     setFormData([...formData, newData]);
   };
@@ -146,8 +144,6 @@ const Stockfictif = () => {
     { label: 'ID Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'caution', field: 'caution', align: 'center' },
     { label: 'depot', field: 'iddepot', align: 'center' }
-
-    // Other columns...
   ];
 
   useEffect(() => {
@@ -178,7 +174,6 @@ const Stockfictif = () => {
         setData(newData);
       } catch (error) {
         console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
       }
     };
     fetchData();

@@ -15,7 +15,7 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Listedevis from './Listedevis';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
 const Devis = () => {
@@ -26,7 +26,7 @@ const Devis = () => {
   const handleAlertClose = () => setMessage({ open: false });
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
-  const [fileOpen, setFileOpen] = useState(false);
+  // const [fileOpen, setFileOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
   // Data
@@ -69,7 +69,7 @@ const Devis = () => {
         severity: 'error',
         open: true
       });
-      return; // Arrêter l'exécution de la fonction si un champ est vide
+      return;
     }
 
     let params = {
@@ -124,7 +124,6 @@ const Devis = () => {
     { label: 'quantite', field: 'quantite', align: 'center' },
     { label: 'prix unitaire', field: 'pu', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
-    // Other columns...
   ];
 
   useEffect(() => {
@@ -149,20 +148,22 @@ const Devis = () => {
         };
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
     fetchData();
   }, []);
-  const handleClientChange = (event, newValue) => {
-    if (newValue) {
-      // newValue sera l'objet client sélectionné
-      setClient(newValue.idClient); // Définir l'ID du client sélectionné
-    } else {
-      setClient(null); // Aucun client sélectionné, réinitialiser l'état
-    }
-  };
+  // const handleClientChange = (event, newValue) => {
+  //   if (newValue) {
+  //     setClient(newValue.idClient);
+  //   } else {
+  //     setClient(null);
+  //   }
+  // };
 
   return (
     <Container>

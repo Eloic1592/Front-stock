@@ -31,7 +31,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Date de depot', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Nature', field: 'naturemouvement', align: 'center' }
-    // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -52,7 +51,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   });
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
@@ -71,7 +69,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     handleChangeRowsPerPage,
     handleEdit,
     cancelEdit,
-    handleSave,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
@@ -142,24 +139,21 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
       if (selectedRow) {
         setEditedIdmouvement(selectedRow.idmouvementstock);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   const getInfo = (iddevis) => {
     window.location.replace('/admin/detailfictif/' + iddevis);

@@ -19,7 +19,7 @@ import {
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
-import { StyledTable, AutoComplete } from 'app/views/style/style';
+import { StyledTable } from 'app/views/style/style';
 import { useDetaildevisFunctions } from 'app/views/admin/demande/devis/detailfunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
@@ -34,8 +34,6 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
-
-    // Other columns...
   ];
   const [data, setData] = useState({
     detaildevis: [],
@@ -54,7 +52,6 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   };
 
   const {
-    editingId,
     sortDirection,
     page,
     rowsPerPage,
@@ -156,13 +153,10 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         });
       }
     };
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
-
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.iddetaildevis === selectedRowId);
       if (selectedRow) {
@@ -173,7 +167,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       return editpu * editquantite;
     };
     setEdittotal(calcultotal);
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched, editpu, editquantite]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched, editpu, editquantite]);
 
   return (
     <Box width="100%" overflow="auto">

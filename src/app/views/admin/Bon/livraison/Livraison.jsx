@@ -8,7 +8,6 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
   Grid,
@@ -30,8 +29,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Date livraison', field: 'datelivraison', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'bon commande', field: 'idbonlivraison', align: 'center' }
-
-    // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -52,16 +49,11 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     selectedRowId,
     handleChangePage,
     sortColumn,
-    selectedIds,
     setClient,
     client,
     setDatelivraison,
     datelivraison,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = Livraisonfunctions(data);
@@ -92,21 +84,17 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
-
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idbonlivraison === selectedRowId);
 
       if (selectedRow) {
-        // setEditedIdDepot(selectedrow.idbonlivraisondepot);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   const getInfo = (idbonlivraison) => {
     window.location.replace('/admin/detaildevis/' + idbonlivraison);

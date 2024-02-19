@@ -126,13 +126,11 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idproforma === selectedRowId);
 
@@ -141,7 +139,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
   const getInfo = (iddevis) => {
     window.location.replace('/admin/detailproforma/' + iddevis);
   };

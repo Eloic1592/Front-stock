@@ -140,7 +140,6 @@ const Materiel = () => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
     fetchData();

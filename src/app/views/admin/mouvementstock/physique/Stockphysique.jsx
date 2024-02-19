@@ -56,7 +56,6 @@ const Stockphysique = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
-  const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
@@ -74,7 +73,6 @@ const Stockphysique = () => {
       statut: 0,
       description: description,
       commentaire: commentaire
-      // Remplacez par la valeur réelle du nom du client
     };
     setFormData([...formData, newData]);
   };
@@ -140,7 +138,6 @@ const Stockphysique = () => {
     { label: 'prix stock', field: 'prixstock', align: 'center' },
     { label: 'depot', field: 'iddepot', align: 'center' },
     { label: 'total', field: 'total', align: 'center' }
-    // Other columns...
   ];
 
   useEffect(() => {
@@ -170,7 +167,6 @@ const Stockphysique = () => {
         setData(newData);
       } catch (error) {
         console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
       }
     };
     fetchData();

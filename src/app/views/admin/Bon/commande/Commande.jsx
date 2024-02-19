@@ -31,8 +31,6 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Date commande', field: 'dateboncommande', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'proforma', field: 'idproforma', align: 'center' }
-
-    // Other columns...
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -125,13 +123,11 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idboncommande === selectedRowId);
 
@@ -139,7 +135,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         // setEditedIdDepot(selectedrow.idboncommandedepot);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   const getInfo = (idboncommande) => {
     window.location.replace('/admin/detaildevis/' + idboncommande);

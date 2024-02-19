@@ -22,7 +22,6 @@ export const useListedepotFunctions = (data) => {
     setPage(0);
   };
 
-  // Suppression(Delete)
   const handleSelection = (event, id) => {
     if (event.target.checked) {
       setSelectedIds([...selectedIds, id]);
@@ -39,7 +38,6 @@ export const useListedepotFunctions = (data) => {
     }
   };
 
-  // Tri de table
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };

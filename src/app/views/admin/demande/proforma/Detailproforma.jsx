@@ -13,25 +13,22 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
-import { useParams } from 'react-router-dom';
 import Listedetailproforma from './Listedetailproforma';
 
 const Detaildevis = () => {
   // Colonne
-  const columns = [
-    { label: 'ID', field: 'iddetaildevis', align: 'center' },
-    { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' },
-    { label: 'Prix unitaire', field: 'pu', align: 'center' },
-    { label: 'Total', field: 'total', align: 'center' }
-
-    // Other columns...
-  ];
+  // const columns = [
+  //   { label: 'ID', field: 'iddetaildevis', align: 'center' },
+  //   { label: 'Marque', field: 'marque', align: 'center' },
+  //   { label: 'Modele', field: 'modele', align: 'center' },
+  //   { label: 'Quantite', field: 'quantite', align: 'center' },
+  //   { label: 'Prix unitaire', field: 'pu', align: 'center' },
+  //   { label: 'Total', field: 'total', align: 'center' }
+  // ];
 
   // Form dialog
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
+  // const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [filename, setFilename] = useState('');

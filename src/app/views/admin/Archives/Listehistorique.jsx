@@ -27,7 +27,6 @@ const Listehistorique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Date', field: 'date', align: 'center' },
     { label: 'Mouvement', field: 'date', align: 'center' },
     { label: 'Materiel', field: 'materiel', align: 'center' }
-    // Other columns...
   ];
 
   const data = [];
@@ -152,7 +151,7 @@ const Listehistorique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="error"
-                  disabled={selectedIds.length == 0}
+                  disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
                 </Button>

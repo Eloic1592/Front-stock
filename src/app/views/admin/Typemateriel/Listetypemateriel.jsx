@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -28,7 +27,6 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
     { label: 'Idtypemateriel', field: 'idtypemateriel', align: 'center' },
     { label: 'type materiel', field: 'typemateriel', align: 'center' }
-    // Other columns...
   ];
   const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -59,7 +57,6 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   };
 
   const {
-    selectedIds,
     sortColumn,
     sortDirection,
     page,
@@ -133,17 +130,14 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idtypemateriel === selectedRowId);
 
@@ -152,7 +146,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         setEditedTypemateriel((prev) => (prev != null ? prev : selectedRow.typemateriel));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

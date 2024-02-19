@@ -38,8 +38,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
     { label: 'Descriptio', field: 'description', align: 'center' },
     { label: 'Couleur', field: 'couleur', align: 'center' }
-
-    // Other columns...
   ];
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -182,17 +180,14 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
 
@@ -201,7 +196,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>

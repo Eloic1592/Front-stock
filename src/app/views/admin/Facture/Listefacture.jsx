@@ -40,7 +40,6 @@ const Listefacture = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'Adresse', field: 'Adresse', align: 'center' },
     { label: 'QUITTANCE', field: 'quittance', align: 'center' },
     { label: 'statut', field: 'statut', align: 'center' }
-    // Other columns...
   ];
 
   const data = [];

@@ -176,7 +176,7 @@ export function convertdate(date) {
 
 export function converttodate(timestamp) {
   const date = new Date(timestamp);
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('fr-FR', options);
   return formattedDate;
 }
