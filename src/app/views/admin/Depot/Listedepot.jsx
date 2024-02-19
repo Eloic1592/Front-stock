@@ -66,7 +66,6 @@ const Listedepot = () => {
     nomdepot,
     handleChangePage,
     sortColumn,
-    selectedIds,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData

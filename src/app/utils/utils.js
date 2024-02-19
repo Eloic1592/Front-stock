@@ -203,7 +203,7 @@ export function formatNumber(nombre) {
   }
 }
 
-// Transformation d'un nombre en toute lettre
+// Transformation d'un nombre en  lettre
 export function nombreEnLettres(nombre) {
   const unites = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
   const dixAvingt = [
@@ -302,3 +302,5 @@ export const colors = [
   'Indigo',
   'Violet'
 ];
+
+// Message d'erreur
