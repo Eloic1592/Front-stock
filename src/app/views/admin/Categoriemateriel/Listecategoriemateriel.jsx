@@ -22,7 +22,7 @@ import { useListecategoriematerielFunctions } from 'app/views/admin/categoriemat
 import { useState } from 'react';
 import { baseUrl } from 'app/utils/constant';
 
-const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'idcategoriemateriel', field: 'idcategoriemateriel', align: 'center' },

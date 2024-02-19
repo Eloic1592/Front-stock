@@ -24,7 +24,7 @@ import { useMphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/p
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
-const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
 
   const columns = [

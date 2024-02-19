@@ -24,7 +24,7 @@ import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
 
-const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
 
   // Colonne

@@ -24,7 +24,7 @@ import { Commandefunctions } from 'app/views/admin/Bon/commande/Commandefunction
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
-const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'ID Bon commande', field: 'idboncommande', align: 'center' },

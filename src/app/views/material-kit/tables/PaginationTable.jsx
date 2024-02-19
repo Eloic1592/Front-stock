@@ -19,7 +19,7 @@ import { useState, useEffect } from 'react';
 
 import { StyledTable } from 'app/views/style/style';
 
-const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [editingId, setEditingId] = useState(null);

@@ -405,7 +405,7 @@ const ListeArticle = () => {
                   rowsPerPage={rowsPerPage}
                   count={sortedData.length}
                   onPageChange={handleChangePage}
-                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                   backIconButtonProps={{ 'aria-label': 'Page precedente' }}

@@ -21,7 +21,7 @@ import { StyledTable } from 'app/views/style/style';
 import { useListemouvementFunctions } from 'app/views/admin/naturemouvement/function';
 import { baseUrl } from 'app/utils/constant';
 
-const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
+const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'idnaturemouvement', field: 'idnaturemouvement', align: 'center' },
