@@ -167,7 +167,15 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       return editpu * editquantite;
     };
     setEdittotal(calcultotal);
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched, editpu, editquantite]);
+  }, [
+    isEditClicked,
+    selectedRowId,
+    sortedData,
+    initialDataFetched,
+    editpu,
+    editquantite,
+    iddevis.iddevis
+  ]);
 
   return (
     <Box width="100%" overflow="auto">

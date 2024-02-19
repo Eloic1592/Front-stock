@@ -99,7 +99,7 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25] }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [iddevis.iddevis]);
 
   return (
     <Box width="100%" overflow="auto">

@@ -166,7 +166,13 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         setEditedIddetail(selectedRow.iddetailmouvementphysique);
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [
+    isEditClicked,
+    selectedRowId,
+    sortedData,
+    initialDataFetched,
+    idmouvementstock.idmouvementstock
+  ]);
 
   return (
     <Box width="100%" overflow="auto">
