@@ -99,7 +99,7 @@ const Detailphysique = () => {
         })
         .catch((err) => {
           setMessage({
-            text: err,
+            text: "L'insertion a echouee,veuillez verifier si tous les champs sont remplis!",
             severity: 'error',
             open: true
           });
@@ -342,7 +342,7 @@ const Detailphysique = () => {
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
-                <Button onClick={resetData} color="primary">
+                <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

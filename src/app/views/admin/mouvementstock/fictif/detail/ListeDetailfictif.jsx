@@ -250,7 +250,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
+                  <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementfictifs.every((row) =>
                         selectedIds.includes(row.iddetailmouvementfictif)
@@ -266,31 +266,31 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetailmouvementfictif" align="left">
+                  <TableCell key="iddetailmouvementfictif" align="left" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="marque" align="left">
+                  <TableCell key="marque" align="left" width="15%">
                     Marque
                   </TableCell>
-                  <TableCell key="modele" align="left">
+                  <TableCell key="modele" align="left" width="15%">
                     Modele
                   </TableCell>
-                  <TableCell key="idetudiant" align="left">
+                  <TableCell key="idetudiant" align="left" width="15%">
                     Responsable
                   </TableCell>
-                  <TableCell key="caution" align="left">
+                  <TableCell key="caution" align="left" width="15%">
                     Caution
                   </TableCell>
-                  <TableCell key="datedeb" align="left">
+                  <TableCell key="datedeb" align="left" width="15%">
                     Date Debut
                   </TableCell>
-                  <TableCell key="datefin" align="left">
+                  <TableCell key="datefin" align="left" width="15%">
                     Date fin
                   </TableCell>
-                  <TableCell key="depot" align="left">
+                  <TableCell key="depot" align="left" width="15%">
                     Depot
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="5%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

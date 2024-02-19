@@ -259,7 +259,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
+                  <TableCell width="5%">
                     <Checkbox
                       checked={data.detaildevis.every((row) =>
                         selectedIds.includes(row.iddetaildevis)
@@ -271,22 +271,22 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetaildevis" align="left">
+                  <TableCell key="iddetaildevis" align="left" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="marque" align="left">
+                  <TableCell key="marque" align="left" width="30%">
                     Article
                   </TableCell>
-                  <TableCell key="quantite" align="left">
+                  <TableCell key="quantite" align="left" width="15%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="left">
+                  <TableCell key="pu" align="left" width="15%">
                     Prix unitaire
                   </TableCell>
-                  <TableCell key="total" align="left">
+                  <TableCell key="total" align="left" width="15%">
                     Total
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="15%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

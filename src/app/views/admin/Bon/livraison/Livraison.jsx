@@ -170,19 +170,19 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idbonlivraison" align="left">
+                    <TableCell key="idbonlivraison" align="left" width="15%">
                       ID livraison
                     </TableCell>
-                    <TableCell key="nom" align="left">
+                    <TableCell key="nom" align="left" width="30%">
                       Nom client
                     </TableCell>
-                    <TableCell key="datelivraison" align="left">
+                    <TableCell key="datelivraison" align="left" width="15%">
                       Date livraison
                     </TableCell>
-                    <TableCell key="idboncommande" align="left">
+                    <TableCell key="idboncommande" align="left" width="15%">
                       Commande
                     </TableCell>
-                    <TableCell>Action</TableCell>
+                    <TableCell width="5%">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

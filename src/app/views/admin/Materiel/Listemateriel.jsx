@@ -331,7 +331,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell align="left">
+                  <TableCell align="left" width="5%">
                     <Checkbox
                       checked={data.listemateriels.every((row) =>
                         selectedIds.includes(row.idmateriel)
@@ -343,31 +343,31 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmateriel" align="left">
+                  <TableCell key="idmateriel" align="left" width="10%">
                     idmateriel
                   </TableCell>
-                  <TableCell key="categorie" align="left">
+                  <TableCell key="categorie" align="left" width="16%">
                     categorie
                   </TableCell>
-                  <TableCell key="typemateriel" align="left">
+                  <TableCell key="typemateriel" align="left" width="15%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="modele" align="left">
+                  <TableCell key="modele" align="left" width="15%">
                     modele
                   </TableCell>
-                  <TableCell key="numserie" align="left">
+                  <TableCell key="numserie" align="left" width="15%">
                     numserie
                   </TableCell>
-                  <TableCell key="prixvente" align="left">
+                  <TableCell key="prixvente" align="left" width="15%">
                     prixvente
                   </TableCell>
-                  <TableCell key="description" align="left">
+                  <TableCell key="description" align="left" width="15%">
                     description
                   </TableCell>
-                  <TableCell key="couleur" align="left">
+                  <TableCell key="couleur" align="left" width="10%">
                     couleur
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="5%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -245,7 +245,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
+                  <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementphysiques.every((row) =>
                         selectedIds.includes(row.iddetailmouvementphysique)
@@ -261,31 +261,31 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetailmouvementphysique" align="left">
+                  <TableCell key="iddetailmouvementphysique" align="left" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="mouvement" align="left">
+                  <TableCell key="mouvement" align="left" width="15%">
                     mouvement
                   </TableCell>
-                  <TableCell key="marque" align="left">
+                  <TableCell key="marque" align="left" width="15%">
                     Marque
                   </TableCell>
-                  <TableCell key="modele" align="left">
+                  <TableCell key="modele" align="left" width="15%">
                     Modele
                   </TableCell>
-                  <TableCell key="quantite" align="left">
+                  <TableCell key="quantite" align="left" width="15%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="left">
+                  <TableCell key="pu" align="left" width="15%">
                     Prix unitaire
                   </TableCell>
-                  <TableCell key="prixstock" align="left">
+                  <TableCell key="prixstock" align="left" width="15%">
                     Prix Stock
                   </TableCell>
-                  <TableCell key="Depot" align="left">
+                  <TableCell key="Depot" align="left" width="15%">
                     Depot
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="5%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

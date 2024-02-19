@@ -108,7 +108,7 @@ const Detailfictif = () => {
         });
     }
     setMessage({
-      text: "Aucune donnee n'a ete ajoutee!",
+      text: "L'insertion a echouee,veuillez verifier si tous les champs sont remplis!",
       severity: 'error',
       open: true
     });
@@ -122,6 +122,7 @@ const Detailfictif = () => {
     setIdetudiant(['1']);
     setDescription('');
     setCommentaire('');
+    setCaution(0);
     setDepot(['1']);
     setFormData([]);
     handlecancelClose();
@@ -263,6 +264,8 @@ const Detailfictif = () => {
                       type="date"
                       name="datedeb"
                       variant="outlined"
+                      label="Date debut"
+                      focused
                       value={datedeb}
                       onChange={(event) => setDatedeb(event.target.value)}
                       sx={{ mb: 3 }}
@@ -273,7 +276,9 @@ const Detailfictif = () => {
                       fullWidth
                       type="date"
                       name="datefin"
+                      label="Date fin"
                       variant="outlined"
+                      focused
                       value={datefin}
                       onChange={(event) => setDatefin(event.target.value)}
                       sx={{ mb: 3 }}
@@ -358,7 +363,7 @@ const Detailfictif = () => {
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
-                <Button onClick={resetData} color="primary">
+                <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

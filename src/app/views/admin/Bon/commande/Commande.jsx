@@ -223,7 +223,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell>
+                    <TableCell width="5%">
                       <Checkbox
                         checked={data.every((row) => selectedIds.includes(row.idboncommande))}
                         indeterminate={
@@ -233,19 +233,19 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell key="idboncommande" align="left">
+                    <TableCell key="idboncommande" align="left" width="15%">
                       Bon commande
                     </TableCell>
-                    <TableCell key="nom" align="left">
+                    <TableCell key="nom" align="left" width="30%">
                       Nom client
                     </TableCell>
-                    <TableCell key="dateboncommande" align="left">
+                    <TableCell key="dateboncommande" align="left" width="15%">
                       Date commande
                     </TableCell>
-                    <TableCell key="idproforma" align="left">
+                    <TableCell key="idproforma" align="left" width="15%">
                       Proforma
                     </TableCell>
-                    <TableCell>Action</TableCell>
+                    <TableCell width="5%">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

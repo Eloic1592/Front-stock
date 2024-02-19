@@ -21,7 +21,7 @@ import { baseUrl } from 'app/utils/constant';
 
 const Stockfictif = () => {
   // Input
-  const [datedepot, setDatedepot] = useState('');
+  const [datedepot, setDatedepot] = useState(null);
   const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [typemouvement, setTypemouvement] = useState(['0']);
   const [caution, setCaution] = useState(0);
@@ -51,11 +51,6 @@ const Stockfictif = () => {
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-  const [isFormValid, setIsFormValid] = useState(false);
-  const validateForm = () => {
-    const isValid = naturemouvement !== 1 && datedepot && typemouvement !== 0;
-    setIsFormValid(isValid);
-  };
 
   // Message
   const [message, setMessage] = useState({
@@ -118,7 +113,7 @@ const Stockfictif = () => {
       })
       .catch((err) => {
         setMessage({
-          text: err,
+          text: "L'insertion a echouee,veuillez verifier si tous les champs sont remplis!",
           severity: 'error',
           open: true
         });
@@ -186,7 +181,6 @@ const Stockfictif = () => {
       }
     };
     fetchData();
-    validateForm();
   }, []);
 
   return (
@@ -262,7 +256,9 @@ const Stockfictif = () => {
                       value={typemouvement}
                       onChange={(event) => setTypemouvement(event.target.value)}
                     >
-                      <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
+                      <MenuItem value="0" key="0">
+                        Choisir la nature du mouvement
+                      </MenuItem>
                       <MenuItem value="1" key="1">
                         Entree
                       </MenuItem>
@@ -419,12 +415,7 @@ const Stockfictif = () => {
                 <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
-                <Button
-                  onClick={handleSubmit}
-                  color="primary"
-                  variant="contained"
-                  disabled={!isFormValid}
-                >
+                <Button onClick={handleSubmit} color="primary" variant="contained">
                   Enregistrer
                 </Button>
               </DialogActions>
@@ -445,7 +436,7 @@ const Stockfictif = () => {
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
-                <Button onClick={resetData} color="primary">
+                <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

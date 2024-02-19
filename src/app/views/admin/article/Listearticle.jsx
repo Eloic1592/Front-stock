@@ -341,11 +341,11 @@ const ListeArticle = () => {
                           </>
                         ) : (
                           <>
-                            <TableCell width="10%"> {row.idarticle}</TableCell>
-                            <TableCell width="15%">{row.marque}</TableCell>
-                            <TableCell width="15%">{row.modele}</TableCell>
-                            <TableCell width="15%">{row.codearticle}</TableCell>
-                            <TableCell width="60%">{row.description}</TableCell>
+                            <TableCell> {row.idarticle}</TableCell>
+                            <TableCell>{row.marque}</TableCell>
+                            <TableCell>{row.modele}</TableCell>
+                            <TableCell>{row.codearticle}</TableCell>
+                            <TableCell>{row.description}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

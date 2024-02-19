@@ -339,7 +339,7 @@ const Devis = () => {
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
-                <Button onClick={resetData} color="primary">
+                <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

@@ -280,7 +280,7 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell>
+                  <TableCell width="5%">
                     <Checkbox
                       checked={data.clientdevis.every((row) => selectedIds.includes(row.iddevis))}
                       indeterminate={
@@ -290,19 +290,19 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddevis" align="left">
+                  <TableCell key="iddevis" align="left" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="nom" align="left">
+                  <TableCell key="nom" align="left" width="30%">
                     nom client
                   </TableCell>
-                  <TableCell key="datedevis" align="left">
+                  <TableCell key="datedevis" align="left" width="15%">
                     date devis
                   </TableCell>
-                  <TableCell key="libelle" align="left">
+                  <TableCell key="libelle" align="left" width="30%">
                     Libele
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="15%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

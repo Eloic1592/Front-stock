@@ -107,7 +107,7 @@ const Stockphysique = () => {
       })
       .catch((err) => {
         setMessage({
-          text: "L'insertion dans la base de données a échoué.",
+          text: "L'insertion a echouee,veuillez verifier si tous les champs sont remplis!",
           severity: 'error',
           open: true
         });
@@ -165,7 +165,11 @@ const Stockphysique = () => {
 
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
     fetchData();
@@ -402,7 +406,7 @@ const Stockphysique = () => {
                 <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
-                <Button onClick={resetData} color="primary">
+                <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>
