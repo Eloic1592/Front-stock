@@ -22,11 +22,7 @@ const Categoriemateriel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-
-  // Input
   const [categoriemateriel, setCategoriemateriel] = useState('');
-
-  // Message
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -35,17 +31,14 @@ const Categoriemateriel = () => {
 
   // Validation form
   const handleSubmit = () => {
-    // Vérifier si le champ depot est vide
     if (!categoriemateriel) {
       setMessage({
         text: 'Veuillez saisir un nom de categorie de materiel.',
         severity: 'error',
         open: true
       });
-      return; // Arrêter la soumission du formulaire
+      return;
     }
-
-    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
       categoriemateriel: categoriemateriel
     };
@@ -72,7 +65,7 @@ const Categoriemateriel = () => {
       })
       .catch(() => {
         setMessage({
-          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
+          text: "L'insertion dans la base de données a échoué.",
           severity: 'error',
           open: true
         });

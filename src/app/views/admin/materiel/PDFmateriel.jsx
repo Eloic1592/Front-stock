@@ -78,7 +78,7 @@ const PDFmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{formatNumber(row.prixvente)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.caution)}</Text>
+                <Text style={styles.tableCell}>{row.description}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.couleur}</Text>

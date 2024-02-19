@@ -83,7 +83,6 @@ const ListeArticle = () => {
     modele,
     marque,
     codearticle,
-    setIdarticle,
     setModele,
     setCodearticle,
     setMarque
@@ -143,18 +142,19 @@ const ListeArticle = () => {
         const responseData = await response.json();
         setData(responseData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
-        // Gérer les erreurs de requête Fetch ici
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
 
@@ -166,7 +166,7 @@ const ListeArticle = () => {
         setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto" key="Box1">

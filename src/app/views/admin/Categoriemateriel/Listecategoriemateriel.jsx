@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -28,7 +27,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
     { label: 'idcategoriemateriel', field: 'idcategoriemateriel', align: 'center' },
     { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' }
-    // Other columns...
   ];
 
   const [data, setData] = useState([]);
@@ -68,7 +66,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     categoriemateriel,
     handleChangePage,
     sortColumn,
-    selectedIds,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
@@ -134,17 +131,13 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
-
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idcategoriemateriel === selectedRowId);
 
@@ -153,7 +146,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
         setEditedCategorieMateriel((prev) => (prev != null ? prev : selectedRow.categoriemateriel));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

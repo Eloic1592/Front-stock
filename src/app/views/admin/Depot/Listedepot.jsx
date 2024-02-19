@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
@@ -23,11 +22,9 @@ import { useListedepotFunctions } from 'app/views/admin/depot/function';
 import { baseUrl } from 'app/utils/constant';
 
 const Listedepot = () => {
-  // Colonne
   const columns = [
     { label: 'Iddepot', field: 'iddepot', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
-    // Other columns...
   ];
   const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -43,7 +40,6 @@ const Listedepot = () => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
-  // Modification(Update)
   const handleEdit = (row) => {
     setEditedIdDepot('');
     setEditedNomDepot('');
@@ -130,17 +126,14 @@ const Listedepot = () => {
           severity: 'error',
           open: true
         });
-        // Gérer les erreurs de requête Fetch ici
       }
     };
 
-    // Charger les données initiales uniquement si elles n'ont pas encore été chargées
     if (!initialDataFetched) {
-      fetchData(); // Appel initial
+      fetchData();
       setInitialDataFetched(true);
     }
 
-    // La logique conditionnelle
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.iddepot === selectedRowId);
 
@@ -149,7 +142,7 @@ const Listedepot = () => {
         setEditedNomDepot((prev) => (prev != null ? prev : selectedRow.depot));
       }
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]); // Ajoutez initialDataFetched comme dépendance
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto" key="Box1">
@@ -172,7 +165,6 @@ const Listedepot = () => {
 
         <Grid item>
           <SimpleCard title="Liste des depots ">
-            {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -205,7 +197,6 @@ const Listedepot = () => {
             </Grid>
             <StyledTable>
               <TableHead>
-                {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell key="iddepot" align="left">
                     iddepot
@@ -217,7 +208,6 @@ const Listedepot = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Donnees du tableau */}
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

@@ -35,7 +35,6 @@ const Materiel = () => {
   const [prixvente, setPrixvente] = useState();
   const [caution, setCaution] = useState();
   const [file, setFile] = useState('');
-  const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
 
@@ -57,20 +56,20 @@ const Materiel = () => {
   // Validation form
   const handleSubmit = () => {
     if (
-      typemateriel == 1 ||
-      categoriemateriel == 1 ||
-      article == 1 ||
+      typemateriel === 1 ||
+      categoriemateriel === 1 ||
+      article === 1 ||
       !numserie ||
       !prixvente ||
       !caution ||
-      couleur == 1
+      couleur === 1
     ) {
       setMessage({
         text: 'Les champs suivants sont obligatoires : typemateriel, categoriemateriel, article, numserie, prixvente, caution, couleur',
         severity: 'error',
         open: true
       });
-      return; // Arrêter l'exécution de la fonction si un champ est vide
+      return;
     }
 
     let params = {

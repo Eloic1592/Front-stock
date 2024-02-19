@@ -25,8 +25,6 @@ const Naturemouvement = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-
-  // Input
   const [naturemouvement, setNaturemouvement] = useState('');
   const [typemouvement, setTypemouvement] = useState('1');
 
@@ -37,20 +35,16 @@ const Naturemouvement = () => {
     open: false
   });
 
-  // Validation form
-
   const handleSubmit = () => {
-    // Vérifier si le champ depot est vide
     if (!naturemouvement) {
       setMessage({
         text: 'Veuillez saisir un nom de mouvement.',
         severity: 'error',
         open: true
       });
-      return; // Arrêter la soumission du formulaire
+      return;
     }
 
-    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
       naturemouvement: naturemouvement
     };
@@ -77,7 +71,7 @@ const Naturemouvement = () => {
       })
       .catch(() => {
         setMessage({
-          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
+          text: "L'insertion dans la base de données a échoué.",
           severity: 'error',
           open: true
         });

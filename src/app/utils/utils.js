@@ -135,39 +135,39 @@ export function getTimeDifference(date) {
 }
 
 // Traduction francais mois
-const frenchTranslations = {
-  today: "Aujourd'hui",
-  previous: 'Précédent',
-  next: 'Suivant',
-  month: 'Mois',
-  week: 'Semaine',
-  day: 'Jour',
-  agenda: 'Agenda',
-  date: 'Date',
-  time: 'Heure',
-  event: 'Événement',
-  allDay: 'Toute la journée',
-  noEventsInRange: 'Aucun événement à afficher',
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre'
-  ],
-  dayNames: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
-  weekNumbers: ['1', '2', '3', '4', '5', '6', '7']
-};
+// const Traductionfrancais = {
+//   today: "Aujourd'hui",
+//   previous: 'Précédent',
+//   next: 'Suivant',
+//   month: 'Mois',
+//   week: 'Semaine',
+//   day: 'Jour',
+//   agenda: 'Agenda',
+//   date: 'Date',
+//   time: 'Heure',
+//   event: 'Événement',
+//   allDay: 'Toute la journée',
+//   noEventsInRange: 'Aucun événement à afficher',
+//   monthNames: [
+//     'Janvier',
+//     'Février',
+//     'Mars',
+//     'Avril',
+//     'Mai',
+//     'Juin',
+//     'Juillet',
+//     'Août',
+//     'Septembre',
+//     'Octobre',
+//     'Novembre',
+//     'Décembre'
+//   ],
+//   dayNames: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+//   weekNumbers: ['1', '2', '3', '4', '5', '6', '7']
+// };
 
 // Traduction jour de la semaine
-const frenchdayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+// const frenchdayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
 // Formattage de date en jour/mois/annee
 export function convertdate(date) {
@@ -273,7 +273,6 @@ export function nombreEnLettres(nombre) {
 
   return resultatFinal.trim();
 }
-// affiche "cent vingt-trois millions quatre cent cinquante-six mille sept cent quatre-vingt-neuf"
 
 export const colors = [
   'Rouge',
@@ -302,5 +301,3 @@ export const colors = [
   'Indigo',
   'Violet'
 ];
-
-// Message d'erreur

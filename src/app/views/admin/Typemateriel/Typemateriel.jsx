@@ -22,27 +22,24 @@ const Typemateriel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
+  const [typemateriel, setTypemateriel] = useState('');
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const [typemateriel, setTypemateriel] = useState('');
-
   // Validation form
   const handleSubmit = () => {
-    // Vérifier si le champ depot est vide
     if (!typemateriel) {
       setMessage({
         text: 'Veuillez saisir un nom de type.',
         severity: 'error',
         open: true
       });
-      return; // Arrêter la soumission du formulaire
+      return;
     }
 
-    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
       typemateriel: typemateriel
     };
@@ -69,7 +66,7 @@ const Typemateriel = () => {
       })
       .catch(() => {
         setMessage({
-          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
+          text: "L'insertion dans la base de données a échoué.",
           severity: 'error',
           open: true
         });

@@ -36,7 +36,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-    { label: 'Caution', field: 'caution', align: 'center' },
+    { label: 'Descriptio', field: 'description', align: 'center' },
     { label: 'Couleur', field: 'couleur', align: 'center' }
 
     // Other columns...
@@ -366,8 +366,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableCell key="prixvente" align="left">
                     prixvente
                   </TableCell>
-                  <TableCell key="caution" align="left">
-                    caution
+                  <TableCell key="description" align="left">
+                    description
                   </TableCell>
                   <TableCell key="couleur" align="left">
                     couleur
@@ -495,7 +495,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                             <TableCell>{row.modele}</TableCell>
                             <TableCell>{row.numserie}</TableCell>
                             <TableCell>{formatNumber(row.prixvente)}</TableCell>
-                            <TableCell>{formatNumber(row.caution)}</TableCell>
+                            {/* <TableCell>{formatNumber(row.caution)}</TableCell> */}
+                            <TableCell>{row.description}</TableCell>
                             <TableCell>{row.couleur}</TableCell>
                             <TableCell>
                               <IconButton

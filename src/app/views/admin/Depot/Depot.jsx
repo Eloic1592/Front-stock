@@ -17,7 +17,6 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 
 const Depot = () => {
-  // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -28,21 +27,18 @@ const Depot = () => {
     open: false
   });
 
-  // Input
   const [depot, setDepot] = useState('');
 
   const handleSubmit = () => {
-    // Vérifier si le champ depot est vide
     if (!depot) {
       setMessage({
         text: 'Veuillez saisir un nom de dépôt.',
         severity: 'error',
         open: true
       });
-      return; // Arrêter la soumission du formulaire
+      return;
     }
 
-    // Continuer avec la soumission du formulaire si tous les champs sont remplis
     let params = {
       depot: depot
     };
@@ -69,7 +65,7 @@ const Depot = () => {
       })
       .catch(() => {
         setMessage({
-          text: "L'insertion dans la base de données a échoué.", // Utiliser le message d'erreur de l'exception
+          text: "L'insertion dans la base de données a échoué.",
           severity: 'error',
           open: true
         });
