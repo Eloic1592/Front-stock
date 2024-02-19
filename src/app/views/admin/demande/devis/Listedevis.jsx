@@ -24,7 +24,7 @@ import { useListedevisFunctions } from 'app/views/admin/demande/devis/function';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
-const Listedevis = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listedevis = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddevis', align: 'center' },

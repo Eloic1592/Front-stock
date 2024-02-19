@@ -20,7 +20,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useHistoriqueFunctions } from 'app/views/admin/archives/function';
 
-const Listehistorique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listehistorique = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
   //Colonne
   const columns = [
     { label: 'ID', field: 'id', align: 'center' },

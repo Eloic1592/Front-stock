@@ -21,7 +21,7 @@ import { StyledTable } from 'app/views/style/style';
 import { useListetypematerielFunctions } from 'app/views/admin/typemateriel/function';
 import { baseUrl } from 'app/utils/constant';
 
-const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
   // Colonne
 
   const columns = [

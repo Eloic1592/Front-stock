@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 
 import { StyledTable } from 'app/views/style/style';
 
-const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25] }) => {
+const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50] }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0] || 5);
   const [savedData, setSavedData] = useState([]);

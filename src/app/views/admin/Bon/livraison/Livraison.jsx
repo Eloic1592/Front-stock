@@ -22,7 +22,7 @@ import { Livraisonfunctions } from 'app/views/admin/Bon/livraison/Livraisonfunct
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 
-const Commande = ({ rowsPerPageOptions = [5, 10, 25] }) => {
+const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50] }) => {
   // Colonne
   const columns = [
     { label: 'ID Bon livraison', field: 'idbonlivraison', align: 'center' },
