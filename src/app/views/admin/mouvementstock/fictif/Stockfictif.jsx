@@ -22,6 +22,7 @@ import { baseUrl } from 'app/utils/constant';
 const Stockfictif = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
+  const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [typemouvement, setTypemouvement] = useState(['0']);
   const [caution, setCaution] = useState(0);
   const [datedeb, setDatedeb] = useState('');
@@ -32,7 +33,6 @@ const Stockfictif = () => {
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
-  const [naturemouvement, setNaturemouvement] = useState(['1']);
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
     mouvementStocks: [],
@@ -51,6 +51,11 @@ const Stockfictif = () => {
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
+  const [isFormValid, setIsFormValid] = useState(false);
+  const validateForm = () => {
+    const isValid = naturemouvement !== 1 && datedepot && typemouvement !== 0;
+    setIsFormValid(isValid);
+  };
 
   // Message
   const [message, setMessage] = useState({
@@ -173,10 +178,15 @@ const Stockfictif = () => {
 
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
     fetchData();
+    validateForm();
   }, []);
 
   return (
@@ -409,7 +419,12 @@ const Stockfictif = () => {
                 <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} color="primary" variant="contained">
+                <Button
+                  onClick={handleSubmit}
+                  color="primary"
+                  variant="contained"
+                  disabled={!isFormValid}
+                >
                   Enregistrer
                 </Button>
               </DialogActions>

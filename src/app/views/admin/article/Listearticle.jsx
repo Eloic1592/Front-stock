@@ -264,22 +264,22 @@ const ListeArticle = () => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idarticle" align="left">
+                  <TableCell key="idarticle" width="10%">
                     idarticle
                   </TableCell>
-                  <TableCell key="marque" align="left">
+                  <TableCell key="marque" width="15%">
                     marque
                   </TableCell>
-                  <TableCell key="modele" align="left">
+                  <TableCell key="modele" width="15%">
                     modele
                   </TableCell>
-                  <TableCell key="codearticle" align="left">
+                  <TableCell key="codearticle" width="15%">
                     codearticle
                   </TableCell>
-                  <TableCell key="description" align="left">
+                  <TableCell key="description" width="60%">
                     description
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell width="10%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -291,13 +291,13 @@ const ListeArticle = () => {
                       <TableRow key={index}>
                         {isEditClicked && row.idarticle === selectedRowId ? (
                           <>
-                            <TableCell>
+                            <TableCell width="10%">
                               <TextField
                                 value={editedIdArticle}
                                 onChange={(event) => setEditedIdArticle(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell width="15%">
                               <TextField
                                 value={editedModele}
                                 onChange={(event) => setEditedModele(event.target.value)}
@@ -306,7 +306,7 @@ const ListeArticle = () => {
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell width="15%">
                               <TextField
                                 value={editedMarque}
                                 onChange={(event) => setEditedMarque(event.target.value)}
@@ -315,7 +315,7 @@ const ListeArticle = () => {
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell width="15%">
                               <TextField
                                 value={editedCodearticle}
                                 onChange={(event) => setEditedCodearticle(event.target.value)}
@@ -326,8 +326,9 @@ const ListeArticle = () => {
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell width="60%">
                               <TextField
+                                fullWidth
                                 value={editedDescription}
                                 onChange={(event) => setEditedDescription(event.target.value)}
                                 onBlur={() =>
@@ -340,11 +341,11 @@ const ListeArticle = () => {
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idarticle}</TableCell>
-                            <TableCell>{row.marque}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.codearticle}</TableCell>
-                            <TableCell>{row.description}</TableCell>
+                            <TableCell width="10%"> {row.idarticle}</TableCell>
+                            <TableCell width="15%">{row.marque}</TableCell>
+                            <TableCell width="15%">{row.modele}</TableCell>
+                            <TableCell width="15%">{row.codearticle}</TableCell>
+                            <TableCell width="60%">{row.description}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

@@ -85,7 +85,6 @@ const Stockphysique = () => {
       statut: 0,
       mouvementphysiques: formData
     };
-    console.log(params.mouvementphysiques.length);
 
     let url = baseUrl + '/mouvementstock/createstockphysique';
     fetch(url, {
@@ -108,7 +107,7 @@ const Stockphysique = () => {
       })
       .catch((err) => {
         setMessage({
-          text: err,
+          text: "L'insertion dans la base de données a échoué.",
           severity: 'error',
           open: true
         });
@@ -336,6 +335,7 @@ const Stockphysique = () => {
                       color="secondary"
                       sx={{ mb: 3 }}
                       onClick={handledetails}
+                      disabled={formData.length === 0}
                     >
                       Inserer
                     </Button>
