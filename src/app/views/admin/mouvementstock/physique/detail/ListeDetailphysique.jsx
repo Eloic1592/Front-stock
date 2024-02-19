@@ -22,7 +22,7 @@ import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/detail/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
-import { formatNumber } from 'app/utils/utils';
+import { formatNumber, coloredNumber } from 'app/utils/utils';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const idmouvementstock = useParams();
@@ -31,6 +31,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
   const columns = [
     { label: 'ID', field: 'iddetailmouvementphysique', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
@@ -260,6 +261,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                   <TableCell key="iddetailmouvementphysique" align="left">
                     ID
                   </TableCell>
+                  <TableCell key="mouvement" align="left">
+                    mouvement
+                  </TableCell>
                   <TableCell key="marque" align="left">
                     Marque
                   </TableCell>
@@ -368,9 +372,10 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25] }) => {
                         ) : (
                           <>
                             <TableCell align="left">{row.iddetailmouvementphysique}</TableCell>
+                            <TableCell align="left">{row.mouvement}</TableCell>
                             <TableCell align="left">{row.marque}</TableCell>
                             <TableCell align="left">{row.modele}</TableCell>
-                            <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
+                            <TableCell align="left">{coloredNumber(row.quantite)}</TableCell>
                             <TableCell align="left">{formatNumber(row.pu)}</TableCell>
                             <TableCell align="left">{formatNumber(row.prixstock)}</TableCell>
                             <TableCell align="left">{row.depot}</TableCell>

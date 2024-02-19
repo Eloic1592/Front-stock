@@ -202,6 +202,16 @@ export function formatNumber(nombre) {
     return partieEntiere;
   }
 }
+export function coloredNumber(nombre) {
+  let style = {};
+
+  if (nombre < 0) {
+    style = { color: 'red' };
+  } else if (nombre > 0) {
+    style = { color: 'green' };
+  }
+  return <span style={style}>{formatNumber(nombre)}</span>;
+}
 
 // Transformation d'un nombre en  lettre
 export function nombreEnLettres(nombre) {
