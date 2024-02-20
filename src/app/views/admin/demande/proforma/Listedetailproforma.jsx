@@ -101,6 +101,11 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     fetchData();
   }, [iddevis.iddevis]);
 
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/proforma');
+  };
+
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
@@ -225,6 +230,13 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
               </Grid>
             </Grid>
           </SimpleCard>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Button variant="contained" color="primary" onClick={redirect}>
+              <Icon>arrow_backward</Icon>
+            </Button>
+          </Box>
         </Grid>
       </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>

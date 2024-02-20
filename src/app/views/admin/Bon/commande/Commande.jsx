@@ -137,8 +137,8 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
-  const getInfo = (idboncommande) => {
-    window.location.replace('/admin/detaildevis/' + idboncommande);
+  const getInfo = (idproforma) => {
+    window.location.replace('/admin/detailcommande/' + idproforma);
   };
   return (
     <Container>
@@ -271,7 +271,7 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => getInfo(row.idboncommande)}
+                              onClick={() => getInfo(row.idproforma)}
                             >
                               <Icon>info</Icon>
                             </IconButton>

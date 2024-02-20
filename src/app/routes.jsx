@@ -5,6 +5,7 @@ import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
+// import Listedetailcommande from './views/admin/Bon/commande/Listedetailcommande';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -63,6 +64,10 @@ const Detailproforma = Loadable(
 );
 
 const Commande = Loadable(lazy(() => import('app/views/admin/Bon/commande/Commande')));
+
+const DetailCommande = Loadable(
+  lazy(() => import('app/views/admin/Bon/commande/detail/Listedetailcommande'))
+);
 
 const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/livraison/Livraison')));
 
@@ -192,6 +197,11 @@ const routes = [
         element: <Commande />,
         auth: authRoles.admindefault
       },
+      {
+        path: '/admin/detailcommande/:idproforma',
+        element: <DetailCommande />,
+        auth: authRoles.admindefault
+      },
 
       {
         path: '/admin/livraison',
@@ -243,6 +253,7 @@ const routes = [
   { path: '/admin/detaildevis/:iddevis', element: <Detaildevis /> },
   { path: '/admin/proforma', element: <Proforma /> },
   { path: '/admin/detailproforma/:iddevis', element: <Detailproforma /> },
+  { path: '/admin/detailcommande/:idproforma', element: <DetailCommande /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
