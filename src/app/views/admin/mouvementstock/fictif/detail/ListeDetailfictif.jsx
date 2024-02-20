@@ -13,7 +13,8 @@ import {
   Grid,
   Snackbar,
   Alert,
-  TextField
+  TextField,
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -178,6 +179,10 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     initialDataFetched,
     idmouvementstock.idmouvementstock
   ]);
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/mouvementfictif');
+  };
 
   return (
     <Box width="100%" overflow="auto">
@@ -471,6 +476,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               </Grid>
             </Grid>
           </SimpleCard>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Button variant="contained" color="primary" onClick={redirect}>
+              <Icon>arrow_backward</Icon>
+            </Button>
+          </Box>
         </Grid>
       </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>

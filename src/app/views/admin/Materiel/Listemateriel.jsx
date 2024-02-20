@@ -143,7 +143,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     const blob = await renderPdf(
       <PDFMateriel dataList={data.listemateriels} columns={columns} />
     ).toBlob();
-    saveAs(blob, 'Test.pdf');
+    saveAs(blob, 'Liste_materiel.pdf');
   };
 
   //  Use effect

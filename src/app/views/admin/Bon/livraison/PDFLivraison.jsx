@@ -66,20 +66,23 @@ const styles = StyleSheet.create({
   }
 });
 
-const PDFproforma = ({ dataList, columns }) => {
+const PDFLivraison = ({ dataList, columns }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Bon de livraison</Text>
         <View style={styles.gridContainer}>
-          {dataList.clientdevis.map((row, index) => (
+          {dataList.clientlivraisons.map((row, index) => (
             <View style={styles.infoBox}>
+              <Text style={styles.labelText}>Proforma N*: {row.idproforma}</Text>
               <Text style={styles.labelText}>Nom: {row.nom}</Text>
               <Text style={styles.labelText}>Numéro de statut: {row.numstat}</Text>
               <Text style={styles.labelText}>Téléphone: {row.telephone}</Text>
               <Text style={styles.labelText}>Adresse: {row.adresse}</Text>
               <Text style={styles.labelText}>NIF: {row.nif}</Text>
-              <Text style={styles.labelText}>Date de devis: {converttodate(row.datedevis)}</Text>
+              <Text style={styles.labelText}>
+                Date de livraison: {converttodate(row.datebonlivraison)}
+              </Text>
             </View>
           ))}
           <View style={styles.table}>
@@ -90,7 +93,7 @@ const PDFproforma = ({ dataList, columns }) => {
                 </View>
               ))}
             </View>
-            {dataList.detaildevis.map((row, index) => (
+            {dataList.detailProformas.map((row, index) => (
               <View style={styles.tableRow} key={index}>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>{index}</Text>
@@ -110,13 +113,10 @@ const PDFproforma = ({ dataList, columns }) => {
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>{formatNumber(row.total)}</Text>
                 </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>{row.total}</Text>
-                </View>
               </View>
             ))}
             <View style={styles.infoBox}>
-              <Text style={styles.tableCell}>Total: {formatNumber(dataList.somme)} Ariary</Text>
+              <Text style={styles.tableCell}>Total: {formatNumber(dataList.total)} Ariary</Text>
             </View>
           </View>
         </View>

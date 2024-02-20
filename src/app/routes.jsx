@@ -71,6 +71,10 @@ const DetailCommande = Loadable(
 
 const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/livraison/Livraison')));
 
+const Detaillivraison = Loadable(
+  lazy(() => import('app/views/admin/Bon/livraison/Detaillivraison'))
+);
+
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const Archives = Loadable(lazy(() => import('app/views/admin/archives/Archives')));
@@ -208,6 +212,12 @@ const routes = [
         element: <Livraison />,
         auth: authRoles.admindefault
       },
+
+      {
+        path: '/admin/detaillivraison/:idproforma',
+        element: <Detaillivraison />,
+        auth: authRoles.admindefault
+      },
       {
         path: '/admin/depot',
         element: <Depot />,
@@ -254,6 +264,7 @@ const routes = [
   { path: '/admin/proforma', element: <Proforma /> },
   { path: '/admin/detailproforma/:iddevis', element: <Detailproforma /> },
   { path: '/admin/detailcommande/:idproforma', element: <DetailCommande /> },
+  { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },

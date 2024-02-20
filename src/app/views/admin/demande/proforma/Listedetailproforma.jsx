@@ -63,7 +63,7 @@ const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     const blob = await renderPdf(
       <PDFproforma dataList={proformaData} columns={columns} />
     ).toBlob();
-    saveAs(blob, 'Test.pdf');
+    saveAs(blob, 'Proforma.pdf');
   };
 
   useEffect(() => {

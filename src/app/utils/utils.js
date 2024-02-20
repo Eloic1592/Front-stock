@@ -213,6 +213,14 @@ export function coloredNumber(nombre) {
   return <span style={style}>{formatNumber(nombre)}</span>;
 }
 
+export function colorType(mouvement) {
+  let style = {};
+  if (mouvement === 'SORTIE') {
+    return <span style={(style = { color: 'red' })}>{mouvement}</span>;
+  }
+  return <span style={(style = { color: 'green' })}>{mouvement}</span>;
+}
+
 // Transformation d'un nombre en  lettre
 export function nombreEnLettres(nombre) {
   const unites = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
