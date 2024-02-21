@@ -32,11 +32,13 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'ID', field: 'idmateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
-    { label: 'Couleur', field: 'couleur', align: 'center' }
+    { label: 'Caution', field: 'caution', align: 'center' },
+    { label: 'Couleur', field: 'couleur', align: 'center' },
+    { label: 'Signature', field: 'signature', align: 'center' }
   ];
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -55,13 +57,14 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
   // Update
   const [isEditedIdmateriel, setIsEditedIdmateriel] = useState('');
-  const [isEditedtypemat, setIsEditedtypemat] = useState(['1']);
-  const [isEditedcatemat, setIsEditedcatemat] = useState(['1']);
-  const [isEditedmodele, setIsEditedmodele] = useState(['1']);
+  const [isEditedtypemat, setIsEditedtypemat] = useState('1');
+  const [isEditedmodele, setIsEditedmodele] = useState('');
+  const [isEditedMarque, setIsEditedMarque] = useState('');
   const [isEditednumserie, setIsEditednumserie] = useState('');
   const [isEditedprixvente, setIsEditedprixvente] = useState(0);
   const [isEditedcolor, setIsEditedcolor] = useState(['Rouge']);
   const [isEditedcaution, setisEditedcaution] = useState(0);
+  const [isEditedsignature, setIsEditedsignature] = useState('1');
 
   // Modification(Update)
   const handleEdit = (row) => {
@@ -102,13 +105,14 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const handleSubmit = () => {
     let materiel = {
       idmateriel: isEditedIdmateriel,
-      idcategoriemateriel: isEditedcatemat,
       idtypemateriel: isEditedtypemat,
-      idarticle: isEditedmodele,
+      marque: isEditedMarque,
+      modele: isEditedmodele,
       numserie: isEditednumserie,
       prixvente: isEditedprixvente,
       caution: isEditedcaution,
-      couleur: isEditedcolor
+      couleur: isEditedcolor,
+      signature: isEditedsignature
     };
 
     let url = baseUrl + '/materiel/createmateriel';
@@ -345,26 +349,35 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmateriel" align="center" width="10%">
+                  {/* <TableCell key="idmateriel" align="center" width="10%">
                     idmateriel
-                  </TableCell>
-                  <TableCell key="typemateriel" align="center" width="15%">
+                  </TableCell> */}
+                  <TableCell key="typemateriel" align="center" width="10%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="modele" align="center" width="15%">
+                  <TableCell key="marque" align="center" width="10%">
+                    marque
+                  </TableCell>
+                  <TableCell key="modele" align="center" width="10%">
                     modele
                   </TableCell>
-                  <TableCell key="numserie" align="center" width="15%">
+                  <TableCell key="numserie" align="center" width="10%">
                     numserie
                   </TableCell>
-                  <TableCell key="prixvente" align="center" width="15%">
+                  <TableCell key="prixvente" align="center" width="10%">
                     prixvente
                   </TableCell>
-                  <TableCell key="description" align="center" width="15%">
+                  {/* <TableCell key="description" align="center" width="15%">
                     description
+                  </TableCell> */}
+                  <TableCell key="caution" align="center" width="10%">
+                    caution
                   </TableCell>
                   <TableCell key="couleur" align="center" width="10%">
                     couleur
+                  </TableCell>
+                  <TableCell key="signature" align="center" width="10%">
+                    signature
                   </TableCell>
                   <TableCell width="5%">Action</TableCell>
                 </TableRow>
@@ -385,32 +398,12 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
                         {isEditClicked && row.idmateriel === selectedRowId ? (
                           <>
-                            <TableCell>
+                            {/* <TableCell>
                               <TextField
                                 value={isEditedIdmateriel}
                                 onChange={(event) => setIsEditedIdmateriel(event.target.value)}
                               />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                labelId="select-label"
-                                value={isEditedcatemat}
-                                onChange={(event) => setIsEditedcatemat(event.target.value)}
-                                fullWidth
-                              >
-                                <MenuItem value="1" disabled>
-                                  Choisir une categorie
-                                </MenuItem>
-                                {data.categoriemateriels.map((row) => (
-                                  <MenuItem
-                                    key={row.idcategoriemateriel}
-                                    value={row.idcategoriemateriel}
-                                  >
-                                    {row.categoriemateriel}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
+                            </TableCell> */}
                             <TableCell>
                               <Select
                                 labelId="select-label"
@@ -429,21 +422,18 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               </Select>
                             </TableCell>
                             <TableCell>
-                              <Select
-                                labelId="select-label"
+                              <TextField
+                                type="text"
+                                value={isEditedMarque}
+                                onChange={(event) => setIsEditedMarque(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="text"
                                 value={isEditedmodele}
                                 onChange={(event) => setIsEditedmodele(event.target.value)}
-                                fullWidth
-                              >
-                                <MenuItem value="1" disabled>
-                                  Choisir un article
-                                </MenuItem>
-                                {data.articles.map((row) => (
-                                  <MenuItem key={row.idarticle} value={row.idarticle}>
-                                    {row.modele}/{row.codearticle}
-                                  </MenuItem>
-                                ))}
-                              </Select>
+                              />
                             </TableCell>
                             <TableCell>
                               <TextField
@@ -480,16 +470,34 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                                 ))}
                               </Select>
                             </TableCell>
+                            <TableCell>
+                              <Select
+                                labelId="select-label"
+                                value={isEditedsignature}
+                                onChange={(event) => setIsEditedsignature(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir une signature
+                                </MenuItem>
+                                <MenuItem value="Perso">Perso</MenuItem>
+                                <MenuItem value="ITU">ITU</MenuItem>
+                                <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
+                              </Select>
+                            </TableCell>
                           </>
                         ) : (
                           <>
-                            <TableCell align="center">{row.idmateriel}</TableCell>
+                            {/* <TableCell align="center">{row.idmateriel}</TableCell> */}
                             <TableCell align="center">{row.typemateriel}</TableCell>
+                            <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
                             <TableCell align="center">{row.numserie}</TableCell>
                             <TableCell align="center">{formatNumber(row.prixvente)}</TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
+                            <TableCell align="center">{formatNumber(row.caution)}</TableCell>
+                            {/* <TableCell align="center">{row.description}</TableCell> */}
                             <TableCell align="center">{row.couleur}</TableCell>
+                            <TableCell align="center">{row.signature}</TableCell>
                             <TableCell align="center">
                               <IconButton
                                 className="button"

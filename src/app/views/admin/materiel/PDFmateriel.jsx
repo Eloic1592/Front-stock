@@ -64,9 +64,10 @@ const PDFmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{row.typemateriel}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>
-                  {row.marque}-{row.modele}
-                </Text>
+                <Text style={styles.tableCell}>{row.marque}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{row.modele}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.numserie}</Text>
@@ -75,7 +76,7 @@ const PDFmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{formatNumber(row.prixvente)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.description}</Text>
+                <Text style={styles.tableCell}>{row.caution}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.couleur}</Text>
