@@ -33,7 +33,7 @@ export const useListetypematerielFunctions = (data) => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.typemateriels.map((row) => row.idtypemateriel));
     } else {
       setSelectedIds([]);
     }
@@ -88,6 +88,12 @@ export const useListetypematerielFunctions = (data) => {
 //  Filtre de recherche
 export function filtretypemateriel(listetypemateriel, typemateriel, categoriemateriel) {
   return listetypemateriel.filter((Item) => {
-    return Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
+    const typematch =
+      !typemateriel || Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
+    let categoriematch = true;
+    if (categoriemateriel !== '1') {
+      categoriematch = Item.idcategoriemateriel === categoriemateriel;
+    }
+    return typematch && categoriematch;
   });
 }

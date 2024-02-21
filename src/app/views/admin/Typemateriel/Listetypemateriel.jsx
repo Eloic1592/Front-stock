@@ -35,6 +35,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdtypemateriel, setEditedIdtypemateriel] = useState(null);
   const [editedTypemateriel, setEditedTypemateriel] = useState(null);
+  const [editedCategoriemateriel, setEditedCategoriemateriel] = useState('1');
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -78,7 +79,8 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
   const handleSubmit = () => {
     let typemateriel = {
       idtypemateriel: editedIdtypemateriel,
-      typemateriel: editedTypemateriel
+      typemateriel: editedTypemateriel,
+      idcategoriemateriel: editedCategoriemateriel
     };
     let url = baseUrl + '/typemateriel/createtypemateriel';
     fetch(url, {
@@ -181,9 +183,11 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                 <Select
                   fullWidth
                   labelId="select-label"
-                  value={categoriemateriel}
+                  variant="outlined"
                   size="small"
+                  value={categoriemateriel}
                   onChange={(event) => setCategoriemateriel(event.target.value)}
+                  sx={{ mb: 3 }}
                 >
                   <MenuItem value="1">Toutes colonnes</MenuItem>
                   {data.categoriemateriels.map((row) => (
@@ -208,6 +212,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                   value={sortColumn}
                   size="small"
                   onChange={handleSelectColumn}
+                  sx={{ mb: 3 }}
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column, index) => (
@@ -224,6 +229,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                   value={sortDirection}
                   size="small"
                   onChange={(event) => setSortDirection(event.target.value)}
+                  sx={{ mb: 3 }}
                 >
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
@@ -271,6 +277,26 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                                   )
                                 }
                               />
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                labelId="select-label"
+                                value={editedCategoriemateriel}
+                                onChange={(event) => setEditedCategoriemateriel(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir une categorie
+                                </MenuItem>
+                                {data.categoriemateriels.map((row) => (
+                                  <MenuItem
+                                    key={row.idcategoriemateriel}
+                                    value={row.idcategoriemateriel}
+                                  >
+                                    {row.categoriemateriel}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                           </>
                         ) : (

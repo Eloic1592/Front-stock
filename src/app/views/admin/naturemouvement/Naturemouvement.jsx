@@ -63,7 +63,7 @@ const Naturemouvement = () => {
         setTimeout(() => {
           window.location.reload();
         }, 2000);
-        handleClose();
+
         setMessage({
           text: 'Information enregistrée',
           severity: 'success',
