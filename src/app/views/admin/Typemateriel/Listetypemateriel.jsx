@@ -247,6 +247,9 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                   <TableCell key="typemateriel" align="left">
                     typemateriel
                   </TableCell>
+                  <TableCell key="typemateriel" align="left">
+                    categoriemateriel
+                  </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -303,6 +306,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                           <>
                             <TableCell>{row.idtypemateriel}</TableCell>
                             <TableCell>{row.typemateriel}</TableCell>
+                            <TableCell>{row.categoriemateriel}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

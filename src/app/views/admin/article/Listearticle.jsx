@@ -31,12 +31,12 @@ const ListeArticle = () => {
     { label: 'code article', field: 'codearticle', align: 'center' },
     { label: 'description', field: 'description', align: 'center' }
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ articles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdArticle, setEditedIdArticle] = useState(null);
   const [editedModele, setEditedModele] = useState(null);
   const [editedMarque, setEditedMarque] = useState(null);
-  const [editedCodearticle, setEditedCodearticle] = useState(null);
+  const [editedTypemateriel, setEditedTypemateriel] = useState('1');
   const [editedDescription, setEditedDescription] = useState(null);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -51,7 +51,6 @@ const ListeArticle = () => {
   // Modification(Update)
   const handleEdit = (row) => {
     setEditedIdArticle('');
-    setEditedCodearticle('');
     setEditedDescription('');
     setEditedMarque('');
     setEditedModele('');
@@ -61,7 +60,6 @@ const ListeArticle = () => {
 
   const cancelEdit = () => {
     setEditedIdArticle('');
-    setEditedCodearticle('');
     setEditedDescription('');
     setEditedMarque('');
     setEditedModele('');
@@ -80,11 +78,11 @@ const ListeArticle = () => {
     handleSelectColumn,
     sortedData,
     modele,
+    setMarque,
     marque,
-    codearticle,
     setModele,
-    setCodearticle,
-    setMarque
+    typemateriel,
+    setTypemateriel
   } = useListeArticlefunctions(data);
 
   const handleSubmit = () => {
@@ -93,7 +91,7 @@ const ListeArticle = () => {
       marque: editedMarque,
       modele: editedModele,
       description: editedDescription,
-      codearticle: editedCodearticle
+      idtypemateriel: editedTypemateriel
     };
 
     let url = baseUrl + '/article/createarticle';
@@ -126,7 +124,7 @@ const ListeArticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/article/listarticle';
+        let url = baseUrl + '/article/contentarticle';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -139,7 +137,12 @@ const ListeArticle = () => {
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          articles: responseData.articles || [],
+          typemateriels: responseData.typemateriels || []
+        };
+
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -161,7 +164,6 @@ const ListeArticle = () => {
         setEditedIdArticle(selectedRow.idarticle);
         setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
         setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
-        setEditedCodearticle((prev) => (prev != null ? prev : selectedRow.codearticle));
         setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
       }
     }
@@ -200,17 +202,22 @@ const ListeArticle = () => {
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
+                <Select
                   fullWidth
-                  size="small"
-                  type="text"
-                  name="codearticle"
-                  label="Code article"
+                  labelId="select-label"
                   variant="outlined"
-                  value={codearticle}
-                  onChange={(event) => setCodearticle(event.target.value)}
+                  size="small"
+                  value={typemateriel}
+                  onChange={(event) => setTypemateriel(event.target.value)}
                   sx={{ mb: 3 }}
-                />
+                >
+                  <MenuItem value="1">Tous types</MenuItem>
+                  {data.typemateriels.map((row) => (
+                    <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                      {row.typemateriel}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </Grid>
           </SimpleCard>
@@ -274,7 +281,7 @@ const ListeArticle = () => {
                     modele
                   </TableCell>
                   <TableCell key="codearticle" width="15%">
-                    codearticle
+                    typemateriel
                   </TableCell>
                   <TableCell key="description" width="60%">
                     description
@@ -316,15 +323,20 @@ const ListeArticle = () => {
                               />
                             </TableCell>
                             <TableCell width="15%">
-                              <TextField
-                                value={editedCodearticle}
-                                onChange={(event) => setEditedCodearticle(event.target.value)}
-                                onBlur={() =>
-                                  setEditedCodearticle(
-                                    editedCodearticle !== '' ? editedCodearticle : row.codearticle
-                                  )
-                                }
-                              />
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editedTypemateriel}
+                                size="small"
+                                onChange={(event) => setEditedTypemateriel(event.target.value)}
+                              >
+                                <MenuItem value="1">Choisir un type</MenuItem>
+                                {data.typemateriels.map((row) => (
+                                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                                    {row.typemateriel}
+                                  </MenuItem>
+                                ))}
+                              </Select>
                             </TableCell>
                             <TableCell width="60%">
                               <TextField
@@ -344,7 +356,7 @@ const ListeArticle = () => {
                             <TableCell> {row.idarticle}</TableCell>
                             <TableCell>{row.marque}</TableCell>
                             <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.codearticle}</TableCell>
+                            <TableCell>{row.typemateriel}</TableCell>
                             <TableCell>{row.description}</TableCell>
                             <TableCell>
                               <IconButton

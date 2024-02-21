@@ -7,10 +7,12 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Grid
+  Grid,
+  MenuItem,
+  Select
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ListeArticle from './Listearticle';
 import { Container } from 'app/views/style/style';
@@ -27,15 +29,18 @@ const Article = () => {
     severity: 'success',
     open: false
   });
+  const [data, setData] = useState({
+    typemateriels: []
+  });
 
   // Input
-  const [codearticle, setCodearticle] = useState('');
+  const [typemateriel, setTypemateriel] = useState('1');
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
-    if (!marque || !modele || !codearticle) {
+    if (!marque || !modele || typemateriel === '1') {
       setMessage({
         text: 'Veuillez remplir tous les champs obligatoires.',
         severity: 'error',
@@ -46,7 +51,7 @@ const Article = () => {
     let params = {
       marque: marque,
       modele: modele,
-      codearticle: codearticle,
+      idtypemateriel: typemateriel,
       description: description
     };
     let url = baseUrl + '/article/createarticle';
@@ -78,89 +83,135 @@ const Article = () => {
         });
       });
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let url = baseUrl + '/article/contentarticle';
+        const response = await fetch(url, {
+          crossDomain: true,
+          method: 'POST',
+          body: JSON.stringify({}),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+
+        const newData = {
+          typemateriels: responseData.typemateriels || []
+        };
+
+        setData(newData);
+      } catch {
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
       </Box>
-      <Box>
-        <p>
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
           <Button variant="contained" onClick={handleClickOpen} color="primary">
             Nouvel article
           </Button>
-          &nbsp;&nbsp;
-        </p>
-      </Box>
-      <Box>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Nouvel article</DialogTitle>
-          <DialogContent>
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="marque"
-                  type="text"
-                  margin="dense"
-                  label="Marque (obligatoire)"
-                  name="marque"
-                  value={marque}
-                  onChange={(event) => setMarque(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="modele"
-                  type="text"
-                  margin="dense"
-                  label="Nom du modele  (obligatoire)"
-                  name="modele"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="description"
-                  type="text"
-                  margin="dense"
-                  label="Description"
-                  name="description"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="codearticle"
-                  type="text"
-                  margin="dense"
-                  label="Code article (obligatoire)"
-                  name="codearticle"
-                  value={codearticle}
-                  onChange={(event) => setCodearticle(event.target.value)}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog
+              open={open}
+              fullWidth
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              maxWidth="md"
+            >
+              <DialogTitle id="form-dialog-title">Nouvel article</DialogTitle>
+              <DialogContent>
+                <Grid container direction="column" spacing={1}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="marque"
+                      type="text"
+                      margin="dense"
+                      label="Marque (obligatoire)"
+                      name="marque"
+                      value={marque}
+                      onChange={(event) => setMarque(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="modele"
+                      type="text"
+                      margin="dense"
+                      label="Nom du modele  (obligatoire)"
+                      name="modele"
+                      value={modele}
+                      onChange={(event) => setModele(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="description"
+                      type="text"
+                      margin="dense"
+                      label="Description"
+                      name="description"
+                      rows={4}
+                      multiline
+                      value={description}
+                      onChange={(event) => setDescription(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      variant="outlined"
+                      size="small"
+                      value={typemateriel}
+                      onChange={(event) => setTypemateriel(event.target.value)}
+                      sx={{ mb: 3 }}
+                    >
+                      <MenuItem value="1">Selectionner un type</MenuItem>
+                      {data.typemateriels.map((row) => (
+                        <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                          {row.typemateriel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
+              </DialogContent>
 
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
-              Annuler
-            </Button>
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Valider
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} color="primary" variant="contained">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
 
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">

@@ -8,11 +8,9 @@ export const useListeArticlefunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [typemateriel, setTypemateriel] = useState('');
-  const [idarticle, setIdarticle] = useState('');
+  const [typemateriel, setTypemateriel] = useState('1');
   const [modele, setModele] = useState('');
   const [marque, setMarque] = useState('');
-  const [codearticle, setCodearticle] = useState('');
 
   // Pagination
   const handleChangePage = (_, newPage) => {
@@ -34,7 +32,7 @@ export const useListeArticlefunctions = (data) => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.articles.map((row) => row.idarticle));
     } else {
       setSelectedIds([]);
     }
@@ -44,7 +42,7 @@ export const useListeArticlefunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrearticle(data, modele, marque, codearticle);
+  const filtredata = filtrearticle(data.articles, modele, marque, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -72,31 +70,29 @@ export const useListeArticlefunctions = (data) => {
     setIsEditClicked,
     selectedRowId,
     setSelectedRowId,
-    typemateriel,
-    setTypemateriel,
     handleChangePage,
     handleChangeRowsPerPage,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    idarticle,
-    setIdarticle,
     modele,
     setModele,
     marque,
     setMarque,
-    codearticle,
-    setCodearticle
+    typemateriel,
+    setTypemateriel
   };
 };
 
-export function filtrearticle(listearticle, modele, marque, codearticle) {
+export function filtrearticle(listearticle, marque, modele, typemateriel) {
   return listearticle.filter((Item) => {
-    return (
-      Item.modele.toLowerCase().includes(modele.toLowerCase()) &&
-      Item.marque.toLowerCase().includes(marque.toLowerCase()) &&
-      Item.codearticle.toLowerCase().includes(codearticle.toLowerCase())
-    );
+    const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
+    const modelematch = !modele || Item.modele.toLowerCase().includes(modele.toLowerCase());
+    let typematch = true;
+    if (typemateriel !== '1') {
+      typematch = Item.idtypemateriel === typemateriel;
+    }
+    return marquematch && modelematch && typematch;
   });
 }
