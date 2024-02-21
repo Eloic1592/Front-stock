@@ -9,6 +9,7 @@ export const navigations = [
         name: 'Mouvement de stock',
         iconText: 'arrows-right',
         children: [
+          { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
           { name: 'Mouvement physique', iconText: 'SI', path: '/admin/mouvementphysique' },
           { name: 'Mouvement fictif', iconText: 'SI', path: '/admin/mouvementfictif' }
         ]
@@ -37,13 +38,15 @@ export const navigations = [
         children: [
           { name: 'Article', iconText: 'SI', path: '/admin/article' },
           { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
-          { name: 'Depot', iconText: 'SI', path: '/admin/depot' }
+          { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
+          { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
         ]
       },
-
-      { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
-      { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
-      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
+      {
+        name: 'Depot',
+        iconText: 'arrows-right',
+        children: [{ name: 'Depot', iconText: 'SI', path: '/admin/depot' }]
+      }
     ]
   },
 

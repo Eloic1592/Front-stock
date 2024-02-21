@@ -1,8 +1,8 @@
-import useSettings from 'app/hooks/useSettings';
+// import useSettings from 'app/hooks/useSettings';
 import { Icon } from '@mui/material';
 const MatxLogo = ({ className }) => {
-  const { settings } = useSettings();
-  const theme = settings.themes[settings.activeTheme];
+  // const { settings } = useSettings();
+  // const theme = settings.themes[settings.activeTheme];
 
   return (
     // <svg

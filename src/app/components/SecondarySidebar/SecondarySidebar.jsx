@@ -1,7 +1,7 @@
 import useSettings from 'app/hooks/useSettings';
 import SecondarySidenavTheme from '../MatxTheme/SecondarySidenavTheme/SecondarySidenavTheme';
 import SecondarySidebarContent from './SecondarySidebarContent';
-import SecondarySidebarToggle from './SecondarySidebarToggle';
+// import SecondarySidebarToggle from './SecondarySidebarToggle';
 
 const SecondarySidebar = () => {
   const { settings } = useSettings();
@@ -10,7 +10,7 @@ const SecondarySidebar = () => {
   return (
     <SecondarySidenavTheme theme={secondarySidebarTheme}>
       {settings.secondarySidebar.open && <SecondarySidebarContent />}
-      <SecondarySidebarToggle />
+      {/* <SecondarySidebarToggle /> */}
     </SecondarySidenavTheme>
   );
 };
