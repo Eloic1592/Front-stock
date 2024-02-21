@@ -87,8 +87,8 @@ export const useListeArticlefunctions = (data) => {
 
 export function filtrearticle(listearticle, marque, modele, typemateriel) {
   return listearticle.filter((Item) => {
-    const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
-    const modelematch = !modele || Item.modele.toLowerCase().includes(modele.toLowerCase());
+    let marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
+    let modelematch = !modele || Item.modele.toLowerCase().includes(modele.toLowerCase());
     let typematch = true;
     if (typemateriel !== '1') {
       typematch = Item.idtypemateriel === typemateriel;

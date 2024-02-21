@@ -28,7 +28,7 @@ const ListeArticle = () => {
     { label: 'ID article', field: 'idarticle', align: 'center' },
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'code article', field: 'codearticle', align: 'center' },
+    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
     { label: 'description', field: 'description', align: 'center' }
   ];
   const [data, setData] = useState({ articles: [], typemateriels: [] });
@@ -280,7 +280,7 @@ const ListeArticle = () => {
                   <TableCell key="modele" width="15%">
                     modele
                   </TableCell>
-                  <TableCell key="codearticle" width="15%">
+                  <TableCell key="typemateriel" width="15%">
                     typemateriel
                   </TableCell>
                   <TableCell key="description" width="60%">
