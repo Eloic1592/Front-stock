@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import Listemateriel from './Listemateriel';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import { colors } from 'app/utils/utils';
 
 const Materiel = () => {
   // Form dialog
@@ -26,14 +27,15 @@ const Materiel = () => {
   const handleAlertClose = () => setMessage({ open: false });
 
   const [couleur, setCouleur] = useState(['1']);
-  const [article, setArticle] = useState(['1']);
-  const [categoriemateriel, setCategoriemateriel] = useState(['1']);
+  const [marque, setMarque] = useState('');
+  const [modele, setModele] = useState('');
   const [typemateriel, setTypemateriel] = useState(['1']);
 
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
   const [prixvente, setPrixvente] = useState();
   const [caution, setCaution] = useState();
+  const [signature, setSignature] = useState('1');
   const [file, setFile] = useState('');
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
@@ -49,23 +51,23 @@ const Materiel = () => {
     materiels: [],
     articles: [],
     typemateriels: [],
-    categoriemateriels: [],
     listemateriels: []
   });
 
   // Validation form
   const handleSubmit = () => {
     if (
+      !marque ||
+      !modele ||
+      !caution ||
       typemateriel === 1 ||
-      categoriemateriel === 1 ||
-      article === 1 ||
       !numserie ||
       !prixvente ||
       !caution ||
       couleur === 1
     ) {
       setMessage({
-        text: 'Les champs suivants sont obligatoires : typemateriel, categoriemateriel, article, numserie, prixvente, caution, couleur',
+        text: 'Les champs suivants sont obligatoires : typemateriel,marque, modele, article, numserie, prixvente, caution, couleur',
         severity: 'error',
         open: true
       });
@@ -74,8 +76,6 @@ const Materiel = () => {
 
     let params = {
       idtypemateriel: typemateriel,
-      idcategoriemateriel: categoriemateriel,
-      idarticle: article,
       numserie: numserie,
       prixvente: prixvente,
       caution: caution,
@@ -129,7 +129,6 @@ const Materiel = () => {
         const newData = {
           articles: responseData.articles || [],
           typemateriels: responseData.typemateriels || [],
-          categoriemateriels: responseData.categoriemateriels || [],
           listemateriels: responseData.listemateriels || []
         };
 
@@ -171,40 +170,30 @@ const Materiel = () => {
               <DialogContent>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
-                    <Select
-                      labelId="select-label"
-                      sx={{ mb: 3 }}
-                      value={article}
-                      onChange={(event) => setArticle(event.target.value)}
+                    <TextField
                       fullWidth
-                    >
-                      <MenuItem value="1" disabled>
-                        Choisir un article
-                      </MenuItem>
-                      {data.articles.map((row) => (
-                        <MenuItem key={row.idarticle} value={row.idarticle}>
-                          {row.modele}/{row.codearticle}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                      autoFocus
+                      id="marque"
+                      type="text"
+                      margin="dense"
+                      label="Marque"
+                      name="marque"
+                      value={marque}
+                      onChange={(event) => setMarque(event.target.value)}
+                    />
                   </Grid>
                   <Grid item xs={6}>
-                    <Select
-                      labelId="select-label"
-                      sx={{ mb: 3 }}
-                      value={categoriemateriel}
-                      onChange={(event) => setCategoriemateriel(event.target.value)}
+                    <TextField
                       fullWidth
-                    >
-                      <MenuItem value="1" disabled>
-                        Choisir une categorie
-                      </MenuItem>
-                      {data.categoriemateriels.map((row) => (
-                        <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                          {row.categoriemateriel}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                      autoFocus
+                      id="modele"
+                      type="text"
+                      margin="dense"
+                      label="Modele"
+                      name="modele"
+                      value={modele}
+                      onChange={(event) => setModele(event.target.value)}
+                    />
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
@@ -232,25 +221,14 @@ const Materiel = () => {
                       labelId="select-label"
                       value={couleur}
                       onChange={(event) => setCouleur(event.target.value)}
+                      sx={{ mb: 3 }}
                     >
-                      <MenuItem value="1" disabled>
-                        Choisir une couleur
-                      </MenuItem>
-                      <MenuItem value="Noir">Noir</MenuItem>
-                      <MenuItem value="Blanc">Blanc</MenuItem>
-                      <MenuItem value="Gris">Gris</MenuItem>
-                      <MenuItem value="Rouge">Rouge</MenuItem>
-                      <MenuItem value="Bleu">Bleu</MenuItem>
-                      <MenuItem value="Vert">Vert</MenuItem>
-                      <MenuItem value="Jaune">Jaune</MenuItem>
-                      <MenuItem value="Marron">Marron</MenuItem>
-                      <MenuItem value="Violet">Violet</MenuItem>
-                      <MenuItem value="Rose">Rose</MenuItem>
-                      <MenuItem value="Orange">Orange</MenuItem>
-                      <MenuItem value="Beige">Beige</MenuItem>
-                      <MenuItem value="Turquoise">Turquoise</MenuItem>
-                      <MenuItem value="Argenté">Argenté</MenuItem>
-                      <MenuItem value="Doré">Doré</MenuItem>
+                      <MenuItem value="1">Choisir une couleur</MenuItem>
+                      {colors.map((color, index) => (
+                        <MenuItem key={index} value={color}>
+                          {color}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </Grid>
                 </Grid>
@@ -303,6 +281,20 @@ const Materiel = () => {
                   value={caution}
                   onChange={(event) => setCaution(event.target.value)}
                 />
+                <Select
+                  labelId="select-label"
+                  sx={{ mb: 3 }}
+                  value={signature}
+                  onChange={(event) => setSignature(event.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value="1" disabled>
+                    Choisir une signature
+                  </MenuItem>
+                  <MenuItem value="Perso">Perso</MenuItem>
+                  <MenuItem value="ITU">ITU</MenuItem>
+                  <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
+                </Select>
               </DialogContent>
 
               <DialogActions>

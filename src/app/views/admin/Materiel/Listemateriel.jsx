@@ -326,25 +326,25 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmateriel" align="left" width="10%">
+                  <TableCell key="idmateriel" align="center" width="10%">
                     idmateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="left" width="15%">
+                  <TableCell key="typemateriel" align="center" width="15%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="modele" align="left" width="15%">
+                  <TableCell key="modele" align="center" width="15%">
                     modele
                   </TableCell>
-                  <TableCell key="numserie" align="left" width="15%">
+                  <TableCell key="numserie" align="center" width="15%">
                     numserie
                   </TableCell>
-                  <TableCell key="prixvente" align="left" width="15%">
+                  <TableCell key="prixvente" align="center" width="15%">
                     prixvente
                   </TableCell>
-                  <TableCell key="description" align="left" width="15%">
+                  <TableCell key="description" align="center" width="15%">
                     description
                   </TableCell>
-                  <TableCell key="couleur" align="left" width="10%">
+                  <TableCell key="couleur" align="center" width="10%">
                     couleur
                   </TableCell>
                   <TableCell width="5%">Action</TableCell>
@@ -464,16 +464,15 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idmateriel}</TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.numserie}</TableCell>
-                            <TableCell>{formatNumber(row.prixvente)}</TableCell>
-                            {/* <TableCell>{formatNumber(row.caution)}</TableCell> */}
-                            <TableCell>{row.description}</TableCell>
-                            <TableCell>{row.couleur}</TableCell>
-                            <TableCell>
+                            <TableCell align="center">{row.idmateriel}</TableCell>
+                            <TableCell align="center">{row.categoriemateriel}</TableCell>
+                            <TableCell align="center">{row.typemateriel}</TableCell>
+                            <TableCell align="center">{row.modele}</TableCell>
+                            <TableCell align="center">{row.numserie}</TableCell>
+                            <TableCell align="center">{formatNumber(row.prixvente)}</TableCell>
+                            <TableCell align="center">{row.description}</TableCell>
+                            <TableCell align="center">{row.couleur}</TableCell>
+                            <TableCell align="center">
                               <IconButton
                                 className="button"
                                 variant="contained"
