@@ -49,9 +49,7 @@ const Materiel = () => {
 
   const [data, setData] = useState({
     materiels: [],
-    articles: [],
-    typemateriels: [],
-    listemateriels: []
+    typemateriels: []
   });
 
   // Validation form
@@ -127,9 +125,7 @@ const Materiel = () => {
         const responseData = await response.json();
 
         const newData = {
-          articles: responseData.articles || [],
-          typemateriels: responseData.typemateriels || [],
-          listemateriels: responseData.listemateriels || []
+          typemateriels: responseData.typemateriels || []
         };
 
         setData(newData);
