@@ -23,7 +23,7 @@ import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/detail/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { formatNumber, coloredNumber, colorType } from 'app/utils/utils';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
@@ -31,10 +31,10 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetailmouvementphysique', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Prix stockage', field: 'prixstock', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
@@ -381,7 +381,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                         ) : (
                           <>
                             <TableCell align="left">{row.iddetailmouvementphysique}</TableCell>
-                            <TableCell align="left">{row.mouvement}</TableCell>
+                            <TableCell align="left">{colorType(row.mouvement)}</TableCell>
                             <TableCell align="left">{row.marque}</TableCell>
                             <TableCell align="left">{row.modele}</TableCell>
                             <TableCell align="left">{coloredNumber(row.quantite)}</TableCell>

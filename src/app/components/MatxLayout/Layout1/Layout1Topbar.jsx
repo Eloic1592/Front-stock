@@ -111,7 +111,7 @@ const Layout1Topbar = () => {
           </StyledIconButton>
 
           <IconBox>
-            <StyledIconButton>
+            {/* <StyledIconButton>
               <Icon>mail_outline</Icon>
             </StyledIconButton>
 
@@ -121,7 +121,7 @@ const Layout1Topbar = () => {
 
             <StyledIconButton>
               <Icon>star_outline</Icon>
-            </StyledIconButton>
+            </StyledIconButton> */}
           </IconBox>
         </Box>
 
@@ -146,18 +146,12 @@ const Layout1Topbar = () => {
               </UserMenu>
             }
           >
-
             <StyledItem>
               <Link to="/page-layouts/user-profile">
                 <Icon> person </Icon>
                 <Span> Profil </Span>
               </Link>
             </StyledItem>
-
-            {/* <StyledItem>
-              <Icon> settings </Icon>
-              <Span> Settings </Span>
-            </StyledItem> */}
 
             <StyledItem onClick={logout}>
               <Icon> power_settings_new </Icon>

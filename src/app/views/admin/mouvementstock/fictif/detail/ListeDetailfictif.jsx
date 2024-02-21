@@ -23,7 +23,7 @@ import { StyledTable } from 'app/views/style/style';
 import { useDFictifFunctions } from 'app/views/admin/mouvementstock/fictif/detail/dfictiffunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
-import { formatNumber, converttodate } from 'app/utils/utils';
+import { formatNumber, converttodate, colorType } from 'app/utils/utils';
 
 const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
@@ -31,13 +31,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'ID', field: 'iddetailmouvementfictif', align: 'center' },
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
     { label: 'Responsable', field: 'idetudiant', align: 'center' },
     { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Date debut', field: 'datedeb', align: 'center' },
-    { label: 'Date fin', field: 'datefin', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' }
+    { label: 'Date fin', field: 'datefin', align: 'center' }
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -274,10 +274,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   <TableCell key="iddetailmouvementfictif" align="left" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="marque" align="left" width="15%">
+                  <TableCell key="mouvement" align="left" width="12%">
+                    Mouvement
+                  </TableCell>
+                  <TableCell key="marque" align="left" width="12%">
                     Marque
                   </TableCell>
-                  <TableCell key="modele" align="left" width="15%">
+                  <TableCell key="modele" align="left" width="12%">
                     Modele
                   </TableCell>
                   <TableCell key="idetudiant" align="left" width="15%">
@@ -402,6 +405,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                         ) : (
                           <>
                             <TableCell align="left">{row.iddetailmouvementfictif}</TableCell>
+                            <TableCell align="left">{colorType(row.mouvement)}</TableCell>
                             <TableCell align="left">{row.marque}</TableCell>
                             <TableCell align="left">{row.modele}</TableCell>
                             <TableCell align="left">{row.idetudiant}</TableCell>
