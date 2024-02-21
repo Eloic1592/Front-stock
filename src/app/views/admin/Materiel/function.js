@@ -12,6 +12,8 @@ export const useListematerielFunctions = (data) => {
   const [categoriemateriel, setCategoriemateriel] = useState('0');
   const [typemateriel, setTypemateriel] = useState('0');
   const [couleur, setCouleur] = useState('0');
+  const [marque, setMarque] = useState('');
+  const [modele, setModele] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -60,8 +62,9 @@ export const useListematerielFunctions = (data) => {
 
   const filtredata = filtremateriel(
     data.listemateriels,
+    marque,
+    modele,
     numserie,
-    categoriemateriel,
     typemateriel,
     couleur
   );
@@ -108,19 +111,20 @@ export const useListematerielFunctions = (data) => {
     categoriemateriel,
     couleur,
     numserie,
-    typemateriel
+    typemateriel,
+    marque,
+    setMarque,
+    modele,
+    setModele
   };
 };
 
 // Filtre
-export function filtremateriel(listemateriel, numserie, categoriemateriel, typemateriel, couleur) {
+export function filtremateriel(listemateriel, marque, modele, numserie, typemateriel, couleur) {
   return listemateriel.filter((Item) => {
+    const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
+    const modelematch = !modele || Item.modele.toLowerCase().includes(modele.toLowerCase());
     const numSerieMatch = !numserie || Item.numserie.toLowerCase().includes(numserie.toLowerCase());
-    let categorieMatch = true;
-    if (categoriemateriel !== '0') {
-      categorieMatch = Item.idcategoriemateriel === categoriemateriel;
-    }
-
     let typeMatch = true;
     if (typemateriel !== '0') {
       typeMatch = Item.idtypemateriel === typemateriel;
@@ -129,6 +133,6 @@ export function filtremateriel(listemateriel, numserie, categoriemateriel, typem
     if (couleur !== '0') {
       couleurMatch = Item.couleur === couleur;
     }
-    return numSerieMatch && categorieMatch && typeMatch && couleurMatch;
+    return modelematch && marquematch && numSerieMatch && typeMatch && couleurMatch;
   });
 }

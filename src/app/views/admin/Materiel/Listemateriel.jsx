@@ -32,11 +32,10 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'ID', field: 'idmateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'Categorie', field: 'categorie', align: 'center' },
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'Numserie', field: 'numserie', align: 'center' },
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
-    { label: 'Descriptio', field: 'description', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
     { label: 'Couleur', field: 'couleur', align: 'center' }
   ];
   const [message, setMessage] = useState({
@@ -47,9 +46,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
   const [data, setData] = useState({
     typemateriels: [],
-    categoriemateriels: [],
-    listemateriels: [],
-    articles: []
+    listemateriels: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [isEditClicked, setIsEditClicked] = useState(false);
@@ -86,13 +83,15 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     sortColumn,
     setCouleur,
     setTypemateriel,
-    setCategoriemateriel,
-    categoriemateriel,
     couleur,
     typemateriel,
     selectedIds,
     setNumserie,
     numserie,
+    marque,
+    setMarque,
+    modele,
+    setModele,
     handleChangeRowsPerPage,
     handleSelectAll,
     handleSelection,
@@ -166,12 +165,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
           });
         }
         const responseData = await response.json();
-        // Assuming data is an object with properties materiels, articles, typemateriels, categoriemateriels, and listemateriels
         const newData = {
           typemateriels: responseData.typemateriels || [],
-          categoriemateriels: responseData.categoriemateriels || [],
-          listemateriels: responseData.listemateriels || [],
-          articles: responseData.articles || []
+          listemateriels: responseData.listemateriels || []
         };
         setData(newData);
       } catch (error) {
@@ -203,21 +199,44 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
         <Grid item>
           <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={1}>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <TextField
                   fullWidth
                   size="small"
+                  id="marque"
+                  type="text"
+                  label="Marque"
+                  name="marque"
+                  value={marque}
+                  onChange={(event) => setMarque(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  fullWidth
+                  autoFocus
+                  size="small"
+                  id="modele"
+                  type="text"
+                  label="Modele"
+                  name="modele"
+                  value={modele}
+                  onChange={(event) => setModele(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <TextField
+                  fullWidth
                   id="numeroserie"
+                  size="small"
                   type="text"
                   label="Numero de serie"
                   name="numserie"
-                  variant="outlined"
                   value={numserie}
                   onChange={(event) => setNumserie(event.target.value)}
-                  sx={{ mb: 3 }}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={2}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -234,7 +253,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={2}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -465,7 +484,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                         ) : (
                           <>
                             <TableCell align="center">{row.idmateriel}</TableCell>
-                            <TableCell align="center">{row.categoriemateriel}</TableCell>
                             <TableCell align="center">{row.typemateriel}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
                             <TableCell align="center">{row.numserie}</TableCell>

@@ -61,9 +61,6 @@ const PDFmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{index}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.categoriemateriel}</Text>
-              </View>
-              <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.typemateriel}</Text>
               </View>
               <View style={styles.tableCol}>

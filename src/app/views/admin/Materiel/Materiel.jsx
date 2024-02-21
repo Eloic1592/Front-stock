@@ -73,12 +73,15 @@ const Materiel = () => {
     }
 
     let params = {
+      marque: marque,
+      modele: modele,
       idtypemateriel: typemateriel,
       numserie: numserie,
       prixvente: prixvente,
       caution: caution,
       couleur: couleur,
-      description: description
+      description: description,
+      signature: signature
     };
     let url = baseUrl + '/materiel/createmateriel';
     fetch(url, {
