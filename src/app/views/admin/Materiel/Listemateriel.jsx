@@ -203,7 +203,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
         <Grid item>
           <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={1}>
-              <Grid item xs={6} sm={3}>
+              <Grid item xs={4}>
                 <TextField
                   fullWidth
                   size="small"
@@ -217,24 +217,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   sx={{ mb: 3 }}
                 />
               </Grid>
-              <Grid item xs={6} sm={3}>
-                <Select
-                  fullWidth
-                  labelId="select-label"
-                  value={categoriemateriel}
-                  onChange={(event) => setCategoriemateriel(event.target.value)}
-                  size="small"
-                  sx={{ mb: 3 }}
-                >
-                  <MenuItem value="0">Toutes categories</MenuItem>
-                  {data.categoriemateriels.map((row) => (
-                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                      {row.categoriemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid item xs={4}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -251,7 +234,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid item xs={4}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -345,9 +328,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   </TableCell>
                   <TableCell key="idmateriel" align="left" width="10%">
                     idmateriel
-                  </TableCell>
-                  <TableCell key="categorie" align="left" width="16%">
-                    categorie
                   </TableCell>
                   <TableCell key="typemateriel" align="left" width="15%">
                     typemateriel

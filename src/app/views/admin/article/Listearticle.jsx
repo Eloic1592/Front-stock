@@ -274,16 +274,16 @@ const ListeArticle = () => {
                   <TableCell key="idarticle" width="10%">
                     idarticle
                   </TableCell>
-                  <TableCell key="marque" width="15%">
+                  <TableCell key="marque" width="15%" align="center">
                     marque
                   </TableCell>
-                  <TableCell key="modele" width="15%">
+                  <TableCell key="modele" width="15%" align="center">
                     modele
                   </TableCell>
-                  <TableCell key="typemateriel" width="15%">
+                  <TableCell key="typemateriel" width="15%" align="center">
                     typemateriel
                   </TableCell>
-                  <TableCell key="description" width="60%">
+                  <TableCell key="description" width="60%" align="center">
                     description
                   </TableCell>
                   <TableCell width="10%">Action</TableCell>
@@ -354,10 +354,10 @@ const ListeArticle = () => {
                         ) : (
                           <>
                             <TableCell> {row.idarticle}</TableCell>
-                            <TableCell>{row.marque}</TableCell>
-                            <TableCell>{row.modele}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.description}</TableCell>
+                            <TableCell align="center">{row.marque}</TableCell>
+                            <TableCell align="center">{row.modele}</TableCell>
+                            <TableCell align="center">{row.typemateriel}</TableCell>
+                            <TableCell align="center">{row.description}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"
