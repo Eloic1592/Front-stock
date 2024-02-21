@@ -224,7 +224,7 @@ const ListeArticle = () => {
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des depots ">
+          <SimpleCard title="Liste des articles">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
