@@ -9,7 +9,7 @@ export const useListemouvementFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [naturemouvement, setNaturemouvement] = useState('');
-  const [categoriemouvement, setCategoriemouvement] = useState(1);
+  const [typemouvement, setTypemouvement] = useState('2');
 
   // Pagination
   const handleChangePage = (_, newPage) => {
@@ -41,7 +41,7 @@ export const useListemouvementFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrenaturemouvement(data, naturemouvement);
+  const filtredata = filtrenaturemouvement(data, naturemouvement, typemouvement);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -76,18 +76,22 @@ export const useListemouvementFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     naturemouvement,
-    categoriemouvement,
     setNaturemouvement,
-    setCategoriemouvement
+    typemouvement,
+    setTypemouvement
   };
 };
 
 // Filtre
-export function filtrenaturemouvement(listenaturemouvement, naturemouvement, categoriemouvement) {
+export function filtrenaturemouvement(listenaturemouvement, naturemouvement, typemouvement) {
   return listenaturemouvement.filter((Item) => {
-    return (
-      Item.naturemouvement.toLowerCase().includes(naturemouvement.toLowerCase()) &&
-      Item.categoriemouvement === categoriemouvement
-    );
+    const naturemouvementmatch =
+      !naturemouvement ||
+      Item.naturemouvement.toLowerCase().includes(naturemouvement.toLowerCase());
+    let typemouvementMatch = true;
+    if (typemouvement !== '2') {
+      typemouvementMatch = Item.typemouvement === parseInt(typemouvement);
+    }
+    return naturemouvementmatch && typemouvementMatch;
   });
 }

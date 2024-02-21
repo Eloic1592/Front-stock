@@ -11,7 +11,7 @@ export const useListetypematerielFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [typemateriel, setTypemateriel] = useState('');
-
+  const [categoriemateriel, setCategoriemateriel] = useState('1');
   // Pagination
   // Pagination
   const handleChangePage = (_, newPage) => {
@@ -43,7 +43,7 @@ export const useListetypematerielFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtretypemateriel(data, typemateriel);
+  const filtredata = filtretypemateriel(data.typemateriels, typemateriel, categoriemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -79,12 +79,14 @@ export const useListetypematerielFunctions = (data) => {
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
-    sortedData
+    sortedData,
+    categoriemateriel,
+    setCategoriemateriel
   };
 };
 
 //  Filtre de recherche
-export function filtretypemateriel(listetypemateriel, typemateriel) {
+export function filtretypemateriel(listetypemateriel, typemateriel, categoriemateriel) {
   return listetypemateriel.filter((Item) => {
     return Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
   });

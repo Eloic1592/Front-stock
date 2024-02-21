@@ -28,7 +28,10 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
     { label: 'Idtypemateriel', field: 'idtypemateriel', align: 'center' },
     { label: 'type materiel', field: 'typemateriel', align: 'center' }
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    typemateriels: [],
+    categoriemateriels: []
+  });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdtypemateriel, setEditedIdtypemateriel] = useState(null);
   const [editedTypemateriel, setEditedTypemateriel] = useState(null);
@@ -67,7 +70,9 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
     handleChangePage,
     handleChangeRowsPerPage,
     handleSelectColumn,
-    sortedData
+    sortedData,
+    categoriemateriel,
+    setCategoriemateriel
   } = useListetypematerielFunctions(data);
 
   const handleSubmit = () => {
@@ -106,7 +111,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/typemateriel/listtypemateriel';
+        let url = baseUrl + '/typemateriel/contenttypemateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -123,7 +128,12 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          typemateriels: responseData.typemateriels || [],
+          categoriemateriels: responseData.categoriemateriels || []
+        };
+
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -152,9 +162,9 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un type de materiel" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
+          <SimpleCard title="Rechercher un type de materiel">
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
                 <TextField
                   fullWidth
                   size="small"
@@ -166,8 +176,24 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                   onChange={(event) => setTypemateriel(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-              </div>
-            </form>
+              </Grid>
+              <Grid item xs={6}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={categoriemateriel}
+                  size="small"
+                  onChange={(event) => setCategoriemateriel(event.target.value)}
+                >
+                  <MenuItem value="1">Toutes colonnes</MenuItem>
+                  {data.categoriemateriels.map((row) => (
+                    <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                      {row.categoriemateriel}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 

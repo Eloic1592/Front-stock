@@ -65,6 +65,8 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
     naturemouvement,
     setNaturemouvement,
     handleChangePage,
+    typemouvement,
+    setTypemouvement,
     sortColumn,
     handleChangeRowsPerPage,
     handleSelectColumn,
@@ -147,20 +149,43 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
 
   return (
     <Box width="100%" overflow="auto">
-      <Grid container direction="column" spacing={2}>
+      <Grid container direction="column" spacing={1}>
         <Grid item>
           <SimpleCard title="Rechercher un type de mouvement" sx={{ marginBottom: '16px' }}>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="typemouvement"
-              label="type de mouvement"
-              variant="outlined"
-              value={naturemouvement}
-              onChange={(event) => setNaturemouvement(event.target.value)}
-              sx={{ mb: 3 }}
-            />
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="typemouvement"
+                  label="type de mouvement"
+                  variant="outlined"
+                  value={naturemouvement}
+                  onChange={(event) => setNaturemouvement(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={typemouvement}
+                  onChange={(event) => setTypemouvement(event.target.value)}
+                >
+                  <MenuItem value="2" key="2">
+                    Tous types
+                  </MenuItem>
+                  <MenuItem value="1" key="1">
+                    Physique
+                  </MenuItem>
+                  <MenuItem value="0" key="0">
+                    Fictif
+                  </MenuItem>
+                </Select>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 
@@ -206,6 +231,9 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
                   </TableCell>
                   <TableCell key="naturemouvement" align="left">
                     nature mouvement
+                  </TableCell>
+                  <TableCell key="typemouvement" align="left">
+                    type mouvement
                   </TableCell>
                   <TableCell>Action</TableCell>
                 </TableRow>
@@ -258,6 +286,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
                           <>
                             <TableCell>{row.idnaturemouvement}</TableCell>
                             <TableCell>{row.naturemouvement}</TableCell>
+                            <TableCell>{row.typemouvement}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

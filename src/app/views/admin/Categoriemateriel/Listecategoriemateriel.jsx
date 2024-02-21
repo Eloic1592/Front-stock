@@ -153,8 +153,8 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>
-            <form>
-              <div style={{ display: 'flex', gap: '16px' }}>
+            <Grid container direction="column" spacing={2}>
+              <Grid item>
                 <TextField
                   fullWidth
                   size="small"
@@ -166,8 +166,8 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
                   onChange={(event) => setCategoriemateriel(event.target.value)}
                   sx={{ mb: 3 }}
                 />
-              </div>
-            </form>
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 

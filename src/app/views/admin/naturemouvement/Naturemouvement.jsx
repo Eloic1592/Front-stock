@@ -46,7 +46,8 @@ const Naturemouvement = () => {
     }
 
     let params = {
-      naturemouvement: naturemouvement
+      naturemouvement: naturemouvement,
+      typemouvement: typemouvement
     };
     let url = baseUrl + '/naturemouvement/createnatmouvement';
     fetch(url, {
@@ -118,8 +119,12 @@ const Naturemouvement = () => {
                   value={typemouvement}
                   onChange={(event) => setTypemouvement(event.target.value)}
                 >
-                  <MenuItem value="1">Physique</MenuItem>
-                  <MenuItem value="0">Fictif</MenuItem>
+                  <MenuItem value="1" key="1">
+                    Physique
+                  </MenuItem>
+                  <MenuItem value="0" key="0">
+                    Fictif
+                  </MenuItem>
                 </Select>
               </DialogContent>
 
