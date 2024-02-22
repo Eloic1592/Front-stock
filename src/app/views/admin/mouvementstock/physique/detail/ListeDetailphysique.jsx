@@ -271,28 +271,28 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="mouvement" align="left" width="15%">
-                    mouvement
+                  <TableCell key="mouvement" align="center" width="8%">
+                    Mouvement
                   </TableCell>
-                  <TableCell key="marque" align="left" width="15%">
+                  <TableCell key="marque" align="center" width="10%">
                     Marque
                   </TableCell>
-                  <TableCell key="modele" align="left" width="15%">
+                  <TableCell key="modele" align="center" width="10%">
                     Modele
                   </TableCell>
-                  <TableCell key="quantite" align="left" width="15%">
+                  <TableCell key="quantite" align="center" width="10%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="left" width="15%">
+                  <TableCell key="pu" align="center" width="10%">
                     Prix unitaire
                   </TableCell>
-                  <TableCell key="prixstock" align="left" width="15%">
+                  <TableCell key="prixstock" align="center" width="12%">
                     Prix Stock
                   </TableCell>
-                  <TableCell key="restestock" align="left" width="15%">
+                  <TableCell key="restestock" align="center" width="12%">
                     Reste stock
                   </TableCell>
-                  <TableCell key="Depot" align="left" width="15%">
+                  <TableCell key="Depot" align="center" width="15%">
                     Depot
                   </TableCell>
                   <TableCell width="5%">Action</TableCell>
@@ -315,12 +315,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                         </TableCell>
                         {isEditClicked && row.iddetailmouvementphysique === selectedRowId ? (
                           <>
-                            <TableCell key={row.iddetailmouvementphysique}>
-                              <TextField
-                                value={editiddetail}
-                                onChange={(event) => setEditedIddetail(event.target.value)}
-                                readOnly
-                              />
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {colorType(row.mouvement)}
                             </TableCell>
 
                             <TableCell>
@@ -396,20 +392,20 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                           </>
                         ) : (
                           <>
-                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {colorType(row.mouvement)}
                             </TableCell>
-                            <TableCell align="left">{row.marque}</TableCell>
-                            <TableCell align="left">{row.modele}</TableCell>
-                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center">{row.marque}</TableCell>
+                            <TableCell align="center">{row.modele}</TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.quantite)}
                             </TableCell>
-                            <TableCell align="left">{formatNumber(row.pu)}</TableCell>
-                            <TableCell align="left">{formatNumber(row.prixstock)}</TableCell>
-                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center">{formatNumber(row.pu)}</TableCell>
+                            <TableCell align="center">{formatNumber(row.prixstock)}</TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.restestock))}
                             </TableCell>
-                            <TableCell align="left">{row.depot}</TableCell>
+                            <TableCell align="center">{row.depot}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

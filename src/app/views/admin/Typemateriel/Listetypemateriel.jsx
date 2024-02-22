@@ -241,13 +241,13 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idtypemateriel" align="left">
+                  <TableCell key="idtypemateriel" align="center">
                     idtypemateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="left">
+                  <TableCell key="typemateriel" align="center">
                     typemateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="left">
+                  <TableCell key="typemateriel" align="center">
                     categoriemateriel
                   </TableCell>
                   <TableCell>Action</TableCell>

@@ -233,16 +233,16 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell key="idboncommande" align="left" width="15%">
+                    <TableCell key="idboncommande" align="center" width="15%">
                       Bon commande
                     </TableCell>
-                    <TableCell key="nom" align="left" width="30%">
+                    <TableCell key="nom" align="center" width="30%">
                       Nom client
                     </TableCell>
-                    <TableCell key="dateboncommande" align="left" width="15%">
+                    <TableCell key="dateboncommande" align="center" width="15%">
                       Date commande
                     </TableCell>
-                    <TableCell key="idproforma" align="left" width="15%">
+                    <TableCell key="idproforma" align="center" width="15%">
                       Proforma
                     </TableCell>
                     <TableCell width="5%">Action</TableCell>
@@ -261,10 +261,10 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               onChange={(event) => handleSelection(event, row.idboncommande)}
                             />
                           </TableCell>
-                          <TableCell align="left">{row.idboncommande}</TableCell>
-                          <TableCell align="left">{row.nom}</TableCell>
-                          <TableCell align="left">{converttodate(row.dateboncommande)}</TableCell>
-                          <TableCell align="left">{row.idproforma}</TableCell>
+                          <TableCell align="center">{row.idboncommande}</TableCell>
+                          <TableCell align="center">{row.nom}</TableCell>
+                          <TableCell align="center">{converttodate(row.dateboncommande)}</TableCell>
+                          <TableCell align="center">{row.idproforma}</TableCell>
                           <TableCell>
                             <IconButton
                               className="button"

@@ -197,10 +197,10 @@ const Listedepot = () => {
             <StyledTable>
               <TableHead>
                 <TableRow>
-                  <TableCell key="iddepot" align="left">
+                  <TableCell key="iddepot" align="center">
                     iddepot
                   </TableCell>
-                  <TableCell key="depot" align="left">
+                  <TableCell key="depot" align="center">
                     depot
                   </TableCell>
                   <TableCell>Action</TableCell>

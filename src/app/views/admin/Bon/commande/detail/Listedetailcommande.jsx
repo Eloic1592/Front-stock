@@ -156,25 +156,25 @@ const Listedetailcommande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="iddetaildevis" align="left">
+                    <TableCell key="iddetaildevis" align="center">
                       ID
                     </TableCell>
-                    <TableCell key="marque" align="left">
+                    <TableCell key="marque" align="center">
                       Marque
                     </TableCell>
-                    <TableCell key="modele" align="left">
+                    <TableCell key="modele" align="center">
                       Modele
                     </TableCell>
-                    <TableCell key="description" align="left">
+                    <TableCell key="description" align="center">
                       Description
                     </TableCell>
-                    <TableCell key="quantite" align="left">
+                    <TableCell key="quantite" align="center">
                       Quantite
                     </TableCell>
-                    <TableCell key="pu" align="left">
+                    <TableCell key="pu" align="center">
                       Prix unitaire
                     </TableCell>
-                    <TableCell key="total" align="left">
+                    <TableCell key="total" align="center">
                       Total
                     </TableCell>
                   </TableRow>
@@ -186,13 +186,13 @@ const Listedetailcommande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell align="left">{row.iddetaildevis}</TableCell>
-                          <TableCell align="left">{row.marque}</TableCell>
-                          <TableCell align="left">{row.modele}</TableCell>
-                          <TableCell align="left">{row.description}</TableCell>
-                          <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
-                          <TableCell align="left">{formatNumber(row.pu)}</TableCell>
-                          <TableCell align="left">{formatNumber(row.total)}</TableCell>
+                          <TableCell align="center">{row.iddetaildevis}</TableCell>
+                          <TableCell align="center">{row.marque}</TableCell>
+                          <TableCell align="center">{row.modele}</TableCell>
+                          <TableCell align="center">{row.description}</TableCell>
+                          <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
+                          <TableCell align="center">{formatNumber(row.pu)}</TableCell>
+                          <TableCell align="center">{formatNumber(row.total)}</TableCell>
                         </TableRow>
                       ))
                   ) : (

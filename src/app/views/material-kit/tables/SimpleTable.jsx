@@ -1,59 +1,50 @@
-import {
-  Box,
-  Icon,
-  IconButton,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Box, Icon, IconButton, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
-import { StyledTable } from "app/views/style/style";
-
+import { StyledTable } from 'app/views/style/style';
 
 const subscribarList = [
   {
-    name: "john doe",
-    date: "18 january, 2019",
+    name: 'john doe',
+    date: '18 january, 2019',
     amount: 1000,
-    status: "close",
-    company: "ABC Fintech LTD.",
+    status: 'close',
+    company: 'ABC Fintech LTD.'
   },
   {
-    name: "kessy bryan",
-    date: "10 january, 2019",
+    name: 'kessy bryan',
+    date: '10 january, 2019',
     amount: 9000,
-    status: "open",
-    company: "My Fintech LTD.",
+    status: 'open',
+    company: 'My Fintech LTD.'
   },
   {
-    name: "james cassegne",
-    date: "8 january, 2019",
+    name: 'james cassegne',
+    date: '8 january, 2019',
     amount: 5000,
-    status: "close",
-    company: "Collboy Tech LTD.",
+    status: 'close',
+    company: 'Collboy Tech LTD.'
   },
   {
-    name: "lucy brown",
-    date: "1 january, 2019",
+    name: 'lucy brown',
+    date: '1 january, 2019',
     amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
+    status: 'open',
+    company: 'ABC Fintech LTD.'
   },
   {
-    name: "lucy brown",
-    date: "1 january, 2019",
+    name: 'lucy brown',
+    date: '1 january, 2019',
     amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
+    status: 'open',
+    company: 'ABC Fintech LTD.'
   },
   {
-    name: "lucy brown",
-    date: "1 january, 2019",
+    name: 'lucy brown',
+    date: '1 january, 2019',
     amount: 89000,
-    status: "open",
-    company: "ABC Fintech LTD.",
-  },
+    status: 'open',
+    company: 'ABC Fintech LTD.'
+  }
 ];
 
 const SimpleTable = () => {
@@ -62,7 +53,7 @@ const SimpleTable = () => {
       <StyledTable>
         <TableHead>
           <TableRow>
-            <TableCell align="left">Name</TableCell>
+            <TableCell align="center">Name</TableCell>
             <TableCell align="center">Company</TableCell>
             <TableCell align="center">Start Date</TableCell>
             <TableCell align="center">Status</TableCell>
@@ -74,7 +65,7 @@ const SimpleTable = () => {
         <TableBody>
           {subscribarList.map((subscriber, index) => (
             <TableRow key={index}>
-              <TableCell align="left">{subscriber.name}</TableCell>
+              <TableCell align="center">{subscriber.name}</TableCell>
               <TableCell align="center">{subscriber.company}</TableCell>
               <TableCell align="center">{subscriber.date}</TableCell>
               <TableCell align="center">{subscriber.status}</TableCell>

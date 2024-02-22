@@ -228,7 +228,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell align="left" width="5%">
+                  <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.every((row) => selectedIds.includes(row.idproforma))}
                       indeterminate={
@@ -238,22 +238,22 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell align="left" width="15%">
+                  <TableCell align="center" width="15%">
                     ID proforma
                   </TableCell>
-                  <TableCell align="left" width="15%">
+                  <TableCell align="center" width="15%">
                     Num devis
                   </TableCell>
-                  <TableCell align="left" width="30%">
+                  <TableCell align="center" width="30%">
                     Nom client
                   </TableCell>
-                  <TableCell align="left" width="15%">
+                  <TableCell align="center" width="15%">
                     Date devis
                   </TableCell>
-                  <TableCell align="left" width="15%">
+                  <TableCell align="center" width="15%">
                     Date validation
                   </TableCell>
-                  <TableCell align="left" width="15%">
+                  <TableCell align="center" width="15%">
                     Action
                   </TableCell>
                 </TableRow>

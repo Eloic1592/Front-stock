@@ -170,16 +170,16 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idbonlivraison" align="left" width="15%">
+                    <TableCell key="idbonlivraison" align="center" width="15%">
                       ID livraison
                     </TableCell>
-                    <TableCell key="nom" align="left" width="30%">
+                    <TableCell key="nom" align="center" width="30%">
                       Nom client
                     </TableCell>
-                    <TableCell key="datelivraison" align="left" width="15%">
+                    <TableCell key="datelivraison" align="center" width="15%">
                       Date livraison
                     </TableCell>
-                    <TableCell key="idproforma" align="left" width="15%">
+                    <TableCell key="idproforma" align="center" width="15%">
                       Proforma
                     </TableCell>
                     <TableCell width="5%">Action</TableCell>
@@ -192,10 +192,12 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell align="left">{row.idbonlivraison}</TableCell>
-                          <TableCell align="left">{row.nom}</TableCell>
-                          <TableCell align="left">{converttodate(row.datebonlivraison)}</TableCell>
-                          <TableCell align="left">{row.idproforma}</TableCell>
+                          <TableCell align="center">{row.idbonlivraison}</TableCell>
+                          <TableCell align="center">{row.nom}</TableCell>
+                          <TableCell align="center">
+                            {converttodate(row.datebonlivraison)}
+                          </TableCell>
+                          <TableCell align="center">{row.idproforma}</TableCell>
                           <TableCell>
                             <IconButton
                               className="button"

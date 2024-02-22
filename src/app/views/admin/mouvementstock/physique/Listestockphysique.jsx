@@ -285,16 +285,16 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmouvementdestock" align="left">
+                  <TableCell key="idmouvementdestock" align="center">
                     ID
                   </TableCell>
-                  <TableCell key="datedepot" align="left">
+                  <TableCell key="datedepot" align="center">
                     Date depot
                   </TableCell>
-                  <TableCell key="mouvement" align="left">
+                  <TableCell key="mouvement" align="center">
                     Mouvement
                   </TableCell>
-                  <TableCell key="naturemouvement" align="left">
+                  <TableCell key="naturemouvement" align="center">
                     Nature
                   </TableCell>
                   <TableCell>Action</TableCell>

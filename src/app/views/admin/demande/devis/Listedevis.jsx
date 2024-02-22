@@ -290,16 +290,16 @@ const Listedevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddevis" align="left" width="15%">
+                  <TableCell key="iddevis" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="nom" align="left" width="30%">
+                  <TableCell key="nom" align="center" width="30%">
                     nom client
                   </TableCell>
-                  <TableCell key="datedevis" align="left" width="15%">
+                  <TableCell key="datedevis" align="center" width="15%">
                     date devis
                   </TableCell>
-                  <TableCell key="libelle" align="left" width="30%">
+                  <TableCell key="libelle" align="center" width="30%">
                     Libele
                   </TableCell>
                   <TableCell width="15%">Action</TableCell>

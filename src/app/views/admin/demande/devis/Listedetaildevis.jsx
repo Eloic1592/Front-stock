@@ -276,19 +276,19 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetaildevis" align="left" width="15%">
+                  <TableCell key="iddetaildevis" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="marque" align="left" width="30%">
+                  <TableCell key="marque" align="center" width="30%">
                     Article
                   </TableCell>
-                  <TableCell key="quantite" align="left" width="15%">
+                  <TableCell key="quantite" align="center" width="15%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="left" width="15%">
+                  <TableCell key="pu" align="center" width="15%">
                     Prix unitaire
                   </TableCell>
-                  <TableCell key="total" align="left" width="15%">
+                  <TableCell key="total" align="center" width="15%">
                     Total
                   </TableCell>
                   <TableCell width="15%">Action</TableCell>
@@ -360,13 +360,13 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                           </>
                         ) : (
                           <>
-                            <TableCell align="left">{row.iddetaildevis}</TableCell>
-                            <TableCell align="left">
+                            <TableCell align="center">{row.iddetaildevis}</TableCell>
+                            <TableCell align="center">
                               {row.marque}-{row.modele}
                             </TableCell>
-                            <TableCell align="left">{formatNumber(row.quantite)}</TableCell>
-                            <TableCell align="left">{formatNumber(row.pu)}</TableCell>
-                            <TableCell align="left">{formatNumber(row.total)}</TableCell>
+                            <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
+                            <TableCell align="center">{formatNumber(row.pu)}</TableCell>
+                            <TableCell align="center">{formatNumber(row.total)}</TableCell>
 
                             <TableCell>
                               <IconButton

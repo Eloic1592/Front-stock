@@ -41,7 +41,7 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50, 1
       <StyledTable>
         <TableHead>
           <TableRow>
-            <TableCell align="left"></TableCell>
+            <TableCell align="center"></TableCell>
             <TableCell align="center">Index</TableCell>
             {columns.map((column, index) => (
               <TableCell key={index} align={column.align || 'left'}>

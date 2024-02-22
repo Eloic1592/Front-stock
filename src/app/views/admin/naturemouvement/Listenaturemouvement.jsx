@@ -226,13 +226,13 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idnaturemouvement" align="left">
+                  <TableCell key="idnaturemouvement" align="center">
                     idnaturemouvement
                   </TableCell>
-                  <TableCell key="naturemouvement" align="left">
+                  <TableCell key="naturemouvement" align="center">
                     nature mouvement
                   </TableCell>
-                  <TableCell key="typemouvement" align="left">
+                  <TableCell key="typemouvement" align="center">
                     type mouvement
                   </TableCell>
                   <TableCell>Action</TableCell>

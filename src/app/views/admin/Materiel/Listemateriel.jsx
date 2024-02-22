@@ -354,7 +354,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell align="left" width="5%">
+                  <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.listemateriels.every((row) =>
                         selectedIds.includes(row.idmateriel)

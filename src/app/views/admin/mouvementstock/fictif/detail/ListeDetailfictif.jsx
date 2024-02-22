@@ -270,25 +270,25 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="mouvement" align="left" width="8%">
+                  <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="numserie" align="left" width="10%">
+                  <TableCell key="numserie" align="center" width="10%">
                     N serie materiel
                   </TableCell>
-                  <TableCell key="idetudiant" align="left" width="10%">
+                  <TableCell key="idetudiant" align="center" width="10%">
                     Responsable
                   </TableCell>
-                  <TableCell key="caution" align="left" width="10%">
+                  <TableCell key="caution" align="center" width="10%">
                     Caution
                   </TableCell>
-                  <TableCell key="datedeb" align="left" width="15%">
+                  <TableCell key="datedeb" align="center" width="15%">
                     Date Debut
                   </TableCell>
-                  <TableCell key="datefin" align="left" width="15%">
+                  <TableCell key="datefin" align="center" width="15%">
                     Date fin
                   </TableCell>
-                  <TableCell key="depot" align="left" width="12%">
+                  <TableCell key="depot" align="center" width="12%">
                     Depot
                   </TableCell>
                   <TableCell width="5%">Action</TableCell>
@@ -311,13 +311,8 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                         </TableCell>
                         {isEditClicked && row.iddetailmouvementfictif === selectedRowId ? (
                           <>
-                            <TableCell key={row.iddetailmouvementfictif}>
-                              <TextField
-                                type="hidden"
-                                value={editiddetail}
-                                onChange={(event) => setEditedIddetail(event.target.value)}
-                                readOnly
-                              />
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {colorType(row.mouvement)}
                             </TableCell>
 
                             <TableCell>
@@ -399,17 +394,17 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                           </>
                         ) : (
                           <>
-                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {colorType(row.mouvement)}
                             </TableCell>
-                            <TableCell align="left">{row.numserie}</TableCell>
-                            <TableCell align="left">{row.idetudiant}</TableCell>
-                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center">{row.numserie}</TableCell>
+                            <TableCell align="center">{row.idetudiant}</TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.caution)}
                             </TableCell>
-                            <TableCell align="left">{converttodate(row.datedeb)}</TableCell>
-                            <TableCell align="left">{converttodate(row.datefin)}</TableCell>
-                            <TableCell align="left">{row.depot}</TableCell>
+                            <TableCell align="center">{converttodate(row.datedeb)}</TableCell>
+                            <TableCell align="center">{converttodate(row.datefin)}</TableCell>
+                            <TableCell align="center">{row.depot}</TableCell>
                             <TableCell>
                               <IconButton
                                 className="button"

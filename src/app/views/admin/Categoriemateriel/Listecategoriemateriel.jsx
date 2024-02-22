@@ -208,10 +208,10 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idcategoriemateriel" align="left">
+                  <TableCell key="idcategoriemateriel" align="center">
                     idcategoriemateriel
                   </TableCell>
-                  <TableCell key="categoriemateriel" align="left">
+                  <TableCell key="categoriemateriel" align="center">
                     categoriemateriel
                   </TableCell>
                   <TableCell>Action</TableCell>
