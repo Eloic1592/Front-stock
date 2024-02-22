@@ -35,9 +35,6 @@ const Stockfictif = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
-    mouvementStocks: [],
-    mouvementphysiques: [],
-    mouvementfictifs: [],
     naturemouvements: [],
     depot: [],
     listemateriels: [],
@@ -149,7 +146,7 @@ const Stockfictif = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/mouvementstock/contentstockfictif';
+        let url = baseUrl + '/mouvementstock/contentformfictif';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -164,7 +161,6 @@ const Stockfictif = () => {
         const responseData = await response.json();
 
         const newData = {
-          mouvementfictifs: responseData.mouvementfictifs || [],
           naturemouvements: responseData.naturemouvements || [],
           depot: responseData.depots || [],
           listemateriels: responseData.listemateriels || [],
