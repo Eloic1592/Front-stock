@@ -198,11 +198,6 @@ const Stockfictif = () => {
                   Nouveau mouvement
                 </Button>
               </Grid>
-              <Grid item>
-                <Button variant="contained" color="inherit">
-                  Exporter les mouvements
-                </Button>
-              </Grid>
             </Grid>
           </Box>
         </Grid>
@@ -316,6 +311,7 @@ const Stockfictif = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="caution"
                       label="Caution"
                       variant="outlined"

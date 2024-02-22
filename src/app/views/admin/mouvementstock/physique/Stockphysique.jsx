@@ -70,6 +70,7 @@ const Stockphysique = () => {
       prixstock: prixstock,
       total: quantite * prixunitaire,
       iddepot: depot,
+      restestock: 0,
       statut: 0,
       description: description,
       commentaire: commentaire
@@ -194,11 +195,6 @@ const Stockphysique = () => {
                   Nouveau mouvement
                 </Button>
               </Grid>
-              <Grid item>
-                <Button variant="contained" color="inherit">
-                  Exporter les mouvements
-                </Button>
-              </Grid>
             </Grid>
           </Box>
         </Grid>
@@ -271,7 +267,7 @@ const Stockphysique = () => {
                       <MenuItem value="1">Choisir un article</MenuItem>
                       {data.articles.map((row) => (
                         <MenuItem value={row.idarticle} key={row.idarticle}>
-                          {row.modele}/{row.codearticle}
+                          {row.marque}/{row.modele}
                         </MenuItem>
                       ))}
                     </Select>
@@ -281,6 +277,7 @@ const Stockphysique = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="quantite"
                       label="Quantite"
                       variant="outlined"
@@ -294,6 +291,7 @@ const Stockphysique = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="prixunitaire"
                       label="Prix unitaire"
                       variant="outlined"
@@ -307,6 +305,7 @@ const Stockphysique = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="prixstock"
                       label="Prix en stock"
                       variant="outlined"
@@ -339,7 +338,6 @@ const Stockphysique = () => {
                       color="secondary"
                       sx={{ mb: 3 }}
                       onClick={handledetails}
-                      disabled={formData.length === 0}
                     >
                       Inserer
                     </Button>

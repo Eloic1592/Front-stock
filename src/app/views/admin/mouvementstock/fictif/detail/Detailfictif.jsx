@@ -28,7 +28,7 @@ const Detailfictif = () => {
   const [caution, setCaution] = useState(0);
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
-  const [depot, setDepot] = useState(['1']);
+  const [depot, setDepot] = useState('1');
   const [idetudiant, setIdetudiant] = useState(['1']);
   const [idmateriel, setIdmateriel] = useState(['1']);
   const [description, setDescription] = useState('');
@@ -71,9 +71,9 @@ const Detailfictif = () => {
       datefin: datefin,
       iddepot: depot,
       idetudiant: idetudiant,
-      statut: 0,
       description: description,
-      commentaire: commentaire
+      commentaire: commentaire,
+      statut: 0
     };
     setFormData([...formData, newData]);
   };
@@ -162,7 +162,11 @@ const Detailfictif = () => {
 
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        setMessage({
+          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          severity: 'error',
+          open: true
+        });
       }
     };
     fetchData();
@@ -187,11 +191,11 @@ const Detailfictif = () => {
                   Nouveau detail
                 </Button>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Button variant="contained" color="secondary">
                   PDF
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Grid>
@@ -288,6 +292,7 @@ const Detailfictif = () => {
                     <TextField
                       fullWidth
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="caution"
                       label="Caution"
                       variant="outlined"

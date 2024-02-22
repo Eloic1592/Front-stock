@@ -69,6 +69,7 @@ const Detailphysique = () => {
       prixstock: prixstock,
       total: quantite * prixunitaire,
       iddepot: depot,
+      restestock: 0,
       statut: 0,
       description: description,
       commentaire: commentaire
@@ -217,7 +218,7 @@ const Detailphysique = () => {
                       <MenuItem value="1">Choisir un article</MenuItem>
                       {data.articles.map((row, index) => (
                         <MenuItem key={index} value={row.idarticle}>
-                          {row.modele}/{row.codearticle}
+                          {row.marque}/{row.modele}
                         </MenuItem>
                       ))}
                     </Select>
@@ -243,6 +244,7 @@ const Detailphysique = () => {
                     <TextField
                       fullWidth
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="quantite"
                       label="Quantite"
                       variant="outlined"
@@ -255,6 +257,7 @@ const Detailphysique = () => {
                     <TextField
                       fullWidth
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="prixunitaire"
                       label="Prix unitaire"
                       variant="outlined"
@@ -267,6 +270,7 @@ const Detailphysique = () => {
                     <TextField
                       fullWidth
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="prixstock"
                       label="Prix stock"
                       variant="outlined"

@@ -461,6 +461,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 value={isEditedprixvente}
                                 onChange={(event) => setIsEditedprixvente(event.target.value)}
                               />
@@ -468,6 +469,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 value={isEditedcaution}
                                 onChange={(event) => setisEditedcaution(event.target.value)}
                               />

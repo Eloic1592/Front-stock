@@ -205,7 +205,7 @@ export function formatNumber(nombre) {
 export function coloredNumber(nombre) {
   let style = {};
 
-  if (nombre < 0) {
+  if (nombre <= 0) {
     style = { color: 'red' };
   } else if (nombre > 0) {
     style = { color: 'green' };

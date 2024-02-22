@@ -336,6 +336,7 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 value={editpu}
                                 onChange={(event) => setEditpu(event.target.value)}
                               />
@@ -343,12 +344,18 @@ const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 value={editquantite}
                                 onChange={(event) => setEditquantite(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
-                              <TextField type="number" value={edittotal} readOnly />
+                              <TextField
+                                type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
+                                value={edittotal}
+                                readOnly
+                              />
                             </TableCell>
                           </>
                         ) : (

@@ -263,6 +263,7 @@ const Materiel = () => {
                   autoFocus
                   id="prixvente"
                   type="number"
+                  InputProps={{ inputProps: { min: 0 } }}
                   margin="dense"
                   label="Prix de vente"
                   name="prixvente"
@@ -274,6 +275,7 @@ const Materiel = () => {
                   autoFocus
                   id="caution"
                   type="number"
+                  InputProps={{ inputProps: { min: 0 } }}
                   margin="dense"
                   label="Caution"
                   name="caution"

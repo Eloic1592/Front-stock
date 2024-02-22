@@ -30,14 +30,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
   // Colonne
   const columns = [
-    { label: 'ID', field: 'iddetailmouvementfictif', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
-    { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Num Serie', field: 'numserie', align: 'center' },
     { label: 'Responsable', field: 'idetudiant', align: 'center' },
     { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Date debut', field: 'datedeb', align: 'center' },
-    { label: 'Date fin', field: 'datefin', align: 'center' }
+    { label: 'Date fin', field: 'datefin', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' }
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -271,22 +270,16 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetailmouvementfictif" align="left" width="15%">
-                    ID
-                  </TableCell>
-                  <TableCell key="mouvement" align="left" width="12%">
+                  <TableCell key="mouvement" align="left" width="8%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="marque" align="left" width="12%">
-                    Marque
+                  <TableCell key="numserie" align="left" width="10%">
+                    N serie materiel
                   </TableCell>
-                  <TableCell key="modele" align="left" width="12%">
-                    Modele
-                  </TableCell>
-                  <TableCell key="idetudiant" align="left" width="15%">
+                  <TableCell key="idetudiant" align="left" width="10%">
                     Responsable
                   </TableCell>
-                  <TableCell key="caution" align="left" width="15%">
+                  <TableCell key="caution" align="left" width="10%">
                     Caution
                   </TableCell>
                   <TableCell key="datedeb" align="left" width="15%">
@@ -295,7 +288,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   <TableCell key="datefin" align="left" width="15%">
                     Date fin
                   </TableCell>
-                  <TableCell key="depot" align="left" width="15%">
+                  <TableCell key="depot" align="left" width="12%">
                     Depot
                   </TableCell>
                   <TableCell width="5%">Action</TableCell>
@@ -320,29 +313,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                           <>
                             <TableCell key={row.iddetailmouvementfictif}>
                               <TextField
+                                type="hidden"
                                 value={editiddetail}
                                 onChange={(event) => setEditedIddetail(event.target.value)}
                                 readOnly
                               />
                             </TableCell>
 
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={etudiant}
-                                onChange={(event) => setEtudiant(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Etudiants
-                                </MenuItem>
-                                {data.etudiants.map((row) => (
-                                  <MenuItem key={row.idetudiant} value={row.idetudiant}>
-                                    {row.idetudiant}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
                             <TableCell>
                               <Select
                                 fullWidth
@@ -361,11 +338,37 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               </Select>
                             </TableCell>
                             <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={etudiant}
+                                onChange={(event) => setEtudiant(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  Etudiants
+                                </MenuItem>
+                                {data.etudiants.map((row) => (
+                                  <MenuItem key={row.idetudiant} value={row.idetudiant}>
+                                    {row.idetudiant}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
+                                label="caution"
+                                value={caution}
+                                onChange={(event) => setCaution(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
                               <TextField
                                 type="date"
                                 value={datedeb}
                                 onChange={(event) => setDatedeb(event.target.value)}
-                                sx={{ width: '100px' }}
+                                width="15%"
                               />
                             </TableCell>
                             <TableCell>
@@ -373,15 +376,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                                 type="date"
                                 value={datefin}
                                 onChange={(event) => setDatefin(event.target.value)}
-                                sx={{ width: '100px' }}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                label="caution"
-                                value={caution}
-                                onChange={(event) => setCaution(event.target.value)}
+                                width="15%"
                               />
                             </TableCell>
                             <TableCell>
@@ -404,12 +399,14 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                           </>
                         ) : (
                           <>
-                            <TableCell align="left">{row.iddetailmouvementfictif}</TableCell>
-                            <TableCell align="left">{colorType(row.mouvement)}</TableCell>
-                            <TableCell align="left">{row.marque}</TableCell>
-                            <TableCell align="left">{row.modele}</TableCell>
+                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                              {colorType(row.mouvement)}
+                            </TableCell>
+                            <TableCell align="left">{row.numserie}</TableCell>
                             <TableCell align="left">{row.idetudiant}</TableCell>
-                            <TableCell align="left">{formatNumber(row.caution)}</TableCell>
+                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                              {formatNumber(row.caution)}
+                            </TableCell>
                             <TableCell align="left">{converttodate(row.datedeb)}</TableCell>
                             <TableCell align="left">{converttodate(row.datefin)}</TableCell>
                             <TableCell align="left">{row.depot}</TableCell>

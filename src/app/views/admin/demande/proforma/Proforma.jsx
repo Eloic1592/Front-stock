@@ -57,6 +57,7 @@ const Proforma = () => {
               fullWidth
               size="small"
               type="number"
+              InputProps={{ inputProps: { min: 0 } }}
               name="annee"
               label="De quel annee ?"
               value={file}

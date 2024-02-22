@@ -257,6 +257,7 @@ const Devis = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="quantite"
                       label="Quantite"
                       variant="outlined"
@@ -270,6 +271,7 @@ const Devis = () => {
                       fullWidth
                       size="small"
                       type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
                       name="prixunitaire"
                       label="Prix unitaire"
                       variant="outlined"

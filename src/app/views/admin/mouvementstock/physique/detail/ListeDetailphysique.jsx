@@ -24,19 +24,21 @@ import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/d
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber, coloredNumber, colorType } from 'app/utils/utils';
+import { rest } from 'lodash';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
 
   // Colonne
   const columns = [
-    { label: 'ID', field: 'iddetailmouvementphysique', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
-    { label: 'Prix stockage', field: 'prixstock', align: 'center' },
+    { label: 'Prix stock', field: 'prixstock', align: 'center' },
+    { label: 'Reste stock', field: 'restestock', align: 'center' },
+
     { label: 'Depot', field: 'depot', align: 'center' }
   ];
   const handleAlertClose = () => setMessage({ open: false });
@@ -46,6 +48,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   const [editquantite, setEditquantite] = useState(0);
   const [prixstock, setPristock] = useState('');
   const [editpu, setEditpu] = useState(0);
+  const [editreste, setEditreste] = useState(0);
+
   const [depot, setDepot] = useState(['1']);
   const [data, setData] = useState({
     articles: [],
@@ -267,9 +271,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="iddetailmouvementphysique" align="left" width="15%">
-                    ID
-                  </TableCell>
                   <TableCell key="mouvement" align="left" width="15%">
                     mouvement
                   </TableCell>
@@ -287,6 +288,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   </TableCell>
                   <TableCell key="prixstock" align="left" width="15%">
                     Prix Stock
+                  </TableCell>
+                  <TableCell key="restestock" align="left" width="15%">
+                    Reste stock
                   </TableCell>
                   <TableCell key="Depot" align="left" width="15%">
                     Depot
@@ -339,6 +343,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 label="Quantite"
                                 value={editquantite}
                                 onChange={(event) => setEditquantite(event.target.value)}
@@ -347,6 +352,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 label="PU"
                                 value={editpu}
                                 onChange={(event) => setEditpu(event.target.value)}
@@ -355,9 +361,19 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell>
                               <TextField
                                 type="number"
+                                InputProps={{ inputProps: { min: 0 } }}
                                 label="Prix stock"
                                 value={prixstock}
                                 onChange={(event) => setPristock(event.target.value)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <TextField
+                                type="text"
+                                label="Reste"
+                                value={editreste}
+                                readOnly
+                                onChange={(event) => setEditreste(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
@@ -380,13 +396,19 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                           </>
                         ) : (
                           <>
-                            <TableCell align="left">{row.iddetailmouvementphysique}</TableCell>
-                            <TableCell align="left">{colorType(row.mouvement)}</TableCell>
+                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                              {colorType(row.mouvement)}
+                            </TableCell>
                             <TableCell align="left">{row.marque}</TableCell>
                             <TableCell align="left">{row.modele}</TableCell>
-                            <TableCell align="left">{coloredNumber(row.quantite)}</TableCell>
+                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                              {formatNumber(row.quantite)}
+                            </TableCell>
                             <TableCell align="left">{formatNumber(row.pu)}</TableCell>
                             <TableCell align="left">{formatNumber(row.prixstock)}</TableCell>
+                            <TableCell align="left" style={{ fontWeight: 'bold' }}>
+                              {coloredNumber(formatNumber(row.restestock))}
+                            </TableCell>
                             <TableCell align="left">{row.depot}</TableCell>
                             <TableCell>
                               <IconButton

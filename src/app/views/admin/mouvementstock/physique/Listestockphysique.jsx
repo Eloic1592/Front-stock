@@ -367,7 +367,9 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                           <>
                             <TableCell>{row.idmouvementstock}</TableCell>
                             <TableCell>{converttodate(row.datedepot)}</TableCell>
-                            <TableCell>{colorType(row.mouvement)}</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>
+                              {colorType(row.mouvement)}
+                            </TableCell>
                             <TableCell>{row.naturemouvement}</TableCell>
 
                             <TableCell>
