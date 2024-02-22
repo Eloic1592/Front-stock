@@ -197,13 +197,15 @@ const Listedepot = () => {
             <StyledTable>
               <TableHead>
                 <TableRow>
-                  <TableCell key="iddepot" align="center">
+                  <TableCell key="iddepot" align="center" width="15%">
                     iddepot
                   </TableCell>
-                  <TableCell key="depot" align="center">
+                  <TableCell key="depot" align="center" width="50%">
                     depot
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center" width="15%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -214,13 +216,14 @@ const Listedepot = () => {
                       <TableRow key={row.iddepot}>
                         {isEditClicked && row.iddepot === selectedRowId ? (
                           <>
-                            <TableCell key={row.iddepot}>
+                            <TableCell key={row.iddepot} align="center" width="15%">
                               <TextField
+                                fullWidth
                                 value={editedIdDepot}
                                 onChange={(event) => setEditedIdDepot(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="50%">
                               <TextField
                                 value={editedNomDepot}
                                 onChange={(event) => setEditedNomDepot(event.target.value)}
@@ -234,9 +237,13 @@ const Listedepot = () => {
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.iddepot}</TableCell>
-                            <TableCell>{row.depot}</TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.iddepot}
+                            </TableCell>
+                            <TableCell align="center" width="50%">
+                              {row.depot}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -252,7 +259,7 @@ const Listedepot = () => {
 
                         {isEditClicked && row.iddepot === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"

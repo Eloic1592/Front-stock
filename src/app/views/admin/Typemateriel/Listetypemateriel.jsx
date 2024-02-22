@@ -241,16 +241,18 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idtypemateriel" align="center">
+                  <TableCell key="idtypemateriel" align="center" width="15%">
                     idtypemateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="center">
+                  <TableCell key="typemateriel" align="center" width="40%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="center">
+                  <TableCell key="typemateriel" align="center" width="40%">
                     categoriemateriel
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center" width="15%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -262,13 +264,13 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                       <TableRow key={row.idtypemateriel}>
                         {isEditClicked && row.idtypemateriel === selectedRowId ? (
                           <>
-                            <TableCell key={row.idtypemateriel}>
+                            <TableCell key={row.idtypemateriel} align="center" width="15%">
                               <TextField
                                 value={editedIdtypemateriel}
                                 onChange={(event) => setEditedIdtypemateriel(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="40%">
                               <TextField
                                 value={editedTypemateriel}
                                 onChange={(event) => setEditedTypemateriel(event.target.value)}
@@ -281,7 +283,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="40%">
                               <Select
                                 labelId="select-label"
                                 value={editedCategoriemateriel}
@@ -304,10 +306,16 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idtypemateriel}</TableCell>
-                            <TableCell>{row.typemateriel}</TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.idtypemateriel}
+                            </TableCell>
+                            <TableCell align="center" width="40%">
+                              {row.typemateriel}
+                            </TableCell>
+                            <TableCell align="center" width="40%">
+                              {row.categoriemateriel}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -323,7 +331,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =
 
                         {isEditClicked && row.idtypemateriel === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center">
                               <IconButton
                                 className="button"
                                 variant="contained"

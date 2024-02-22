@@ -208,13 +208,15 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idcategoriemateriel" align="center">
+                  <TableCell key="idcategoriemateriel" align="center" width="15%">
                     idcategoriemateriel
                   </TableCell>
-                  <TableCell key="categoriemateriel" align="center">
+                  <TableCell key="categoriemateriel" align="center" width="50%">
                     categoriemateriel
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell key="action" align="center" width="15%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -223,7 +225,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.idcategoriemateriel}>
+                      <TableRow key={row.idcategoriemateriel} align="center" width="15%">
                         {isEditClicked && row.idcategoriemateriel === selectedRowId ? (
                           <>
                             <TableCell key={row.idcategoriemateriel}>
@@ -234,7 +236,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="50%">
                               <TextField
                                 value={editedCategorieMateriel}
                                 onChange={(event) => setEditedCategorieMateriel(event.target.value)}
@@ -250,9 +252,9 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idcategoriemateriel}</TableCell>
-                            <TableCell>{row.categoriemateriel}</TableCell>
-                            <TableCell>
+                            <TableCell align="center">{row.idcategoriemateriel}</TableCell>
+                            <TableCell align="center">{row.categoriemateriel}</TableCell>
+                            <TableCell align="center">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -268,7 +270,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200]
 
                         {isEditClicked && row.idcategoriemateriel === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"

@@ -327,7 +327,6 @@ const ListeArticle = () => {
                                 fullWidth
                                 labelId="select-label"
                                 value={editedTypemateriel}
-                                size="small"
                                 onChange={(event) => setEditedTypemateriel(event.target.value)}
                               >
                                 <MenuItem value="1">Choisir un type</MenuItem>
