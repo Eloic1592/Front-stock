@@ -186,11 +186,11 @@ const Detailphysique = () => {
                   Nouveau detail
                 </Button>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Button variant="contained" color="secondary">
                   PDF
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Grid>
