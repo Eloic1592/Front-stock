@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0
   },
   tableColFirst: {
-    width: '10%', // Réduisez cette valeur pour réduire la taille de la première colonne
+    width: '7%', // Réduisez cette valeur pour réduire la taille de la première colonne
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -49,17 +49,14 @@ const PDFmateriel = ({ dataList, columns }) => {
         <Text style={styles.title}>Liste des materiels</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
-            {columns.map((column, index) => (
+            {columns.slice(1).map((column, index) => (
               <View style={styles.tableCol} key={index}>
                 <Text style={styles.tableCell}>{column.label}</Text>
               </View>
             ))}
           </View>
-          {dataList.map((row, index) => (
+          {dataList.slice(1).map((row, index) => (
             <View style={styles.tableRow} key={index}>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{index}</Text>
-              </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.typemateriel}</Text>
               </View>
@@ -82,7 +79,7 @@ const PDFmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{row.couleur}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.total}</Text>
+                <Text style={styles.tableCell}>{row.signature}</Text>
               </View>
             </View>
           ))}

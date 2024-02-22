@@ -319,3 +319,5 @@ export const colors = [
   'Indigo',
   'Violet'
 ];
+
+export const signatures = ['Perso', 'ITU', 'Aucun apparetenance'];

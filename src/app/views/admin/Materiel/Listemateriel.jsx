@@ -18,12 +18,11 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { formatNumber } from 'app/utils/utils';
+import { formatNumber, colors, signatures } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
 import { baseUrl } from 'app/utils/constant';
-import { colors } from 'app/utils/utils';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import PDFMateriel from './PDFmateriel';
@@ -99,7 +98,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     handleSelectAll,
     handleSelection,
     handleSelectColumn,
-    sortedData
+    sortedData,
+    signature,
+    setSignature
   } = useListematerielFunctions(data);
 
   const handleSubmit = () => {
@@ -193,7 +194,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
       if (selectedRow) {
         setIsEditedIdmateriel(selectedRow.idmateriel);
-        // setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
       }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
@@ -203,7 +203,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
         <Grid item>
           <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={1}>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <TextField
                   fullWidth
                   size="small"
@@ -215,7 +215,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   onChange={(event) => setMarque(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <TextField
                   fullWidth
                   autoFocus
@@ -270,6 +270,23 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   {colors.map((color, index) => (
                     <MenuItem key={index} value={color}>
                       {color}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={signature}
+                  onChange={(event) => setSignature(event.target.value)}
+                  size="small"
+                  sx={{ mb: 3 }}
+                >
+                  <MenuItem value="1">Toutes Signatures</MenuItem>
+                  {signatures.map((signature, index) => (
+                    <MenuItem key={index} value={signature}>
+                      {signature}
                     </MenuItem>
                   ))}
                 </Select>
@@ -492,9 +509,15 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell align="center">{row.typemateriel}</TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center">{row.numserie}</TableCell>
-                            <TableCell align="center">{formatNumber(row.prixvente)}</TableCell>
-                            <TableCell align="center">{formatNumber(row.caution)}</TableCell>
+                            <TableCell align="center" text>
+                              {row.numserie}
+                            </TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {formatNumber(row.prixvente)}
+                            </TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {formatNumber(row.caution)}
+                            </TableCell>
                             {/* <TableCell align="center">{row.description}</TableCell> */}
                             <TableCell align="center">{row.couleur}</TableCell>
                             <TableCell align="center">{row.signature}</TableCell>
