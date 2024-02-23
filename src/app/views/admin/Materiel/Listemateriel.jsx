@@ -143,7 +143,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
       });
   };
 
-  const generateProformaPDF = async () => {
+  const generateMaterielPDF = async () => {
     const blob = await renderPdf(
       <PDFMateriel dataList={data.listemateriels} columns={columns} />
     ).toBlob();
@@ -344,7 +344,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   variant="contained"
                   aria-label="Edit"
                   color="secondary"
-                  onClick={generateProformaPDF}
+                  onClick={generateMaterielPDF}
                 >
                   <Icon>picture_as_pdf</Icon>
                 </Button>

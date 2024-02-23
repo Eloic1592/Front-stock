@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { formatDate } from 'app/utils/utils';
 
-export const useMphysiqueFunctions = (data) => {
+export const useDphysiqueFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -10,9 +10,11 @@ export const useMphysiqueFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [mouvement, setMouvement] = useState('0');
-  const [naturemouvement, setNaturemouvement] = useState('0');
+  const [marque, setMarque] = useState('');
+  const [nature, setNature] = useState('1');
   const [datedepot, setDatedepot] = useState('');
+  const [mouvement, setMouvement] = useState('0');
+  const [listdepot, setListdepot] = useState('1');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -25,9 +27,9 @@ export const useMphysiqueFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.idmouvementstock);
+    setEditingId(row.iddetailmouvementphysique);
     setIsEditClicked(true);
-    setSelectedRowId(row.idmouvementstock);
+    setSelectedRowId(row.iddetailmouvementphysique);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -38,18 +40,18 @@ export const useMphysiqueFunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, idmouvementstock) => {
+  const handleSelection = (event, iddetailmouvementphysique) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, idmouvementstock]);
+      setSelectedIds([...selectedIds, iddetailmouvementphysique]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== idmouvementstock));
+      setSelectedIds(selectedIds.filter((i) => i !== iddetailmouvementphysique));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.mouvementStocks.map((row) => row.idmouvementstock));
+      setSelectedIds(data.mouvementphysiques.map((row) => row.iddetailmouvementphysique));
     } else {
       setSelectedIds([]);
     }
@@ -60,10 +62,12 @@ export const useMphysiqueFunctions = (data) => {
   };
 
   const filtredata = filtrestockphysique(
-    data.mouvementStocks,
-    datedepot,
+    data.mouvementphysiques,
+    marque,
+    nature,
     mouvement,
-    naturemouvement
+    datedepot,
+    listdepot
   );
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
@@ -101,30 +105,38 @@ export const useMphysiqueFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    mouvement,
-    setDatedepot,
+    marque,
+    setMarque,
     datedepot,
-    setNaturemouvement,
-    naturemouvement,
+    setDatedepot,
     mouvement,
-    setMouvement
+    setMouvement,
+    listdepot,
+    setListdepot,
+    nature,
+    setNature
   };
 };
-function filtrestockphysique(mouvementStocks, datedepot, typemouvement, naturemouvement) {
-  return mouvementStocks.filter((item) => {
-    const datedepotMatch =
+function filtrestockphysique(mouvementphysiques, marque, nature, typemouvement, datedepot, depot) {
+  return mouvementphysiques.filter((item) => {
+    const marqueMatch = !marque || item.marque.toLowerCase().includes(marque.toLowerCase());
+    let natureMatch = true;
+    if (nature !== '1') {
+      natureMatch = item.naturemouvement === nature;
+    }
+    const dateMatch =
       !datedepot ||
       new Date(formatDate(item.datedepot)).getTime() === new Date(datedepot).getTime();
     let typemouvementMatch = true;
     if (typemouvement !== '0') {
-      typemouvementMatch = item.type === parseInt(typemouvement);
+      typemouvementMatch = item.typemouvement === parseInt(typemouvement);
     }
 
-    let naturemouvementMatch = true;
-    if (naturemouvement !== '0') {
-      naturemouvementMatch = item.idnaturemouvement === naturemouvement;
+    let depotMatch = true;
+    if (depot !== '1') {
+      depotMatch = item.iddepot === depot;
     }
 
-    return datedepotMatch && typemouvementMatch && naturemouvementMatch;
+    return marqueMatch && dateMatch && typemouvementMatch && depotMatch && natureMatch;
   });
 }

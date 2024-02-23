@@ -15,7 +15,7 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
-import ListeDetailphysique from '../ListeDetailphysique';
+import ListeDetailphysique from './ListeDetailphysique';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';

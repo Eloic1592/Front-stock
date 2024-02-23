@@ -13,15 +13,19 @@ import {
   MenuItem,
   Grid,
   Snackbar,
-  Alert
+  Alert,
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/detail/dphysiquefunction';
+import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber, colorType, converttodate } from 'app/utils/utils';
+import { saveAs } from 'file-saver';
+import PDFMouvementphysique from './PDFMouvementphysique';
+import { pdf as renderPdf } from '@react-pdf/renderer';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -30,20 +34,20 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     { label: 'Date', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Nature', field: 'nature', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Reste stock', field: 'restestock', align: 'center' },
-
     { label: 'Depot', field: 'depot', align: 'center' }
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editiddetail, setEditedIddetail] = useState('');
+  const [editnature, setEditnature] = useState('1');
+  const [editmouvement, setEditmouvement] = useState('0');
   const [editdatedepot, setEditdatedepot] = useState('');
   const [editarticle, setEditarticle] = useState(['1']);
   const [editquantite, setEditquantite] = useState(0);
-  const [prixstock, setPristock] = useState('');
   const [editpu, setEditpu] = useState(0);
   const [editreste, setEditreste] = useState(0);
 
@@ -51,7 +55,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   const [data, setData] = useState({
     articles: [],
     depots: [],
-    mouvementphysiques: []
+    mouvementphysiques: [],
+    naturemouvements: []
   });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -61,12 +66,13 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
 
   const handleupdate = () => {
     let detailmouvementphysique = {
+      typemouvement: editmouvement,
+      idnaturemouvement: editnature,
       iddetailmouvementphysique: editiddetail,
-      datedepot: editiddetail,
+      datedepot: editdatedepot,
       idarticle: editarticle,
       quantite: editquantite,
       pu: editpu,
-      prixstock: prixstock,
       total: editpu * editquantite,
       iddepot: depot,
       statut: 0
@@ -113,20 +119,27 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     cancelEdit,
     setMarque,
     handleEdit,
-    modele,
-    setModele,
     datedepot,
     setDatedepot,
     mouvement,
     setMouvement,
     listdepot,
     setListdepot,
+    nature,
+    setNature,
     handleChangeRowsPerPage,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useDphysiqueFunctions(data);
+
+  const generateMouvementPDF = async () => {
+    const blob = await renderPdf(
+      <PDFMouvementphysique dataList={data.mouvementphysiques} columns={columns} />
+    ).toBlob();
+    saveAs(blob, 'Mouvement_physiques.pdf');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,7 +160,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
         const newData = {
           mouvementphysiques: responseData.mouvementphysiques || [],
           articles: responseData.articles || [],
-          depots: responseData.depots || []
+          depots: responseData.depots || [],
+          naturemouvements: responseData.naturemouvements || []
         };
 
         setData(newData);
@@ -192,16 +206,20 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                 />
               </Grid>
               <Grid item xs={3}>
-                <TextField
+                <Select
                   fullWidth
-                  id="nomclient"
                   size="small"
-                  type="text"
-                  name="nomclient"
-                  label="Modele"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
-                />
+                  labelId="select-label"
+                  value={nature}
+                  onChange={(event) => setNature(event.target.value)}
+                >
+                  <MenuItem value="1">Toutes natures</MenuItem>
+                  {data.naturemouvements.map((row) => (
+                    <MenuItem value={row.naturemouvement} key={row.naturemouvement}>
+                      {row.naturemouvement}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={2}>
                 <TextField
@@ -284,6 +302,17 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  onClick={generateMouvementPDF}
+                >
+                  <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
@@ -314,8 +343,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   <TableCell key="marque" align="center" width="10%">
                     Marque
                   </TableCell>
-                  <TableCell key="modele" align="center" width="10%">
-                    Modele
+                  <TableCell key="nature" align="center" width="10%">
+                    Nature
                   </TableCell>
                   <TableCell key="quantite" align="center" width="10%">
                     Quantite
@@ -349,17 +378,31 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                         </TableCell>
                         {isEditClicked && row.iddetailmouvementphysique === selectedRowId ? (
                           <>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {colorType(row.mouvement)}
+                            <TableCell align="center">
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editmouvement}
+                                onChange={(event) => setEditmouvement(event.target.value)}
+                              >
+                                <MenuItem value="0">Tous mouvements</MenuItem>
+                                <MenuItem value="1" key="1">
+                                  Entree
+                                </MenuItem>
+                                <MenuItem value="-1" key="-1">
+                                  Sortie
+                                </MenuItem>
+                              </Select>
                             </TableCell>
                             <TableCell>
                               <TextField
+                                fullWidth
                                 type="date"
                                 value={editdatedepot}
                                 onChange={(event) => setEditdatedepot(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="30%">
                               <Select
                                 labelId="select-label"
                                 value={editarticle}
@@ -371,6 +414,24 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                                 {data.articles.map((row) => (
                                   <MenuItem key={row.idarticle} value={row.idarticle}>
                                     {row.marque}-{row.modele}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell align="center">
+                              <Select
+                                fullWidth
+                                labelId="select-label"
+                                value={editnature}
+                                onChange={(event) => setEditnature(event.target.value)}
+                              >
+                                <MenuItem value="1">Choisir un mouvement</MenuItem>
+                                {data.naturemouvements.map((row) => (
+                                  <MenuItem
+                                    value={row.idnaturemouvement}
+                                    key={row.idnaturemouvement}
+                                  >
+                                    {row.naturemouvement}
                                   </MenuItem>
                                 ))}
                               </Select>
@@ -391,15 +452,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                                 label="PU"
                                 value={editpu}
                                 onChange={(event) => setEditpu(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                label="Prix stock"
-                                value={prixstock}
-                                onChange={(event) => setPristock(event.target.value)}
                               />
                             </TableCell>
                             <TableCell>
@@ -438,7 +490,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                               {converttodate(row.datedepot)}
                             </TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
+                            <TableCell align="center">{row.naturemouvement}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.quantite)}
                             </TableCell>

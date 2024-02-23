@@ -38,7 +38,7 @@ const Stockphysique = Loadable(
 );
 
 const Detailphysique = Loadable(
-  lazy(() => import('app/views/admin/mouvementstock/physique/detail/Detailphysique'))
+  lazy(() => import('app/views/admin/mouvementstock/physique/Detailphysique'))
 );
 
 const Detailfictif = Loadable(

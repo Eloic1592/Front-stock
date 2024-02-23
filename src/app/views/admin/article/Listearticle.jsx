@@ -21,6 +21,9 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListeArticlefunctions } from 'app/views/admin/article/function';
 import { baseUrl } from 'app/utils/constant';
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import PDFArticle from './PDFArticle';
 
 const ListeArticle = () => {
   // Colonne
@@ -119,6 +122,13 @@ const ListeArticle = () => {
           open: true
         });
       });
+  };
+
+  const generateArticlePDF = async () => {
+    const blob = await renderPdf(
+      <PDFArticle dataList={data.articles} columns={columns} />
+    ).toBlob();
+    saveAs(blob, 'Liste_article.pdf');
   };
 
   useEffect(() => {
@@ -257,6 +267,7 @@ const ListeArticle = () => {
               </Grid>
               <Grid item xs={2}>
                 <Button
+                  fullWidth
                   className="button"
                   variant="contained"
                   aria-label="Edit"
@@ -264,6 +275,17 @@ const ListeArticle = () => {
                   disabled={selectedIds.length === 0}
                 >
                   <Icon>delete</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  onClick={generateArticlePDF}
+                >
+                  <Icon>picture_as_pdf</Icon>
                 </Button>
               </Grid>
             </Grid>
