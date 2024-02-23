@@ -21,7 +21,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/detail/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
-import { formatNumber, coloredNumber, colorType } from 'app/utils/utils';
+import { formatNumber, coloredNumber, colorType, converttodate } from 'app/utils/utils';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -376,13 +376,15 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {colorType(row.mouvement)}
                             </TableCell>
+                            <TableCell key="datedepot" align="center" width="12%">
+                              {converttodate(row.datedepot)}
+                            </TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.quantite)}
                             </TableCell>
                             <TableCell align="center">{formatNumber(row.pu)}</TableCell>
-                            <TableCell align="center">{formatNumber(row.prixstock)}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.restestock))}
                             </TableCell>

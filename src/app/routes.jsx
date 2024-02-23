@@ -34,7 +34,7 @@ const Categoriemateriel = Loadable(
 );
 
 const Stockphysique = Loadable(
-  lazy(() => import('app/views/admin/mouvementstock/physique/detail/ListeDetailphysique'))
+  lazy(() => import('app/views/admin/mouvementstock/physique/ListeDetailphysique'))
 );
 
 const Detailphysique = Loadable(
