@@ -226,16 +226,18 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idnaturemouvement" align="center">
+                  <TableCell key="idnaturemouvement" align="center" width="15%">
                     idnaturemouvement
                   </TableCell>
-                  <TableCell key="naturemouvement" align="center">
+                  <TableCell key="naturemouvement" align="center" width="15%">
                     nature mouvement
                   </TableCell>
-                  <TableCell key="typemouvement" align="center">
+                  <TableCell key="typemouvement" align="center" width="15%">
                     type mouvement
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center" width="15%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -247,13 +249,13 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
                       <TableRow key={row.idnaturemouvement}>
                         {isEditClicked && row.idnaturemouvement === selectedRowId ? (
                           <>
-                            <TableCell key={row.idnaturemouvement}>
+                            <TableCell key={row.idnaturemouvement} align="center" width="15%">
                               <TextField
                                 value={editedIdNaturemouvement}
                                 onChange={(event) => setEditedIdNaturemouvement(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <TextField
                                 value={editedNaturemouvement}
                                 onChange={(event) => setEditedNaturemouvement(event.target.value)}
@@ -266,7 +268,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
                                 }
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <Select
                                 fullWidth
                                 labelId="select-label"
@@ -284,10 +286,16 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idnaturemouvement}</TableCell>
-                            <TableCell>{row.naturemouvement}</TableCell>
-                            <TableCell>{row.typemouvement}</TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.idnaturemouvement}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.naturemouvement}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.typemouvement}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -303,7 +311,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
 
                         {isEditClicked && row.idnaturemouvement === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"

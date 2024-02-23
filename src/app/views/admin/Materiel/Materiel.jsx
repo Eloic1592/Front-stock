@@ -56,7 +56,6 @@ const Materiel = () => {
   const handleSubmit = () => {
     if (
       !marque ||
-      !modele ||
       !caution ||
       typemateriel === 1 ||
       !numserie ||

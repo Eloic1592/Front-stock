@@ -40,6 +40,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editiddetail, setEditedIddetail] = useState('');
+  const [editdatedepot, setEditdatedepot] = useState('');
   const [editarticle, setEditarticle] = useState(['1']);
   const [editquantite, setEditquantite] = useState(0);
   const [prixstock, setPristock] = useState('');
@@ -61,6 +62,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   const handleupdate = () => {
     let detailmouvementphysique = {
       iddetailmouvementphysique: editiddetail,
+      datedepot: editiddetail,
       idarticle: editarticle,
       quantite: editquantite,
       pu: editpu,
@@ -113,6 +115,12 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     handleEdit,
     modele,
     setModele,
+    datedepot,
+    setDatedepot,
+    mouvement,
+    setMouvement,
+    listdepot,
+    setListdepot,
     handleChangeRowsPerPage,
     handleSelection,
     handleSelectAll,
@@ -170,8 +178,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
-            <Grid container spacing={3}>
-              <Grid item xs={6}>
+            <Grid container spacing={1}>
+              <Grid item xs={2}>
                 <TextField
                   fullWidth
                   size="small"
@@ -181,10 +189,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   label="Marque"
                   value={marque}
                   onChange={(event) => setMarque(event.target.value)}
-                  sx={{ mb: 3 }}
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={3}>
                 <TextField
                   fullWidth
                   id="nomclient"
@@ -195,6 +202,52 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   value={modele}
                   onChange={(event) => setModele(event.target.value)}
                 />
+              </Grid>
+              <Grid item xs={2}>
+                <TextField
+                  fullWidth
+                  id="datedepot"
+                  size="small"
+                  type="date"
+                  name="datedepot"
+                  value={datedepot}
+                  onChange={(event) => setDatedepot(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Select
+                  fullWidth
+                  size="small"
+                  labelId="select-label"
+                  value={mouvement}
+                  onChange={(event) => setMouvement(event.target.value)}
+                >
+                  <MenuItem value="0">Tous mouvements</MenuItem>
+                  <MenuItem value="1" key="1">
+                    Entree
+                  </MenuItem>
+                  <MenuItem value="-1" key="-1">
+                    Sortie
+                  </MenuItem>
+                </Select>
+              </Grid>
+              <Grid item xs={3}>
+                <Select
+                  fullWidth
+                  autoFocus
+                  size="small"
+                  labelId="select-label"
+                  value={depot}
+                  margin="dense"
+                  onChange={(event) => setDepot(event.target.value)}
+                >
+                  <MenuItem value="1">Choisir un depot</MenuItem>
+                  {data.depots.map((row) => (
+                    <MenuItem value={row.iddepot} key={row.iddepot}>
+                      {row.iddepot}-{row.depot}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </Grid>
           </SimpleCard>
@@ -299,10 +352,15 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {colorType(row.mouvement)}
                             </TableCell>
-
+                            <TableCell>
+                              <TextField
+                                type="date"
+                                value={editdatedepot}
+                                onChange={(event) => setEditdatedepot(event.target.value)}
+                              />
+                            </TableCell>
                             <TableCell>
                               <Select
-                                fullWidth
                                 labelId="select-label"
                                 value={editarticle}
                                 onChange={(event) => setEditarticle(event.target.value)}

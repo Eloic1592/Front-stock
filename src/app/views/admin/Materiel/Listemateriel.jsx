@@ -366,9 +366,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  {/* <TableCell key="idmateriel" align="center" width="10%">
-                    idmateriel
-                  </TableCell> */}
                   <TableCell key="typemateriel" align="center" width="10%">
                     typemateriel
                   </TableCell>
@@ -384,9 +381,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   <TableCell key="prixvente" align="center" width="10%">
                     prixvente
                   </TableCell>
-                  {/* <TableCell key="description" align="center" width="15%">
-                    description
-                  </TableCell> */}
                   <TableCell key="caution" align="center" width="10%">
                     caution
                   </TableCell>
@@ -408,6 +402,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       <TableRow key={index}>
                         <TableCell>
                           <Checkbox
+                            align="center"
+                            width="5%"
                             checked={selectedIds.includes(row.idmateriel)}
                             onChange={(event) => handleSelection(event, row.idmateriel)}
                           />
@@ -415,12 +411,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
 
                         {isEditClicked && row.idmateriel === selectedRowId ? (
                           <>
-                            {/* <TableCell>
-                              <TextField
-                                value={isEditedIdmateriel}
-                                onChange={(event) => setIsEditedIdmateriel(event.target.value)}
-                              />
-                            </TableCell> */}
                             <TableCell>
                               <Select
                                 labelId="select-label"

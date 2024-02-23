@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
 export const useDphysiqueFunctions = (data) => {
   const [page, setPage] = useState(0);
@@ -11,6 +12,9 @@ export const useDphysiqueFunctions = (data) => {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
+  const [datedepot, setDatedepot] = useState('');
+  const [mouvement, setMouvement] = useState('0');
+  const [listdepot, setListdepot] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -57,7 +61,14 @@ export const useDphysiqueFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtrestockphysique(data.mouvementphysiques, marque, modele);
+  const filtredata = filtrestockphysique(
+    data.mouvementphysiques,
+    marque,
+    modele,
+    mouvement,
+    datedepot,
+    listdepot
+  );
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -97,10 +108,16 @@ export const useDphysiqueFunctions = (data) => {
     marque,
     setMarque,
     modele,
-    setModele
+    setModele,
+    datedepot,
+    setDatedepot,
+    mouvement,
+    setMouvement,
+    listdepot,
+    setListdepot
   };
 };
-function filtrestockphysique(mouvementphysiques, marque, modele) {
+function filtrestockphysique(mouvementphysiques, marque, modele, typemouvement, datedepot, depot) {
   return mouvementphysiques.filter((item) => {
     // Vérifier si la date du devis correspond à la date spécifiée
     const marqueMatch = !marque || item.marque.toLowerCase().includes(marque.toLowerCase());
@@ -108,7 +125,14 @@ function filtrestockphysique(mouvementphysiques, marque, modele) {
     // Vérifier si le nom du client correspond au nom spécifié
     const modeleMatch = !modele || item.modele.toLowerCase().includes(modele.toLowerCase());
 
-    // Retourner true si les deux conditions sont remplies
-    return marqueMatch && modeleMatch;
+    const dateMatch =
+      !datedepot ||
+      new Date(formatDate(item.datedepot)).getTime() === new Date(datedepot).getTime();
+    let typemouvementMatch = true;
+    if (typemouvement !== '0') {
+      typemouvementMatch = item.typemouvement === parseInt(typemouvement);
+    }
+
+    return marqueMatch && modeleMatch && dateMatch && typemouvementMatch;
   });
 }

@@ -27,7 +27,7 @@ const Stockphysique = () => {
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [depot, setDepot] = useState(['1']);
-  const [prixstock, setPrixstock] = useState(0);
+  // const [prixstock, setPrixstock] = useState(0);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [file, setFile] = useState('');
@@ -40,9 +40,6 @@ const Stockphysique = () => {
     depot: [],
     articles: []
   });
-
-  // Data
-  const [formData, setFormData] = useState([]);
 
   // Message
   const [message, setMessage] = useState({
@@ -60,30 +57,19 @@ const Stockphysique = () => {
   const handlecancelClose = () => setAlertOpen(false);
   const handleClose = () => setOpen(false);
 
-  // Validation form
-  const handledetails = () => {
-    const newData = {
-      idarticle: article,
-      quantite: quantite,
-      pu: prixunitaire,
-      prixstock: prixstock,
-      total: quantite * prixunitaire,
-      iddepot: depot,
-      restestock: 0,
-      statut: 0,
-      description: description,
-      commentaire: commentaire
-    };
-    setFormData([...formData, newData]);
-  };
-
   const handleSubmit = () => {
     let params = {
+      idarticle: article,
       datedepot: datedepot,
       typemouvement: typemouvement,
       idnaturemouvement: naturemouvement,
-      statut: 0,
-      mouvementphysiques: formData
+      pu: prixunitaire,
+      quantite: quantite,
+      total: prixunitaire * quantite,
+      iddepot: depot,
+      description: description,
+      commentaire: commentaire,
+      statut: 0
     };
 
     let url = baseUrl + '/mouvementstock/createstockphysique';
@@ -126,15 +112,6 @@ const Stockphysique = () => {
     setCommentaire('');
     setDepot(['1']);
   };
-
-  const columnsdetails = [
-    { label: 'article', field: 'idarticle', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'prix unitaire', field: 'pu', align: 'center' },
-    { label: 'prix stock', field: 'prixstock', align: 'center' },
-    { label: 'depot', field: 'iddepot', align: 'center' },
-    { label: 'total', field: 'total', align: 'center' }
-  ];
 
   useEffect(() => {
     const fetchData = async () => {

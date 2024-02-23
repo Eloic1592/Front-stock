@@ -306,19 +306,19 @@ const ListeArticle = () => {
                             </TableCell>
                             <TableCell width="15%">
                               <TextField
-                                value={editedModele}
-                                onChange={(event) => setEditedModele(event.target.value)}
+                                value={editedMarque}
+                                onChange={(event) => setEditedMarque(event.target.value)}
                                 onBlur={() =>
-                                  setEditedModele(editedModele !== '' ? editedModele : row.modele)
+                                  setEditedMarque(editedMarque !== '' ? editedMarque : row.marque)
                                 }
                               />
                             </TableCell>
                             <TableCell width="15%">
                               <TextField
-                                value={editedMarque}
-                                onChange={(event) => setEditedMarque(event.target.value)}
+                                value={editedModele}
+                                onChange={(event) => setEditedModele(event.target.value)}
                                 onBlur={() =>
-                                  setEditedMarque(editedMarque !== '' ? editedMarque : row.marque)
+                                  setEditedModele(editedModele !== '' ? editedModele : row.modele)
                                 }
                               />
                             </TableCell>
