@@ -237,11 +237,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   autoFocus
                   size="small"
                   labelId="select-label"
-                  value={depot}
+                  value={listdepot}
                   margin="dense"
-                  onChange={(event) => setDepot(event.target.value)}
+                  onChange={(event) => setListdepot(event.target.value)}
                 >
-                  <MenuItem value="1">Choisir un depot</MenuItem>
+                  <MenuItem value="1">Tous les depots</MenuItem>
                   {data.depots.map((row) => (
                     <MenuItem value={row.iddepot} key={row.iddepot}>
                       {row.iddepot}-{row.depot}

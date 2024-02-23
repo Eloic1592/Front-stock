@@ -14,7 +14,7 @@ export const useDphysiqueFunctions = (data) => {
   const [modele, setModele] = useState('');
   const [datedepot, setDatedepot] = useState('');
   const [mouvement, setMouvement] = useState('0');
-  const [listdepot, setListdepot] = useState('');
+  const [listdepot, setListdepot] = useState('1');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -133,6 +133,11 @@ function filtrestockphysique(mouvementphysiques, marque, modele, typemouvement, 
       typemouvementMatch = item.typemouvement === parseInt(typemouvement);
     }
 
-    return marqueMatch && modeleMatch && dateMatch && typemouvementMatch;
+    let depotMatch = true;
+    if (depot !== '1') {
+      depotMatch = item.iddepot === depot;
+    }
+
+    return marqueMatch && modeleMatch && dateMatch && typemouvementMatch && depotMatch;
   });
 }
