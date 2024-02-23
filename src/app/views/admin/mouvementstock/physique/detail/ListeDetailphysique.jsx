@@ -13,8 +13,7 @@ import {
   MenuItem,
   Grid,
   Snackbar,
-  Alert,
-  Button
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -22,21 +21,18 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/detail/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
-import { useParams } from 'react-router-dom';
 import { formatNumber, coloredNumber, colorType } from 'app/utils/utils';
-import { rest } from 'lodash';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
-  const idmouvementstock = useParams();
-
   // Colonne
   const columns = [
+    { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Date', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
-    { label: 'Prix stock', field: 'prixstock', align: 'center' },
     { label: 'Reste stock', field: 'restestock', align: 'center' },
 
     { label: 'Depot', field: 'depot', align: 'center' }
@@ -65,7 +61,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   const handleupdate = () => {
     let detailmouvementphysique = {
       iddetailmouvementphysique: editiddetail,
-      idmouvement: idmouvementstock.idmouvementstock,
       idarticle: editarticle,
       quantite: editquantite,
       pu: editpu,
@@ -128,14 +123,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let mouvementstockParams = {
-          idmouvementstock: idmouvementstock.idmouvementstock
-        };
-        let url = baseUrl + '/mouvementstock/detailstockphysique/';
+        let url = baseUrl + '/mouvementstock/contentstockphysique';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(mouvementstockParams),
+          body: JSON.stringify({}),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -171,18 +163,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
         setEditedIddetail(selectedRow.iddetailmouvementphysique);
       }
     }
-  }, [
-    isEditClicked,
-    selectedRowId,
-    sortedData,
-    initialDataFetched,
-    idmouvementstock.idmouvementstock
-  ]);
-
-  //Retour page retour
-  const redirect = () => {
-    window.location.replace('/admin/mouvementphysique');
-  };
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">
@@ -274,6 +255,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
+                  <TableCell key="prixstock" align="center" width="12%">
+                    Date
+                  </TableCell>
                   <TableCell key="marque" align="center" width="10%">
                     Marque
                   </TableCell>
@@ -285,9 +269,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   </TableCell>
                   <TableCell key="pu" align="center" width="10%">
                     Prix unitaire
-                  </TableCell>
-                  <TableCell key="prixstock" align="center" width="12%">
-                    Prix Stock
                   </TableCell>
                   <TableCell key="restestock" align="center" width="12%">
                     Reste stock
@@ -473,13 +454,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
               </Grid>
             </Grid>
           </SimpleCard>
-        </Grid>
-        <Grid item>
-          <Box>
-            <Button variant="contained" color="primary" onClick={redirect}>
-              <Icon>arrow_backward</Icon>
-            </Button>
-          </Box>
         </Grid>
       </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
