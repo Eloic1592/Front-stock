@@ -269,7 +269,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
             <StyledTable>
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.mouvementStocks.every((row) =>
                         selectedIds.includes(row.idmouvementstock)
@@ -285,19 +285,21 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmouvementdestock" align="center">
+                  <TableCell key="idmouvementdestock" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="datedepot" align="center">
+                  <TableCell key="datedepot" align="center" width="15%">
                     Date depot
                   </TableCell>
-                  <TableCell key="mouvement" align="center">
+                  <TableCell key="mouvement" align="center" width="15%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="naturemouvement" align="center">
+                  <TableCell key="naturemouvement" align="center" width="15%">
                     Nature
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center" width="5%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -306,7 +308,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={row.idmouvementstock}>
-                        <TableCell>
+                        <TableCell align="center" width="5%">
                           <Checkbox
                             checked={selectedIds.includes(row.idmouvementstock)}
                             onChange={(event) => handleSelection(event, row.idmouvementstock)}
@@ -314,20 +316,20 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                         </TableCell>
                         {isEditClicked && row.idmouvementstock === selectedRowId ? (
                           <>
-                            <TableCell key={row.idmouvementstock}>
+                            <TableCell key={row.idmouvementstock} align="center" width="15%">
                               <TextField
                                 value={editedIdmouvement}
                                 onChange={(event) => setEditedIdmouvement(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <TextField
                                 type="date"
                                 value={editdatemouvement}
                                 onChange={(event) => setEditdatemouvement(event.target.value)}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <Select
                                 fullWidth
                                 labelId="select-label"
@@ -365,14 +367,20 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idmouvementstock}</TableCell>
-                            <TableCell>{converttodate(row.datedepot)}</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center" width="15%">
+                              {row.idmouvementstock}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
+                              {converttodate(row.datedepot)}
+                            </TableCell>
+                            <TableCell align="center" width="15%" style={{ fontWeight: 'bold' }}>
                               {colorType(row.mouvement)}
                             </TableCell>
-                            <TableCell>{row.naturemouvement}</TableCell>
+                            <TableCell align="center" width="15%">
+                              {row.naturemouvement}
+                            </TableCell>
 
-                            <TableCell>
+                            <TableCell align="center" width="10%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -396,7 +404,7 @@ const Listestockphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) 
                         )}
                         {isEditClicked && row.idmouvementstock === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center" width="10%">
                               <IconButton
                                 className="button"
                                 variant="contained"
