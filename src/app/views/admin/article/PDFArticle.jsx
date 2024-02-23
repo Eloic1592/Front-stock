@@ -1,6 +1,5 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { formatNumber } from 'app/utils/utils';
 const styles = StyleSheet.create({
   title: {
     fontSize: 16,

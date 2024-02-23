@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
-import { converttodate } from 'app/utils/utils';
+import { converttodate, formatNumber } from 'app/utils/utils';
 const styles = StyleSheet.create({
   title: {
     fontSize: 16,
@@ -72,13 +72,13 @@ const PDFMouvementphysique = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{row.naturemouvement}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.quantite}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.quantite)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.pu}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.pu)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.restestock}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.restestock)}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.depot}</Text>
