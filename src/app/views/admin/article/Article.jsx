@@ -40,7 +40,7 @@ const Article = () => {
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
-    if (!marque || !modele || typemateriel === '1') {
+    if (!marque || typemateriel === '1') {
       setMessage({
         text: 'Veuillez remplir tous les champs obligatoires.',
         severity: 'error',
