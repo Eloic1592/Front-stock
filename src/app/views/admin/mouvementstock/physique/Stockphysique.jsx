@@ -14,8 +14,7 @@ import {
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
-import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
-import Listestockphysique from './Listestockphysique';
+import ListeDetailphysique from './ListeDetailphysique';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 
@@ -120,15 +119,12 @@ const Stockphysique = () => {
     setArticle(['1']);
     setDatedepot('');
     setQuantite(0);
-    setPrixstock(0);
     setPrixunitaire(0);
     setTypemouvement(['0']);
     setNaturemouvement(['1']);
     setDescription('');
     setCommentaire('');
     setDepot(['1']);
-    setFormData([]);
-    handlecancelClose();
   };
 
   const columnsdetails = [
@@ -205,12 +201,12 @@ const Stockphysique = () => {
               onClose={handleClose}
               aria-labelledby="form-dialog-title"
               fullWidth
-              maxWidth="xl"
+              maxWidth="md"
             >
               <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
               <DialogContent>
-                <Grid container spacing={3}>
-                  <Grid item xs={4}>
+                <Grid container spacing={1}>
+                  <Grid item xs={6}>
                     <Select
                       fullWidth
                       labelId="select-label"
@@ -225,7 +221,7 @@ const Stockphysique = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <TextField
                       fullWidth
                       id="datedepot"
@@ -235,7 +231,7 @@ const Stockphysique = () => {
                       onChange={(event) => setDatedepot(event.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <Select
                       fullWidth
                       labelId="select-label"
@@ -251,13 +247,26 @@ const Stockphysique = () => {
                       </MenuItem>
                     </Select>
                   </Grid>
-                </Grid>
-                <h3>Details du mouvement physique</h3>
-                <Grid container spacing={1}>
-                  <Grid item xs={2}>
+                  <Grid item xs={6}>
                     <Select
                       fullWidth
-                      size="small"
+                      autoFocus
+                      labelId="select-label"
+                      value={depot}
+                      margin="dense"
+                      onChange={(event) => setDepot(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un depot</MenuItem>
+                      {data.depot.map((row) => (
+                        <MenuItem value={row.iddepot} key={row.iddepot}>
+                          {row.iddepot}-{row.depot}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Select
+                      fullWidth
                       labelId="select-label"
                       margin="dense"
                       label="Article"
@@ -272,10 +281,9 @@ const Stockphysique = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={6}>
                     <TextField
                       fullWidth
-                      size="small"
                       type="number"
                       InputProps={{ inputProps: { min: 0 } }}
                       name="quantite"
@@ -283,13 +291,11 @@ const Stockphysique = () => {
                       variant="outlined"
                       value={quantite}
                       onChange={(event) => setQuantite(event.target.value)}
-                      sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={6}>
                     <TextField
                       fullWidth
-                      size="small"
                       type="number"
                       InputProps={{ inputProps: { min: 0 } }}
                       name="prixunitaire"
@@ -297,53 +303,9 @@ const Stockphysique = () => {
                       variant="outlined"
                       value={prixunitaire}
                       onChange={(event) => setPrixunitaire(event.target.value)}
-                      sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={2}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
-                      name="prixstock"
-                      label="Prix en stock"
-                      variant="outlined"
-                      value={prixstock}
-                      onChange={(event) => setPrixstock(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Select
-                      fullWidth
-                      autoFocus
-                      labelId="select-label"
-                      value={depot}
-                      margin="dense"
-                      size="small"
-                      onChange={(event) => setDepot(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un depot</MenuItem>
-                      {data.depot.map((row) => (
-                        <MenuItem value={row.iddepot} key={row.iddepot}>
-                          {row.iddepot}-{row.depot}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      sx={{ mb: 3 }}
-                      onClick={handledetails}
-                    >
-                      Inserer
-                    </Button>
-                  </Grid>
-                </Grid>
-                <Grid container spacing={3}>
+
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
@@ -353,7 +315,6 @@ const Stockphysique = () => {
                       placeholder="Description"
                       value={description}
                       onChange={(event) => setDescription(event.target.value)}
-                      sx={{ mb: 3 }}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -365,13 +326,7 @@ const Stockphysique = () => {
                       placeholder="Remarques"
                       value={commentaire}
                       onChange={(event) => setCommentaire(event.target.value)}
-                      sx={{ mb: 3 }}
                     />
-                  </Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <CustomizedTable columns={columnsdetails} data={formData} />
                   </Grid>
                 </Grid>
               </DialogContent>
@@ -450,7 +405,7 @@ const Stockphysique = () => {
         </Alert>
       </Snackbar>
       {/* Liste des donnees */}
-      <Listestockphysique />
+      <ListeDetailphysique />
     </Container>
   );
 };

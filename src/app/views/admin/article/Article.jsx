@@ -145,7 +145,7 @@ const Article = () => {
                       id="marque"
                       type="text"
                       margin="dense"
-                      label="Marque (obligatoire)"
+                      label="Marque"
                       name="marque"
                       value={marque}
                       onChange={(event) => setMarque(event.target.value)}
@@ -158,7 +158,7 @@ const Article = () => {
                       id="modele"
                       type="text"
                       margin="dense"
-                      label="Nom du modele  (obligatoire)"
+                      label="Nom du modele"
                       name="modele"
                       value={modele}
                       onChange={(event) => setModele(event.target.value)}
