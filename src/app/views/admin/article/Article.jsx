@@ -83,6 +83,7 @@ const Article = () => {
         });
       });
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -115,16 +116,32 @@ const Article = () => {
     };
     fetchData();
   }, []);
+
+  const getstock = () => {
+    window.location.replace('/admin/stocksarticle');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
+        <Breadcrumb
+          routeSegments={[{ name: 'Article', path: 'admin/admin/article' }, { name: 'Article' }]}
+        />
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouvel article
-          </Button>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Button variant="contained" onClick={handleClickOpen} color="primary">
+                Nouvel article
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={getstock} color="secondary">
+                Stock article
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Box>
@@ -199,7 +216,6 @@ const Article = () => {
                   </Grid>
                 </Grid>
               </DialogContent>
-
               <DialogActions>
                 <Button variant="outlined" color="secondary" onClick={handleClose}>
                   Annuler
@@ -212,13 +228,14 @@ const Article = () => {
           </Box>
         </Grid>
       </Grid>
-
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}
         </Alert>
       </Snackbar>
-      <ListeArticle />
+      <Grid container direction="column" spacing={1}>
+        <ListeArticle />
+      </Grid>
     </Container>
   );
 };

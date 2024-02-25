@@ -1,5 +1,5 @@
 import { useState } from 'react';
-export const useListeArticlefunctions = (data) => {
+export const useStockfunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -42,7 +42,7 @@ export const useListeArticlefunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrearticle(data.articles, marque, modele, typemateriel);
+  const filtredata = filtrearticle(data.stockarticles, marque, modele, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;

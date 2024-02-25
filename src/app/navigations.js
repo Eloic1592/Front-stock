@@ -36,7 +36,14 @@ export const navigations = [
         name: 'Materiels',
         iconText: 'arrows-right',
         children: [
-          { name: 'Article', iconText: 'SI', path: '/admin/article' },
+          {
+            name: 'Articles',
+            iconText: 'arrows-right',
+            children: [
+              { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
+              { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' }
+            ]
+          },
           { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
           { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
           { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
