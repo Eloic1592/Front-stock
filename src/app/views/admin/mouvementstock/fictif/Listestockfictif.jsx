@@ -30,6 +30,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
     { label: 'Mouv stock', field: 'idmouvementstock', align: 'center' },
     { label: 'Date de depot', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'Nature', field: 'naturemouvement', align: 'center' }
   ];
 
@@ -155,8 +156,8 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
-  const getInfo = (iddevis) => {
-    window.location.replace('/admin/detailfictif/' + iddevis);
+  const getInfo = (idmouvementdestock) => {
+    window.location.replace('/admin/detailfictif/' + idmouvementdestock);
   };
 
   return (

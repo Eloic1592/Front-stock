@@ -213,7 +213,7 @@ const Stockfictif = () => {
               <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
               <DialogContent>
                 <Grid container spacing={3}>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <Select
                       fullWidth
                       labelId="select-label"
@@ -230,7 +230,7 @@ const Stockfictif = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <TextField
                       fullWidth
                       id="datedepot"
@@ -240,7 +240,7 @@ const Stockfictif = () => {
                       onChange={(event) => setDatedepot(event.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={6}>
                     <Select
                       fullWidth
                       labelId="select-label"
@@ -256,6 +256,23 @@ const Stockfictif = () => {
                       <MenuItem value="-1" key="-1">
                         Sortie
                       </MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      autoFocus
+                      labelId="select-label"
+                      value={idetudiant}
+                      margin="dense"
+                      onChange={(event) => setIdetudiant(event.target.value)}
+                    >
+                      <MenuItem value="1">Choisir un etudiant</MenuItem>
+                      {data.etudiants.map((row) => (
+                        <MenuItem value={row.idetudiant} key={row.idetudiant}>
+                          {row.idetudiant}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </Grid>
                 </Grid>
@@ -333,24 +350,6 @@ const Stockfictif = () => {
                       {data.depot.map((row) => (
                         <MenuItem value={row.iddepot} key={row.iddepot}>
                           {row.depot}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      autoFocus
-                      labelId="select-label"
-                      value={idetudiant}
-                      margin="dense"
-                      size="small"
-                      onChange={(event) => setIdetudiant(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un etudiant</MenuItem>
-                      {data.etudiants.map((row) => (
-                        <MenuItem value={row.idetudiant} key={row.idetudiant}>
-                          {row.idetudiant}
                         </MenuItem>
                       ))}
                     </Select>
