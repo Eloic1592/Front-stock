@@ -178,6 +178,9 @@ export function converttodate(timestamp) {
   const date = new Date(timestamp);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('fr-FR', options);
+  if (date === new Date()) {
+    return "Aujourd'hui";
+  }
   return formattedDate;
 }
 
