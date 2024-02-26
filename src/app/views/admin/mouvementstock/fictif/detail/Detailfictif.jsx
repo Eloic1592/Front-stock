@@ -10,7 +10,8 @@ import {
   MenuItem,
   Alert,
   Snackbar,
-  Grid
+  Grid,
+  Icon
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -29,7 +30,6 @@ const Detailfictif = () => {
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
   const [depot, setDepot] = useState('1');
-  const [idetudiant, setIdetudiant] = useState(['1']);
   const [idmateriel, setIdmateriel] = useState(['1']);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
@@ -70,7 +70,6 @@ const Detailfictif = () => {
       datedeb: datedeb,
       datefin: datefin,
       iddepot: depot,
-      idetudiant: idetudiant,
       description: description,
       commentaire: commentaire,
       statut: 0
@@ -119,7 +118,6 @@ const Detailfictif = () => {
     setIdmateriel(['1']);
     setDatedeb('');
     setDatefin('');
-    setIdetudiant(['1']);
     setDescription('');
     setCommentaire('');
     setCaution(0);
@@ -130,7 +128,6 @@ const Detailfictif = () => {
 
   const columnsdetails = [
     { label: 'materiel', field: 'idmateriel', align: 'center' },
-    { label: 'etudiant', field: 'idetudiant', align: 'center' },
     { label: 'caution', field: 'caution', align: 'center' },
     { label: 'date debut', field: 'datedeb', align: 'center' },
     { label: 'date fin', field: 'datefin', align: 'center' },
@@ -172,6 +169,11 @@ const Detailfictif = () => {
     fetchData();
   }, []);
 
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/mouvementfictif');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -186,6 +188,11 @@ const Detailfictif = () => {
         <Grid item>
           <Box>
             <Grid container spacing={2}>
+              <Grid item>
+                <Button variant="contained" color="inherit" onClick={redirect}>
+                  <Icon>arrow_backward</Icon>
+                </Button>
+              </Grid>
               <Grid item>
                 <Button variant="contained" onClick={handleClickOpen} color="primary">
                   Nouveau detail
@@ -224,23 +231,6 @@ const Detailfictif = () => {
                       {data.materiels.map((row, index) => (
                         <MenuItem key={index} value={row.idmateriel}>
                           {row.marque}/{row.modele}-{row.numserie}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      margin="dense"
-                      label="Etudiant"
-                      value={idetudiant}
-                      onChange={(event) => setIdetudiant(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un etudiant</MenuItem>
-                      {data.etudiants.map((row, index) => (
-                        <MenuItem key={index} value={row.idetudiant}>
-                          {row.idetudiant}
                         </MenuItem>
                       ))}
                     </Select>

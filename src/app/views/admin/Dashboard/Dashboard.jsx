@@ -2,19 +2,19 @@ import { Box, TextField, Select, MenuItem, Grid } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 
 import { useEffect, useState } from 'react';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 
 const Dashboard = () => {
   // Input
   const [annee, setAnnee] = useState(0);
-  const [mois, setMois] = useState(0);
+  // const [mois, setMois] = useState(0);
 
-  // Message
-  const [message, setMessage] = useState({
-    text: 'Information enregistree',
-    severity: 'success',
-    open: false
-  });
+  // // Message
+  // const [message, setMessage] = useState({
+  //   text: 'Information enregistree',
+  //   severity: 'success',
+  //   open: false
+  // });
 
   useEffect(() => {}, []);
 

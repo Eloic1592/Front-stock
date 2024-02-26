@@ -151,9 +151,18 @@ const Materiel = () => {
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Button variant="contained" onClick={handleClickOpen} color="primary">
-            Nouveau materiel
-          </Button>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Button variant="contained" onClick={handleClickOpen} color="primary">
+                Nouveau materiel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" color="secondary">
+                Stock materiel
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Box>

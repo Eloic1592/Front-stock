@@ -96,7 +96,6 @@ const Listedetailcommande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
       }
     };
     fetchData();
-    console.log(data.detailProformas);
   }, [idproforma.idproforma]);
 
   //Retour page retour

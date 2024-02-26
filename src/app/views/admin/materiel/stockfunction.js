@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { formatDate } from 'app/utils/utils';
-
-export const Livraisonfunctions = (data) => {
+export const useStockfunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [editingId, setEditingId] = useState(null);
@@ -10,8 +8,13 @@ export const Livraisonfunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [datelivraison, setDatelivraison] = useState('');
-  const [client, setClient] = useState('');
+  const [numserie, setNumserie] = useState('');
+  const [categoriemateriel, setCategoriemateriel] = useState('0');
+  const [typemateriel, setTypemateriel] = useState('0');
+  const [couleur, setCouleur] = useState('0');
+  const [marque, setMarque] = useState('');
+  const [modele, setModele] = useState('');
+  const [signature, setSignature] = useState('1');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -24,9 +27,9 @@ export const Livraisonfunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.idbonlivraison);
+    setEditingId(row.id);
     setIsEditClicked(true);
-    setSelectedRowId(row.idbonlivraison);
+    setSelectedRowId(row.id);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -37,28 +40,19 @@ export const Livraisonfunctions = (data) => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, idbonlivraison) => {
+  const handleSelection = (event, id) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, idbonlivraison]);
+      setSelectedIds([...selectedIds, id]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== idbonlivraison));
+      setSelectedIds(selectedIds.filter((i) => i !== id));
     }
   };
 
-  //Select  toutes les checkboxes de la liste
-  const handleSelectAll = (event) => {
-    if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.idbonlivraison));
-    } else {
-      setSelectedIds([]);
-    }
-  };
-
-  const filtredata = filtrelivraison(data, datelivraison, client);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
 
+  const filtredata = filtremateriel(data.stockmateriels, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -92,29 +86,32 @@ export const Livraisonfunctions = (data) => {
     cancelEdit,
     handleSave,
     handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setClient,
-    client,
-    setDatelivraison,
-    datelivraison
+    setCouleur,
+    setNumserie,
+    setTypemateriel,
+    setCategoriemateriel,
+    categoriemateriel,
+    couleur,
+    numserie,
+    typemateriel,
+    marque,
+    setMarque,
+    modele,
+    setModele,
+    signature,
+    setSignature
   };
 };
 
-export function filtrelivraison(listelivraison, datelivraison, nomclient) {
-  return listelivraison.filter((livraison) => {
-    // Vérifier si la date du devis correspond à la date spécifiée
-    const dateMatch =
-      !datelivraison ||
-      new Date(formatDate(livraison.datebonlivraison)).getTime() ===
-        new Date(datelivraison).getTime();
-
-    // Vérifier si le nom du client correspond au nom spécifié
-    const nomClientMatch =
-      !nomclient || livraison.nom.toLowerCase().includes(nomclient.toLowerCase());
-
-    // Retourner true si les deux conditions sont remplies
-    return dateMatch && nomClientMatch;
+// Filtre
+export function filtremateriel(stockmateriel, typemateriel) {
+  return stockmateriel.filter((Item) => {
+    let typeMatch = true;
+    if (typemateriel !== '0') {
+      typeMatch = Item.idtypemateriel === typemateriel;
+    }
+    return typeMatch;
   });
 }

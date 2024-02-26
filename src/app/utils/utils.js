@@ -214,11 +214,10 @@ export function coloredNumber(nombre) {
 }
 
 export function colorType(mouvement) {
-  let style = {};
   if (mouvement === 'SORTIE') {
-    return <span style={(style = { color: 'red' })}>{mouvement}</span>;
+    return <span style={{ color: 'red' }}>{mouvement}</span>;
   }
-  return <span style={(style = { color: 'green' })}>{mouvement}</span>;
+  return <span style={{ color: 'green' }}>{mouvement}</span>;
 }
 
 // Transformation d'un nombre en  lettre

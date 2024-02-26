@@ -7,45 +7,41 @@ import {
   TablePagination,
   TableRow,
   Icon,
-  TextField,
   Select,
   MenuItem,
-  Snackbar,
   Alert,
+  Snackbar,
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+import { formatNumber, coloredNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { Container } from 'app/views/style/style';
+import { useStockfunctions } from 'app/views/admin/materiel/stockfunction';
 import { baseUrl } from 'app/utils/constant';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
-import { useStockfunctions } from './stockfunction';
-import PDFStockArticle from './PDFStockArticle';
+import { Container } from 'app/views/style/style';
+import PDFStockmateriel from './PDFStockmateriel';
 
-const Stockarticle = () => {
-  // Colonne
+const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
-    { label: 'ID article', field: 'idarticle', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
-    { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'description', field: 'description', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' }
+    { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' }
   ];
-  const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
+  const [data, setData] = useState({
+    typemateriels: [],
+    stockmateriels: []
+  });
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
-
   const {
     sortDirection,
     page,
@@ -53,28 +49,27 @@ const Stockarticle = () => {
     setSortDirection,
     handleChangePage,
     sortColumn,
-    handleChangeRowsPerPage,
-    handleSelectColumn,
-    sortedData,
-    modele,
-    setMarque,
-    marque,
-    setModele,
+    setTypemateriel,
     typemateriel,
-    setTypemateriel
+    selectedIds,
+    handleChangeRowsPerPage,
+    handleSelectAll,
+    handleSelectColumn,
+    sortedData
   } = useStockfunctions(data);
 
-  const generateArticlePDF = async () => {
+  const generateMaterielPDF = async () => {
     const blob = await renderPdf(
-      <PDFStockArticle dataList={data.stockarticles} columns={columns} />
+      <PDFStockmateriel dataList={data.stockmateriels} columns={columns} />
     ).toBlob();
-    saveAs(blob, 'Stock_article.pdf');
+    saveAs(blob, 'Stock_materiel.pdf');
   };
 
+  //  Use effect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/article/stockarticle';
+        let url = baseUrl + '/materiel/stockmateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -83,15 +78,17 @@ const Stockarticle = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`Request failed with status: ${response.status}`);
+          setMessage({
+            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+            severity: 'error',
+            open: true
+          });
         }
-
         const responseData = await response.json();
         const newData = {
-          stockarticles: responseData.stockarticles || [],
-          typemateriels: responseData.typemateriels || []
+          typemateriels: responseData.typemateriels || [],
+          stockmateriels: responseData.stockmateriels || []
         };
-
         setData(newData);
       } catch (error) {
         setMessage({
@@ -107,51 +104,23 @@ const Stockarticle = () => {
       setInitialDataFetched(true);
     }
   }, [sortedData, initialDataFetched]);
-
   return (
     <Container>
-      <Box width="100%" overflow="auto" key="Box1">
+      <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    type="text"
-                    name="marque"
-                    label="Marque"
-                    variant="outlined"
-                    value={marque}
-                    onChange={(event) => setMarque(event.target.value)}
-                    sx={{ mb: 3 }}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    type="text"
-                    name="modele"
-                    label="Modele"
-                    variant="outlined"
-                    value={modele}
-                    onChange={(event) => setModele(event.target.value)}
-                    sx={{ mb: 3 }}
-                  />
-                </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12}>
                   <Select
                     fullWidth
                     labelId="select-label"
-                    variant="outlined"
-                    size="small"
                     value={typemateriel}
                     onChange={(event) => setTypemateriel(event.target.value)}
+                    size="small"
                     sx={{ mb: 3 }}
                   >
-                    <MenuItem value="1">Tous types</MenuItem>
+                    <MenuItem value="0">Tous types</MenuItem>
                     {data.typemateriels.map((row) => (
                       <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                         {row.typemateriel}
@@ -162,9 +131,8 @@ const Stockarticle = () => {
               </Grid>
             </SimpleCard>
           </Grid>
-
           <Grid item>
-            <SimpleCard title="Stock des articles">
+            <SimpleCard title="Stock des materiels">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -201,32 +169,20 @@ const Stockarticle = () => {
                     variant="contained"
                     aria-label="Edit"
                     color="secondary"
-                    onClick={generateArticlePDF}
+                    onClick={generateMaterielPDF}
                   >
                     <Icon>picture_as_pdf</Icon>
                   </Button>
                 </Grid>
               </Grid>
-              <StyledTable>
+              <StyledTable id="datatable">
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idarticle" width="10%">
-                      idarticle
-                    </TableCell>
-                    <TableCell key="marque" width="15%" align="center">
-                      marque
-                    </TableCell>
-                    <TableCell key="modele" width="15%" align="center">
-                      modele
-                    </TableCell>
-                    <TableCell key="typemateriel" width="15%" align="center">
+                    <TableCell key="typemateriel" align="center" width="50%">
                       typemateriel
                     </TableCell>
-                    <TableCell key="description" width="50%" align="center">
-                      description
-                    </TableCell>
-                    <TableCell key="quantite" width="15%" align="center">
+                    <TableCell key="quantite" align="center" width="50%">
                       quantite
                     </TableCell>
                   </TableRow>
@@ -239,11 +195,7 @@ const Stockarticle = () => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell> {row.idarticle}</TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
                             <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
                             </TableCell>
@@ -252,9 +204,9 @@ const Stockarticle = () => {
                       ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6}>
+                      <TableCell colSpan={10}>
                         <Typography variant="subtitle1" color="textSecondary">
-                          Aucune donnée disponible
+                          Aucune donnee disponible
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -270,7 +222,7 @@ const Stockarticle = () => {
                     rowsPerPage={rowsPerPage}
                     count={sortedData.length}
                     onPageChange={handleChangePage}
-                    rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
+                    rowsPerPageOptions={rowsPerPageOptions}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                     backIconButtonProps={{ 'aria-label': 'Page precedente' }}
@@ -290,4 +242,4 @@ const Stockarticle = () => {
   );
 };
 
-export default Stockarticle;
+export default Stockmateriel;

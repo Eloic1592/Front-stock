@@ -8,13 +8,14 @@ import {
   DialogTitle,
   Dialog,
   Grid,
-  Button
+  Button,
+  Icon
 } from '@mui/material';
-import { Breadcrumb, SimpleCard } from 'app/components';
+import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
-import { deleteData, Finddata, insertData, UpdateData } from '../../../functions';
+
 import Listeproforma from './Listeproforma';
-import { Container, AutoComplete } from 'app/views/style/style';
+import { Container } from 'app/views/style/style';
 
 const Proforma = () => {
   // Form dialog
@@ -25,7 +26,7 @@ const Proforma = () => {
   const [fileOpen, setFileOpen] = useState(false);
 
   // Data
-  const [datedevis, setDatedevis] = useState('');
+  // const [datedevis, setDatedevis] = useState('');
 
   // Input
 
@@ -44,36 +45,43 @@ const Proforma = () => {
           routeSegments={[{ name: 'Proforma', path: 'admin/proforma' }, { name: 'Proforma' }]}
         />
       </Box>
-      <p>
-        <Button variant="contained" onClick={handleFileOpen} color="secondary">
-          Exporter des données
-        </Button>
-      </p>
-      <Box>
-        <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              size="small"
-              type="number"
-              InputProps={{ inputProps: { min: 0 } }}
-              name="annee"
-              label="De quel annee ?"
-              value={file}
-              onChange={(event) => setFile(event.target.value)}
-            />
-          </DialogContent>
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="secondary">
+                <Icon>picture_as_pdf</Icon>
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Box>
+            <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
+              <DialogContent>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="number"
+                  InputProps={{ inputProps: { min: 0 } }}
+                  name="annee"
+                  label="De quel annee ?"
+                  value={file}
+                  onChange={(event) => setFile(event.target.value)}
+                />
+              </DialogContent>
 
-          <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleFileClose}>
-              Annuler
-            </Button>
-            <Button /*onClick={handleSubmit}*/ color="primary">Valider</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-
+              <DialogActions>
+                <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                  Annuler
+                </Button>
+                <Button /*onClick={handleSubmit}*/ color="primary">Valider</Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </Grid>
+      </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
           {message.text}

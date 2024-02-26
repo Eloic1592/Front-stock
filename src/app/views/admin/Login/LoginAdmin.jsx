@@ -56,6 +56,7 @@ const LoginAdmin = () => {
       email: values.email,
       mdp: values.password
     };
+    setLoading(true);
 
     try {
       const response = await fetch(baseUrl + 'signinAdmin', {

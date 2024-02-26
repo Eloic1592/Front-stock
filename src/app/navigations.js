@@ -33,7 +33,7 @@ export const navigations = [
         ]
       },
       {
-        name: 'Materiels',
+        name: 'Articles et materiels',
         iconText: 'arrows-right',
         children: [
           {
@@ -44,7 +44,14 @@ export const navigations = [
               { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' }
             ]
           },
-          { name: 'Materiels', iconText: 'SI', path: '/admin/listemateriel' },
+          {
+            name: 'Materiels',
+            iconText: 'arrows-right',
+            children: [
+              { name: 'Liste des materiels', iconText: 'SI', path: '/admin/listemateriel' },
+              { name: 'Stock des materiels', iconText: 'SI', path: '/admin/stockmateriel' }
+            ]
+          },
           { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
           { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
         ]

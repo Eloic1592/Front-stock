@@ -68,13 +68,12 @@ const Stockfictif = () => {
     const newData = {
       datedeb: datedeb,
       datefin: datefin,
-      idetudiant: idetudiant,
       caution: caution,
       idmateriel: idmateriel,
       iddepot: depot,
-      statut: 0,
       description: description,
-      commentaire: commentaire
+      commentaire: commentaire,
+      statut: 0
     };
     setFormData([...formData, newData]);
   };
@@ -84,6 +83,7 @@ const Stockfictif = () => {
       datedepot: datedepot,
       typemouvement: typemouvement,
       idnaturemouvement: naturemouvement,
+      idetudiant: idetudiant,
       statut: 0,
       mouvementfictifs: formData
     };

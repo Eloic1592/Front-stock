@@ -1,7 +1,6 @@
 import { Box, TextField, Select, MenuItem } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useEffect, useState } from 'react';
-import { deleteData, Finddata, insertData, UpdateData } from '../../functions';
 import Grid from '@mui/material/Grid';
 import { Container } from 'app/views/style/style';
 

@@ -23,7 +23,7 @@ import { useListeArticlefunctions } from 'app/views/admin/article/function';
 import { baseUrl } from 'app/utils/constant';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import PDFArticle from './PDFArticle';
+import PDFArticle from './PDFListeArticle';
 
 const ListeArticle = () => {
   // Colonne

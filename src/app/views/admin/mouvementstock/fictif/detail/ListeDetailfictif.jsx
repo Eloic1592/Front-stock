@@ -13,8 +13,7 @@ import {
   Grid,
   Snackbar,
   Alert,
-  TextField,
-  Button
+  TextField
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -32,7 +31,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Num Serie', field: 'numserie', align: 'center' },
-    { label: 'Responsable', field: 'idetudiant', align: 'center' },
     { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Date debut', field: 'datedeb', align: 'center' },
     { label: 'Date fin', field: 'datefin', align: 'center' },
@@ -42,7 +40,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editiddetail, setEditedIddetail] = useState('');
   const [materiel, setMateriel] = useState(['1']);
-  const [etudiant, setEtudiant] = useState(['1']);
   const [depot, setDepot] = useState(['1']);
   const [caution, setCaution] = useState('');
   const [datedeb, setDatedeb] = useState('');
@@ -67,7 +64,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
       idmouvement: idmouvementstock.idmouvementstock,
       datedeb: datedeb,
       datefin: datefin,
-      idetudiant: etudiant,
       caution: caution,
       idmateriel: materiel,
       iddepot: depot,
@@ -178,10 +174,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     initialDataFetched,
     idmouvementstock.idmouvementstock
   ]);
-  //Retour page retour
-  const redirect = () => {
-    window.location.replace('/admin/mouvementfictif');
-  };
 
   return (
     <Box width="100%" overflow="auto">
@@ -254,7 +246,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell width="5%">
+                  <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.mouvementfictifs.every((row) =>
                         selectedIds.includes(row.iddetailmouvementfictif)
@@ -276,16 +268,13 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   <TableCell key="numserie" align="center" width="10%">
                     N serie materiel
                   </TableCell>
-                  <TableCell key="idetudiant" align="center" width="10%">
-                    Responsable
-                  </TableCell>
                   <TableCell key="caution" align="center" width="10%">
                     Caution
                   </TableCell>
-                  <TableCell key="datedeb" align="center" width="15%">
+                  <TableCell key="datedeb" align="center" width="10%">
                     Date Debut
                   </TableCell>
-                  <TableCell key="datefin" align="center" width="15%">
+                  <TableCell key="datefin" align="center" width="10%">
                     Date fin
                   </TableCell>
                   <TableCell key="depot" align="center" width="12%">
@@ -301,7 +290,7 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell>
+                        <TableCell align="center" width="5%">
                           <Checkbox
                             checked={selectedIds.includes(row.iddetailmouvementfictif)}
                             onChange={(event) =>
@@ -328,23 +317,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                                 {data.materiels.map((row) => (
                                   <MenuItem key={row.idmateriel} value={row.idmateriel}>
                                     {row.marque}/{row.modele}-{row.numserie}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={etudiant}
-                                onChange={(event) => setEtudiant(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Etudiants
-                                </MenuItem>
-                                {data.etudiants.map((row) => (
-                                  <MenuItem key={row.idetudiant} value={row.idetudiant}>
-                                    {row.idetudiant}
                                   </MenuItem>
                                 ))}
                               </Select>
@@ -398,7 +370,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               {colorType(row.mouvement)}
                             </TableCell>
                             <TableCell align="center">{row.numserie}</TableCell>
-                            <TableCell align="center">{row.idetudiant}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.caution)}
                             </TableCell>
@@ -472,13 +443,6 @@ const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
               </Grid>
             </Grid>
           </SimpleCard>
-        </Grid>
-        <Grid item>
-          <Box>
-            <Button variant="contained" color="primary" onClick={redirect}>
-              <Icon>arrow_backward</Icon>
-            </Button>
-          </Box>
         </Grid>
       </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>

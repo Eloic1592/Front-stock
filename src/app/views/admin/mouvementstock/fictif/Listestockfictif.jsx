@@ -38,11 +38,13 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [data, setData] = useState({
     mouvementStocks: [],
-    naturemouvement: []
+    naturemouvement: [],
+    etudiants: []
   });
   const [editedIdmouvement, setEditedIdmouvement] = useState('');
   const [editdatemouvement, setEditdatemouvement] = useState('');
   const [editnatmouvement, setEditnatmouvement] = useState(['1']);
+  const [editidetudiant, setEditidetudiant] = useState('1');
   const [edittypemouvement, setEdittypemouvement] = useState(['1']);
 
   const [message, setMessage] = useState({
@@ -81,6 +83,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
       idmouvementstock: editedIdmouvement,
       datedepot: editdatemouvement,
       typemouvement: edittypemouvement,
+      idetudiant: editidetudiant,
       idnaturemouvement: editnatmouvement,
       statut: 0
     };
@@ -131,7 +134,8 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
         const responseData = await response.json();
         const newData = {
           mouvementStocks: responseData.mouvementStocks || [],
-          naturemouvement: responseData.naturemouvements || []
+          naturemouvement: responseData.naturemouvements || [],
+          etudiants: responseData.etudiants || []
         };
         setData(newData);
       } catch (error) {
@@ -262,7 +266,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
             <StyledTable>
               <TableHead>
                 <TableRow>
-                  <TableCell>
+                  <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementStocks.every((row) =>
                         selectedIds.includes(row.idmouvementstock)
@@ -278,19 +282,24 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="idmouvementdestock" align="center">
+                  <TableCell key="idmouvementdestock" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="datedepot" align="center">
+                  <TableCell key="datedepot" align="center" width="15%">
                     Date depot
                   </TableCell>
-                  <TableCell key="mouvement" align="center">
+                  <TableCell key="mouvement" align="center" width="15%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="naturemouvement" align="center">
+                  <TableCell key="idetudiant" align="center" width="15%">
+                    Etudiant
+                  </TableCell>
+                  <TableCell key="naturemouvement" align="center" width="15%">
                     Nature
                   </TableCell>
-                  <TableCell>Action</TableCell>
+                  <TableCell align="center" width="15%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -339,6 +348,23 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                               <Select
                                 fullWidth
                                 labelId="select-label"
+                                value={editidetudiant}
+                                onChange={(event) => setEditidetudiant(event.target.value)}
+                              >
+                                <MenuItem value="1" disabled>
+                                  Etudiant
+                                </MenuItem>
+                                {data.etudiants.map((row) => (
+                                  <MenuItem value={row.idetudiant} key={row.idetudiant}>
+                                    {row.idetudiant}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                fullWidth
+                                labelId="select-label"
                                 value={editnatmouvement}
                                 onChange={(event) => setEditnatmouvement(event.target.value)}
                               >
@@ -358,14 +384,15 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                           </>
                         ) : (
                           <>
-                            <TableCell>{row.idmouvementstock}</TableCell>
-                            <TableCell>{converttodate(row.datedepot)}</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>
+                            <TableCell align="center">{row.idmouvementstock}</TableCell>
+                            <TableCell align="center">{converttodate(row.datedepot)}</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }} align="center">
                               {colorType(row.mouvement)}
                             </TableCell>
-                            <TableCell>{row.naturemouvement}</TableCell>
+                            <TableCell align="center">{row.idetudiant}</TableCell>
+                            <TableCell align="center">{row.naturemouvement}</TableCell>
 
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -389,7 +416,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) =>
                         )}
                         {isEditClicked && row.idmouvementstock === selectedRowId && (
                           <>
-                            <TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"

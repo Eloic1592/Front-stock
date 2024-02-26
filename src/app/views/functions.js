@@ -33,20 +33,20 @@ export const deleteData = async (objetAInserer, lienPost) => {
   }
 };
 
-export const Finddata = (id) => {
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    fetch(baseUrl + id)
-      .then((response) => response.json())
-      .then((json) => {
-        setData(json);
-      })
-      .catch((error) => console.error(error));
-  }, [data]);
-  console.log(data);
+// export const Finddata = (id) => {
+//   const [data, setData] = useState(null);
+//   useEffect(() => {
+//     fetch(baseUrl + id)
+//       .then((response) => response.json())
+//       .then((json) => {
+//         setData(json);
+//       })
+//       .catch((error) => console.error(error));
+//   }, [data]);
+//   console.log(data);
 
-  return data;
-};
+//   return data;
+// };
 
 export const useData = (url, method = 'POST', requestBody = null) => {
   const [data, setData] = useState(null);

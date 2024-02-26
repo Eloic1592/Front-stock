@@ -53,6 +53,8 @@ const Stockfictif = Loadable(
 
 const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
 
+const StockMateriel = Loadable(lazy(() => import('app/views/admin/materiel/Stockmateriel')));
+
 const Facture = Loadable(lazy(() => import('app/views/admin/facture/Facture')));
 
 const Devis = Loadable(lazy(() => import('app/views/admin/demande/devis/Devis')));
@@ -172,6 +174,11 @@ const routes = [
         element: <Materiel />,
         auth: authRoles.admindefault
       },
+      {
+        path: '/admin/stockmateriel',
+        element: <StockMateriel />,
+        auth: authRoles.admindefault
+      },
 
       {
         path: '/admin/facture',
@@ -258,6 +265,8 @@ const routes = [
   { path: '/admin/bilan', element: <Bilan /> },
   { path: '/admin/article', element: <Article /> },
   { path: '/admin/stocksarticle', element: <Stockarticle /> },
+  { path: '/admin/listemateriel', element: <Materiel /> },
+  { path: '/admin/stockmateriel', element: <StockMateriel /> },
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
@@ -265,7 +274,6 @@ const routes = [
   { path: '/admin/detailphysique/:idmouvementstock', element: <Detailphysique /> },
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },
-  { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/facture', element: <Facture /> },
   { path: '/admin/devis', element: <Devis /> },
   { path: '/admin/detaildevis/:iddevis', element: <Detaildevis /> },
