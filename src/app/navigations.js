@@ -56,10 +56,14 @@ export const navigations = [
           { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
         ]
       },
+
       {
         name: 'Depot',
         iconText: 'arrows-right',
-        children: [{ name: 'Depot', iconText: 'SI', path: '/admin/depot' }]
+        children: [
+          { name: 'Liste des depots', iconText: 'SI', path: '/admin/depot' },
+          { name: 'Stock des depots', iconText: 'SI', path: '/admin/stockdepot' }
+        ]
       }
     ]
   },
