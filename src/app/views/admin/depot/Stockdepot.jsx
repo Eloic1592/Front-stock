@@ -12,6 +12,7 @@ import {
   Alert,
   Grid,
   Icon,
+  IconButton,
   Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -167,6 +168,9 @@ const Stockdepot = () => {
                     <TableCell key="quantite" align="center" width="50%">
                       Total article
                     </TableCell>
+                    <TableCell key="quantite" align="center" width="50%">
+                      Action
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -180,6 +184,17 @@ const Stockdepot = () => {
                             <TableCell align="center">{row.depot}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
+                            </TableCell>
+                            <TableCell align="center">
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                // onClick={() => getInfo(row.idmouvementstock)}
+                              >
+                                <Icon>info</Icon>
+                              </IconButton>
                             </TableCell>
                           </>
                         </TableRow>
