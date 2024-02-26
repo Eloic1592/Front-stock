@@ -176,13 +176,24 @@ export function convertdate(date) {
 
 export function converttodate(timestamp) {
   const date = new Date(timestamp);
+  const today = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = date.toLocaleDateString('fr-FR', options);
-  if (date === new Date()) {
-    return "Aujourd'hui";
-  }
   return formattedDate;
 }
+
+// export function converttodate(timestamp) {
+//   const date = new Date(timestamp);
+//   const today = new Date();
+//   const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+//   if (date.toDateString() === today.toDateString()) {
+//     return "aujourd'hui";
+//   } else {
+//     const formattedDate = date.toLocaleDateString('fr-FR', options);
+//     return formattedDate;
+//   }
+// }
 
 export function formatDate(timestamp) {
   const date = new Date(timestamp);
