@@ -18,6 +18,8 @@ import Button from '@mui/material/Button';
 import Listestockfictif from './Listestockfictif';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import Datalistmateriel from '../../Datagrid/Datalistmateriel';
+import Datalistetudiant from '../../Datagrid/Datalistetudiant';
 
 const Stockfictif = () => {
   // Input
@@ -28,8 +30,8 @@ const Stockfictif = () => {
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
   const [depot, setDepot] = useState(['1']);
-  const [idetudiant, setIdetudiant] = useState(['1']);
-  const [idmateriel, setIdmateriel] = useState(['1']);
+  const [idetudiant, setIdetudiant] = useState('');
+  const [idmateriel, setIdmateriel] = useState('');
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
@@ -59,6 +61,16 @@ const Stockfictif = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
+  const [opendatagrid, setOpendatagrid] = useState(false);
+  const handleClickOpendatagrid = () => setOpendatagrid(true);
+  const handleCloseOpendatagrid = () => {
+    setOpendatagrid(false);
+  };
+  const [openetugrid, setopenetutugrid] = useState(false);
+  const handleClickOpenetugrid = () => setopenetutugrid(true);
+  const handleCloseOpenetugrid = () => {
+    setopenetutugrid(false);
+  };
 
   // Close form
   const handleClose = () => setOpen(false);
@@ -138,7 +150,6 @@ const Stockfictif = () => {
     { label: 'materiel', field: 'idmateriel', align: 'center' },
     { label: 'date debut', field: 'datedeb', align: 'center' },
     { label: 'date fin', field: 'datefin', align: 'center' },
-    { label: 'ID Etudiant', field: 'idetudiant', align: 'center' },
     { label: 'caution', field: 'caution', align: 'center' },
     { label: 'depot', field: 'iddepot', align: 'center' }
   ];
@@ -258,42 +269,59 @@ const Stockfictif = () => {
                       </MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Select
-                      fullWidth
-                      autoFocus
-                      labelId="select-label"
-                      value={idetudiant}
-                      margin="dense"
-                      onChange={(event) => setIdetudiant(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un etudiant</MenuItem>
-                      {data.etudiants.map((row) => (
-                        <MenuItem value={row.idetudiant} key={row.idetudiant}>
-                          {row.idetudiant}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container spacing={1} xs={6}>
+                    <Grid item xs={10}>
+                      <TextField
+                        fullWidth
+                        type="text"
+                        name="idetudiant"
+                        label="Etudiant"
+                        variant="outlined"
+                        value={idetudiant}
+                        onChange={setIdetudiant}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Datalistetudiant
+                        Etudiant={data.etudiants}
+                        state={openetugrid}
+                        handleClose={handleCloseOpenetugrid}
+                        setetudiant={setIdetudiant}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpenetugrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
                 <h3>Details du mouvement fictif</h3>
                 <Grid container spacing={3}>
-                  <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      value={idmateriel}
-                      margin="dense"
-                      onChange={(event) => setIdmateriel(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un materiel</MenuItem>
-                      {data.listemateriels.map((row) => (
-                        <MenuItem value={row.idmateriel} key={row.idmateriel}>
-                          {row.marque}/{row.modele}-{row.numserie}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container spacing={1} xs={3}>
+                    <Grid item xs={9}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        type="text"
+                        name="idmateriel"
+                        label="Materiel"
+                        variant="outlined"
+                        value={idmateriel}
+                        onChange={setIdmateriel}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Datalistmateriel
+                        Materiels={data.listemateriels}
+                        state={opendatagrid}
+                        handleClose={handleCloseOpendatagrid}
+                        setmateriel={setIdmateriel}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid item xs={3}>
                     <TextField

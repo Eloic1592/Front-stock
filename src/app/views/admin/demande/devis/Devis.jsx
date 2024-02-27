@@ -7,9 +7,7 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Grid,
-  Select,
-  MenuItem
+  Grid
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -18,6 +16,8 @@ import Listedevis from './Listedevis';
 import { Container } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
+import Datalistclient from '../../Datagrid/Datalistclient';
+import Datalistarticle from '../../Datagrid/Datalistarticle';
 const Devis = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -26,17 +26,26 @@ const Devis = () => {
   const handleAlertClose = () => setMessage({ open: false });
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
-  // const [fileOpen, setFileOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [opendatagrid, setOpendatagrid] = useState(false);
+  const handleClickOpendatagrid = () => setOpendatagrid(true);
+  const handleCloseOpendatagrid = () => {
+    setOpendatagrid(false);
+  };
+  const [openetugrid, setopenetutugrid] = useState(false);
+  const handleClickOpenetugrid = () => setopenetutugrid(true);
+  const handleCloseOpenetugrid = () => {
+    setopenetutugrid(false);
+  };
 
   // Data
-  const [datedevis, setDatedevis] = useState(null);
-  const [libelle, setLibelle] = useState(null);
+  const [datedevis, setDatedevis] = useState('');
+  const [libelle, setLibelle] = useState('');
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [description, setDescription] = useState('');
-  const [article, setArticle] = useState(['1']);
-  const [client, setClient] = useState(['1']);
+  const [article, setArticle] = useState('');
+  const [client, setClient] = useState('');
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
     clients: [],
@@ -202,25 +211,32 @@ const Devis = () => {
                       onChange={(event) => setDatedevis(event.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      margin="dense"
-                      label="Article"
-                      value={client}
-                      onChange={(event) => setClient(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un client</MenuItem>
-                      {data.clients.map((row, index) => (
-                        <MenuItem key={index} value={row.idClient}>
-                          {row.nom}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container spacing={1} xs={4}>
+                    <Grid item xs={10}>
+                      <TextField
+                        fullWidth
+                        type="text"
+                        name="idclient"
+                        label="Client"
+                        variant="outlined"
+                        value={client}
+                        onChange={setClient}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Datalistclient
+                        Client={data.clients}
+                        state={openetugrid}
+                        handleClose={handleCloseOpenetugrid}
+                        setClient={setClient}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpenetugrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid item xs={4}>
-                    {' '}
                     <TextField
                       fullWidth
                       id="datedevis"
@@ -234,23 +250,31 @@ const Devis = () => {
                 </Grid>
                 <h3>Details du devis</h3>
                 <Grid container spacing={1}>
-                  <Grid item xs={3}>
-                    <Select
-                      fullWidth
-                      size="small"
-                      labelId="select-label"
-                      margin="dense"
-                      label="Article"
-                      value={article}
-                      onChange={(event) => setArticle(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un article</MenuItem>
-                      {data.articles.map((row, index) => (
-                        <MenuItem key={index} value={row.idarticle}>
-                          {row.modele}/{row.codearticle}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container xs={3} spacing={1}>
+                    <Grid item xs={9}>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        type="text"
+                        name="article"
+                        label="Article"
+                        variant="outlined"
+                        value={article}
+                        onChange={setArticle}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Datalistarticle
+                        articles={data.articles}
+                        state={opendatagrid}
+                        handleClose={handleCloseOpendatagrid}
+                        setArticle={setArticle}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid item xs={3}>
                     <TextField
@@ -318,7 +342,7 @@ const Devis = () => {
                 <Button onClick={handlecancelOpen} color="inherit" variant="contained">
                   Reinitialiser
                 </Button>
-                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button variant="contained" onClick={handleSubmit} color="primary">

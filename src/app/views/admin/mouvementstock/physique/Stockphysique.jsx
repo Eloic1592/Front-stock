@@ -18,17 +18,17 @@ import { useState, useEffect } from 'react';
 import ListeDetailphysique from './ListeDetailphysique';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import Datalistarticle from '../../Datagrid/Datalistarticle';
 
 const Stockphysique = () => {
   // Input
   const [datedepot, setDatedepot] = useState('');
   const [typemouvement, setTypemouvement] = useState(['0']);
   const [naturemouvement, setNaturemouvement] = useState(['1']);
-  const [article, setArticle] = useState(['1']);
+  const [article, setArticle] = useState('');
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [depot, setDepot] = useState(['1']);
-  // const [prixstock, setPrixstock] = useState(0);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [file, setFile] = useState('');
@@ -56,6 +56,11 @@ const Stockphysique = () => {
   const handleFileClose = () => setFileOpen(false);
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
+  const [opendatagrid, setOpendatagrid] = useState(false);
+  const handleClickOpendatagrid = () => setOpendatagrid(true);
+  const handleCloseOpendatagrid = () => {
+    setOpendatagrid(false);
+  };
   const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {
@@ -242,22 +247,30 @@ const Stockphysique = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      margin="dense"
-                      label="Article"
-                      value={article}
-                      onChange={(event) => setArticle(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un article</MenuItem>
-                      {data.articles.map((row) => (
-                        <MenuItem value={row.idarticle} key={row.idarticle}>
-                          {row.marque}/{row.modele}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container xs={12} spacing={1}>
+                    <Grid item xs={11}>
+                      <TextField
+                        fullWidth
+                        type="text"
+                        name="article"
+                        label="Article"
+                        variant="outlined"
+                        value={article}
+                        onChange={setArticle}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Datalistarticle
+                        articles={data.articles}
+                        state={opendatagrid}
+                        handleClose={handleCloseOpendatagrid}
+                        setArticle={setArticle}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
