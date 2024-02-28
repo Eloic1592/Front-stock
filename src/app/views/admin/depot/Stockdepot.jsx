@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { SimpleCard } from 'app/components';
+import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
@@ -57,7 +57,7 @@ const Stockdepot = () => {
   // Genere un PDF
   const generateStockDepotPDF = async () => {
     const blob = await renderPdf(<PDFStockdepot dataList={data} columns={columns} />).toBlob();
-    saveAs(blob, 'Liste_Depot.pdf');
+    saveAs(blob, 'Liste_Stock_Depot.pdf');
   };
 
   useEffect(() => {
@@ -96,8 +96,20 @@ const Stockdepot = () => {
     }
   }, [sortedData, initialDataFetched]);
 
+  const getstock = (iddepot) => {
+    window.location.replace('/admin/stocktypemateriel/' + iddepot);
+  };
+
   return (
     <Container>
+      <Box className="breadcrumb">
+        <Breadcrumb
+          routeSegments={[
+            { name: 'Stock depot', path: 'admin/stockdepot' },
+            { name: 'Stock par depot' }
+          ]}
+        />
+      </Box>
       <Box width="100%" overflow="auto" key="Box1">
         <Grid container direction="column" spacing={2}>
           <Grid item>
@@ -191,7 +203,7 @@ const Stockdepot = () => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="primary"
-                                // onClick={() => getInfo(row.idmouvementstock)}
+                                onClick={() => getstock(row.iddepot)}
                               >
                                 <Icon>info</Icon>
                               </IconButton>

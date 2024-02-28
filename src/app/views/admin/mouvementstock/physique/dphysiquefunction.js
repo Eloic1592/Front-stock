@@ -119,7 +119,10 @@ export const useDphysiqueFunctions = (data) => {
 };
 function filtrestockphysique(mouvementphysiques, marque, nature, typemouvement, datedepot, depot) {
   return mouvementphysiques.filter((item) => {
-    const marqueMatch = !marque || item.marque.toLowerCase().includes(marque.toLowerCase());
+    const marqueMatch =
+      !marque ||
+      item.marque.toLowerCase().includes(marque.toLowerCase()) ||
+      item.modele.toLowerCase().includes(marque.toLowerCase());
     let natureMatch = true;
     if (nature !== '1') {
       natureMatch = item.naturemouvement === nature;

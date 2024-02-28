@@ -16,7 +16,7 @@ import {
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
-import { SimpleCard } from 'app/components';
+import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useStockfunctions } from 'app/views/admin/materiel/stockfunction';
 import { baseUrl } from 'app/utils/constant';
@@ -106,6 +106,14 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   }, [sortedData, initialDataFetched]);
   return (
     <Container>
+      <Box className="breadcrumb">
+        <Breadcrumb
+          routeSegments={[
+            { name: 'Stock materiel', path: 'admin/stockmateriel' },
+            { name: 'Stock par materiel' }
+          ]}
+        />
+      </Box>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>

@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { SimpleCard } from 'app/components';
+import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { Commandefunctions } from 'app/views/admin/Bon/commande/Commandefunction';
 import { baseUrl } from 'app/utils/constant';
@@ -142,6 +142,14 @@ const Commande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   };
   return (
     <Container>
+      <Box className="breadcrumb">
+        <Breadcrumb
+          routeSegments={[
+            { name: 'Commande', path: 'admin/commande' },
+            { name: 'Bon de commande' }
+          ]}
+        />
+      </Box>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>

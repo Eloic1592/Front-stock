@@ -131,8 +131,8 @@ const Stockfictif = () => {
 
   // Reset data to null
   const resetData = () => {
-    setIdmateriel(['1']);
-    setIdetudiant(['1']);
+    setIdmateriel('');
+    setIdetudiant('');
     setDepot(['1']);
     setDatedepot(0);
     setDatedeb('');

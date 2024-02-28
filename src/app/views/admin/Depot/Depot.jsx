@@ -71,6 +71,9 @@ const Depot = () => {
         });
       });
   };
+  const getstock = () => {
+    window.location.replace('/admin/stockdepot');
+  };
   return (
     <Container>
       <Box className="breadcrumb">
@@ -78,11 +81,18 @@ const Depot = () => {
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Box>
-            <Button variant="contained" onClick={handleClickOpen} color="primary">
-              Nouveau Depot
-            </Button>
-          </Box>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Button variant="contained" onClick={handleClickOpen} color="primary">
+                Nouveau depot
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={getstock} color="secondary">
+                Stock depot
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Box>

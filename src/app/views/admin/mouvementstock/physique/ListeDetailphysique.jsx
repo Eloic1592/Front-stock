@@ -37,6 +37,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     { label: 'Nature', field: 'nature', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
+    { label: 'Montant HT', field: 'mht', align: 'center' },
     { label: 'Reste stock', field: 'restestock', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
   ];
@@ -200,7 +201,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   type="text"
                   name="marque"
                   variant="outlined"
-                  label="Marque"
+                  label="Marque ou modele"
                   value={marque}
                   onChange={(event) => setMarque(event.target.value)}
                 />
@@ -350,7 +351,10 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                     Quantite
                   </TableCell>
                   <TableCell key="pu" align="center" width="10%">
-                    Prix unitaire
+                    P.U
+                  </TableCell>
+                  <TableCell key="mht" align="center" width="10%">
+                    Montant HT
                   </TableCell>
                   <TableCell key="restestock" align="center" width="12%">
                     Reste stock
@@ -489,12 +493,15 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                             <TableCell key="datedepot" align="center" width="12%">
                               {converttodate(row.datedepot)}
                             </TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
+                            <TableCell align="center">
+                              {row.marque}/{row.modele}
+                            </TableCell>
                             <TableCell align="center">{row.naturemouvement}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.quantite)}
                             </TableCell>
                             <TableCell align="center">{formatNumber(row.pu)}</TableCell>
+                            <TableCell align="center">{formatNumber(row.total)}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.restestock))}
                             </TableCell>

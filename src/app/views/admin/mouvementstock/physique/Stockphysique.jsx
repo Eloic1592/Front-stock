@@ -108,7 +108,7 @@ const Stockphysique = () => {
 
   // Reset data to null
   const resetData = () => {
-    setArticle(['1']);
+    setArticle('');
     setDatedepot('');
     setQuantite(0);
     setPrixunitaire(0);

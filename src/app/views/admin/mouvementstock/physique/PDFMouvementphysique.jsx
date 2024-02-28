@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '12.5%', //  100% divisé par le nombre de colonnes
+    width: '11.1%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -58,10 +58,10 @@ const PDFMouvementphysique = ({ dataList, columns }) => {
           {dataList.slice(1).map((row, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.mouvement}</Text>
+                <Text style={styles.tableCell}>{converttodate(row.datedepot)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{converttodate(row.datedepot)}</Text>
+                <Text style={styles.tableCell}>{row.mouvement}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>
@@ -76,6 +76,9 @@ const PDFMouvementphysique = ({ dataList, columns }) => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{formatNumber(row.pu)}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.total)}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{formatNumber(row.restestock)}</Text>

@@ -1,98 +1,114 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Icon,
   TextField,
-  Select,
-  MenuItem,
+  Grid,
+  Icon,
+  Button,
   Snackbar,
   Alert,
-  Grid
+  Select,
+  MenuItem
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
-import { StyledTable } from 'app/views/style/style';
-import { Container } from 'app/views/style/style';
+import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { useParams } from 'react-router-dom';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
-import { useStockfunctions } from './stockfunction';
-import PDFStockArticle from './PDFStockArticle';
+import PDFStocktypemateriel from './PDFStocktypemateriel';
 
-const Stockarticle = () => {
-  // Colonne
+const Stocktypematerieldepot = () => {
+  const iddepot = useParams();
+
   const columns = [
-    { label: 'ID article', field: 'idarticle', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
-    { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'description', field: 'description', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' }
+    { label: 'Depot', field: 'depot', align: 'center' },
+    { label: 'Typemateriel', field: 'typemateriel', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' }
   ];
-  const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
+  const [typemateriel, setTypemateriel] = useState('');
+  const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
+  const [sortColumn, setSortColumn] = useState(['1']);
+  const [sortDirection, setSortDirection] = useState('asc');
 
-  const handleAlertClose = () => setMessage({ open: false });
+  // Pagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (_, newPage) => {
+    setPage(newPage);
+  };
 
-  const {
-    sortDirection,
-    page,
-    rowsPerPage,
-    setSortDirection,
-    handleChangePage,
-    sortColumn,
-    handleChangeRowsPerPage,
-    handleSelectColumn,
-    sortedData,
-    modele,
-    setMarque,
-    marque,
-    setModele,
-    typemateriel,
-    setTypemateriel
-  } = useStockfunctions(data);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+  const handleSelectColumn = (event) => {
+    setSortColumn(event.target.value);
+  };
 
-  const generateArticlePDF = async () => {
+  // Filtre
+  const filtertypemateriels = data.filter(
+    (typemateriels) =>
+      typemateriels.typemateriel &&
+      typemateriels.typemateriel.toLowerCase().includes(typemateriel.toLowerCase())
+  );
+  // Tri
+  const sortedData = filtertypemateriels.sort((a, b) => {
+    if (a[sortColumn] < b[sortColumn]) {
+      return sortDirection === 'asc' ? -1 : 1;
+    }
+    if (a[sortColumn] > b[sortColumn]) {
+      return sortDirection === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  // Export PDF
+  const generatestocktypematerielPDF = async () => {
     const blob = await renderPdf(
-      <PDFStockArticle dataList={data.stockarticles} columns={columns} />
+      <PDFStocktypemateriel dataList={data} columns={columns} />
     ).toBlob();
-    saveAs(blob, 'Stock_article.pdf');
+    saveAs(blob, 'Liste_Stock_Type_materiel.pdf');
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/article/stockarticle';
+        let depotParams = {
+          iddepot: iddepot.iddepot
+        };
+        let url = baseUrl + '/depot/stocktypematerieldepot';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify({}),
+          body: JSON.stringify(depotParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
-          throw new Error(`Request failed with status: ${response.status}`);
+          setMessage({
+            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+            severity: 'error',
+            open: true
+          });
         }
 
         const responseData = await response.json();
-        const newData = {
-          stockarticles: responseData.stockarticles || [],
-          typemateriels: responseData.typemateriels || []
-        };
-
-        setData(newData);
+        setData(responseData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -106,74 +122,48 @@ const Stockarticle = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [sortedData, initialDataFetched]);
+  }, [iddepot.iddepot, sortedData, initialDataFetched]);
+
+  //   Bouton retour
+  const redirect = () => {
+    window.location.replace('/admin/stockdepot');
+  };
 
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Stock article', path: 'admin/stocksarticle' },
-            { name: 'Stock par article' }
+            { name: 'Stock depot', path: 'admin/stocktypemateriel' },
+            { name: 'Stock type materiel par depot' }
           ]}
         />
       </Box>
       <Box width="100%" overflow="auto" key="Box1">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
-              <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    type="text"
-                    name="marque"
-                    label="Marque"
-                    variant="outlined"
-                    value={marque}
-                    onChange={(event) => setMarque(event.target.value)}
-                    sx={{ mb: 3 }}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    fullWidth
-                    size="small"
-                    type="text"
-                    name="modele"
-                    label="Modele"
-                    variant="outlined"
-                    value={modele}
-                    onChange={(event) => setModele(event.target.value)}
-                    sx={{ mb: 3 }}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <Select
-                    fullWidth
-                    labelId="select-label"
-                    variant="outlined"
-                    size="small"
-                    value={typemateriel}
-                    onChange={(event) => setTypemateriel(event.target.value)}
-                    sx={{ mb: 3 }}
-                  >
-                    <MenuItem value="1">Tous types</MenuItem>
-                    {data.typemateriels.map((row) => (
-                      <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                        {row.typemateriel}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              </Grid>
+            <Button variant="contained" color="inherit" onClick={redirect}>
+              <Icon>arrow_backward</Icon>
+            </Button>
+          </Grid>
+          <Grid item>
+            <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
+              <TextField
+                fullWidth
+                size="small"
+                type="text"
+                name="materielfiltre"
+                label="Nom du depot"
+                variant="outlined"
+                value={typemateriel}
+                onChange={(event) => setTypemateriel(event.target.value)}
+                sx={{ mb: 3 }}
+              />
             </SimpleCard>
           </Grid>
 
           <Grid item>
-            <SimpleCard title="Stock des articles">
-              {/* Tri de tables */}
+            <SimpleCard title="Liste des depots ">
               <Grid container spacing={2}>
                 <Grid item xs={2}>
                   <Select
@@ -184,8 +174,8 @@ const Stockarticle = () => {
                     onChange={handleSelectColumn}
                   >
                     <MenuItem value="1">Colonne</MenuItem>
-                    {columns.map((column, index) => (
-                      <MenuItem key={index} value={column.field}>
+                    {columns.map((column) => (
+                      <MenuItem key={column.field} value={column.field}>
                         {column.label}
                       </MenuItem>
                     ))}
@@ -209,7 +199,7 @@ const Stockarticle = () => {
                     variant="contained"
                     aria-label="Edit"
                     color="secondary"
-                    onClick={generateArticlePDF}
+                    onClick={generatestocktypematerielPDF}
                   >
                     <Icon>picture_as_pdf</Icon>
                   </Button>
@@ -217,25 +207,15 @@ const Stockarticle = () => {
               </Grid>
               <StyledTable>
                 <TableHead>
-                  {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idarticle" width="10%">
-                      idarticle
+                    <TableCell key="depot" align="center" width="50%">
+                      Depot
                     </TableCell>
-                    <TableCell key="marque" width="15%" align="center">
-                      marque
+                    <TableCell key="typemateriel" align="center" width="50%">
+                      Type materiel
                     </TableCell>
-                    <TableCell key="modele" width="15%" align="center">
-                      modele
-                    </TableCell>
-                    <TableCell key="typemateriel" width="15%" align="center">
-                      typemateriel
-                    </TableCell>
-                    <TableCell key="description" width="50%" align="center">
-                      description
-                    </TableCell>
-                    <TableCell key="quantite" width="15%" align="center">
-                      quantite
+                    <TableCell key="quantite" align="center" width="50%">
+                      Quantite
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -247,22 +227,19 @@ const Stockarticle = () => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell> {row.idarticle}</TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
+                            <TableCell align="center">{row.depot}</TableCell>
                             <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.quantite))}
+                              {coloredNumber(formatNumber(row.nombre))}
                             </TableCell>
                           </>
                         </TableRow>
                       ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6}>
+                      <TableCell colSpan={10}>
                         <Typography variant="subtitle1" color="textSecondary">
-                          Aucune donnée disponible
+                          Aucune donnee disponible
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -298,4 +275,4 @@ const Stockarticle = () => {
   );
 };
 
-export default Stockarticle;
+export default Stocktypematerieldepot;

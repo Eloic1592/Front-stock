@@ -44,6 +44,7 @@ function Datalistmateriel({ Materiels, state, handleClose, setmateriel }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  // Filtre
   const filteredMateriels = Materiels.filter(
     (materiel) =>
       (materiel.marque && materiel.marque.toLowerCase().includes(filter.toLowerCase())) ||

@@ -47,13 +47,7 @@ const Proforma = () => {
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Button variant="contained" color="secondary">
-                <Icon>picture_as_pdf</Icon>
-              </Button>
-            </Grid>
-          </Grid>
+          <Grid container direction="column" spacing={2}></Grid>
         </Grid>
         <Grid item>
           <Box>

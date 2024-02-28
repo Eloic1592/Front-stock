@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '50%', //  100% divisé par le nombre de colonnes
+    width: '33.3%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const PDFStockdepot = ({ dataList, columns }) => {
+const PDFStocktypemateriel = ({ dataList, columns }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Stock total des articles par depot</Text>
+        <Text style={styles.title}>Stock total des types de materiels par depot</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
             {columns.map((column, index) => (
@@ -61,7 +61,10 @@ const PDFStockdepot = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{row.depot}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.quantite)}</Text>
+                <Text style={styles.tableCell}>{row.typemateriel}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.nombre)}</Text>
               </View>
             </View>
           ))}
@@ -71,4 +74,4 @@ const PDFStockdepot = ({ dataList, columns }) => {
   );
 };
 
-export default PDFStockdepot;
+export default PDFStocktypemateriel;

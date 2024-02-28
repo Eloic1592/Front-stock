@@ -223,6 +223,11 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   Generer bon de commande
                 </Button>
               </Grid>
+              <Grid item xs={3}>
+                <Button variant="contained" color="secondary">
+                  <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
             </Grid>
             <StyledTable id="datatable">
               <TableHead>
