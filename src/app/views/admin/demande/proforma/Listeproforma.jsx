@@ -182,7 +182,7 @@ const Listeproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
         </Grid>
         <Grid item>
           <SimpleCard title="Liste des proformas">
-            <Grid container spacing={2}>
+            <Grid container spacing={2} alignItems="baseline">
               <Grid item xs={2}>
                 <Select
                   fullWidth

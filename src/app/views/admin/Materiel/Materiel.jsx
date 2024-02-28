@@ -142,6 +142,10 @@ const Materiel = () => {
     fetchData();
   }, []);
 
+  const getstock = () => {
+    window.location.replace('/admin/stockmateriel');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -158,7 +162,7 @@ const Materiel = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" onClick={getstock} color="secondary">
                 Stock materiel
               </Button>
             </Grid>

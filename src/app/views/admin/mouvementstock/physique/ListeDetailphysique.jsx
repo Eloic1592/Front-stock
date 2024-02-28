@@ -34,10 +34,10 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
     { label: 'Date', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Nature', field: 'nature', align: 'center' },
+    { label: 'Nature', field: 'naturemouvement', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
-    { label: 'Montant HT', field: 'mht', align: 'center' },
+    { label: 'Montant HT', field: 'total', align: 'center' },
     { label: 'Reste stock', field: 'restestock', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
   ];
@@ -344,7 +344,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   <TableCell key="marque" align="center" width="10%">
                     Marque
                   </TableCell>
-                  <TableCell key="nature" align="center" width="10%">
+                  <TableCell key="naturemouvement" align="center" width="10%">
                     Nature
                   </TableCell>
                   <TableCell key="quantite" align="center" width="10%">
@@ -353,7 +353,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                   <TableCell key="pu" align="center" width="10%">
                     P.U
                   </TableCell>
-                  <TableCell key="mht" align="center" width="10%">
+                  <TableCell key="total" align="center" width="10%">
                     Montant HT
                   </TableCell>
                   <TableCell key="restestock" align="center" width="12%">

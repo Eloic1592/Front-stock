@@ -117,7 +117,7 @@ function Datalistclient({ Client, state, handleClose, setClient }) {
         />
       </DialogContent>
       <DialogActions>
-        <Button color="inherit" onClick={handleClose} variant="contained">
+        <Button color="secondary" onClick={handleClose} variant="contained">
           Annuler
         </Button>
         <Button onClick={handleRetrieveData} color="primary" variant="contained">

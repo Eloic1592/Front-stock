@@ -120,7 +120,7 @@ function Datalistetudiant({ Etudiant, state, handleClose, setetudiant }) {
         />
       </DialogContent>
       <DialogActions>
-        <Button color="inherit" onClick={handleClose} variant="contained">
+        <Button color="secondary" onClick={handleClose} variant="contained">
           Annuler
         </Button>
         <Button onClick={handleRetrieveData} color="primary" variant="contained">

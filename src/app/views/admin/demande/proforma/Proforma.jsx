@@ -8,8 +8,7 @@ import {
   DialogTitle,
   Dialog,
   Grid,
-  Button,
-  Icon
+  Button
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -21,7 +20,6 @@ const Proforma = () => {
   // Form dialog
   const handleAlertClose = () => setMessage({ open: false });
   const [file, setFile] = useState('');
-  const handleFileOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
 

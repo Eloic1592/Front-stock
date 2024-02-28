@@ -1,73 +1,69 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
-  Icon,
+  TextField,
   Select,
   MenuItem,
-  Alert,
   Snackbar,
-  Grid
+  Alert,
+  Grid,
+  Icon,
+  IconButton,
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
 import { SimpleCard, Breadcrumb } from 'app/components';
-import { StyledTable } from 'app/views/style/style';
-import { useStockfunctions } from 'app/views/admin/materiel/stockfunction';
+import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { useStockdepotFunctions } from './stockdepotfunction';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { Container } from 'app/views/style/style';
-import PDFStockmateriel from './PDFStockmateriel';
+import PDFStockdepot from './PDFStockdepot';
 
-const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Stockdepot = () => {
   const columns = [
-    { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' }
   ];
+  const [data, setData] = useState([]);
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const [data, setData] = useState({
-    typemateriels: [],
-    stockmateriels: []
-  });
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const handleAlertClose = () => setMessage({ open: false });
   const {
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
+    setNomdepot,
+    nomdepot,
     handleChangePage,
     sortColumn,
-    setTypemateriel,
-    typemateriel,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
-  } = useStockfunctions(data);
+  } = useStockdepotFunctions(data);
 
-  const generateMaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFStockmateriel dataList={data.stockmateriels} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Stock_materiel.pdf');
+  // Genere un PDF
+  const generateStockDepotPDF = async () => {
+    const blob = await renderPdf(<PDFStockdepot dataList={data} columns={columns} />).toBlob();
+    saveAs(blob, 'Liste_Stock_Depot.pdf');
   };
 
-  //  Use effect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/materiel/stockmateriel';
+        let url = baseUrl + '/depot/stockdepot';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -82,12 +78,9 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
             open: true
           });
         }
+
         const responseData = await response.json();
-        const newData = {
-          typemateriels: responseData.typemateriels || [],
-          stockmateriels: responseData.stockmateriels || []
-        };
-        setData(newData);
+        setData(responseData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
@@ -102,44 +95,41 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
       setInitialDataFetched(true);
     }
   }, [sortedData, initialDataFetched]);
+
+  const getstock = (iddepot) => {
+    window.location.replace('/admin/stocktypemateriel/' + iddepot);
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Stock materiel', path: 'admin/stockmateriel' },
-            { name: 'Stock par materiel' }
+            { name: 'Stock depot', path: 'admin/stockdepot' },
+            { name: 'Stock par depot' }
           ]}
         />
       </Box>
-      <Box width="100%" overflow="auto">
+      <Box width="100%" overflow="auto" key="Box1">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Select
-                    fullWidth
-                    labelId="select-label"
-                    value={typemateriel}
-                    onChange={(event) => setTypemateriel(event.target.value)}
-                    size="small"
-                    sx={{ mb: 3 }}
-                  >
-                    <MenuItem value="0">Tous types</MenuItem>
-                    {data.typemateriels.map((row) => (
-                      <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                        {row.typemateriel}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-              </Grid>
+            <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
+              <TextField
+                fullWidth
+                size="small"
+                type="text"
+                name="materielfiltre"
+                label="Nom du depot"
+                variant="outlined"
+                value={nomdepot}
+                onChange={(event) => setNomdepot(event.target.value)}
+                sx={{ mb: 3 }}
+              />
             </SimpleCard>
           </Grid>
+
           <Grid item>
-            <SimpleCard title="Stock des materiels">
-              {/* Tri de tables */}
+            <SimpleCard title="Liste des depots ">
               <Grid container spacing={2}>
                 <Grid item xs={2}>
                   <Select
@@ -150,8 +140,8 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                     onChange={handleSelectColumn}
                   >
                     <MenuItem value="1">Colonne</MenuItem>
-                    {columns.map((column, index) => (
-                      <MenuItem key={index} value={column.field}>
+                    {columns.map((column) => (
+                      <MenuItem key={column.field} value={column.field}>
                         {column.label}
                       </MenuItem>
                     ))}
@@ -175,21 +165,23 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                     variant="contained"
                     aria-label="Edit"
                     color="secondary"
-                    onClick={generateMaterielPDF}
+                    onClick={generateStockDepotPDF}
                   >
                     <Icon>picture_as_pdf</Icon>
                   </Button>
                 </Grid>
               </Grid>
-              <StyledTable id="datatable">
+              <StyledTable>
                 <TableHead>
-                  {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="typemateriel" align="center" width="50%">
-                      typemateriel
+                    <TableCell key="depot" align="center" width="50%">
+                      depot
                     </TableCell>
                     <TableCell key="quantite" align="center" width="50%">
-                      quantite
+                      Total article
+                    </TableCell>
+                    <TableCell key="action" align="center" width="50%">
+                      Action
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -201,9 +193,20 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell align="center">{row.typemateriel}</TableCell>
+                            <TableCell align="center">{row.depot}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
+                            </TableCell>
+                            <TableCell align="center">
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => getstock(row.iddepot)}
+                              >
+                                <Icon>info</Icon>
+                              </IconButton>
                             </TableCell>
                           </>
                         </TableRow>
@@ -228,7 +231,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                     rowsPerPage={rowsPerPage}
                     count={sortedData.length}
                     onPageChange={handleChangePage}
-                    rowsPerPageOptions={rowsPerPageOptions}
+                    rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                     backIconButtonProps={{ 'aria-label': 'Page precedente' }}
@@ -248,4 +251,4 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   );
 };
 
-export default Stockmateriel;
+export default Stockdepot;

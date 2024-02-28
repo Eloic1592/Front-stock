@@ -31,7 +31,7 @@ const Stocktypematerieldepot = () => {
   const columns = [
     { label: 'Depot', field: 'depot', align: 'center' },
     { label: 'Typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' }
+    { label: 'Quantite', field: 'nombre', align: 'center' }
   ];
   const [typemateriel, setTypemateriel] = useState('');
   const [data, setData] = useState([]);
@@ -214,7 +214,7 @@ const Stocktypematerieldepot = () => {
                     <TableCell key="typemateriel" align="center" width="50%">
                       Type materiel
                     </TableCell>
-                    <TableCell key="quantite" align="center" width="50%">
+                    <TableCell key="nombre" align="center" width="50%">
                       Quantite
                     </TableCell>
                   </TableRow>
