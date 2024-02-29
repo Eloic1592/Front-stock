@@ -5,7 +5,7 @@ export const navigations = [
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/rotationstock' },
+      { name: 'Benefices', iconText: 'SI', path: '/admin/stattypemouvement' },
       {
         name: 'Mouvement de stock',
         iconText: 'arrows-right',

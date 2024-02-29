@@ -28,6 +28,9 @@ const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Stockar
 const TypeMouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Naturemouvement'))
 );
+const Stattypemouvement = Loadable(
+  lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
+);
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 
@@ -39,9 +42,6 @@ const Stockphysique = Loadable(
   lazy(() => import('app/views/admin/mouvementstock/physique/Stockphysique'))
 );
 
-// const Detailphysique = Loadable(
-//   lazy(() => import('app/views/admin/mouvementstock/physique/Detailphysique'))
-// );
 
 const Detailfictif = Loadable(
   lazy(() => import('app/views/admin/mouvementstock/fictif/detail/Detailfictif'))
@@ -145,6 +145,13 @@ const routes = [
       {
         path: '/admin/typemateriel',
         element: <TypeMateriel />,
+        auth: authRoles.admindefault
+      },
+
+      
+      {
+        path: '/admin/stattypemouvement',
+        element: <Stattypemouvement />,
         auth: authRoles.admindefault
       },
 
@@ -283,6 +290,7 @@ const routes = [
   { path: '/admin/stocksarticle', element: <Stockarticle /> },
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/stockmateriel', element: <StockMateriel /> },
+  { path: '/admin/stattypemouvement', element: <Stattypemouvement /> },
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },

@@ -501,7 +501,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] })
                               {formatNumber(row.quantite)}
                             </TableCell>
                             <TableCell align="center">{formatNumber(row.pu)}</TableCell>
-                            <TableCell align="center">{formatNumber(row.total)}</TableCell>
+                            <TableCell align="center">{coloredNumber(row.total)}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.restestock))}
                             </TableCell>
