@@ -243,7 +243,7 @@ import {
                           <TableRow key={index}>
                             <>
                               <TableCell align="center">{row.naturemouvement}</TableCell>
-                              <TableCell align="center">{row.mois}</TableCell>
+                              <TableCell align="center">{row.mois_nom}</TableCell>
                               <TableCell align="center">
                                 {coloredNumber((row.gain))}
                               </TableCell>
