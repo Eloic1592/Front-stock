@@ -12,6 +12,7 @@ export const useListematerielFunctions = (data) => {
   const [typemateriel, setTypemateriel] = useState('0');
   const [couleur, setCouleur] = useState('0');
   const [marque, setMarque] = useState('');
+  const [disponibilite, setDisponibilite] = useState('0');
   const [signature, setSignature] = useState('1');
 
   const handleChangePage = (_, newPage) => {
@@ -59,7 +60,14 @@ export const useListematerielFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtremateriel(data.listemateriels, marque, typemateriel, couleur, signature);
+  const filtredata = filtremateriel(
+    data.listemateriels,
+    marque,
+    typemateriel,
+    couleur,
+    signature,
+    disponibilite
+  );
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -105,12 +113,21 @@ export const useListematerielFunctions = (data) => {
     marque,
     setMarque,
     signature,
-    setSignature
+    setSignature,
+    setDisponibilite,
+    disponibilite
   };
 };
 
 // Filtre
-export function filtremateriel(listemateriel, filter, typemateriel, couleur, signature) {
+export function filtremateriel(
+  listemateriel,
+  filter,
+  typemateriel,
+  couleur,
+  signature,
+  disponibilite
+) {
   return listemateriel.filter((Item) => {
     const filtermatch =
       (Item.marque && Item.marque.toLowerCase().includes(filter.toLowerCase())) ||
@@ -128,7 +145,11 @@ export function filtremateriel(listemateriel, filter, typemateriel, couleur, sig
     if (signature !== '1') {
       signaturematch = Item.signature === signature;
     }
+    let statutmatch = true;
+    if (disponibilite !== '0') {
+      statutmatch = Item.statut === disponibilite;
+    }
 
-    return filtermatch && typeMatch && couleurMatch && signaturematch;
+    return filtermatch && typeMatch && couleurMatch && signaturematch && statutmatch;
   });
 }

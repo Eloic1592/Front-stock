@@ -37,7 +37,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     { label: 'Prix de vente', field: 'prixvente', align: 'center' },
     { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Couleur', field: 'couleur', align: 'center' },
-    { label: 'Signature', field: 'signature', align: 'center' }
+    { label: 'Signature', field: 'signature', align: 'center' },
+    { label: 'statut', field: 'statut', align: 'center' }
   ];
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -63,6 +64,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const [isEditedprixvente, setIsEditedprixvente] = useState(0);
   const [isEditedcolor, setIsEditedcolor] = useState(['Rouge']);
   const [isEditedcaution, setisEditedcaution] = useState(0);
+  const [isEditedstatut, setIsEditedstatut] = useState('1');
   const [isEditedsignature, setIsEditedsignature] = useState('1');
 
   // Modification(Update)
@@ -96,6 +98,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     handleSelectColumn,
     sortedData,
     signature,
+    disponibilite,
+    setDisponibilite,
     setSignature
   } = useListematerielFunctions(data);
 
@@ -109,6 +113,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
       prixvente: isEditedprixvente,
       caution: isEditedcaution,
       couleur: isEditedcolor,
+      statut: isEditedstatut,
       signature: isEditedsignature
     };
 
@@ -211,7 +216,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   onChange={(event) => setMarque(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -228,7 +233,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={2}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -260,6 +265,20 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       {signature}
                     </MenuItem>
                   ))}
+                </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Select
+                  labelId="select-label"
+                  sx={{ mb: 3 }}
+                  size="small"
+                  value={disponibilite}
+                  onChange={(event) => setDisponibilite(event.target.value)}
+                  fullWidth
+                >
+                  <MenuItem value="0">Tous statuts</MenuItem>
+                  <MenuItem value="LIBRE">Libre</MenuItem>
+                  <MenuItem value="OCCUPE">Occupe</MenuItem>
                 </Select>
               </Grid>
             </Grid>
@@ -361,6 +380,9 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   <TableCell key="signature" align="center" width="10%">
                     signature
                   </TableCell>
+                  <TableCell key="statut" align="center" width="7%">
+                    statut
+                  </TableCell>
                   <TableCell width="5%">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -453,6 +475,20 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell>
                               <Select
                                 labelId="select-label"
+                                value={isEditedstatut}
+                                onChange={(event) => setIsEditedstatut(event.target.value)}
+                                fullWidth
+                              >
+                                <MenuItem value="1" disabled>
+                                  Choisir la disponibilite
+                                </MenuItem>
+                                <MenuItem value="0">Libre</MenuItem>
+                                <MenuItem value="1">Occupe</MenuItem>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <Select
+                                labelId="select-label"
                                 value={isEditedsignature}
                                 onChange={(event) => setIsEditedsignature(event.target.value)}
                                 fullWidth
@@ -482,6 +518,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             </TableCell>
                             <TableCell align="center">{row.couleur}</TableCell>
                             <TableCell align="center">{row.signature}</TableCell>
+                            <TableCell align="center">{row.statut}</TableCell>
                             <TableCell align="center">
                               <IconButton
                                 className="button"
