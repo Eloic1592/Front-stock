@@ -33,8 +33,9 @@ const Materiel = () => {
 
   const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
-  const [prixvente, setPrixvente] = useState();
-  const [caution, setCaution] = useState();
+  const [prixvente, setPrixvente] = useState(0);
+  const [caution, setCaution] = useState(0);
+  const [disponibilite, setDisponibilite] = useState('1');
   const [signature, setSignature] = useState('1');
   const [file, setFile] = useState('');
   const handleFileClose = () => setFileOpen(false);
@@ -58,13 +59,14 @@ const Materiel = () => {
       !marque ||
       !caution ||
       typemateriel === 1 ||
+      disponibilite === 1 ||
       !numserie ||
       !prixvente ||
       !caution ||
       couleur === 1
     ) {
       setMessage({
-        text: 'Les champs suivants sont obligatoires : typemateriel,marque, modele, article, numserie, prixvente, caution, couleur',
+        text: 'Les champs suivants sont obligatoires : typemateriel,marque, modele, article, numserie, prixvente, caution, couleur,disponibilite',
         severity: 'error',
         open: true
       });
@@ -80,6 +82,7 @@ const Materiel = () => {
       caution: caution,
       couleur: couleur,
       description: description,
+      statut: disponibilite,
       signature: signature
     };
     let url = baseUrl + '/materiel/createmateriel';
@@ -234,7 +237,9 @@ const Materiel = () => {
                       onChange={(event) => setCouleur(event.target.value)}
                       sx={{ mb: 3 }}
                     >
-                      <MenuItem value="1">Choisir une couleur</MenuItem>
+                      <MenuItem value="1" disabled>
+                        Choisir une couleur
+                      </MenuItem>
                       {colors.map((color, index) => (
                         <MenuItem key={index} value={color}>
                           {color}
@@ -243,18 +248,35 @@ const Materiel = () => {
                     </Select>
                   </Grid>
                 </Grid>
-
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="numeroserie"
-                  type="text"
-                  margin="dense"
-                  label="Numero de serie"
-                  name="numserie"
-                  value={numserie}
-                  onChange={(event) => setNumserie(event.target.value)}
-                />
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="numeroserie"
+                      type="text"
+                      margin="dense"
+                      label="Numero de serie"
+                      name="numserie"
+                      value={numserie}
+                      onChange={(event) => setNumserie(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="prixvente"
+                      type="number"
+                      InputProps={{ inputProps: { min: 0 } }}
+                      margin="dense"
+                      label="Prix de vente"
+                      name="prixvente"
+                      value={prixvente}
+                      onChange={(event) => setPrixvente(event.target.value)}
+                    />
+                  </Grid>
+                </Grid>
 
                 <TextField
                   fullWidth
@@ -269,19 +291,6 @@ const Materiel = () => {
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                 />
-
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="prixvente"
-                  type="number"
-                  InputProps={{ inputProps: { min: 0 } }}
-                  margin="dense"
-                  label="Prix de vente"
-                  name="prixvente"
-                  value={prixvente}
-                  onChange={(event) => setPrixvente(event.target.value)}
-                />
                 <TextField
                   fullWidth
                   autoFocus
@@ -294,20 +303,39 @@ const Materiel = () => {
                   value={caution}
                   onChange={(event) => setCaution(event.target.value)}
                 />
-                <Select
-                  labelId="select-label"
-                  sx={{ mb: 3 }}
-                  value={signature}
-                  onChange={(event) => setSignature(event.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value="1" disabled>
-                    Choisir une signature
-                  </MenuItem>
-                  <MenuItem value="Perso">Perso</MenuItem>
-                  <MenuItem value="ITU">ITU</MenuItem>
-                  <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
-                </Select>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Select
+                      labelId="select-label"
+                      sx={{ mb: 3 }}
+                      value={disponibilite}
+                      onChange={(event) => setDisponibilite(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir la disponibilite
+                      </MenuItem>
+                      <MenuItem value="0">Libre</MenuItem>
+                      <MenuItem value="1">Occupe</MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      labelId="select-label"
+                      sx={{ mb: 3 }}
+                      value={signature}
+                      onChange={(event) => setSignature(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir une signature
+                      </MenuItem>
+                      <MenuItem value="Perso">Perso</MenuItem>
+                      <MenuItem value="ITU">ITU</MenuItem>
+                      <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
+                    </Select>
+                  </Grid>
+                </Grid>
               </DialogContent>
 
               <DialogActions>

@@ -8,12 +8,10 @@ export const useListematerielFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [numserie, setNumserie] = useState('');
   const [categoriemateriel, setCategoriemateriel] = useState('0');
   const [typemateriel, setTypemateriel] = useState('0');
   const [couleur, setCouleur] = useState('0');
   const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState('');
   const [signature, setSignature] = useState('1');
 
   const handleChangePage = (_, newPage) => {
@@ -61,15 +59,7 @@ export const useListematerielFunctions = (data) => {
     setSortColumn(event.target.value);
   };
 
-  const filtredata = filtremateriel(
-    data.listemateriels,
-    marque,
-    modele,
-    numserie,
-    typemateriel,
-    couleur,
-    signature
-  );
+  const filtredata = filtremateriel(data.listemateriels, marque, typemateriel, couleur, signature);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;
@@ -107,36 +97,25 @@ export const useListematerielFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     setCouleur,
-    setNumserie,
     setTypemateriel,
     setCategoriemateriel,
     categoriemateriel,
     couleur,
-    numserie,
     typemateriel,
     marque,
     setMarque,
-    modele,
-    setModele,
     signature,
     setSignature
   };
 };
 
 // Filtre
-export function filtremateriel(
-  listemateriel,
-  marque,
-  modele,
-  numserie,
-  typemateriel,
-  couleur,
-  signature
-) {
+export function filtremateriel(listemateriel, filter, typemateriel, couleur, signature) {
   return listemateriel.filter((Item) => {
-    const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
-    const modelematch = !modele || Item.modele.toLowerCase().includes(modele.toLowerCase());
-    const numSerieMatch = !numserie || Item.numserie.toLowerCase().includes(numserie.toLowerCase());
+    const filtermatch =
+      (Item.marque && Item.marque.toLowerCase().includes(filter.toLowerCase())) ||
+      (Item.modele && Item.modele.toLowerCase().includes(filter.toLowerCase())) ||
+      (Item.numserie && Item.numserie.toLowerCase().includes(filter.toLowerCase()));
     let typeMatch = true;
     if (typemateriel !== '0') {
       typeMatch = Item.idtypemateriel === typemateriel;
@@ -150,8 +129,6 @@ export function filtremateriel(
       signaturematch = Item.signature === signature;
     }
 
-    return (
-      modelematch && marquematch && numSerieMatch && typeMatch && couleurMatch && signaturematch
-    );
+    return filtermatch && typeMatch && couleurMatch && signaturematch;
   });
 }

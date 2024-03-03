@@ -28,7 +28,9 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
     { label: 'Nature du mouvement', field: 'naturemouvement', align: 'center' }
   ];
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    naturemouvements: []
+  });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [editedIdNaturemouvement, setEditedIdNaturemouvement] = useState(null);
   const [editedNaturemouvement, setEditedNaturemouvement] = useState(null);
@@ -110,7 +112,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/naturemouvement/listnatmouvement';
+        let url = baseUrl + '/naturemouvement/contentnatmouvement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -123,7 +125,10 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          naturemouvements: responseData.naturemouvements || []
+        };
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",

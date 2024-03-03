@@ -31,7 +31,7 @@ export const useListemouvementFunctions = (data) => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.naturemouvements.map((row) => row.id));
     } else {
       setSelectedIds([]);
     }
@@ -41,7 +41,7 @@ export const useListemouvementFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrenaturemouvement(data, naturemouvement, typemouvement);
+  const filtredata = filtrenaturemouvement(data.naturemouvements, naturemouvement, typemouvement);
   const sortedData = filtredata.sort((a, b) => {
     if (a[sortColumn] < b[sortColumn]) {
       return sortDirection === 'asc' ? -1 : 1;

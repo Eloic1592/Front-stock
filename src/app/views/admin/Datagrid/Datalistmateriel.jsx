@@ -49,6 +49,7 @@ function Datalistmateriel({ Materiels, state, handleClose, setmateriel }) {
     (materiel) =>
       (materiel.marque && materiel.marque.toLowerCase().includes(filter.toLowerCase())) ||
       (materiel.modele && materiel.modele.toLowerCase().includes(filter.toLowerCase())) ||
+      (materiel.numserie && materiel.numserie.toLowerCase().includes(filter.toLowerCase())) ||
       (materiel.description && materiel.description.toLowerCase().includes(filter.toLowerCase())) ||
       (materiel.couleur && materiel.couleur.toLowerCase().includes(filter.toLowerCase()))
   );

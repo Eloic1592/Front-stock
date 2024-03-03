@@ -88,12 +88,8 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
     couleur,
     typemateriel,
     selectedIds,
-    setNumserie,
-    numserie,
     marque,
     setMarque,
-    modele,
-    setModele,
     handleChangeRowsPerPage,
     handleSelectAll,
     handleSelection,
@@ -203,44 +199,19 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
         <Grid item>
           <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={1}>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <TextField
                   fullWidth
                   size="small"
                   id="marque"
                   type="text"
-                  label="Marque"
+                  label="Marque ou modele ou numero de serie"
                   name="marque"
                   value={marque}
                   onChange={(event) => setMarque(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={2}>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  size="small"
-                  id="modele"
-                  type="text"
-                  label="Modele"
-                  name="modele"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <TextField
-                  fullWidth
-                  id="numeroserie"
-                  size="small"
-                  type="text"
-                  label="Numero de serie"
-                  name="numserie"
-                  value={numserie}
-                  onChange={(event) => setNumserie(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -257,7 +228,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -274,7 +245,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -497,7 +468,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                           </>
                         ) : (
                           <>
-                            {/* <TableCell align="center">{row.idmateriel}</TableCell> */}
                             <TableCell align="center">{row.typemateriel}</TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
@@ -510,7 +480,6 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.caution)}
                             </TableCell>
-                            {/* <TableCell align="center">{row.description}</TableCell> */}
                             <TableCell align="center">{row.couleur}</TableCell>
                             <TableCell align="center">{row.signature}</TableCell>
                             <TableCell align="center">
