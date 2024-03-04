@@ -35,7 +35,7 @@ const Materiel = () => {
   const [description, setDescription] = useState('');
   const [prixvente, setPrixvente] = useState(0);
   const [caution, setCaution] = useState(0);
-  const [disponibilite, setDisponibilite] = useState('1');
+  const [disponibilite, setDisponibilite] = useState('2');
   const [signature, setSignature] = useState('1');
   const [file, setFile] = useState('');
   const handleFileClose = () => setFileOpen(false);
@@ -312,7 +312,7 @@ const Materiel = () => {
                       onChange={(event) => setDisponibilite(event.target.value)}
                       fullWidth
                     >
-                      <MenuItem value="1" disabled>
+                      <MenuItem value="2" disabled>
                         Choisir la disponibilite
                       </MenuItem>
                       <MenuItem value="0">Libre</MenuItem>

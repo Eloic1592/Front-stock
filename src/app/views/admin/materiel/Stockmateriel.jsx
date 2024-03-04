@@ -103,6 +103,12 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
       setInitialDataFetched(true);
     }
   }, [sortedData, initialDataFetched]);
+
+  // Redirect
+  const getlist = () => {
+    window.location.replace('/admin/listemateriel');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -112,6 +118,11 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
             { name: 'Stock par materiel' }
           ]}
         />
+      </Box>
+      <Box className="breadcrumb">
+        <Button variant="contained" color="secondary" onClick={getlist}>
+          Liste des materiels
+        </Button>
       </Box>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
@@ -209,7 +220,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                               {row.typemateriel}
                             </TableCell>
 
-                            <TableCell align="center">
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.libre))}
                             </TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
