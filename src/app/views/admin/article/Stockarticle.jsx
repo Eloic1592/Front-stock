@@ -108,6 +108,11 @@ const Stockarticle = () => {
     }
   }, [sortedData, initialDataFetched]);
 
+  // Redirect
+  const getlist = () => {
+    window.location.replace('/admin/article');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -117,6 +122,11 @@ const Stockarticle = () => {
             { name: 'Stock par article' }
           ]}
         />
+      </Box>
+      <Box className="breadcrumb">
+        <Button variant="contained" color="secondary" onClick={getlist}>
+          Liste des articles
+        </Button>
       </Box>
       <Box width="100%" overflow="auto" key="Box1">
         <Grid container direction="column" spacing={2}>
@@ -207,7 +217,7 @@ const Stockarticle = () => {
                   <Button
                     className="button"
                     variant="contained"
-                    aria-label="Edit"
+                    aria-label="Éditer"
                     color="secondary"
                     onClick={generateArticlePDF}
                   >

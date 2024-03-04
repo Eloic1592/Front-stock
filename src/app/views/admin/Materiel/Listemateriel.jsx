@@ -507,9 +507,7 @@ const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             <TableCell align="center">{row.typemateriel}</TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center" text>
-                              {row.numserie}
-                            </TableCell>
+                            <TableCell align="center">{row.numserie}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.prixvente)}
                             </TableCell>
