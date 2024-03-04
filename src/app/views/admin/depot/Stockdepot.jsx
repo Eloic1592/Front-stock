@@ -180,7 +180,7 @@ const Stockdepot = () => {
                     <TableCell key="quantite" align="center" width="50%">
                       Total article
                     </TableCell>
-                    <TableCell key="quantite" align="center" width="50%">
+                    <TableCell key="action" align="center" width="50%">
                       Action
                     </TableCell>
                   </TableRow>

@@ -28,7 +28,8 @@ import PDFStockmateriel from './PDFStockmateriel';
 const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' }
+    { label: 'Libre', field: 'libre', align: 'center' },
+    { label: 'Occupe', field: 'occupe', align: 'center' }
   ];
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -185,11 +186,14 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="typemateriel" align="center" width="50%">
-                      typemateriel
+                    <TableCell key="typemateriel" align="center" width="35%">
+                      Type materiel
                     </TableCell>
-                    <TableCell key="quantite" align="center" width="50%">
-                      quantite
+                    <TableCell key="libre" align="center" width="35%">
+                      Libre
+                    </TableCell>
+                    <TableCell key="occupe" align="center" width="50%">
+                      Occupe
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -201,9 +205,15 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell align="center">{row.typemateriel}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.quantite))}
+                              {row.typemateriel}
+                            </TableCell>
+
+                            <TableCell align="center">
+                              {coloredNumber(formatNumber(row.libre))}
+                            </TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {coloredNumber(formatNumber(row.occupe))}
                             </TableCell>
                           </>
                         </TableRow>

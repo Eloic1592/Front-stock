@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '50%', //  100% divisé par le nombre de colonnes
+    width: '33.3%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -46,7 +46,7 @@ const PDFStockmateriel = ({ dataList, columns }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Liste des materiels</Text>
+        <Text style={styles.title}>Stock de materiel</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
             {columns.map((column, index) => (
@@ -61,7 +61,10 @@ const PDFStockmateriel = ({ dataList, columns }) => {
                 <Text style={styles.tableCell}>{row.typemateriel}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.quantite)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.libre)}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.occupe)}</Text>
               </View>
             </View>
           ))}
