@@ -100,6 +100,11 @@ const Stockdepot = () => {
     window.location.replace('/admin/stocktypemateriel/' + iddepot);
   };
 
+  // Redirect
+  const getlist = () => {
+    window.location.replace('/admin/depot');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -110,10 +115,15 @@ const Stockdepot = () => {
           ]}
         />
       </Box>
+      <Box className="breadcrumb">
+        <Button variant="contained" color="secondary" onClick={getlist}>
+          Liste des depots
+        </Button>
+      </Box>
       <Box width="100%" overflow="auto" key="Box1">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher un materiel dans ce depot" sx={{ marginBottom: '16px' }}>
               <TextField
                 fullWidth
                 size="small"

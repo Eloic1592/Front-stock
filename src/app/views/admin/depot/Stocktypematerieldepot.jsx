@@ -147,7 +147,7 @@ const Stocktypematerieldepot = () => {
             </Button>
           </Grid>
           <Grid item>
-            <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher un materiel dans ce depot" sx={{ marginBottom: '16px' }}>
               <TextField
                 fullWidth
                 size="small"

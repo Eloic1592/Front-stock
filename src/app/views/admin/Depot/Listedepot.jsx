@@ -20,6 +20,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListedepotFunctions } from 'app/views/admin/depot/function';
 import { baseUrl } from 'app/utils/constant';
+import { Link } from 'react-router-dom';
 
 const Listedepot = () => {
   const columns = [
@@ -241,7 +242,9 @@ const Listedepot = () => {
                               {row.iddepot}
                             </TableCell>
                             <TableCell align="center" width="50%">
-                              {row.depot}
+                              <Link to={`/admin/stocktypemateriel/${row.iddepot}`}>
+                                {row.depot}
+                              </Link>
                             </TableCell>
                             <TableCell align="center" width="15%">
                               <IconButton
