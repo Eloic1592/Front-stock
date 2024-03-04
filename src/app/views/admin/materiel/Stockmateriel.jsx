@@ -29,7 +29,8 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
     { label: 'Libre', field: 'libre', align: 'center' },
-    { label: 'Occupe', field: 'occupe', align: 'center' }
+    { label: 'Occupe', field: 'occupe', align: 'center' },
+    { label: 'Total', field: 'total', align: 'center' }
   ];
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -206,6 +207,9 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                     <TableCell key="occupe" align="center" width="50%">
                       Occupe
                     </TableCell>
+                    <TableCell key="total" align="center" width="50%">
+                      Total
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -225,6 +229,9 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                             </TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.occupe))}
+                            </TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {coloredNumber(formatNumber(row.total))}
                             </TableCell>
                           </>
                         </TableRow>

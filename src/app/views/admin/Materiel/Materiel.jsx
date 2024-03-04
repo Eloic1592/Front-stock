@@ -339,7 +339,7 @@ const Materiel = () => {
               </DialogContent>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">
