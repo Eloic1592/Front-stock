@@ -198,16 +198,16 @@ const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="typemateriel" align="center" width="35%">
+                    <TableCell key="typemateriel" align="center" width="25%">
                       Type materiel
                     </TableCell>
-                    <TableCell key="libre" align="center" width="35%">
+                    <TableCell key="libre" align="center" width="25%">
                       Libre
                     </TableCell>
-                    <TableCell key="occupe" align="center" width="50%">
+                    <TableCell key="occupe" align="center" width="25%">
                       Occupe
                     </TableCell>
-                    <TableCell key="total" align="center" width="50%">
+                    <TableCell key="total" align="center" width="25%">
                       Total
                     </TableCell>
                   </TableRow>
