@@ -90,7 +90,7 @@ export function filtrenaturemouvement(listenaturemouvement, naturemouvement, typ
       Item.naturemouvement.toLowerCase().includes(naturemouvement.toLowerCase());
     let typemouvementMatch = true;
     if (typemouvement !== '2') {
-      typemouvementMatch = Item.typemouvement === parseInt(typemouvement);
+      typemouvementMatch = Item.type === parseInt(typemouvement);
     }
     return naturemouvementmatch && typemouvementMatch;
   });
