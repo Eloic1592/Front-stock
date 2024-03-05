@@ -55,12 +55,6 @@ const Stockmaterieldepot = () => {
     sortedData
   } = useStockmaterielFunctions(data);
 
-  // Genere un PDF
-  const generateStockDepotPDF = async () => {
-    const blob = await renderPdf(<PDFStockdepot dataList={data} columns={columns} />).toBlob();
-    saveAs(blob, 'Liste_Stock_Depot.pdf');
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -169,17 +163,6 @@ const Stockmaterieldepot = () => {
                     <MenuItem value="asc">ASC</MenuItem>
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
-                </Grid>
-                <Grid item xs={2}>
-                  <Button
-                    className="button"
-                    variant="contained"
-                    aria-label="Edit"
-                    color="secondary"
-                    onClick={generateStockDepotPDF}
-                  >
-                    <Icon>picture_as_pdf</Icon>
-                  </Button>
                 </Grid>
               </Grid>
               <StyledTable>
