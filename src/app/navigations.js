@@ -67,7 +67,8 @@ export const navigations = [
         iconText: 'arrows-right',
         children: [
           { name: 'Liste des depots', iconText: 'SI', path: '/admin/depot' },
-          { name: 'Stock des depots', iconText: 'SI', path: '/admin/stockdepot' }
+          { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
+          { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
         ]
       }
     ]

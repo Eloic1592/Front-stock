@@ -42,7 +42,6 @@ const Stockphysique = Loadable(
   lazy(() => import('app/views/admin/mouvementstock/physique/Stockphysique'))
 );
 
-
 const Detailfictif = Loadable(
   lazy(() => import('app/views/admin/mouvementstock/fictif/detail/Detailfictif'))
 );
@@ -82,6 +81,8 @@ const Detaillivraison = Loadable(
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const StockDepot = Loadable(lazy(() => import('app/views/admin/depot/Stockdepot')));
+
+const Utilistionmateriel = Loadable(lazy(() => import('app/views/admin/depot/Stockmaterieldepot')));
 
 const StocktypematerielDepot = Loadable(
   lazy(() => import('app/views/admin/depot/Stocktypematerieldepot'))
@@ -148,7 +149,6 @@ const routes = [
         auth: authRoles.admindefault
       },
 
-      
       {
         path: '/admin/stattypemouvement',
         element: <Stattypemouvement />,
@@ -255,6 +255,12 @@ const routes = [
         element: <StockDepot />,
         auth: authRoles.admindefault
       },
+
+      {
+        path: '/admin/utilisationmateriel',
+        element: <Utilistionmateriel />,
+        auth: authRoles.admindefault
+      },
       {
         path: '/admin/stocktypemateriel/:iddepot',
         element: <StocktypematerielDepot />,
@@ -307,6 +313,7 @@ const routes = [
   { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/stockdepot', element: <StockDepot /> },
+  { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },

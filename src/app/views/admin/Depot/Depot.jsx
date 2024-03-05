@@ -74,9 +74,9 @@ const Depot = () => {
   const getstockarticle = () => {
     window.location.replace('/admin/stockdepot');
   };
-  // const getstockmateriel = () => {
-  //   window.location.replace('/admin/stockdepot');
-  // };
+  const getstockmateriel = () => {
+    window.location.replace('/admin/utilisationmateriel');
+  };
   return (
     <Container>
       <Box className="breadcrumb">
@@ -95,11 +95,11 @@ const Depot = () => {
                 Stock article
               </Button>
             </Grid>
-            {/* <Grid item>
+            <Grid item>
               <Button variant="contained" onClick={getstockmateriel} color="secondary">
                 Stock materiel
               </Button>
-            </Grid> */}
+            </Grid>
           </Grid>
         </Grid>
         <Grid item>
