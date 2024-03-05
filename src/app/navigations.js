@@ -12,11 +12,11 @@ export const navigations = [
         children: [
           { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
           {
-            name: 'Suivi mouvements des articles',
+            name: 'Mouvements des articles',
             iconText: 'SI',
             path: '/admin/mouvementphysique'
           },
-          { name: 'Suivi mouvements des materiels', iconText: 'SI', path: '/admin/mouvementfictif' }
+          { name: 'Mouvements des materiels', iconText: 'SI', path: '/admin/mouvementfictif' }
         ]
       },
       {
