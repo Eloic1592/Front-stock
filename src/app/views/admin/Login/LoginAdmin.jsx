@@ -31,7 +31,7 @@ const JWTRoot = styled(JustifyBox)(() => ({
 
 // inital login credentials
 const initialValues = {
-  email: '',
+  nom: '',
   password: '',
   remember: true
 };
@@ -41,7 +41,9 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
     .required('Mot de passe requis'),
-  email: Yup.string().email('Adresse email invalide').required('Adresse email requis!')
+  nom: Yup.string()
+    .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
+    .required('Adresse nom requis!')
 });
 
 const LoginAdmin = () => {
@@ -51,18 +53,19 @@ const LoginAdmin = () => {
     state: false,
     color: 'green'
   });
+
   const handleFormSubmit = async (values) => {
-    const admin = {
-      email: values.email,
-      mdp: values.password
+    const useParams = {
+      loginuser: values.nom,
+      pwduser: values.password
     };
     setLoading(true);
 
     try {
-      const response = await fetch(baseUrl + 'signinAdmin', {
+      const response = await fetch(baseUrl + '/login/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(admin)
+        body: JSON.stringify(useParams)
       });
 
       if (!response.ok) {
@@ -76,14 +79,12 @@ const LoginAdmin = () => {
         const data = await response.json();
         if (data == null) {
           setMessage({
-            message: 'Email ou mot de passe incorrect',
+            message: 'nom ou mot de passe incorrect',
             state: true,
             color: 'red'
           });
         } else {
-          localStorage.setItem('token_ad', data.token);
-          localStorage.setItem('idadmin', data.idadmin.id);
-          window.location.replace('/admin/calendriertech');
+          window.location.replace('/admin/depot');
         }
       }
     } catch (error) {
@@ -122,15 +123,15 @@ const LoginAdmin = () => {
                       <TextField
                         fullWidth
                         size="small"
-                        type="email"
-                        name="email"
-                        label="Email"
+                        type="text"
+                        name="nom"
+                        label="Nom"
                         variant="outlined"
                         onBlur={handleBlur}
-                        value={values.email}
+                        value={values.nom}
                         onChange={handleChange}
-                        helperText={touched.email && errors.email}
-                        error={Boolean(errors.email && touched.email)}
+                        helperText={touched.nom && errors.nom}
+                        error={Boolean(errors.nom && touched.nom)}
                         sx={{ mb: 3 }}
                       />
 
