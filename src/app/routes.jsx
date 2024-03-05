@@ -107,58 +107,48 @@ const routes = [
       // admin route
       {
         path: '/charts/echarts',
-        element: <AppEchart />,
-        auth: authRoles.editor
+        element: <AppEchart />
       },
       {
         path: '/admin/dashboard',
-        element: <Dashboard />,
-        auth: authRoles.admindefault
+        element: <Dashboard />
       },
 
       {
         path: '/admin/bilan',
-        element: <Bilan />,
-        auth: authRoles.admindefault
+        element: <Bilan />
       },
       {
         path: '/admin/article',
-        element: <Article />,
-        auth: authRoles.admindefault
+        element: <Article />
       },
       {
         path: '/admin/stocksarticle',
-        element: <Stockarticle />,
-        auth: authRoles.admindefault
+        element: <Stockarticle />
       },
       {
         path: '/admin/typemouvement',
-        element: <TypeMouvement />,
-        auth: authRoles.admindefault
+        element: <TypeMouvement />
       },
 
       {
         path: '/admin/typemateriel',
-        element: <TypeMateriel />,
-        auth: authRoles.admindefault
+        element: <TypeMateriel />
       },
 
       {
         path: '/admin/stattypemouvement',
-        element: <Stattypemouvement />,
-        auth: authRoles.admindefault
+        element: <Stattypemouvement />
       },
 
       {
         path: '/admin/categoriemateriel',
-        element: <Categoriemateriel />,
-        auth: authRoles.admindefault
+        element: <Categoriemateriel />
       },
 
       {
         path: '/admin/mouvementphysique',
-        element: <Stockphysique />,
-        auth: authRoles.admindefault
+        element: <Stockphysique />
       },
       // {
       //   path: '/admin/detailphysique/:idmouvementstock',
@@ -168,109 +158,90 @@ const routes = [
 
       {
         path: '/admin/mouvementfictif',
-        element: <Stockfictif />,
-        auth: authRoles.admindefault
+        element: <Stockfictif />
       },
       {
         path: '/admin/detailfictif/:idmouvementstock',
-        element: <Detailfictif />,
-        auth: authRoles.admindefault
+        element: <Detailfictif />
       },
       {
         path: '/admin/listemateriel',
-        element: <Materiel />,
-        auth: authRoles.admindefault
+        element: <Materiel />
       },
       {
         path: '/admin/stockmateriel',
-        element: <StockMateriel />,
-        auth: authRoles.admindefault
+        element: <StockMateriel />
       },
 
       {
         path: '/admin/facture',
-        element: <Facture />,
-        auth: authRoles.admindefault
+        element: <Facture />
       },
 
       {
         path: '/admin/devis',
-        element: <Devis />,
-        auth: authRoles.admindefault
+        element: <Devis />
       },
 
       {
         path: '/admin/detaildevis/:iddevis',
-        element: <Detaildevis />,
-        auth: authRoles.admindefault
+        element: <Detaildevis />
       },
 
       {
         path: '/admin/proforma',
-        element: <Proforma />,
-        auth: authRoles.admindefault
+        element: <Proforma />
       },
 
       {
         path: '/admin/detailproforma/:iddevis',
-        element: <Detailproforma />,
-        auth: authRoles.admindefault
+        element: <Detailproforma />
       },
 
       {
         path: '/admin/commande',
-        element: <Commande />,
-        auth: authRoles.admindefault
+        element: <Commande />
       },
       {
         path: '/admin/detailcommande/:idproforma',
-        element: <DetailCommande />,
-        auth: authRoles.admindefault
+        element: <DetailCommande />
       },
 
       {
         path: '/admin/livraison',
-        element: <Livraison />,
-        auth: authRoles.admindefault
+        element: <Livraison />
       },
 
       {
         path: '/admin/detaillivraison/:idproforma',
-        element: <Detaillivraison />,
-        auth: authRoles.admindefault
+        element: <Detaillivraison />
       },
       {
         path: '/admin/depot',
-        element: <Depot />,
-        auth: authRoles.admindefault
+        element: <Depot />
       },
       {
         path: '/admin/stockdepot',
-        element: <StockDepot />,
-        auth: authRoles.admindefault
+        element: <StockDepot />
       },
 
       {
         path: '/admin/utilisationmateriel',
-        element: <Utilistionmateriel />,
-        auth: authRoles.admindefault
+        element: <Utilistionmateriel />
       },
       {
         path: '/admin/stocktypemateriel/:iddepot',
-        element: <StocktypematerielDepot />,
-        auth: authRoles.admindefault
+        element: <StocktypematerielDepot />
       },
 
       {
         path: '/admin/archives',
-        element: <Archives />,
-        auth: authRoles.admindefault
+        element: <Archives />
       },
 
       {
         path: '/admin/historique',
-        element: <Historique />,
-        auth: authRoles.admindefault
+        element: <Historique />
       }
     ]
   },
