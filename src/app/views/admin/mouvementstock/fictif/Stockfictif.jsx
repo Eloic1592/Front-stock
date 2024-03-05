@@ -223,7 +223,7 @@ const Stockfictif = () => {
             >
               <DialogTitle id="form-dialog-title">Nouveau mouvement de stock</DialogTitle>
               <DialogContent>
-                <Grid container spacing={3}>
+                <Grid container direction="row" spacing={3}>
                   <Grid item xs={6}>
                     <Select
                       fullWidth

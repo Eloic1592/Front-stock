@@ -1,4 +1,4 @@
-import { Card, Grid, TextField, Button } from '@mui/material';
+import { Card, Grid, TextField, Button, Icon } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -102,7 +102,11 @@ const LoginAdmin = () => {
         <Grid container>
           <Grid item sm={6} xs={12}>
             <JustifyBox p={4} height="100%" sx={{ minWidth: 320 }}>
-              <img src="/assets/images/illustrations/dreamer.svg" width="100%" alt="" />
+              <img
+                src="/assets/images/illustrations/inventory_management.png"
+                width="100%"
+                alt=""
+              />
             </JustifyBox>
           </Grid>
 
