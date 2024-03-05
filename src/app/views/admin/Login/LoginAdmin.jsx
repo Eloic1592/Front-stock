@@ -43,7 +43,7 @@ const validationSchema = Yup.object().shape({
     .required('Mot de passe requis'),
   nom: Yup.string()
     .min(1, 'Le mot de passe doit contenir au moins 1 caractere!')
-    .required('Adresse nom requis!')
+    .required('Nom utilisateur requis!')
 });
 
 const LoginAdmin = () => {
@@ -88,7 +88,6 @@ const LoginAdmin = () => {
         }
       }
     } catch (error) {
-      console.log(error);
       setMessage({
         message: 'Une erreur est survenue, veuillez réessayer plus tard',
         state: true,
@@ -125,7 +124,7 @@ const LoginAdmin = () => {
                         size="small"
                         type="text"
                         name="nom"
-                        label="Nom"
+                        label="Nom utilisateur"
                         variant="outlined"
                         onBlur={handleBlur}
                         value={values.nom}

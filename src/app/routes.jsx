@@ -5,14 +5,10 @@ import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
-// import Listedetailcommande from './views/admin/Bon/commande/Listedetailcommande';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
 const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
-const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
-const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
-const JwtLoginTech = Loadable(lazy(() => import('app/views/sessions/JwtLoginTech')));
 
 // Admin
 const LoginAdmin = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
@@ -109,8 +105,6 @@ const routes = [
     children: [
       ...materialRoutes,
       // admin route
-
-      // // e-chart rooute
       {
         path: '/charts/echarts',
         element: <AppEchart />,
@@ -284,9 +278,6 @@ const routes = [
   // session pages route
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
-  { path: '/session/signup', element: <JwtRegister /> },
-  { path: '/session/forgot-password', element: <ForgotPassword /> },
-  { path: '/session/signin-tech', element: <JwtLoginTech /> },
 
   // Admin
   { path: '/admin/connexion', element: <LoginAdmin /> },
@@ -301,7 +292,6 @@ const routes = [
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
   { path: '/admin/mouvementphysique', element: <Stockphysique /> },
-  // { path: '/admin/detailphysique/:idmouvementstock', element: <Detailphysique /> },
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },
   { path: '/admin/facture', element: <Facture /> },
