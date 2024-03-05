@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { coloredNumber } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
