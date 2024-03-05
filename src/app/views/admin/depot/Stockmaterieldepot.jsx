@@ -11,7 +11,6 @@ import {
   Snackbar,
   Alert,
   Grid,
-  Icon,
   Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -20,9 +19,6 @@ import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-import PDFStockdepot from './PDFStockdepot';
 import { useStockmaterielFunctions } from './stockmaterielfunction';
 
 const Stockmaterieldepot = () => {
