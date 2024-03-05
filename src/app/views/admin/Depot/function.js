@@ -32,7 +32,7 @@ export const useListedepotFunctions = (data) => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.id));
+      setSelectedIds(data.map((row) => row.iddepot));
     } else {
       setSelectedIds([]);
     }
@@ -84,7 +84,8 @@ export const useListedepotFunctions = (data) => {
 };
 
 export function filtredepot(listedepot, depot) {
-  return listedepot.filter((Item) => {
-    return Item.depot.toLowerCase().includes(depot.toLowerCase());
-  });
+  const filtre = listedepot.filter(
+    (listedepot) => listedepot.depot && listedepot.depot.toLowerCase().includes(depot.toLowerCase())
+  );
+  return filtre;
 }
