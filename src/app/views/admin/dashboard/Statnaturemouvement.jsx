@@ -122,7 +122,7 @@ const Statnaturemouvement = () => {
         setData(newData);
       } catch (error) {
         setMessage({
-          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
           severity: 'error',
           open: true
         });
@@ -219,22 +219,22 @@ const Statnaturemouvement = () => {
               <StyledTable>
                 <TableHead>
                   <TableRow>
-                    <TableCell key="naturemouvement" align="center" width="50%">
+                    <TableCell key="naturemouvement" align="center" width="17%">
                       Nature
                     </TableCell>
-                    <TableCell key="annee" align="center" width="50%">
+                    <TableCell key="annee" align="center" width="17%">
                       Annee
                     </TableCell>
-                    <TableCell key="mois" align="center" width="50%">
+                    <TableCell key="mois" align="center" width="17%">
                       Mois
                     </TableCell>
-                    <TableCell key="gain" align="center" width="50%">
+                    <TableCell key="gain" align="center" width="17%">
                       Gain
                     </TableCell>
-                    <TableCell key="depense" align="center" width="50%">
+                    <TableCell key="depense" align="center" width="17%">
                       Depense
                     </TableCell>
-                    <TableCell key="benefice" align="center" width="50%">
+                    <TableCell key="benefice" align="center" width="17%">
                       Benefice
                     </TableCell>
                   </TableRow>
@@ -247,12 +247,24 @@ const Statnaturemouvement = () => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell align="center">{row.naturemouvement}</TableCell>
-                            <TableCell align="center">{row.annee}</TableCell>
-                            <TableCell align="center">{row.mois_nom}</TableCell>
-                            <TableCell align="center">{coloredNumber(row.gain)}</TableCell>
-                            <TableCell align="center">{coloredNumber(row.depense)}</TableCell>
-                            <TableCell align="center">{coloredNumber(row.benefice)}</TableCell>
+                            <TableCell align="center" width="17%">
+                              {row.naturemouvement}
+                            </TableCell>
+                            <TableCell align="center" width="17%">
+                              {row.annee}
+                            </TableCell>
+                            <TableCell align="center" width="17%">
+                              {row.mois_nom}
+                            </TableCell>
+                            <TableCell align="center" width="17%">
+                              {coloredNumber(row.gain)}
+                            </TableCell>
+                            <TableCell align="center" width="17%">
+                              {coloredNumber(row.depense)}
+                            </TableCell>
+                            <TableCell align="center" width="17%">
+                              {coloredNumber(row.benefice)}
+                            </TableCell>
                           </>
                         </TableRow>
                       ))

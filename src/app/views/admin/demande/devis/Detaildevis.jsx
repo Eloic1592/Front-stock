@@ -145,7 +145,7 @@ const Detaildevis = () => {
         };
         setData(newData);
       } catch (error) {
-        console.log("Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif");
+        console.log("Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif");
       }
     };
     fetchData();

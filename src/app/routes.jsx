@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import AuthGuard from './auth/AuthGuard';
-import { authRoles } from './auth/authRoles';
+// import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
@@ -150,11 +150,6 @@ const routes = [
         path: '/admin/mouvementphysique',
         element: <Stockphysique />
       },
-      // {
-      //   path: '/admin/detailphysique/:idmouvementstock',
-      //   element: <Detailphysique />,
-      //   auth: authRoles.admindefault
-      // },
 
       {
         path: '/admin/mouvementfictif',
@@ -279,7 +274,7 @@ const routes = [
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
 
-  { path: '/', element: <Navigate to="/admin/connexion" /> },
+  { path: '/', element: <Navigate to="/admin/dashboard" /> },
   { path: '*', element: <NotFound /> }
 ];
 

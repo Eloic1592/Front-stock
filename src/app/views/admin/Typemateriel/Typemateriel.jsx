@@ -105,7 +105,7 @@ const Typemateriel = () => {
         setData(newData);
       } catch {
         setMessage({
-          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
           severity: 'error',
           open: true
         });

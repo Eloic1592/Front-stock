@@ -38,8 +38,9 @@ const Materiel = () => {
   const [disponibilite, setDisponibilite] = useState('2');
   const [signature, setSignature] = useState('1');
   const [file, setFile] = useState('');
-  const handleFileClose = () => setFileOpen(false);
   const [fileOpen, setFileOpen] = useState(false);
+  const handleFileClickOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
 
   // Message
   const [message, setMessage] = useState({
@@ -136,7 +137,7 @@ const Materiel = () => {
         setData(newData);
       } catch {
         setMessage({
-          text: "Aucune donnee n'ete recuperee,veuillez verifier si le serveur est actif",
+          text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
           severity: 'error',
           open: true
         });
@@ -167,6 +168,11 @@ const Materiel = () => {
             <Grid item>
               <Button variant="contained" onClick={getstock} color="secondary">
                 Stock materiel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" onClick={handleFileClickOpen} color="secondary">
+                Importer CSV
               </Button>
             </Grid>
           </Grid>
@@ -350,7 +356,7 @@ const Materiel = () => {
           </Box>
           <Box>
             <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">Exporter des donnees</DialogTitle>
+              <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
               <DialogContent>
                 <TextField
                   fullWidth
@@ -364,7 +370,7 @@ const Materiel = () => {
               </DialogContent>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+                <Button variant="contained" color="secondary" onClick={handleFileClose}>
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">
