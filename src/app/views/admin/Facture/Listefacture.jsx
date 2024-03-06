@@ -22,7 +22,7 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListefactureFunctions } from 'app/views/admin/facture/function';
 
-const Listefacture = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listefacture = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const [message, setMessage] = useState({
     text: "Aucune donnée n'a été récupérée, veuillez vérifier si le serveur est actif",
     severity: 'error',

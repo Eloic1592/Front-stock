@@ -27,7 +27,7 @@ import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import PDFMateriel from './PDFmateriel';
 
-const Listemateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'ID', field: 'idmateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },

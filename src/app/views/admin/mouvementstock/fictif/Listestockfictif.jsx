@@ -24,7 +24,7 @@ import { useMfictifFunctions } from 'app/views/admin/mouvementstock/fictif/ficti
 import { baseUrl } from 'app/utils/constant';
 import { converttodate, colorType } from 'app/utils/utils';
 
-const Listestockfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'Mouv stock', field: 'idmouvementstock', align: 'center' },

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 // Init
 export const useListetypematerielFunctions = (data) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingId, setEditingId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortColumn, setSortColumn] = useState(['1']);

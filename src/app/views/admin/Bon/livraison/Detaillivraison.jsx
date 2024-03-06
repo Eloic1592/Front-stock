@@ -24,7 +24,7 @@ import { formatNumber } from 'app/utils/utils';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import PDFLivraison from './PDFLivraison';
-const Detaillivraison = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Detaillivraison = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idproforma = useParams();
   // Colonne
   const columns = [

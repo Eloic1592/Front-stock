@@ -47,7 +47,7 @@ const Stocktypematerieldepot = () => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };

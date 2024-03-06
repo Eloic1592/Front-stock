@@ -21,11 +21,8 @@ import { useState, useEffect } from 'react';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber } from 'app/utils/utils';
-// import { pdf as renderPdf } from '@react-pdf/renderer';
-// import { saveAs } from 'file-saver';
-// import { useFetchProformaDetails } from 'app/views/admin/demande/proforma/proformafunction';
 
-const Listedetailcommande = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idproforma = useParams();
   // Colonne
   const columns = [

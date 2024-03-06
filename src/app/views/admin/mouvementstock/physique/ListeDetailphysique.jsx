@@ -27,7 +27,7 @@ import { saveAs } from 'file-saver';
 import PDFMouvementphysique from './PDFMouvementphysique';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 
-const ListeDetailphysique = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'Mouvement', field: 'mouvement', align: 'center' },

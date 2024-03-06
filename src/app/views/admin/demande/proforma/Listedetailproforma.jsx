@@ -26,7 +26,7 @@ import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { useFetchProformaDetails } from 'app/views/admin/demande/proforma/proformafunction';
 
-const Listedetailproforma = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const iddevis = useParams();
   // Colonne
   const columns = [

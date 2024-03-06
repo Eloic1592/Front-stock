@@ -19,7 +19,7 @@ import {
 function Datalistclient({ Client, state, handleClose, setClient }) {
   const [selectedClientId, setSelectedClientId] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState('');
 
   const handleRadioChange = (event) => {

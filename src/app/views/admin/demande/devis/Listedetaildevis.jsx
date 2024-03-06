@@ -25,7 +25,7 @@ import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber } from 'app/utils/utils';
 
-const Listedetaildevis = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Listedetaildevis = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const iddevis = useParams();
   // Colonne
   const columns = [

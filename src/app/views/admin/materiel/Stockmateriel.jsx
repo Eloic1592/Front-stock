@@ -25,7 +25,7 @@ import { saveAs } from 'file-saver';
 import { Container } from 'app/views/style/style';
 import PDFStockmateriel from './PDFStockmateriel';
 
-const Stockmateriel = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
     { label: 'Libre', field: 'libre', align: 'center' },

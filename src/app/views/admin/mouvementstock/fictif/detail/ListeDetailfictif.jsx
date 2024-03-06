@@ -24,7 +24,7 @@ import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber, converttodate, colorType } from 'app/utils/utils';
 
-const Detailfictif = ({ rowsPerPageOptions = [5, 10, 25, 50, 100, 200] }) => {
+const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
 
   // Colonne

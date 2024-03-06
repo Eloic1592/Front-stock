@@ -30,6 +30,7 @@ const Statnaturemouvement = () => {
 
   const columns = [
     { label: 'Nature', field: 'naturemouvement', align: 'center' },
+    { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
     { label: 'Gain', field: 'gain', align: 'center' },
     { label: 'Depense', field: 'depense', align: 'center' },
@@ -51,7 +52,7 @@ const Statnaturemouvement = () => {
 
   // Pagination
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
   };
@@ -221,6 +222,9 @@ const Statnaturemouvement = () => {
                     <TableCell key="naturemouvement" align="center" width="50%">
                       Nature
                     </TableCell>
+                    <TableCell key="annee" align="center" width="50%">
+                      Annee
+                    </TableCell>
                     <TableCell key="mois" align="center" width="50%">
                       Mois
                     </TableCell>
@@ -244,6 +248,7 @@ const Statnaturemouvement = () => {
                         <TableRow key={index}>
                           <>
                             <TableCell align="center">{row.naturemouvement}</TableCell>
+                            <TableCell align="center">{row.annee}</TableCell>
                             <TableCell align="center">{row.mois_nom}</TableCell>
                             <TableCell align="center">{coloredNumber(row.gain)}</TableCell>
                             <TableCell align="center">{coloredNumber(row.depense)}</TableCell>
