@@ -164,7 +164,7 @@ const Statnaturemouvement = () => {
                 size="small"
                 type="text"
                 name="materielfiltre"
-                label="Mouvement"
+                label="Filtre"
                 variant="outlined"
                 value={filtre}
                 onChange={(event) => setFiltre(event.target.value)}
