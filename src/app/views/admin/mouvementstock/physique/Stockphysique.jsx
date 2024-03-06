@@ -241,7 +241,7 @@ const Stockphysique = () => {
                       <MenuItem value="1">Choisir un depot</MenuItem>
                       {data.depot.map((row) => (
                         <MenuItem value={row.iddepot} key={row.iddepot}>
-                          {row.iddepot}-{row.depot}
+                          {row.depot}
                         </MenuItem>
                       ))}
                     </Select>

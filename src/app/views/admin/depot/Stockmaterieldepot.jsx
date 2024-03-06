@@ -11,7 +11,8 @@ import {
   Snackbar,
   Alert,
   Grid,
-  Button
+  Button,
+  Icon
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -19,7 +20,10 @@ import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
 import { useStockmaterielFunctions } from './stockmaterielfunction';
+import PDFMouvementmateriel from './PDFMouvementmateriel';
 
 const Stockmaterieldepot = () => {
   const columns = [
@@ -50,6 +54,14 @@ const Stockmaterieldepot = () => {
     handleSelectColumn,
     sortedData
   } = useStockmaterielFunctions(data);
+
+  // Export PDF
+  const generatemouvementmaterielPDF = async () => {
+    const blob = await renderPdf(
+      <PDFMouvementmateriel dataList={data.utilisationMateriels} columns={columns} />
+    ).toBlob();
+    saveAs(blob, 'Mouvement_materiel.pdf');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -159,6 +171,17 @@ const Stockmaterieldepot = () => {
                     <MenuItem value="asc">ASC</MenuItem>
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
+                </Grid>
+                <Grid item xs={2}>
+                  <Button
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="secondary"
+                    onClick={generatemouvementmaterielPDF}
+                  >
+                    <Icon>picture_as_pdf</Icon>
+                  </Button>
                 </Grid>
               </Grid>
               <StyledTable>
