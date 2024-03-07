@@ -76,7 +76,6 @@ const ListeArticle = () => {
     setSortDirection,
     handleChangePage,
     sortColumn,
-    selectedIds,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData,

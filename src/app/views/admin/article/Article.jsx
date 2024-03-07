@@ -36,8 +36,8 @@ const Article = () => {
   // Input
   const [typemateriel, setTypemateriel] = useState('1');
   const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState(null);
-  const [description, setDescription] = useState(null);
+  const [modele, setModele] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
     if (!marque || typemateriel === '1') {

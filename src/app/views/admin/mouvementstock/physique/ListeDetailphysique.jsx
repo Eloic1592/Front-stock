@@ -38,7 +38,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Montant HT', field: 'total', align: 'center' },
-    { label: 'Reste stock', field: 'restestock', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
   ];
   const handleAlertClose = () => setMessage({ open: false });
@@ -51,7 +50,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   const [editquantite, setEditquantite] = useState(0);
   const [editpu, setEditpu] = useState(0);
   const [editreste, setEditreste] = useState(0);
-
   const [depot, setDepot] = useState(['1']);
   const [data, setData] = useState({
     articles: [],
@@ -64,6 +62,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     severity: 'success',
     open: false
   });
+
+  const [expandedRows, setExpandedRows] = useState([]);
 
   const handleupdate = () => {
     let detailmouvementphysique = {
@@ -356,9 +356,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <TableCell key="total" align="center" width="10%">
                     Montant HT
                   </TableCell>
-                  <TableCell key="restestock" align="center" width="12%">
-                    Reste stock
-                  </TableCell>
                   <TableCell key="Depot" align="center" width="15%">
                     Depot
                   </TableCell>
@@ -493,18 +490,13 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             <TableCell key="datedepot" align="center" width="12%">
                               {converttodate(row.datedepot)}
                             </TableCell>
-                            <TableCell align="center">
-                              {row.marque}/{row.modele}
-                            </TableCell>
+                            <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.naturemouvement}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {formatNumber(row.quantite)}
                             </TableCell>
                             <TableCell align="center">{formatNumber(row.pu)}</TableCell>
                             <TableCell align="center">{coloredNumber(row.total)}</TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.restestock))}
-                            </TableCell>
                             <TableCell align="center">{row.depot}</TableCell>
                             <TableCell>
                               <IconButton

@@ -22,11 +22,6 @@ function Datalistetudiant({ Etudiant, state, handleClose, setetudiant }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState('');
-  const [message, setMessage] = useState({
-    message: '',
-    state: false,
-    color: 'green'
-  });
 
   const handleRadioChange = (event) => {
     setSelectedetudiantId(event.target.value);
@@ -36,11 +31,7 @@ function Datalistetudiant({ Etudiant, state, handleClose, setetudiant }) {
     if (selectedetudiantId !== null) {
       setetudiant(selectedetudiantId);
     } else {
-      setMessage({
-        message: 'Aucun element selectionnee',
-        state: true,
-        color: 'red'
-      });
+      console.log('Aucun element selectionne');
     }
     handleClose(); // Fermer la boîte de dialogue après avoir récupéré la valeur
   };
