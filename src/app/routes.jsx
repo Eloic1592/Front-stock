@@ -274,7 +274,7 @@ const routes = [
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
 
-  { path: '/', element: <Navigate to="/admin/dashboard" /> },
+  { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];
 

@@ -79,7 +79,7 @@ const LoginAdmin = () => {
         const data = await response.json();
         if (data == null) {
           setMessage({
-            message: 'nom ou mot de passe incorrect',
+            message: 'Nom utilisateur ou mot de passe incorrect',
             state: true,
             color: 'red'
           });
@@ -89,7 +89,7 @@ const LoginAdmin = () => {
       }
     } catch (error) {
       setMessage({
-        message: 'Une erreur est survenue, veuillez réessayer plus tard',
+        message: 'Une erreur est survenue,veuillez verifier si votre serveur et actif',
         state: true,
         color: 'red'
       });

@@ -13,7 +13,8 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-  DialogTitle
+  DialogTitle,
+  Paper
 } from '@mui/material';
 
 function Datalistclient({ Client, state, handleClose, setClient }) {
@@ -71,7 +72,7 @@ function Datalistclient({ Client, state, handleClose, setClient }) {
           variant="outlined"
         />
 
-        <TableContainer component={Table}>
+        <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
