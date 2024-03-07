@@ -115,6 +115,10 @@ const Materiel = () => {
         });
       });
   };
+
+  const handleFileSubmit = () => {
+    console.log(file);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -416,7 +420,7 @@ const Materiel = () => {
                 <Button variant="contained" color="secondary" onClick={handleFileClose}>
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} color="primary" variant="contained">
+                <Button onClick={handleFileSubmit} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>
