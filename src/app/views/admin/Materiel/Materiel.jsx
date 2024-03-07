@@ -171,7 +171,7 @@ const Materiel = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="outlined" onClick={handleFileClickOpen} color="secondary">
+              <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
                 Importer CSV
               </Button>
             </Grid>

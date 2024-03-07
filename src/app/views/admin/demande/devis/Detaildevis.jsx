@@ -248,7 +248,7 @@ const Detaildevis = () => {
                 <Button onClick={handlecancelOpen} color="inherit" variant="contained">
                   Reinitialiser
                 </Button>
-                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button variant="contained" onClick={handleSubmit} color="primary">

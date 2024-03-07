@@ -81,7 +81,7 @@ const Detaildevis = () => {
               </DialogContent>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button variant="contained" color="primary">

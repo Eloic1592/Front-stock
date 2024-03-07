@@ -71,6 +71,11 @@ const Depot = () => {
         });
       });
   };
+
+  // const handleDepotAdded = (newDepot) => {
+  //   setDepots([...depots, newDepot]);
+  // };
+
   const getstockarticle = () => {
     window.location.replace('/admin/stockdepot');
   };
@@ -104,7 +109,13 @@ const Depot = () => {
         </Grid>
         <Grid item>
           <Box>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              fullWidth
+              maxWidth="md"
+            >
               <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
               <DialogContent>
                 <TextField
@@ -121,7 +132,7 @@ const Depot = () => {
               </DialogContent>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="secondary" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">

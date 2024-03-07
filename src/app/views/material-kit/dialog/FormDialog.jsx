@@ -40,7 +40,7 @@ export default function FormDialog() {
         </DialogContent>
 
         <DialogActions>
-          <Button variant="outlined" color="secondary" onClick={handleClose}>
+          <Button variant="contained" color="secondary" onClick={handleClose}>
             Cancel
           </Button>
 
