@@ -20,6 +20,7 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistmateriel from '../../Datagrid/Datalistmateriel';
 import Datalistetudiant from '../../Datagrid/Datalistetudiant';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const Stockfictif = () => {
   // Input
@@ -269,36 +270,44 @@ const Stockfictif = () => {
                       </MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item container spacing={1} xs={6}>
-                    <Grid item xs={10}>
-                      <TextField
-                        fullWidth
-                        type="text"
-                        name="idetudiant"
-                        label="Etudiant"
-                        variant="outlined"
-                        value={idetudiant}
-                        onChange={setIdetudiant}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={2}>
-                      <Datalistetudiant
-                        Etudiant={data.etudiants}
-                        state={openetugrid}
-                        handleClose={handleCloseOpenetugrid}
-                        setetudiant={setIdetudiant}
-                      />
-                      <Button color="inherit" variant="contained" onClick={handleClickOpenetugrid}>
-                        ...
-                      </Button>
-                    </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      name="idetudiant"
+                      label="Etudiant"
+                      variant="outlined"
+                      value={idetudiant}
+                      onChange={setIdetudiant}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Button
+                              color="inherit"
+                              variant="contained"
+                              onClick={handleClickOpenetugrid}
+                            >
+                              ...
+                            </Button>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Datalistetudiant
+                      Etudiant={data.etudiants}
+                      state={openetugrid}
+                      handleClose={handleCloseOpenetugrid}
+                      setetudiant={setIdetudiant}
+                    />
                   </Grid>
                 </Grid>
                 <h3>Details du mouvement fictif</h3>
                 <Grid container spacing={3}>
                   <Grid item container spacing={1} xs={3}>
-                    <Grid item xs={9}>
+                    <Grid item xs={12}>
                       <TextField
                         fullWidth
                         size="small"
@@ -308,7 +317,22 @@ const Stockfictif = () => {
                         variant="outlined"
                         value={idmateriel}
                         onChange={setIdmateriel}
-                        InputProps={{ readOnly: true }}
+                        InputProps={{
+                          readOnly: true,
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Button
+                                style={{ width: '30px', height: '20px' }}
+                                size="small"
+                                color="inherit"
+                                variant="contained"
+                                onClick={handleClickOpendatagrid}
+                              >
+                                ...
+                              </Button>
+                            </InputAdornment>
+                          )
+                        }}
                       />
                     </Grid>
                     <Grid item xs={2}>
@@ -318,9 +342,6 @@ const Stockfictif = () => {
                         handleClose={handleCloseOpendatagrid}
                         setmateriel={setIdmateriel}
                       />
-                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
-                        ...
-                      </Button>
                     </Grid>
                   </Grid>
                   <Grid item xs={3}>

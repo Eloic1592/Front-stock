@@ -18,6 +18,7 @@ import Listemateriel from './Listemateriel';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { colors } from 'app/utils/utils';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const Materiel = () => {
   // Form dialog
@@ -38,6 +39,7 @@ const Materiel = () => {
   const [disponibilite, setDisponibilite] = useState('2');
   const [signature, setSignature] = useState('1');
   const [file, setFile] = useState('');
+  const [filetypemateriel, setFiletypemateriel] = useState(['1']);
   const [fileOpen, setFileOpen] = useState(false);
   const handleFileClickOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
@@ -354,19 +356,60 @@ const Materiel = () => {
               </DialogActions>
             </Dialog>
           </Box>
+
+          {/* IMPORTATION DES DONNEES */}
           <Box>
-            <Dialog open={fileOpen} onClose={handleFileClose} aria-labelledby="form-dialog-title">
+            <Dialog
+              fullWidth
+              maxWidth="xl"
+              open={fileOpen}
+              onClose={handleFileClose}
+              aria-labelledby="form-dialog-title"
+            >
               <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
               <DialogContent>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="filename"
-                  label="Nom du fichier"
-                  value={file}
-                  onChange={(event) => setFile(event.target.value)}
-                />
+                <Grid container direction="column" spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      type="file"
+                      variant="outlined"
+                      value={file}
+                      onChange={(event) => setFile(event.target.value)}
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Button variant="contained" color="primary" type="submit">
+                              Upload
+                            </Button>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={filetypemateriel}
+                      onChange={(event) => setFiletypemateriel(event.target.value)}
+                      sx={{ mb: 3 }}
+                      required={true}
+                    >
+                      <MenuItem value="1" disabled>
+                        Choisir le type
+                      </MenuItem>
+                      {data.typemateriels.map((row) => (
+                        <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
+                          {row.typemateriel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
               </DialogContent>
 
               <DialogActions>

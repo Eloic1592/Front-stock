@@ -267,18 +267,6 @@ const ListeArticle = () => {
               </Grid>
               <Grid item xs={2}>
                 <Button
-                  fullWidth
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
                   className="button"
                   variant="contained"
                   aria-label="Edit"

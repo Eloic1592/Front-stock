@@ -19,6 +19,7 @@ import ListeDetailphysique from './ListeDetailphysique';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistarticle from '../../Datagrid/Datalistarticle';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const Stockphysique = () => {
   // Input
@@ -39,7 +40,7 @@ const Stockphysique = () => {
     mouvementphysiques: [],
     naturemouvements: [],
     depot: [],
-    articles: []
+    listearticles: []
   });
 
   // Message
@@ -139,7 +140,7 @@ const Stockphysique = () => {
           mouvementphysiques: responseData.mouvementphysiques || [],
           naturemouvements: responseData.naturemouvements || [],
           depot: responseData.depots || [],
-          articles: responseData.articles || []
+          listearticles: responseData.listearticles || []
         };
 
         setData(newData);
@@ -246,31 +247,40 @@ const Stockphysique = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item container xs={12} spacing={1}>
-                    <Grid item xs={11}>
-                      <TextField
-                        fullWidth
-                        type="text"
-                        name="article"
-                        label="Article"
-                        variant="outlined"
-                        value={article}
-                        onChange={setArticle}
-                        InputProps={{ readOnly: true }}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Datalistarticle
-                        articles={data.articles}
-                        state={opendatagrid}
-                        handleClose={handleCloseOpendatagrid}
-                        setArticle={setArticle}
-                      />
-                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
-                        ...
-                      </Button>
-                    </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      name="article"
+                      label="Article"
+                      variant="outlined"
+                      value={article}
+                      onChange={setArticle}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <Button
+                              color="inherit"
+                              variant="contained"
+                              onClick={handleClickOpendatagrid}
+                            >
+                              ...
+                            </Button>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
                   </Grid>
+                  <Grid item xs={12}>
+                    <Datalistarticle
+                      articles={data.listearticles}
+                      state={opendatagrid}
+                      handleClose={handleCloseOpendatagrid}
+                      setArticle={setArticle}
+                    />
+                  </Grid>
+
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
@@ -300,7 +310,7 @@ const Stockphysique = () => {
                     <TextField
                       fullWidth
                       multiline
-                      rows={4}
+                      rows={6}
                       variant="outlined"
                       placeholder="Description"
                       value={description}
@@ -311,7 +321,7 @@ const Stockphysique = () => {
                     <TextField
                       fullWidth
                       multiline
-                      rows={4}
+                      rows={6}
                       variant="outlined"
                       placeholder="Remarques"
                       value={commentaire}
