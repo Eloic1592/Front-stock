@@ -287,7 +287,7 @@ const ListeArticle = () => {
                 {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
-                  <TableCell key="idarticle" width="20%">
+                  <TableCell key="idarticle" width="10%">
                     idarticle
                   </TableCell>
                   <TableCell key="marque" width="20%" align="center">
