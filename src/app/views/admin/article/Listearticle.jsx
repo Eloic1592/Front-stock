@@ -22,8 +22,12 @@ import { StyledTable } from 'app/views/style/style';
 import { useListeArticlefunctions } from 'app/views/admin/article/function';
 import { baseUrl } from 'app/utils/constant';
 import { pdf as renderPdf } from '@react-pdf/renderer';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { saveAs } from 'file-saver';
 import PDFArticle from './PDFListeArticle';
+import Table from '@mui/material/Table';
+import Collapse from '@mui/material/Collapse';
 
 const ListeArticle = () => {
   // Colonne
@@ -46,6 +50,8 @@ const ListeArticle = () => {
     severity: 'success',
     open: false
   });
+  // Collapse
+  const [open, setOpen] = useState(false);
 
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -280,22 +286,22 @@ const ListeArticle = () => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="idarticle" width="10%">
+                  <TableCell key="depliant" align="center" width="5%"></TableCell>
+                  <TableCell key="idarticle" width="20%">
                     idarticle
                   </TableCell>
-                  <TableCell key="marque" width="15%" align="center">
+                  <TableCell key="marque" width="20%" align="center">
                     marque
                   </TableCell>
-                  <TableCell key="modele" width="15%" align="center">
+                  <TableCell key="modele" width="20%" align="center">
                     modele
                   </TableCell>
-                  <TableCell key="typemateriel" width="15%" align="center">
+                  <TableCell key="typemateriel" width="20%" align="center">
                     typemateriel
                   </TableCell>
-                  <TableCell key="description" width="60%" align="center">
-                    description
+                  <TableCell align="center" width="20%">
+                    Action
                   </TableCell>
-                  <TableCell width="10%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -304,107 +310,70 @@ const ListeArticle = () => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
-                        {isEditClicked && row.idarticle === selectedRowId ? (
-                          <>
-                            <TableCell width="10%">
-                              <TextField
-                                value={editedIdArticle}
-                                onChange={(event) => setEditedIdArticle(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell width="15%">
-                              <TextField
-                                value={editedMarque}
-                                onChange={(event) => setEditedMarque(event.target.value)}
-                                onBlur={() =>
-                                  setEditedMarque(editedMarque !== '' ? editedMarque : row.marque)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell width="15%">
-                              <TextField
-                                value={editedModele}
-                                onChange={(event) => setEditedModele(event.target.value)}
-                                onBlur={() =>
-                                  setEditedModele(editedModele !== '' ? editedModele : row.modele)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell width="15%">
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editedTypemateriel}
-                                onChange={(event) => setEditedTypemateriel(event.target.value)}
-                              >
-                                <MenuItem value="1">Choisir un type</MenuItem>
-                                {data.typemateriels.map((row) => (
-                                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                                    {row.typemateriel}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell width="60%">
-                              <TextField
-                                fullWidth
-                                value={editedDescription}
-                                onChange={(event) => setEditedDescription(event.target.value)}
-                                onBlur={() =>
-                                  setEditedDescription(
-                                    editedDescription !== '' ? editedDescription : row.description
-                                  )
-                                }
-                              />
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell> {row.idarticle}</TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
+                      <>
+                        <TableRow key={index}>
+                          <TableCell>
+                            <IconButton
+                              aria-label="expand row"
+                              size="small"
+                              onClick={() => setOpen(!open)}
+                            >
+                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                            </IconButton>
+                          </TableCell>
 
-                        {isEditClicked && row.idarticle === selectedRowId && (
-                          <>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={handleSubmit}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                      </TableRow>
+                          <TableCell> {row.idarticle}</TableCell>
+                          <TableCell align="center">{row.marque}</TableCell>
+                          <TableCell align="center">{row.modele}</TableCell>
+                          <TableCell align="center">{row.typemateriel}</TableCell>
+
+                          <TableCell align="center">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancelEdit(row)}
+                            >
+                              <Icon>cancel</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={`Tablerow2_${index}`}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={open} timeout="auto" unmountOnExit>
+                              <Box>
+                                <Typography variant="h6" gutterBottom component="div">
+                                  Details article
+                                </Typography>
+                                <Table aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow key="detailcolumn">
+                                      <TableCell align="center" key={`description_${index}`}>
+                                        Description
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow key="data">
+                                      <TableCell align="center">{row.description}</TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </>
                     ))
                 ) : (
                   <TableRow>

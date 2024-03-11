@@ -26,6 +26,10 @@ import { baseUrl } from 'app/utils/constant';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import PDFMateriel from './PDFmateriel';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Table from '@mui/material/Table';
+import Collapse from '@mui/material/Collapse';
 
 const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
@@ -45,6 +49,8 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     severity: 'success',
     open: false
   });
+  // Collapse
+  const [open, setOpen] = useState(false);
 
   const [data, setData] = useState({
     typemateriels: [],
@@ -356,34 +362,28 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell key="typemateriel" align="center" width="10%">
+                  <TableCell key="depliant" align="center" width="5%"></TableCell>
+                  <TableCell key="typemateriel" align="center" width="14%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="marque" align="center" width="10%">
+                  <TableCell key="marque" align="center" width="14%">
                     marque
                   </TableCell>
-                  <TableCell key="modele" align="center" width="10%">
-                    modele
-                  </TableCell>
-                  <TableCell key="numserie" align="center" width="10%">
+                  <TableCell key="numserie" align="center" width="14%">
                     numserie
                   </TableCell>
-                  <TableCell key="prixvente" align="center" width="10%">
+                  <TableCell key="prixvente" align="center" width="14%">
                     prixvente
                   </TableCell>
-                  <TableCell key="caution" align="center" width="10%">
+                  <TableCell key="caution" align="center" width="14%">
                     caution
                   </TableCell>
-                  <TableCell key="couleur" align="center" width="10%">
-                    couleur
-                  </TableCell>
-                  <TableCell key="signature" align="center" width="10%">
+                  <TableCell key="signature" align="center" width="14%">
                     signature
                   </TableCell>
-                  <TableCell key="statut" align="center" width="7%">
-                    statut
+                  <TableCell align="center" width="14%">
+                    Action
                   </TableCell>
-                  <TableCell width="5%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -392,176 +392,98 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            align="center"
-                            width="5%"
-                            checked={selectedIds.includes(row.idmateriel)}
-                            onChange={(event) => handleSelection(event, row.idmateriel)}
-                          />
-                        </TableCell>
-
-                        {isEditClicked && row.idmateriel === selectedRowId ? (
-                          <>
-                            <TableCell>
-                              <Select
-                                labelId="select-label"
-                                value={isEditedtypemat}
-                                onChange={(event) => setIsEditedtypemat(event.target.value)}
-                                fullWidth
-                              >
-                                <MenuItem value="1" disabled>
-                                  Choisir un type
-                                </MenuItem>
-                                {data.typemateriels.map((row) => (
-                                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                                    {row.typemateriel}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="text"
-                                value={isEditedMarque}
-                                onChange={(event) => setIsEditedMarque(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="text"
-                                value={isEditedmodele}
-                                onChange={(event) => setIsEditedmodele(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={isEditednumserie}
-                                onChange={(event) => setIsEditednumserie(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                value={isEditedprixvente}
-                                onChange={(event) => setIsEditedprixvente(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                value={isEditedcaution}
-                                onChange={(event) => setisEditedcaution(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={isEditedcolor}
-                                onChange={(event) => setIsEditedcolor(event.target.value)}
-                              >
-                                <MenuItem value="0">Toutes couleurs</MenuItem>
-                                {colors.map((color, index) => (
-                                  <MenuItem key={index} value={color}>
-                                    {color}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                labelId="select-label"
-                                value={isEditedstatut}
-                                onChange={(event) => setIsEditedstatut(event.target.value)}
-                                fullWidth
-                              >
-                                <MenuItem value="1" disabled>
-                                  Choisir la disponibilite
-                                </MenuItem>
-                                <MenuItem value="0">Libre</MenuItem>
-                                <MenuItem value="1">Occupe</MenuItem>
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                labelId="select-label"
-                                value={isEditedsignature}
-                                onChange={(event) => setIsEditedsignature(event.target.value)}
-                                fullWidth
-                              >
-                                <MenuItem value="1" disabled>
-                                  Choisir une signature
-                                </MenuItem>
-                                <MenuItem value="Perso">Perso</MenuItem>
-                                <MenuItem value="ITU">ITU</MenuItem>
-                                <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
-                              </Select>
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center">{row.numserie}</TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {formatNumber(row.prixvente)}
-                            </TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {formatNumber(row.caution)}
-                            </TableCell>
-                            <TableCell align="center">{row.couleur}</TableCell>
-                            <TableCell align="center">{row.signature}</TableCell>
-                            <TableCell align="center">{row.statut}</TableCell>
-                            <TableCell align="center">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-
-                        {isEditClicked && row.idmateriel === selectedRowId && (
-                          <>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleSubmit()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                      </TableRow>
+                      <>
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(row.idmateriel)}
+                              onChange={(event) => handleSelection(event, row.idmateriel)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              aria-label="expand row"
+                              size="small"
+                              onClick={() => setOpen(!open)}
+                            >
+                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell align="center">{row.typemateriel}</TableCell>
+                          <TableCell align="center">{row.marque}</TableCell>
+                          <TableCell align="center">{row.numserie}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.prixvente)}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.caution)}
+                          </TableCell>
+                          <TableCell align="center">{row.signature}</TableCell>
+                          <TableCell align="center">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancelEdit(row)}
+                            >
+                              <Icon>cancel</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={`Tablerow2_${index}`}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={open} timeout="auto" unmountOnExit>
+                              <Box>
+                                <Typography variant="h6" gutterBottom component="div">
+                                  Details article
+                                </Typography>
+                                <Table aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow key="detailcolumn">
+                                      <TableCell key={`modele_${index}`} align="center">
+                                        modele
+                                      </TableCell>
+                                      <TableCell align="center" key={`description_${index}`}>
+                                        Description
+                                      </TableCell>
+                                      <TableCell align="center" key={`statut_${index}`}>
+                                        Statut
+                                      </TableCell>
+                                      <TableCell align="center" key={`couleur_${index}`}>
+                                        Couleur
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow key="data">
+                                      <TableCell align="center">{row.modele}</TableCell>
+                                      <TableCell align="center">{row.description}</TableCell>
+                                      <TableCell align="center">{row.statut}</TableCell>
+                                      <TableCell align="center">{row.couleur}</TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </>
                     ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={10}>
+                    <TableCell colSpan={6}>
                       <Typography variant="subtitle1" color="textSecondary">
-                        Aucune donnee disponible
+                        Aucune donnée disponible
                       </Typography>
                     </TableCell>
                   </TableRow>

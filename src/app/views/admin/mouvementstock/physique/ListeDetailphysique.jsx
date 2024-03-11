@@ -23,7 +23,11 @@ import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber, colorType, converttodate } from 'app/utils/utils';
+import Collapse from '@mui/material/Collapse';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { saveAs } from 'file-saver';
+import Table from '@mui/material/Table';
 import PDFMouvementphysique from './PDFMouvementphysique';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 
@@ -63,7 +67,8 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     open: false
   });
 
-  const [expandedRows, setExpandedRows] = useState([]);
+  // Collapse
+  const [open, setOpen] = useState(false);
 
   const handleupdate = () => {
     let detailmouvementphysique = {
@@ -318,7 +323,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
-                <TableRow>
+                <TableRow key="TableHeadRow">
                   <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementphysiques.every((row) =>
@@ -335,31 +340,28 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                       onChange={handleSelectAll}
                     />
                   </TableCell>
+                  <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="prixstock" align="center" width="12%">
+                  <TableCell key="prixstock" align="center" width="16%">
                     Date
                   </TableCell>
-                  <TableCell key="marque" align="center" width="10%">
+                  <TableCell key="marque" align="center" width="16%">
                     Marque
                   </TableCell>
-                  <TableCell key="naturemouvement" align="center" width="10%">
+                  <TableCell key="naturemouvement" align="center" width="16%">
                     Nature
                   </TableCell>
-                  <TableCell key="quantite" align="center" width="10%">
+                  <TableCell key="quantite" align="center" width="16%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="center" width="10%">
-                    P.U
-                  </TableCell>
-                  <TableCell key="total" align="center" width="10%">
-                    Montant HT
-                  </TableCell>
-                  <TableCell key="Depot" align="center" width="15%">
+                  <TableCell key="Depot" align="center" width="16%">
                     Depot
                   </TableCell>
-                  <TableCell width="5%">Action</TableCell>
+                  <TableCell align="center" width="16%">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -368,183 +370,108 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.iddetailmouvementphysique)}
-                            onChange={(event) =>
-                              handleSelection(event, row.iddetailmouvementphysique)
-                            }
-                          />
-                        </TableCell>
-                        {isEditClicked && row.iddetailmouvementphysique === selectedRowId ? (
-                          <>
-                            <TableCell align="center">
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editmouvement}
-                                onChange={(event) => setEditmouvement(event.target.value)}
-                              >
-                                <MenuItem value="0">Tous mouvements</MenuItem>
-                                <MenuItem value="1" key="1">
-                                  Entree
-                                </MenuItem>
-                                <MenuItem value="-1" key="-1">
-                                  Sortie
-                                </MenuItem>
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                fullWidth
-                                type="date"
-                                value={editdatedepot}
-                                onChange={(event) => setEditdatedepot(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell align="center" width="30%">
-                              <Select
-                                labelId="select-label"
-                                value={editarticle}
-                                onChange={(event) => setEditarticle(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Article
-                                </MenuItem>
-                                {data.articles.map((row) => (
-                                  <MenuItem key={row.idarticle} value={row.idarticle}>
-                                    {row.marque}-{row.modele}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell align="center">
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editnature}
-                                onChange={(event) => setEditnature(event.target.value)}
-                              >
-                                <MenuItem value="1">Choisir un mouvement</MenuItem>
-                                {data.naturemouvements.map((row) => (
-                                  <MenuItem
-                                    value={row.idnaturemouvement}
-                                    key={row.idnaturemouvement}
-                                  >
-                                    {row.naturemouvement}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                label="Quantite"
-                                value={editquantite}
-                                onChange={(event) => setEditquantite(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                label="PU"
-                                value={editpu}
-                                onChange={(event) => setEditpu(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="text"
-                                label="Reste"
-                                value={editreste}
-                                readOnly
-                                onChange={(event) => setEditreste(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={depot}
-                                onChange={(event) => setDepot(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  depot
-                                </MenuItem>
-                                {data.depots.map((row) => (
-                                  <MenuItem key={row.iddepot} value={row.iddepot}>
-                                    {row.depot}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {colorType(row.mouvement)}
-                            </TableCell>
-                            <TableCell key="datedepot" align="center" width="12%">
-                              {converttodate(row.datedepot)}
-                            </TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.naturemouvement}</TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {formatNumber(row.quantite)}
-                            </TableCell>
-                            <TableCell align="center">{formatNumber(row.pu)}</TableCell>
-                            <TableCell align="center">{coloredNumber(row.total)}</TableCell>
-                            <TableCell align="center">{row.depot}</TableCell>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                        {isEditClicked && row.iddetailmouvementphysique === selectedRowId && (
-                          <>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleupdate()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                      </TableRow>
+                      <>
+                        {/* Clé unique pour chaque fragment */}
+                        <TableRow key={`Tablerow1_${index}`}>
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(row.iddetailmouvementphysique)}
+                              onChange={(event) =>
+                                handleSelection(event, row.iddetailmouvementphysique)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              aria-label="expand row"
+                              size="small"
+                              onClick={() => setOpen(!open)}
+                            >
+                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                            </IconButton>
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {colorType(row.mouvement)}
+                          </TableCell>
+                          <TableCell key={`datedepot_${index}`} align="center" width="12%">
+                            {converttodate(row.datedepot)}
+                          </TableCell>
+                          <TableCell align="center">{row.marque}</TableCell>
+                          <TableCell align="center">{row.naturemouvement}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantite)}
+                          </TableCell>
+                          <TableCell align="center">{row.depot}</TableCell>
+                          <TableCell align="center">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <Icon>edit</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancelEdit(row)}
+                            >
+                              <Icon>cancel</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={`Tablerow2_${index}`}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse in={open} timeout="auto" unmountOnExit>
+                              <Box>
+                                <Typography variant="h6" gutterBottom component="div">
+                                  Details mouvement
+                                </Typography>
+                                <Table aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow key="detailcolumn">
+                                      <TableCell align="center" key={`pu_${index}`}>
+                                        Prix Unitaire
+                                      </TableCell>
+                                      <TableCell align="center" key={`total_${index}`}>
+                                        Total
+                                      </TableCell>
+                                      <TableCell align="center" key={`description_${index}`}>
+                                        Description
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow key="data">
+                                      <TableCell align="center">
+                                        {coloredNumber(formatNumber(row.pu))}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {coloredNumber(formatNumber(row.total))}
+                                      </TableCell>
+                                      <TableCell align="center">{row.description}</TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </>
                     ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
-                      <Typography variant="subtitle1" color="textSecondary">
-                        Aucune donnee disponible
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
+                  <>
+                    <TableRow key="noData">
+                      <TableCell colSpan={6}>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          Aucune donnée disponible
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </>
                 )}
               </TableBody>
             </StyledTable>

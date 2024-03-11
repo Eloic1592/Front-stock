@@ -33,7 +33,6 @@ const Stockarticle = () => {
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'description', field: 'description', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' }
   ];
   const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
@@ -241,9 +240,6 @@ const Stockarticle = () => {
                     <TableCell key="typemateriel" width="15%" align="center">
                       typemateriel
                     </TableCell>
-                    <TableCell key="description" width="50%" align="center">
-                      description
-                    </TableCell>
                     <TableCell key="quantite" width="15%" align="center">
                       quantite
                     </TableCell>
@@ -261,7 +257,6 @@ const Stockarticle = () => {
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
                             <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center">{row.description}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
                             </TableCell>
