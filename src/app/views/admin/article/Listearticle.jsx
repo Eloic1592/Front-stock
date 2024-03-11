@@ -287,19 +287,19 @@ const ListeArticle = () => {
                 {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
-                  <TableCell key="idarticle" width="10%">
+                  <TableCell key="idarticle" width="8%">
                     idarticle
                   </TableCell>
-                  <TableCell key="marque" width="20%" align="center">
+                  <TableCell key="marque" width="16.6%" align="center">
                     marque
                   </TableCell>
-                  <TableCell key="modele" width="20%" align="center">
+                  <TableCell key="modele" width="16.6%" align="center">
                     modele
                   </TableCell>
-                  <TableCell key="typemateriel" width="20%" align="center">
+                  <TableCell key="typemateriel" width="16.6%" align="center">
                     typemateriel
                   </TableCell>
-                  <TableCell align="center" width="20%">
+                  <TableCell align="center" width="16.6%">
                     Action
                   </TableCell>
                 </TableRow>
