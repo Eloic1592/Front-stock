@@ -22,7 +22,11 @@ import { StyledTable } from 'app/views/style/style';
 import { useDFictifFunctions } from 'app/views/admin/mouvementstock/fictif/detail/dfictiffunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { formatNumber, converttodate, colorType } from 'app/utils/utils';
+import Table from '@mui/material/Table';
+import Collapse from '@mui/material/Collapse';
 
 const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
@@ -44,6 +48,9 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const [caution, setCaution] = useState('');
   const [datedeb, setDatedeb] = useState('');
   const [datefin, setDatefin] = useState('');
+
+  // Collapse
+  const [openRows, setOpenRows] = useState({});
 
   const [data, setData] = useState({
     materiels: [],
@@ -94,6 +101,13 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
           open: true
         });
       });
+  };
+
+  const handleRowClick = (iddetailmouvementfictif) => {
+    setOpenRows((prevState) => ({
+      ...prevState,
+      [iddetailmouvementfictif]: !prevState[iddetailmouvementfictif]
+    }));
   };
 
   const {
@@ -262,25 +276,26 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
+                  <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
-                  <TableCell key="numserie" align="center" width="10%">
+                  <TableCell key="numserie" align="center" width="11.1%">
                     N serie materiel
                   </TableCell>
-                  <TableCell key="caution" align="center" width="10%">
-                    Caution
+                  <TableCell key="marque" align="center" width="11.1%">
+                    Marque
                   </TableCell>
-                  <TableCell key="datedeb" align="center" width="10%">
+                  <TableCell key="datedeb" align="center" width="11.1%">
                     Date Debut
                   </TableCell>
-                  <TableCell key="datefin" align="center" width="10%">
+                  <TableCell key="datefin" align="center" width="11.1%">
                     Date fin
                   </TableCell>
-                  <TableCell key="depot" align="center" width="12%">
+                  <TableCell key="depot" align="center" width="11.1%">
                     Depot
                   </TableCell>
-                  <TableCell width="5%">Action</TableCell>
+                  <TableCell width="11.1%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -289,131 +304,103 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell align="center" width="5%">
-                          <Checkbox
-                            checked={selectedIds.includes(row.iddetailmouvementfictif)}
-                            onChange={(event) =>
-                              handleSelection(event, row.iddetailmouvementfictif)
-                            }
-                          />
-                        </TableCell>
-                        {isEditClicked && row.iddetailmouvementfictif === selectedRowId ? (
-                          <>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {colorType(row.mouvement)}
-                            </TableCell>
+                      <>
+                        <TableRow key={index}>
+                          <TableCell align="center" width="5%">
+                            <Checkbox
+                              checked={selectedIds.includes(row.iddetailmouvementfictif)}
+                              onChange={(event) =>
+                                handleSelection(event, row.iddetailmouvementfictif)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              aria-label="expand row"
+                              size="small"
+                              onClick={() => handleRowClick(row.iddetailmouvementfictif)}
+                            >
+                              {openRows[row.iddetailmouvementfictif] ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
+                            </IconButton>
+                          </TableCell>
 
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={materiel}
-                                onChange={(event) => setMateriel(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Materiels
-                                </MenuItem>
-                                {data.materiels.map((row) => (
-                                  <MenuItem key={row.idmateriel} value={row.idmateriel}>
-                                    {row.marque}/{row.modele}-{row.numserie}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="number"
-                                InputProps={{ inputProps: { min: 0 } }}
-                                label="caution"
-                                value={caution}
-                                onChange={(event) => setCaution(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="date"
-                                value={datedeb}
-                                onChange={(event) => setDatedeb(event.target.value)}
-                                width="15%"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="date"
-                                value={datefin}
-                                onChange={(event) => setDatefin(event.target.value)}
-                                width="15%"
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={depot}
-                                onChange={(event) => setDepot(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  depot
-                                </MenuItem>
-                                {data.depots.map((row) => (
-                                  <MenuItem key={row.iddepot} value={row.iddepot}>
-                                    {row.depot}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {colorType(row.mouvement)}
-                            </TableCell>
-                            <TableCell align="center">{row.numserie}</TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {formatNumber(row.caution)}
-                            </TableCell>
-                            <TableCell align="center">{converttodate(row.datedeb)}</TableCell>
-                            <TableCell align="center">{converttodate(row.datefin)}</TableCell>
-                            <TableCell align="center">{row.depot}</TableCell>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                        {isEditClicked && row.iddetailmouvementfictif === selectedRowId && (
-                          <>
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleupdate()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                      </TableRow>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {colorType(row.mouvement)}
+                          </TableCell>
+                          <TableCell align="center">{row.numserie}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.caution)}
+                          </TableCell>
+                          <TableCell align="center">{converttodate(row.datedeb)}</TableCell>
+                          <TableCell align="center">{converttodate(row.datefin)}</TableCell>
+                          <TableCell align="center">{row.depot}</TableCell>
+                          <TableCell>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <Icon>edit</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancelEdit(row)}
+                            >
+                              <Icon>cancel</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={`Tablerow2_${index}`}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                            <Collapse
+                              in={openRows[row.iddetailmouvementfictif]}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <Box>
+                                <Typography variant="h6" gutterBottom component="div">
+                                  Details mouvement
+                                </Typography>
+                                <Table aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow key="detailcolumn">
+                                      <TableCell align="center" key={`modele_${index}`}>
+                                        Modele
+                                      </TableCell>
+                                      <TableCell align="center" key={`description_${index}`}>
+                                        Description
+                                      </TableCell>
+                                      <TableCell align="center" key={`commentaire_${index}`}>
+                                        Commentaire
+                                      </TableCell>
+                                      <TableCell align="center" key={`caution_${index}`}>
+                                        Caution
+                                      </TableCell>
+                                    </TableRow>
+                                  </TableHead>
+                                  <TableBody>
+                                    <TableRow key="data">
+                                      <TableCell align="center">{row.modele}</TableCell>
+                                      <TableCell align="center">{row.description}</TableCell>
+                                      <TableCell align="center">{row.commentaire}</TableCell>
+                                      <TableCell align="center">{row.caution}</TableCell>
+                                    </TableRow>
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </>
                     ))
                 ) : (
                   <TableRow>

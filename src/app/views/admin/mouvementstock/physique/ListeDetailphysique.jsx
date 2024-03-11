@@ -70,10 +70,10 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   // Collapse
   const [openRows, setOpenRows] = useState({});
 
-  const handleRowClick = (idarticle) => {
+  const handleRowClick = (iddetailmouvementphysique) => {
     setOpenRows((prevState) => ({
       ...prevState,
-      [idarticle]: !prevState[idarticle]
+      [iddetailmouvementphysique]: !prevState[iddetailmouvementphysique]
     }));
   };
 

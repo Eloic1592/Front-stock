@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '12%', //  100% divisé par le nombre de colonnes
+    width: '12.5%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,

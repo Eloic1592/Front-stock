@@ -151,10 +151,10 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       });
   };
 
-  const handleRowClick = (idarticle) => {
+  const handleRowClick = (idmateriel) => {
     setOpenRows((prevState) => ({
       ...prevState,
-      [idarticle]: !prevState[idarticle]
+      [idmateriel]: !prevState[idmateriel]
     }));
   };
 
