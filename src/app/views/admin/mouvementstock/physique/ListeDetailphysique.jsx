@@ -68,7 +68,14 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   });
 
   // Collapse
-  const [open, setOpen] = useState(false);
+  const [openRows, setOpenRows] = useState({});
+
+  const handleRowClick = (idarticle) => {
+    setOpenRows((prevState) => ({
+      ...prevState,
+      [idarticle]: !prevState[idarticle]
+    }));
+  };
 
   const handleupdate = () => {
     let detailmouvementphysique = {
@@ -385,9 +392,13 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             <IconButton
                               aria-label="expand row"
                               size="small"
-                              onClick={() => setOpen(!open)}
+                              onClick={() => handleRowClick(row.iddetailmouvementphysique)}
                             >
-                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                              {openRows[row.iddetailmouvementphysique] ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
                             </IconButton>
                           </TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
@@ -425,7 +436,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                            <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Collapse
+                              in={openRows[row.iddetailmouvementphysique]}
+                              timeout="auto"
+                              unmountOnExit
+                            >
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">
                                   Details mouvement

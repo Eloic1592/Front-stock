@@ -201,7 +201,6 @@ const Article = () => {
                       fullWidth
                       labelId="select-label"
                       variant="outlined"
-                      size="small"
                       value={typemateriel}
                       onChange={(event) => setTypemateriel(event.target.value)}
                       sx={{ mb: 3 }}

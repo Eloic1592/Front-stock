@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '11.1%', //  100% divisé par le nombre de colonnes
+    width: '12%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
     borderTopWidth: 0
   },
   tableColFirst: {
-    width: '7%', // Réduisez cette valeur pour réduire la taille de la première colonne
+    width: '12%', // Réduisez cette valeur pour réduire la taille de la première colonne
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -79,9 +79,6 @@ const PDFMouvementphysique = ({ dataList, columns }) => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{formatNumber(row.total)}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.restestock)}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.depot}</Text>

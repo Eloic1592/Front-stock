@@ -49,8 +49,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     severity: 'success',
     open: false
   });
+
   // Collapse
-  const [open, setOpen] = useState(false);
+  const [openRows, setOpenRows] = useState({});
 
   const [data, setData] = useState({
     typemateriels: [],
@@ -148,6 +149,13 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
           open: true
         });
       });
+  };
+
+  const handleRowClick = (idarticle) => {
+    setOpenRows((prevState) => ({
+      ...prevState,
+      [idarticle]: !prevState[idarticle]
+    }));
   };
 
   const generateMaterielPDF = async () => {
@@ -393,7 +401,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <>
-                        <TableRow key={index}>
+                        <TableRow key={`row_${index}`}>
                           <TableCell>
                             <Checkbox
                               checked={selectedIds.includes(row.idmateriel)}
@@ -404,9 +412,13 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             <IconButton
                               aria-label="expand row"
                               size="small"
-                              onClick={() => setOpen(!open)}
+                              onClick={() => handleRowClick(row.idmateriel)}
                             >
-                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                              {openRows[row.idmateriel] ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
                             </IconButton>
                           </TableCell>
                           <TableCell align="center">{row.typemateriel}</TableCell>
@@ -442,7 +454,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                            <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Collapse in={openRows[row.idmateriel]} timeout="auto" unmountOnExit>
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">
                                   Details article
@@ -450,16 +462,16 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                 <Table aria-label="purchases">
                                   <TableHead>
                                     <TableRow key="detailcolumn">
-                                      <TableCell key={`modele_${index}`} align="center">
-                                        modele
+                                      <TableCell align="center" key={`description_${index}`}>
+                                        Modele
                                       </TableCell>
                                       <TableCell align="center" key={`description_${index}`}>
                                         Description
                                       </TableCell>
-                                      <TableCell align="center" key={`statut_${index}`}>
+                                      <TableCell align="center" key={`description_${index}`}>
                                         Statut
                                       </TableCell>
-                                      <TableCell align="center" key={`couleur_${index}`}>
+                                      <TableCell align="center" key={`description_${index}`}>
                                         Couleur
                                       </TableCell>
                                     </TableRow>

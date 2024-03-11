@@ -50,8 +50,9 @@ const ListeArticle = () => {
     severity: 'success',
     open: false
   });
+
   // Collapse
-  const [open, setOpen] = useState(false);
+  const [openRows, setOpenRows] = useState({});
 
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
@@ -127,6 +128,13 @@ const ListeArticle = () => {
           open: true
         });
       });
+  };
+
+  const handleRowClick = (idarticle) => {
+    setOpenRows((prevState) => ({
+      ...prevState,
+      [idarticle]: !prevState[idarticle]
+    }));
   };
 
   const generateArticlePDF = async () => {
@@ -316,9 +324,13 @@ const ListeArticle = () => {
                             <IconButton
                               aria-label="expand row"
                               size="small"
-                              onClick={() => setOpen(!open)}
+                              onClick={() => handleRowClick(row.idarticle)}
                             >
-                              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                              {openRows[row.idarticle] ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
                             </IconButton>
                           </TableCell>
 
@@ -350,7 +362,7 @@ const ListeArticle = () => {
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                            <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Collapse in={openRows[row.idarticle]} timeout="auto" unmountOnExit>
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">
                                   Details article
