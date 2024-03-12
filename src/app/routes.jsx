@@ -19,6 +19,8 @@ const Bilan = Loadable(lazy(() => import('app/views/admin/dashboard/Bilan')));
 
 const Article = Loadable(lazy(() => import('app/views/admin/article/Article')));
 
+const Editarticle = Loadable(lazy(() => import('app/views/admin/article/Editarticle')));
+
 const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Stockarticle')));
 
 const TypeMouvement = Loadable(
@@ -125,6 +127,10 @@ const routes = [
       {
         path: '/admin/stocksarticle',
         element: <Stockarticle />
+      },
+      {
+        path: '/admin/editarticle/:idarticle',
+        element: <Editarticle />
       },
       {
         path: '/admin/typemouvement',
@@ -251,6 +257,7 @@ const routes = [
   { path: '/admin/bilan', element: <Bilan /> },
   { path: '/admin/article', element: <Article /> },
   { path: '/admin/stocksarticle', element: <Stockarticle /> },
+  { path: '/admin/editarticle/:idarticle', element: <Editarticle /> },
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/stockmateriel', element: <StockMateriel /> },
   { path: '/admin/stattypemouvement', element: <Stattypemouvement /> },

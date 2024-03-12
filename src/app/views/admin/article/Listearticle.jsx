@@ -59,21 +59,8 @@ const ListeArticle = () => {
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
-  const handleEdit = (row) => {
-    setEditedIdArticle('');
-    setEditedDescription('');
-    setEditedMarque('');
-    setEditedModele('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.idarticle);
-  };
-
-  const cancelEdit = () => {
-    setEditedIdArticle('');
-    setEditedDescription('');
-    setEditedMarque('');
-    setEditedModele('');
-    setIsEditClicked(false);
+  const handleEdit = (idarticle) => {
+    window.location.replace('/admin/editarticle/' + idarticle);
   };
 
   const {
@@ -344,18 +331,9 @@ const ListeArticle = () => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
+                              onClick={() => handleEdit(row.idarticle)}
                             >
                               <Icon>edit_icon</Icon>
-                            </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="error"
-                              onClick={() => cancelEdit(row)}
-                            >
-                              <Icon>cancel</Icon>
                             </IconButton>
                           </TableCell>
                         </TableRow>
