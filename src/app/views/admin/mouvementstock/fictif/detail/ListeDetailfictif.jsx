@@ -13,7 +13,8 @@ import {
   Grid,
   Snackbar,
   Alert,
-  TextField
+  TextField,
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -27,6 +28,10 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { formatNumber, converttodate, colorType } from 'app/utils/utils';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
+import { saveAs } from 'file-saver';
+
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import PDFMouvementfictif from './PDFMouvementfictif';
 
 const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
@@ -34,8 +39,8 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Num Serie', field: 'numserie', align: 'center' },
-    { label: 'Caution', field: 'caution', align: 'center' },
     { label: 'Date debut', field: 'datedeb', align: 'center' },
     { label: 'Date fin', field: 'datefin', align: 'center' },
     { label: 'Depot', field: 'depot', align: 'center' }
@@ -64,6 +69,14 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     severity: 'success',
     open: false
   });
+
+  // Genere un pdf
+  const generateMouvementPDF = async () => {
+    const blob = await renderPdf(
+      <PDFMouvementfictif dataList={data.mouvementfictifs} columns={columns} />
+    ).toBlob();
+    saveAs(blob, 'Mouvement_fictif.pdf');
+  };
 
   const handleupdate = () => {
     let detailmouvementfictif = {
@@ -254,6 +267,17 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  variant="contained"
+                  aria-label="Edit"
+                  color="secondary"
+                  onClick={generateMouvementPDF}
+                >
+                  <Icon>picture_as_pdf</Icon>
+                </Button>
               </Grid>
             </Grid>
             <StyledTable>

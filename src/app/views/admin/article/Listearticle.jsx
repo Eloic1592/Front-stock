@@ -292,22 +292,21 @@ const ListeArticle = () => {
             </Grid>
             <StyledTable>
               <TableHead>
-                {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="depliant" align="center" width="5%"></TableCell>
-                  <TableCell key="idarticle" width="8%">
+                  <TableCell align="center" key="depliant" width="5%"></TableCell>
+                  <TableCell width="8%" key="idarticle">
                     idarticle
                   </TableCell>
-                  <TableCell key="marque" width="16.6%" align="center">
+                  <TableCell width="16.6%" key="marque" align="center">
                     marque
                   </TableCell>
-                  <TableCell key="modele" width="16.6%" align="center">
+                  <TableCell width="16.6%" key="modele" align="center">
                     modele
                   </TableCell>
-                  <TableCell key="typemateriel" width="16.6%" align="center">
-                    typemateriel
+                  <TableCell width="16.6%" key="typemateriel" align="center">
+                    Type materiel
                   </TableCell>
-                  <TableCell align="center" width="16.6%">
+                  <TableCell align="center" key="action" width="16.6%">
                     Action
                   </TableCell>
                 </TableRow>
@@ -319,7 +318,7 @@ const ListeArticle = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <>
-                        <TableRow key={index}>
+                        <TableRow key={row.idarticle || index}>
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
@@ -334,7 +333,7 @@ const ListeArticle = () => {
                             </IconButton>
                           </TableCell>
 
-                          <TableCell> {row.idarticle}</TableCell>
+                          <TableCell align="center"> {row.idarticle}</TableCell>
                           <TableCell align="center">{row.marque}</TableCell>
                           <TableCell align="center">{row.modele}</TableCell>
                           <TableCell align="center">{row.typemateriel}</TableCell>
@@ -360,7 +359,7 @@ const ListeArticle = () => {
                             </IconButton>
                           </TableCell>
                         </TableRow>
-                        <TableRow key={`Tablerow2_${index}`}>
+                        <TableRow key={`Tablerow2_${row.idarticle}_${index}`}>
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                             <Collapse in={openRows[row.idarticle]} timeout="auto" unmountOnExit>
                               <Box>
@@ -370,13 +369,13 @@ const ListeArticle = () => {
                                 <Table aria-label="purchases">
                                   <TableHead>
                                     <TableRow key="detailcolumn">
-                                      <TableCell align="center" key={`description_${index}`}>
+                                      <TableCell align="center" key="description">
                                         Description
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
-                                    <TableRow key="data">
+                                    <TableRow key={row.idarticle || index}>
                                       <TableCell align="center">{row.description}</TableCell>
                                     </TableRow>
                                   </TableBody>
