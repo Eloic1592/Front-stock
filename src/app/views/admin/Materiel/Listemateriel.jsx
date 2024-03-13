@@ -58,31 +58,14 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     listemateriels: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
-  // Update
-  const [isEditedIdmateriel, setIsEditedIdmateriel] = useState('');
-  const [isEditedtypemat, setIsEditedtypemat] = useState('1');
-  const [isEditedmodele, setIsEditedmodele] = useState('');
-  const [isEditedMarque, setIsEditedMarque] = useState('');
-  const [isEditednumserie, setIsEditednumserie] = useState('');
-  const [isEditedprixvente, setIsEditedprixvente] = useState(0);
-  const [isEditedcolor, setIsEditedcolor] = useState(['Rouge']);
-  const [isEditedcaution, setisEditedcaution] = useState(0);
-  const [isEditedstatut, setIsEditedstatut] = useState('1');
-  const [isEditedsignature, setIsEditedsignature] = useState('1');
-
-  // Modification(Update)
   // Modification(Update)
   const handleEdit = (idmateriel) => {
     window.location.replace('/admin/editmateriel/' + idmateriel);
   };
 
-  const cancelEdit = () => {
-    setIsEditClicked(false);
-  };
+  const cancelEdit = () => {};
 
   const {
     sortDirection,
@@ -108,47 +91,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     setDisponibilite,
     setSignature
   } = useListematerielFunctions(data);
-
-  const handleSubmit = () => {
-    let materiel = {
-      idmateriel: isEditedIdmateriel,
-      idtypemateriel: isEditedtypemat,
-      marque: isEditedMarque,
-      modele: isEditedmodele,
-      numserie: isEditednumserie,
-      prixvente: isEditedprixvente,
-      caution: isEditedcaution,
-      couleur: isEditedcolor,
-      statut: isEditedstatut,
-      signature: isEditedsignature
-    };
-
-    let url = baseUrl + '/materiel/createmateriel';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(materiel),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
 
   const handleRowClick = (idmateriel) => {
     setOpenRows((prevState) => ({
@@ -202,15 +144,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       fetchData();
       setInitialDataFetched(true);
     }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idmateriel === selectedRowId);
-
-      if (selectedRow) {
-        setIsEditedIdmateriel(selectedRow.idmateriel);
-      }
-    }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>

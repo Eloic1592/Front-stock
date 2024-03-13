@@ -53,7 +53,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   const [editarticle, setEditarticle] = useState(['1']);
   const [editquantite, setEditquantite] = useState(0);
   const [editpu, setEditpu] = useState(0);
-  const [editreste, setEditreste] = useState(0);
   const [depot, setDepot] = useState(['1']);
   const [data, setData] = useState({
     articles: [],
@@ -75,6 +74,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
       ...prevState,
       [iddetailmouvementphysique]: !prevState[iddetailmouvementphysique]
     }));
+  };
+
+  // Modification(Update)
+  const handleEdit = (iddetailmouvementphysique) => {
+    window.location.replace('/admin/editmouvementphysique/' + iddetailmouvementphysique);
   };
 
   const handleupdate = () => {
@@ -131,7 +135,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     marque,
     cancelEdit,
     setMarque,
-    handleEdit,
     datedepot,
     setDatedepot,
     mouvement,
@@ -419,7 +422,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
+                              onClick={() => handleEdit(row.iddetailmouvementphysique)}
                             >
                               <Icon>edit</Icon>
                             </IconButton>
@@ -457,6 +460,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                                       <TableCell align="center" key={`description_${index}`}>
                                         Description
                                       </TableCell>
+                                      <TableCell align="center" key={`commentaire_${index}`}>
+                                        Remarques
+                                      </TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
@@ -468,6 +474,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                                         {coloredNumber(formatNumber(row.total))}
                                       </TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
+                                      <TableCell align="center">{row.commentaire}</TableCell>
                                     </TableRow>
                                   </TableBody>
                                 </Table>

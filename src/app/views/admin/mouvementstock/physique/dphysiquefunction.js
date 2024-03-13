@@ -25,12 +25,6 @@ export const useDphysiqueFunctions = (data) => {
     setPage(0);
   };
 
-  // Active la modification
-  const handleEdit = (row) => {
-    setEditingId(row.iddetailmouvementphysique);
-    setIsEditClicked(true);
-    setSelectedRowId(row.iddetailmouvementphysique);
-  };
   const cancelEdit = () => {
     setEditingId(null);
     setIsEditClicked(false);
@@ -98,7 +92,6 @@ export const useDphysiqueFunctions = (data) => {
     setSelectedRowId,
     handleChangePage,
     handleChangeRowsPerPage,
-    handleEdit,
     cancelEdit,
     handleSave,
     handleSelection,
