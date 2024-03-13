@@ -332,4 +332,4 @@ export const colors = [
   'Violet'
 ];
 
-export const signatures = ['Perso', 'ITU', 'Aucun apparetenance'];
+export const signatures = ['Perso', 'ITU', 'Aucun'];

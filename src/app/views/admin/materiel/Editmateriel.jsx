@@ -30,6 +30,7 @@ const Editmateriel = () => {
       prixvente: 0,
       caution: 0,
       signature: '',
+      etat: '',
       statut: ''
     }
   });
@@ -61,9 +62,15 @@ const Editmateriel = () => {
       marque: marque,
       modele: modele,
       idtypemateriel: typemateriel,
-      description: description
+      description: description,
+      numserie: numserie,
+      prixvente: prixvente,
+      caution: caution,
+      couleur: couleur,
+      statut: disponibilite,
+      signature: signature
     };
-    let url = baseUrl + '/article/createarticle';
+    let url = baseUrl + '/materiel/createmateriel';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -127,7 +134,7 @@ const Editmateriel = () => {
         setCaution(newData.listemateriel.caution);
         setCouleur(newData.listemateriel.couleur);
         setSignature(newData.listemateriel.signature);
-        setDisponibilite(newData.listemateriel.statut);
+        setDisponibilite(newData.listemateriel.etat);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -140,7 +147,7 @@ const Editmateriel = () => {
   }, [idmateriel]);
 
   const handleCancel = () => {
-    window.location.replace('/admin/materiel');
+    window.location.replace('/admin/listemateriel');
   };
 
   return (
