@@ -75,10 +75,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const [isEditedsignature, setIsEditedsignature] = useState('1');
 
   // Modification(Update)
-  const handleEdit = (row) => {
-    setIsEditedIdmateriel('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.idmateriel);
+  // Modification(Update)
+  const handleEdit = (idmateriel) => {
+    window.location.replace('/admin/editmateriel/' + idmateriel);
   };
 
   const cancelEdit = () => {
@@ -437,7 +436,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
+                              onClick={() => handleEdit(row.idmateriel)}
                             >
                               <Icon>edit_icon</Icon>
                             </IconButton>
@@ -446,7 +445,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="error"
-                              onClick={() => cancelEdit(row)}
+                              onClick={() => cancelEdit(row.idmateriel)}
                             >
                               <Icon>cancel</Icon>
                             </IconButton>

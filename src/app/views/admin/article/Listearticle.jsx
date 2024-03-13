@@ -40,11 +40,6 @@ const ListeArticle = () => {
   ];
   const [data, setData] = useState({ articles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editedIdArticle, setEditedIdArticle] = useState(null);
-  const [editedModele, setEditedModele] = useState(null);
-  const [editedMarque, setEditedMarque] = useState(null);
-  const [editedTypemateriel, setEditedTypemateriel] = useState('1');
-  const [editedDescription, setEditedDescription] = useState(null);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -53,9 +48,6 @@ const ListeArticle = () => {
 
   // Collapse
   const [openRows, setOpenRows] = useState({});
-
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
@@ -80,42 +72,6 @@ const ListeArticle = () => {
     typemateriel,
     setTypemateriel
   } = useListeArticlefunctions(data);
-
-  const handleSubmit = () => {
-    let article = {
-      idarticle: editedIdArticle,
-      marque: editedMarque,
-      modele: editedModele,
-      description: editedDescription,
-      idtypemateriel: editedTypemateriel
-    };
-
-    let url = baseUrl + '/article/createarticle';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(article),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
 
   const handleRowClick = (idarticle) => {
     setOpenRows((prevState) => ({
@@ -166,18 +122,7 @@ const ListeArticle = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idarticle === selectedRowId);
-
-      if (selectedRow) {
-        setEditedIdArticle(selectedRow.idarticle);
-        setEditedModele((prev) => (prev != null ? prev : selectedRow.modele));
-        setEditedMarque((prev) => (prev != null ? prev : selectedRow.marque));
-        setEditedDescription((prev) => (prev != null ? prev : selectedRow.description));
-      }
-    }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto" key="Box1">

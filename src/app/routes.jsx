@@ -50,6 +50,8 @@ const Stockfictif = Loadable(
 
 const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
 
+const Editmateriel = Loadable(lazy(() => import('app/views/admin/materiel/Editmateriel')));
+
 const StockMateriel = Loadable(lazy(() => import('app/views/admin/materiel/Stockmateriel')));
 
 const Facture = Loadable(lazy(() => import('app/views/admin/facture/Facture')));
@@ -173,6 +175,10 @@ const routes = [
         path: '/admin/stockmateriel',
         element: <StockMateriel />
       },
+      {
+        path: '/admin/editmateriel/:idmateriel',
+        element: <Editmateriel />
+      },
 
       {
         path: '/admin/facture',
@@ -260,6 +266,7 @@ const routes = [
   { path: '/admin/editarticle/:idarticle', element: <Editarticle /> },
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/stockmateriel', element: <StockMateriel /> },
+  { path: '/admin/editmateriel/:idmateriel', element: <Editmateriel /> },
   { path: '/admin/stattypemouvement', element: <Stattypemouvement /> },
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },

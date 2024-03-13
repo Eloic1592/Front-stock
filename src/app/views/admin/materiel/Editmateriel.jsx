@@ -1,13 +1,14 @@
 import { Box, TextField, Snackbar, Alert, Grid, MenuItem, Select } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
+import { colors, signatures } from 'app/utils/utils';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Editarticle = () => {
-  const idarticle = useParams();
+const Editmateriel = () => {
+  const idmateriel = useParams();
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -16,22 +17,35 @@ const Editarticle = () => {
   });
   const [data, setData] = useState({
     typemateriels: [],
-    article: {
+    listemateriel: {
       id: 0,
-      idarticle: '',
+      idmateriel: '',
       idtypemateriel: '',
       typemateriel: '',
       marque: '',
       modele: '',
-      description: ''
+      numserie: '',
+      couleur: '',
+      description: '',
+      prixvente: 0,
+      caution: 0,
+      signature: '',
+      statut: ''
     }
   });
 
   // Input
-  const [typemateriel, setTypemateriel] = useState('1');
+  const [couleur, setCouleur] = useState(['1']);
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
+  const [typemateriel, setTypemateriel] = useState(['1']);
+
+  const [numserie, setNumserie] = useState('');
   const [description, setDescription] = useState('');
+  const [prixvente, setPrixvente] = useState(0);
+  const [caution, setCaution] = useState(0);
+  const [disponibilite, setDisponibilite] = useState('2');
+  const [signature, setSignature] = useState('1');
 
   const handleSubmit = () => {
     if (!marque || typemateriel === '1') {
@@ -43,7 +57,7 @@ const Editarticle = () => {
       return;
     }
     let params = {
-      idarticle: idarticle.idarticle,
+      idmateriel: idmateriel.idmateriel,
       marque: marque,
       modele: modele,
       idtypemateriel: typemateriel,
@@ -82,14 +96,14 @@ const Editarticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let articleParams = {
-          idarticle: idarticle.idarticle
+        let materielParams = {
+          idmateriel: idmateriel.idmateriel
         };
-        let url = baseUrl + '/article/getarticle';
+        let url = baseUrl + '/materiel/getmateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(articleParams),
+          body: JSON.stringify(materielParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -101,13 +115,19 @@ const Editarticle = () => {
 
         const newData = {
           typemateriels: responseData.typemateriels || [],
-          article: responseData.article || null
+          listemateriel: responseData.listemateriel || null
         };
         setData(newData);
-        setMarque(newData.article.marque);
-        setTypemateriel(newData.article.idtypemateriel);
-        setModele(newData.article.modele);
-        setDescription(newData.article.description);
+        setMarque(newData.listemateriel.marque);
+        setTypemateriel(newData.listemateriel.idtypemateriel);
+        setModele(newData.listemateriel.modele);
+        setDescription(newData.listemateriel.description);
+        setNumserie(newData.listemateriel.numserie);
+        setPrixvente(newData.listemateriel.prixvente);
+        setCaution(newData.listemateriel.caution);
+        setCouleur(newData.listemateriel.couleur);
+        setSignature(newData.listemateriel.signature);
+        setDisponibilite(newData.listemateriel.statut);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -117,20 +137,20 @@ const Editarticle = () => {
       }
     };
     fetchData();
-  }, [idarticle]);
+  }, [idmateriel]);
 
   const handleCancel = () => {
-    window.location.replace('/admin/article');
+    window.location.replace('/admin/materiel');
   };
 
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
-          routeSegments={[{ name: 'Article', path: 'admin/article' }, { name: 'Article' }]}
+          routeSegments={[{ name: 'Materiel', path: 'admin/materiel' }, { name: 'Materiel' }]}
         />
       </Box>
-      <SimpleCard title="Modifier un article">
+      <SimpleCard title="Modifier un materiel">
         <Box>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -162,16 +182,17 @@ const Editarticle = () => {
                 rows={4}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <Select
-                fullWidth
                 labelId="select-label"
-                variant="outlined"
+                sx={{ mb: 3 }}
                 value={typemateriel}
                 onChange={(event) => setTypemateriel(event.target.value)}
-                sx={{ mb: 3 }}
+                fullWidth
               >
-                <MenuItem value="1">Selectionner un type de materiel</MenuItem>
+                <MenuItem value="1" disabled>
+                  Choisir un type
+                </MenuItem>
                 {data.typemateriels.map((row) => (
                   <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                     {row.typemateriel}
@@ -179,6 +200,98 @@ const Editarticle = () => {
                 ))}
               </Select>
             </Grid>
+            <Grid item xs={6}>
+              <Select
+                fullWidth
+                labelId="select-label"
+                value={couleur}
+                onChange={(event) => setCouleur(event.target.value)}
+                sx={{ mb: 3 }}
+              >
+                <MenuItem value="1" disabled>
+                  Choisir une couleur
+                </MenuItem>
+                {colors.map((color, index) => (
+                  <MenuItem key={index} value={color}>
+                    {color}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="numeroserie"
+                type="text"
+                margin="dense"
+                label="Numero de serie"
+                name="numserie"
+                value={numserie}
+                onChange={(event) => setNumserie(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="prixvente"
+                type="number"
+                InputProps={{ inputProps: { min: 0 } }}
+                margin="dense"
+                label="Prix de vente"
+                name="prixvente"
+                value={prixvente}
+                onChange={(event) => setPrixvente(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="caution"
+                type="number"
+                InputProps={{ inputProps: { min: 0 } }}
+                margin="dense"
+                label="Caution"
+                name="caution"
+                value={caution}
+                onChange={(event) => setCaution(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Select
+                labelId="select-label"
+                sx={{ mb: 3 }}
+                value={disponibilite}
+                onChange={(event) => setDisponibilite(event.target.value)}
+                fullWidth
+              >
+                <MenuItem value="2" disabled>
+                  Choisir la disponibilite
+                </MenuItem>
+                <MenuItem value="0">Libre</MenuItem>
+                <MenuItem value="1">Occupe</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={6}>
+              <Select
+                fullWidth
+                labelId="select-label"
+                value={signature}
+                onChange={(event) => setSignature(event.target.value)}
+                sx={{ mb: 3 }}
+              >
+                <MenuItem value="1">Toutes Signatures</MenuItem>
+                {signatures.map((signature, index) => (
+                  <MenuItem key={index} value={signature}>
+                    {signature}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
+
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>
               <Grid item>
                 <Button variant="contained" color="secondary" onClick={handleCancel}>
@@ -203,4 +316,4 @@ const Editarticle = () => {
   );
 };
 
-export default Editarticle;
+export default Editmateriel;
