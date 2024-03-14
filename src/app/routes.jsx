@@ -10,7 +10,6 @@ import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
 const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
 
-// Admin
 const LoginAdmin = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin')));
 
 const Dashboard = Loadable(lazy(() => import('app/views/admin/dashboard/Dashboard')));
@@ -26,14 +25,26 @@ const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Stockar
 const TypeMouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Naturemouvement'))
 );
+const Editnaturemouvement = Loadable(
+  lazy(() => import('app/views/admin/naturemouvement/Editnaturemouvement'))
+);
+
 const Stattypemouvement = Loadable(
   lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
 );
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 
+const EditTypemateriel = Loadable(
+  lazy(() => import('app/views/admin/typemateriel/Edittypemateriel'))
+);
+
 const Categoriemateriel = Loadable(
   lazy(() => import('app/views/admin/categoriemateriel/Categoriemateriel'))
+);
+
+const Editcategoriemateriel = Loadable(
+  lazy(() => import('app/views/admin/categoriemateriel/Editcategoriemateriel'))
 );
 
 const Stockphysique = Loadable(
@@ -49,6 +60,10 @@ const Detailfictif = Loadable(
 
 const Stockfictif = Loadable(
   lazy(() => import('app/views/admin/mouvementstock/fictif/Stockfictif'))
+);
+
+const Editmouvementfictif = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/fictif/detail/Editmouvementfictif'))
 );
 
 const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
@@ -82,6 +97,8 @@ const Detaillivraison = Loadable(
 );
 
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
+
+const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot')));
 
 const StockDepot = Loadable(lazy(() => import('app/views/admin/depot/Stockdepot')));
 
@@ -141,10 +158,19 @@ const routes = [
         path: '/admin/typemouvement',
         element: <TypeMouvement />
       },
+      {
+        path: '/admin/editnaturemouvement/:idnaturemouvement',
+        element: <Editnaturemouvement />
+      },
 
       {
         path: '/admin/typemateriel',
         element: <TypeMateriel />
+      },
+
+      {
+        path: '/admin/edittypemateriel/:idtypemateriel',
+        element: <EditTypemateriel />
       },
 
       {
@@ -155,6 +181,10 @@ const routes = [
       {
         path: '/admin/categoriemateriel',
         element: <Categoriemateriel />
+      },
+      {
+        path: '/admin/editcategoriemateriel/:idcategoriemateriel',
+        element: <Editcategoriemateriel />
       },
 
       {
@@ -172,6 +202,10 @@ const routes = [
       {
         path: '/admin/detailfictif/:idmouvementstock',
         element: <Detailfictif />
+      },
+      {
+        path: '/admin/editmouvementfictif/:iddetailmouvementfictif',
+        element: <Editmouvementfictif />
       },
       {
         path: '/admin/listemateriel',
@@ -234,6 +268,10 @@ const routes = [
         element: <Depot />
       },
       {
+        path: '/admin/editdepot/:iddepot',
+        element: <Editdepot />
+      },
+      {
         path: '/admin/stockdepot',
         element: <StockDepot />
       },
@@ -277,10 +315,15 @@ const routes = [
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
+  { path: '/admin/editcategoriemateriel/:idcategoriemateriel', element: <Editcategoriemateriel /> },
   { path: '/admin/mouvementphysique', element: <Stockphysique /> },
   {
     path: '/admin/editmouvementphysique/:iddetailmouvementphysique',
     element: <Editmouvementphysique />
+  },
+  {
+    path: '/admin/editmouvementfictif/:iddetailmouvementfictif',
+    element: <Editmouvementfictif />
   },
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },
@@ -292,6 +335,7 @@ const routes = [
   { path: '/admin/detailcommande/:idproforma', element: <DetailCommande /> },
   { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
   { path: '/admin/depot', element: <Depot /> },
+  { path: '/admin/editdepot:iddepot', element: <Editdepot /> },
   { path: '/admin/stockdepot', element: <StockDepot /> },
   { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },

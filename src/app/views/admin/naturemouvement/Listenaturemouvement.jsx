@@ -46,11 +46,8 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
-  const handleEdit = (row) => {
-    setEditedIdNaturemouvement('');
-    setEditedNaturemouvement('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.idnaturemouvement);
+  const handleEdit = (idnaturemouvement) => {
+    window.location.replace('/admin/editnaturemouvement/' + idnaturemouvement);
   };
 
   const cancelEdit = () => {
@@ -306,7 +303,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                                 variant="contained"
                                 aria-label="Edit"
                                 color="primary"
-                                onClick={() => handleEdit(row)}
+                                onClick={() => handleEdit(row.idnaturemouvement)}
                               >
                                 <Icon>edit_icon</Icon>
                               </IconButton>

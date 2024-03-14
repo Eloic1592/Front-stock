@@ -40,18 +40,11 @@ const Listedepot = () => {
     open: false
   });
 
-  const handleEdit = (row) => {
-    setEditedIdDepot('');
-    setEditedNomDepot('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.iddepot);
+  const handleEdit = (iddepot) => {
+    window.location.replace('/admin/editdepot/' + iddepot);
   };
 
-  const cancelEdit = () => {
-    setEditedIdDepot('');
-    setEditedNomDepot('');
-    setIsEditClicked(false);
-  };
+  const cancelEdit = () => {};
 
   const {
     sortDirection,
@@ -215,75 +208,25 @@ const Listedepot = () => {
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
                       <TableRow key={row.iddepot}>
-                        {isEditClicked && row.iddepot === selectedRowId ? (
-                          <>
-                            <TableCell key={row.iddepot} align="center" width="15%">
-                              <TextField
-                                fullWidth
-                                value={editedIdDepot}
-                                onChange={(event) => setEditedIdDepot(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell align="center" width="50%">
-                              <TextField
-                                value={editedNomDepot}
-                                onChange={(event) => setEditedNomDepot(event.target.value)}
-                                onBlur={() =>
-                                  setEditedNomDepot(
-                                    editedNomDepot.trim() !== '' ? editedNomDepot : row.depot
-                                  )
-                                }
-                              />
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center" width="15%">
-                              {row.iddepot}
-                            </TableCell>
-                            <TableCell align="center" width="50%">
-                              <Link to={`/admin/stocktypemateriel/${row.iddepot}`}>
-                                {row.depot}
-                              </Link>
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-
-                        {isEditClicked && row.iddepot === selectedRowId && (
-                          <>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleSubmit()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
+                        <>
+                          <TableCell align="center" width="15%">
+                            {row.iddepot}
+                          </TableCell>
+                          <TableCell align="center" width="50%">
+                            <Link to={`/admin/stocktypemateriel/${row.iddepot}`}>{row.depot}</Link>
+                          </TableCell>
+                          <TableCell align="center" width="15%">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.iddepot)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </>
                       </TableRow>
                     ))
                 ) : (

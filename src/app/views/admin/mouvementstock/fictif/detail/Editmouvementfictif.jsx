@@ -14,38 +14,37 @@ import { useState, useEffect } from 'react';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { formatDate } from 'app/utils/utils';
-import Datalistarticle from '../../Datagrid/Datalistarticle';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useParams } from 'react-router-dom';
-const Editmouvementphysique = () => {
-  const iddetailmouvementphysique = useParams();
+import Datalistmateriel from 'app/views/admin/Datagrid/Datalistmateriel';
+const Editmouvementfictif = () => {
+  const iddetailmouvementfictif = useParams();
 
   // Input
-  const [datedepot, setDatedepot] = useState('');
-  const [typemouvement, setTypemouvement] = useState(['0']);
-  const [naturemouvement, setNaturemouvement] = useState(['1']);
-  const [article, setArticle] = useState('');
-  const [quantite, setQuantite] = useState(0);
-  const [prixunitaire, setPrixunitaire] = useState(0);
+  const [idmouvement, setIdmouvement] = useState('');
+  const [caution, setCaution] = useState(0);
+  const [datedeb, setDatedeb] = useState('');
+  const [datefin, setDatefin] = useState('');
   const [depot, setDepot] = useState(['1']);
+  const [idmateriel, setIdmateriel] = useState('');
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
   const [data, setData] = useState({
-    mouvementphysique: {
-      iddetailmouvementphysique: '',
-      typemouvement: 0,
+    mouvementfictif: {
+      iddetailmouvementfictif: '',
       idnaturemouvement: '',
-      datedepot: '',
+      datedeb: '',
+      datefin: '',
+      caution: 0,
       quantite: '',
-      idarticle: '',
-      pu: '',
+      idmateriel: '',
       iddepot: '',
       description: '',
       commentaire: ''
     },
-    naturemouvements: [],
+    listemateriels: [],
     depots: [],
-    listearticles: []
+    etudiants: []
   });
 
   // Message
@@ -65,20 +64,19 @@ const Editmouvementphysique = () => {
 
   const handleSubmit = () => {
     let params = {
-      iddetailmouvementphysique: iddetailmouvementphysique.iddetailmouvementphysique,
-      idarticle: article,
-      datedepot: datedepot,
-      typemouvement: typemouvement,
-      idnaturemouvement: naturemouvement,
-      pu: prixunitaire,
-      quantite: quantite,
+      iddetailmouvementfictif: iddetailmouvementfictif.iddetailmouvementfictif,
+      idmouvement: idmouvement,
+      datedeb: datedeb,
+      datefin: datefin,
+      caution: caution,
+      idmateriel: idmateriel,
       iddepot: depot,
       description: description,
       commentaire: commentaire,
       statut: 0
     };
 
-    let url = baseUrl + '/mouvementstock/createstockphysique';
+    let url = baseUrl + '/mouvementstock/createsingledetailfictif';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -110,9 +108,9 @@ const Editmouvementphysique = () => {
     const fetchData = async () => {
       try {
         let mouvementstockParams = {
-          iddetailmouvementphysique: iddetailmouvementphysique.iddetailmouvementphysique
+          iddetailmouvementfictif: iddetailmouvementfictif.iddetailmouvementfictif
         };
-        let url = baseUrl + '/mouvementstock/getmouvementphysique';
+        let url = baseUrl + '/mouvementstock/getmouvementfictif';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -127,22 +125,21 @@ const Editmouvementphysique = () => {
         const responseData = await response.json();
 
         const newData = {
-          naturemouvements: responseData.naturemouvements || [],
+          listemateriels: responseData.listemateriels || [],
           depots: responseData.depots || [],
-          listearticles: responseData.listearticles || [],
-          mouvementphysique: responseData.mouvementphysique || null
+          etudiants: responseData.etudiants || [],
+          mouvementfictif: responseData.mouvementfictif || null
         };
 
         setData(newData);
-        setArticle(newData.mouvementphysique.idarticle);
-        setDescription(newData.mouvementphysique.description);
-        setCommentaire(newData.mouvementphysique.commentaire);
-        setQuantite(newData.mouvementphysique.quantite);
-        setPrixunitaire(newData.mouvementphysique.pu);
-        setDepot(newData.mouvementphysique.iddepot);
-        setDatedepot(formatDate(newData.mouvementphysique.datedepot));
-        setNaturemouvement(newData.mouvementphysique.idnaturemouvement);
-        setTypemouvement(newData.mouvementphysique.typemouvement);
+        setIdmouvement(newData.mouvementfictif.idmouvement);
+        setIdmateriel(newData.mouvementfictif.idmateriel);
+        setDescription(newData.mouvementfictif.description);
+        setCommentaire(newData.mouvementfictif.commentaire);
+        setCaution(newData.mouvementfictif.caution);
+        setDepot(newData.mouvementfictif.iddepot);
+        setDatedeb(formatDate(newData.mouvementfictif.datedeb));
+        setDatefin(formatDate(newData.mouvementfictif.datefin));
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -152,10 +149,10 @@ const Editmouvementphysique = () => {
       }
     };
     fetchData();
-  }, [iddetailmouvementphysique.iddetailmouvementphysique]);
+  }, [iddetailmouvementfictif.iddetailmouvementfictif]);
 
   const handleCancel = () => {
-    window.location.replace('/admin/mouvementphysique');
+    window.location.replace('/admin/mouvementfictif');
   };
 
   return (
@@ -163,7 +160,7 @@ const Editmouvementphysique = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Mouvement de stock', path: 'admin/stock/mouvementphysique' },
+            { name: 'Mouvement de stock', path: 'admin/stock/mouvementfictif' },
             { name: 'mouvement de stock physique' }
           ]}
         />
@@ -174,45 +171,34 @@ const Editmouvementphysique = () => {
             <Box>
               <Grid container spacing={1}>
                 <Grid item xs={6}>
-                  <Select
+                  <TextField
                     fullWidth
-                    labelId="select-label"
-                    value={naturemouvement}
-                    onChange={(event) => setNaturemouvement(event.target.value)}
-                  >
-                    <MenuItem value="1">Choisir un mouvement</MenuItem>
-                    {data.naturemouvements.map((row) => (
-                      <MenuItem value={row.idnaturemouvement} key={row.idnaturemouvement}>
-                        {row.naturemouvement}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                    id="datedeb"
+                    type="date"
+                    name="datedeb"
+                    value={datedeb}
+                    onChange={(event) => setDatedeb(event.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    id="datedepot"
+                    id="datefin"
                     type="date"
-                    name="datedepot"
-                    value={datedepot}
-                    onChange={(event) => setDatedepot(event.target.value)}
+                    name="datefin"
+                    value={datefin}
+                    onChange={(event) => setDatefin(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <Select
+                  <TextField
                     fullWidth
-                    labelId="select-label"
-                    value={typemouvement}
-                    onChange={(event) => setTypemouvement(event.target.value)}
-                  >
-                    <MenuItem value="0">Choisir la nature du mouvement</MenuItem>
-                    <MenuItem value="1" key="1">
-                      Entree
-                    </MenuItem>
-                    <MenuItem value="-1" key="-1">
-                      Sortie
-                    </MenuItem>
-                  </Select>
+                    id="caution"
+                    type="number"
+                    name="caution"
+                    value={caution}
+                    onChange={(event) => setCaution(event.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={6}>
                   <Select
@@ -235,16 +221,17 @@ const Editmouvementphysique = () => {
                   <TextField
                     fullWidth
                     type="text"
-                    name="article"
-                    label="Article"
+                    name="idmateriel"
+                    label="Materiel"
                     variant="outlined"
-                    value={article}
-                    onChange={setArticle}
+                    value={idmateriel}
+                    onChange={setIdmateriel}
                     InputProps={{
                       readOnly: true,
                       endAdornment: (
                         <InputAdornment position="end">
                           <Button
+                            style={{ width: '30px', height: '20px' }}
                             color="inherit"
                             variant="contained"
                             onClick={handleClickOpendatagrid}
@@ -257,39 +244,13 @@ const Editmouvementphysique = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Datalistarticle
-                    articles={data.listearticles}
+                  <Datalistmateriel
+                    Materiels={data.listemateriels}
                     state={opendatagrid}
                     handleClose={handleCloseOpendatagrid}
-                    setArticle={setArticle}
+                    setmateriel={setIdmateriel}
                   />
                 </Grid>
-
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    name="quantite"
-                    label="Quantite"
-                    variant="outlined"
-                    value={quantite}
-                    onChange={(event) => setQuantite(event.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    InputProps={{ inputProps: { min: 0 } }}
-                    name="prixunitaire"
-                    label="Prix unitaire"
-                    variant="outlined"
-                    value={prixunitaire}
-                    onChange={(event) => setPrixunitaire(event.target.value)}
-                  />
-                </Grid>
-
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
@@ -339,4 +300,4 @@ const Editmouvementphysique = () => {
   );
 };
 
-export default Editmouvementphysique;
+export default Editmouvementfictif;

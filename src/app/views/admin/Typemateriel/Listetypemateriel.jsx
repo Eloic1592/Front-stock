@@ -47,11 +47,8 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
-  const handleEdit = (row) => {
-    setEditedIdtypemateriel('');
-    setEditedTypemateriel('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.idtypemateriel);
+  const handleEdit = (idtypemateriel) => {
+    window.location.replace('/admin/edittypemateriel/' + idtypemateriel);
   };
 
   const cancelEdit = () => {
@@ -247,7 +244,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="typemateriel" align="center" width="40%">
                     typemateriel
                   </TableCell>
-                  <TableCell key="typemateriel" align="center" width="40%">
+                  <TableCell key="categoriemateriel" align="center" width="40%">
                     categoriemateriel
                   </TableCell>
                   <TableCell align="center" width="15%">
@@ -321,7 +318,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                 variant="contained"
                                 aria-label="Edit"
                                 color="primary"
-                                onClick={() => handleEdit(row)}
+                                onClick={() => handleEdit(row.idtypemateriel)}
                               >
                                 <Icon>edit_icon</Icon>
                               </IconButton>

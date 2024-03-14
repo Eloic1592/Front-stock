@@ -6,8 +6,8 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Editarticle = () => {
-  const idarticle = useParams();
+const Edittypemateriel = () => {
+  const idtypemateriel = useParams();
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -15,26 +15,21 @@ const Editarticle = () => {
     open: false
   });
   const [data, setData] = useState({
-    typemateriels: [],
-    article: {
+    categoriemateriels: [],
+    typemateriel: {
       id: 0,
-      idarticle: '',
       idtypemateriel: '',
       typemateriel: '',
-      marque: '',
-      modele: '',
-      description: ''
+      idcategoriemateriel: ''
     }
   });
 
   // Input
-  const [typemateriel, setTypemateriel] = useState('1');
-  const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState('');
-  const [description, setDescription] = useState('');
+  const [typemateriel, settypemateriel] = useState('');
+  const [categoriemateriel, setCategoriemateriel] = useState('');
 
   const handleSubmit = () => {
-    if (!marque || typemateriel === '1') {
+    if (!typemateriel) {
       setMessage({
         text: 'Veuillez remplir tous les champs obligatoires.',
         severity: 'error',
@@ -43,13 +38,11 @@ const Editarticle = () => {
       return;
     }
     let params = {
-      idarticle: idarticle.idarticle,
-      marque: marque,
-      modele: modele,
-      idtypemateriel: typemateriel,
-      description: description
+      idtypemateriel: idtypemateriel.idtypemateriel,
+      typemateriel: typemateriel,
+      idcategoriemateriel: categoriemateriel
     };
-    let url = baseUrl + '/article/createarticle';
+    let url = baseUrl + '/typemateriel/createtypemateriel';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -82,14 +75,14 @@ const Editarticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let articleParams = {
-          idarticle: idarticle.idarticle
+        let typematerielParams = {
+          idtypemateriel: idtypemateriel.idtypemateriel
         };
-        let url = baseUrl + '/article/getarticle';
+        let url = baseUrl + '/typemateriel/gettypemateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(articleParams),
+          body: JSON.stringify(typematerielParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -98,16 +91,13 @@ const Editarticle = () => {
         }
 
         const responseData = await response.json();
-
         const newData = {
-          typemateriels: responseData.typemateriels || [],
-          article: responseData.article || null
+          categoriemateriels: responseData.categoriemateriels || [],
+          typemateriel: responseData.typemateriel || null
         };
         setData(newData);
-        setMarque(newData.article.marque);
-        setTypemateriel(newData.article.idtypemateriel);
-        setModele(newData.article.modele);
-        setDescription(newData.article.description);
+        settypemateriel(newData.typemateriel.typemateriel);
+        setCategoriemateriel(newData.typemateriel.idcategoriemateriel);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -117,49 +107,32 @@ const Editarticle = () => {
       }
     };
     fetchData();
-  }, [idarticle.idarticle]);
+  }, [idtypemateriel.idtypemateriel]);
 
   const handleCancel = () => {
-    window.location.replace('/admin/article');
+    window.location.replace('/admin/typemateriel');
   };
 
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
-          routeSegments={[{ name: 'Article', path: 'admin/article' }, { name: 'Article' }]}
+          routeSegments={[
+            { name: 'typemateriel', path: 'admin/typemateriel' },
+            { name: 'typemateriel' }
+          ]}
         />
       </Box>
-      <SimpleCard title="Modifier un article">
+      <SimpleCard title="Modifier typemateriel">
         <Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Marque"
-                variant="outlined"
-                value={marque}
-                onChange={(e) => setMarque(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Modèle"
-                variant="outlined"
-                value={modele}
-                onChange={(e) => setModele(e.target.value)}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Description"
+                label="Type de materiel"
                 variant="outlined"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                multiline
-                rows={4}
+                value={typemateriel}
+                onChange={(e) => settypemateriel(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -167,14 +140,14 @@ const Editarticle = () => {
                 fullWidth
                 labelId="select-label"
                 variant="outlined"
-                value={typemateriel}
-                onChange={(event) => setTypemateriel(event.target.value)}
+                value={categoriemateriel}
+                onChange={(event) => setCategoriemateriel(event.target.value)}
                 sx={{ mb: 3 }}
               >
-                <MenuItem value="1">Selectionner un type de materiel</MenuItem>
-                {data.typemateriels.map((row) => (
-                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                    {row.typemateriel}
+                <MenuItem value="1">Selectionner une categorie de materiel</MenuItem>
+                {data.categoriemateriels.map((row) => (
+                  <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
+                    {row.categoriemateriel}
                   </MenuItem>
                 ))}
               </Select>
@@ -203,4 +176,4 @@ const Editarticle = () => {
   );
 };
 
-export default Editarticle;
+export default Edittypemateriel;

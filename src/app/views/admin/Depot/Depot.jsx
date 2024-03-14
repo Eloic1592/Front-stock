@@ -72,10 +72,6 @@ const Depot = () => {
       });
   };
 
-  // const handleDepotAdded = (newDepot) => {
-  //   setDepots([...depots, newDepot]);
-  // };
-
   const getstockarticle = () => {
     window.location.replace('/admin/stockdepot');
   };

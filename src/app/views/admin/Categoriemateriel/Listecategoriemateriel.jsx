@@ -44,11 +44,8 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
-  const handleEdit = (row) => {
-    setEditedIdCategorieMateriel('');
-    setEditedCategorieMateriel('');
-    setIsEditClicked(true);
-    setSelectedRowId(row.idcategoriemateriel);
+  const handleEdit = (idcategoriemateriel) => {
+    window.location.replace('/admin/editcategoriemateriel/' + idcategoriemateriel);
   };
 
   const cancelEdit = () => {
@@ -260,7 +257,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                                 variant="contained"
                                 aria-label="Edit"
                                 color="primary"
-                                onClick={() => handleEdit(row)}
+                                onClick={() => handleEdit(row.idcategoriemateriel)}
                               >
                                 <Icon>edit_icon</Icon>
                               </IconButton>

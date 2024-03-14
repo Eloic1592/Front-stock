@@ -46,14 +46,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editiddetail, setEditedIddetail] = useState('');
-  const [editnature, setEditnature] = useState('1');
-  const [editmouvement, setEditmouvement] = useState('0');
-  const [editdatedepot, setEditdatedepot] = useState('');
-  const [editarticle, setEditarticle] = useState(['1']);
-  const [editquantite, setEditquantite] = useState(0);
-  const [editpu, setEditpu] = useState(0);
-  const [depot, setDepot] = useState(['1']);
   const [data, setData] = useState({
     articles: [],
     depots: [],
@@ -81,54 +73,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     window.location.replace('/admin/editmouvementphysique/' + iddetailmouvementphysique);
   };
 
-  const handleupdate = () => {
-    let detailmouvementphysique = {
-      typemouvement: editmouvement,
-      idnaturemouvement: editnature,
-      iddetailmouvementphysique: editiddetail,
-      datedepot: editdatedepot,
-      idarticle: editarticle,
-      quantite: editquantite,
-      pu: editpu,
-      total: editpu * editquantite,
-      iddepot: depot,
-      statut: 0
-    };
-
-    let url = baseUrl + '/mouvementstock/createsingledetailphysique';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(detailmouvementphysique),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
-
   const {
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
-    isEditClicked,
-    selectedRowId,
     handleChangePage,
     sortColumn,
     selectedIds,
@@ -194,14 +143,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
       fetchData();
       setInitialDataFetched(true);
     }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.iddetailmouvementphysique === selectedRowId);
-      if (selectedRow) {
-        setEditedIddetail(selectedRow.iddetailmouvementphysique);
-      }
-    }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

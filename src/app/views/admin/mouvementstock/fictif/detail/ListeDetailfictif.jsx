@@ -123,6 +123,11 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     }));
   };
 
+  // Modification(Update)
+  const handleEdit = (iddetailmouvementfictif) => {
+    window.location.replace('/admin/editmouvementfictif/' + iddetailmouvementfictif);
+  };
+
   const {
     sortDirection,
     page,
@@ -132,12 +137,11 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     selectedRowId,
     handleChangePage,
     sortColumn,
+    cancelEdit,
     selectedIds,
     setMarque,
     marque,
     modele,
-    cancelEdit,
-    handleEdit,
     setModele,
     handleChangeRowsPerPage,
     handleSelection,
@@ -368,7 +372,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row)}
+                              onClick={() => handleEdit(row.iddetailmouvementfictif)}
                             >
                               <Icon>edit</Icon>
                             </IconButton>

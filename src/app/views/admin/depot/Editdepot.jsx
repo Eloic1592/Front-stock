@@ -6,35 +6,20 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Editarticle = () => {
-  const idarticle = useParams();
+const Editdepot = () => {
+  const iddepot = useParams();
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
-  const [data, setData] = useState({
-    typemateriels: [],
-    article: {
-      id: 0,
-      idarticle: '',
-      idtypemateriel: '',
-      typemateriel: '',
-      marque: '',
-      modele: '',
-      description: ''
-    }
-  });
 
   // Input
-  const [typemateriel, setTypemateriel] = useState('1');
-  const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState('');
-  const [description, setDescription] = useState('');
+  const [depot, setDepot] = useState('');
 
   const handleSubmit = () => {
-    if (!marque || typemateriel === '1') {
+    if (!depot) {
       setMessage({
         text: 'Veuillez remplir tous les champs obligatoires.',
         severity: 'error',
@@ -43,13 +28,10 @@ const Editarticle = () => {
       return;
     }
     let params = {
-      idarticle: idarticle.idarticle,
-      marque: marque,
-      modele: modele,
-      idtypemateriel: typemateriel,
-      description: description
+      iddepot: iddepot.iddepot,
+      depot: depot
     };
-    let url = baseUrl + '/article/createarticle';
+    let url = baseUrl + '/depot/createdepot';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -82,14 +64,14 @@ const Editarticle = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let articleParams = {
-          idarticle: idarticle.idarticle
+        let depotParams = {
+          iddepot: iddepot.iddepot
         };
-        let url = baseUrl + '/article/getarticle';
+        let url = baseUrl + '/depot/getdepot';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(articleParams),
+          body: JSON.stringify(depotParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -98,16 +80,7 @@ const Editarticle = () => {
         }
 
         const responseData = await response.json();
-
-        const newData = {
-          typemateriels: responseData.typemateriels || [],
-          article: responseData.article || null
-        };
-        setData(newData);
-        setMarque(newData.article.marque);
-        setTypemateriel(newData.article.idtypemateriel);
-        setModele(newData.article.modele);
-        setDescription(newData.article.description);
+        setDepot(responseData.depot);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -117,68 +90,30 @@ const Editarticle = () => {
       }
     };
     fetchData();
-  }, [idarticle.idarticle]);
+  }, [iddepot.iddepot]);
 
   const handleCancel = () => {
-    window.location.replace('/admin/article');
+    window.location.replace('/admin/depot');
   };
 
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb
-          routeSegments={[{ name: 'Article', path: 'admin/article' }, { name: 'Article' }]}
-        />
+        <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
       </Box>
-      <SimpleCard title="Modifier un article">
+      <SimpleCard title="Modifier depot">
         <Box>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Marque"
-                variant="outlined"
-                value={marque}
-                onChange={(e) => setMarque(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Modèle"
-                variant="outlined"
-                value={modele}
-                onChange={(e) => setModele(e.target.value)}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Description"
+                label="Depot"
                 variant="outlined"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                multiline
-                rows={4}
+                value={depot}
+                onChange={(e) => setDepot(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Select
-                fullWidth
-                labelId="select-label"
-                variant="outlined"
-                value={typemateriel}
-                onChange={(event) => setTypemateriel(event.target.value)}
-                sx={{ mb: 3 }}
-              >
-                <MenuItem value="1">Selectionner un type de materiel</MenuItem>
-                {data.typemateriels.map((row) => (
-                  <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                    {row.typemateriel}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
+
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>
               <Grid item>
                 <Button variant="contained" color="secondary" onClick={handleCancel}>
@@ -203,4 +138,4 @@ const Editarticle = () => {
   );
 };
 
-export default Editarticle;
+export default Editdepot;
