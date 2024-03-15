@@ -116,9 +116,39 @@ const Materiel = () => {
       });
   };
 
-  const handleFileSubmit = () => {
-    console.log(file);
+  const importData = () => {
+    let materielParams = {
+      idtypemateriel: typemateriel,
+      filename: file
+    };
+    // let url = baseUrl + '/materiel/importmateriel';
+    // fetch(url, {
+    //   crossDomain: true,
+    //   method: 'POST',
+    //   body: JSON.stringify(materielParams),
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setTimeout(() => {
+    //       window.location.reload();
+    //     }, 2000);
+
+    //     setMessage({
+    //       text: 'Information importee',
+    //       severity: 'success',
+    //       open: true
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     setMessage({
+    //       text: 'Veuillez verifier que votre serveur est actif',
+    //       severity: 'error',
+    //       open: true
+    //     });
+    //   });
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -420,7 +450,7 @@ const Materiel = () => {
                 <Button variant="contained" color="secondary" onClick={handleFileClose}>
                   Annuler
                 </Button>
-                <Button onClick={handleFileSubmit} color="primary" variant="contained">
+                <Button onClick={importData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>

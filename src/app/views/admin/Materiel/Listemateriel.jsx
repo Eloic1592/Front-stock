@@ -289,7 +289,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
             </Grid>
             <StyledTable id="datatable">
               <TableHead>
-                {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell align="center" width="5%">
                     <Checkbox
@@ -322,19 +321,18 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="signature" align="center" width="14%">
                     signature
                   </TableCell>
-                  <TableCell align="center" width="14%">
+                  <TableCell key="action" align="center" width="14%">
                     Action
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* Donnees du tableau */}
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <>
-                        <TableRow key={`row_${index}`}>
+                        <TableRow key={`row-${row.idmateriel}`}>
                           <TableCell>
                             <Checkbox
                               checked={selectedIds.includes(row.idmateriel)}
@@ -385,7 +383,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             </IconButton>
                           </TableCell>
                         </TableRow>
-                        <TableRow key={`Tablerow2_${index}`}>
+                        <TableRow key={`details-${row.idmateriel}`}>
                           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                             <Collapse in={openRows[row.idmateriel]} timeout="auto" unmountOnExit>
                               <Box>
@@ -395,16 +393,16 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                 <Table aria-label="purchases">
                                   <TableHead>
                                     <TableRow key="detailcolumn">
-                                      <TableCell align="center" key={`description_${index}`}>
+                                      <TableCell align="center" key="modele">
                                         Modele
                                       </TableCell>
-                                      <TableCell align="center" key={`description_${index}`}>
+                                      <TableCell align="center" key="description">
                                         Description
                                       </TableCell>
-                                      <TableCell align="center" key={`description_${index}`}>
+                                      <TableCell align="center" key="statut">
                                         Statut
                                       </TableCell>
-                                      <TableCell align="center" key={`description_${index}`}>
+                                      <TableCell align="center" key="couleur">
                                         Couleur
                                       </TableCell>
                                     </TableRow>

@@ -54,7 +54,7 @@ const Stockphysique = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
-  const handleFileClose = () => setFileOpen(false);
+  const handleClose = () => setOpen(false);
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
   const [opendatagrid, setOpendatagrid] = useState(false);
@@ -62,7 +62,8 @@ const Stockphysique = () => {
   const handleCloseOpendatagrid = () => {
     setOpendatagrid(false);
   };
-  const handleClose = () => setOpen(false);
+  const handleFileClickOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
 
   const handleSubmit = () => {
     let params = {
@@ -172,6 +173,11 @@ const Stockphysique = () => {
               <Grid item>
                 <Button variant="contained" onClick={handleClickOpen} color="primary">
                   Nouveau mouvement
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
+                  Importer CSV
                 </Button>
               </Grid>
             </Grid>
