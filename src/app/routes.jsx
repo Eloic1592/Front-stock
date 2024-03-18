@@ -4,6 +4,7 @@ import AuthGuard from './auth/AuthGuard';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
+import ProtectedRoute from './views/ProtectedRoute';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -134,172 +135,177 @@ const routes = [
       // admin route
       {
         path: '/charts/echarts',
-        element: <AppEchart />
+        element: <ProtectedRoute element={<AppEchart />} />
       },
       {
         path: '/admin/dashboard',
-        element: <Dashboard />
+        element: <ProtectedRoute element={<Dashboard />} />
       },
 
       {
         path: '/admin/bilan',
-        element: <Bilan />
+        element: <ProtectedRoute element={<Bilan />} />
       },
       {
         path: '/admin/article',
-        element: <Article />
+        element: <ProtectedRoute element={<Article />} />
       },
       {
         path: '/admin/stocksarticle',
-        element: <Stockarticle />
+        element: <ProtectedRoute element={<Stockarticle />} />
       },
       {
         path: '/admin/editarticle/:idarticle',
-        element: <Editarticle />
+        element: <ProtectedRoute element={<Editarticle />} />
       },
       {
         path: '/admin/typemouvement',
-        element: <TypeMouvement />
+        element: <ProtectedRoute element={<TypeMouvement />} />
       },
       {
         path: '/admin/editnaturemouvement/:idnaturemouvement',
-        element: <Editnaturemouvement />
+        element: <ProtectedRoute element={<Editnaturemouvement />} />
       },
 
       {
         path: '/admin/typemateriel',
-        element: <TypeMateriel />
+        element: <ProtectedRoute element={<TypeMateriel />} />
       },
 
       {
         path: '/admin/edittypemateriel/:idtypemateriel',
-        element: <EditTypemateriel />
+        element: <ProtectedRoute element={<EditTypemateriel />} />
       },
 
       {
         path: '/admin/stattypemouvement',
-        element: <Stattypemouvement />
+        element: <ProtectedRoute element={<Stattypemouvement />} />
       },
 
       {
         path: '/admin/categoriemateriel',
-        element: <Categoriemateriel />
+        element: <ProtectedRoute element={<Categoriemateriel />} />
       },
       {
         path: '/admin/editcategoriemateriel/:idcategoriemateriel',
-        element: <Editcategoriemateriel />
+        element: <ProtectedRoute element={<Editcategoriemateriel />} />
       },
 
       {
         path: '/admin/mouvementphysique',
-        element: <Stockphysique />
+        element: <ProtectedRoute element={<Stockphysique />} />
       },
       {
         path: '/admin/editmouvementphysique/:iddetailmouvementphysique',
-        element: <Editmouvementphysique />
+        element: <ProtectedRoute element={<Editmouvementphysique />} />
       },
       {
         path: '/admin/mouvementfictif',
-        element: <Stockfictif />
+        element: <ProtectedRoute element={<Stockfictif />} />
       },
       {
         path: '/admin/detailfictif/:idmouvementstock',
-        element: <Detailfictif />
+        element: <ProtectedRoute element={<Detailfictif />} />
       },
       {
         path: '/admin/editmouvementfictif/:idmouvementstock',
-        element: <Editmouvementfictif />
+        element: <ProtectedRoute element={<Editmouvementfictif />} />
       },
       {
         path: '/admin/editdetailmouvementfictif/:iddetailmouvementfictif',
-        element: <Editdetailmouvementfictif />
+        element: <ProtectedRoute element={<Editdetailmouvementfictif />} />
       },
       {
         path: '/admin/listemateriel',
-        element: <Materiel />
+        element: <ProtectedRoute element={<Materiel />} />
       },
       {
         path: '/admin/stockmateriel',
-        element: <StockMateriel />
+        element: <ProtectedRoute element={<StockMateriel />} />
       },
       {
         path: '/admin/editmateriel/:idmateriel',
-        element: <Editmateriel />
+        element: <ProtectedRoute element={<Editmateriel />} />
       },
 
       {
         path: '/admin/facture',
-        element: <Facture />
+        element: <ProtectedRoute element={<Facture />} />
       },
 
       {
         path: '/admin/devis',
-        element: <Devis />
+        element: <ProtectedRoute element={<Devis />} />
       },
 
       {
         path: '/admin/detaildevis/:iddevis',
-        element: <Detaildevis />
+        element: <ProtectedRoute element={<Detaildevis />} />
       },
 
       {
         path: '/admin/proforma',
-        element: <Proforma />
+        element: <ProtectedRoute element={<Proforma />} />
       },
 
       {
         path: '/admin/detailproforma/:iddevis',
-        element: <Detailproforma />
+        element: <ProtectedRoute element={<Detailproforma />} />
       },
 
       {
         path: '/admin/commande',
-        element: <Commande />
+        element: <ProtectedRoute element={<Commande />} />
       },
+
       {
         path: '/admin/detailcommande/:idproforma',
-        element: <DetailCommande />
+        element: <ProtectedRoute element={<DetailCommande />} />
       },
 
       {
         path: '/admin/livraison',
-        element: <Livraison />
+        element: <ProtectedRoute element={<Livraison />} />
       },
 
       {
         path: '/admin/detaillivraison/:idproforma',
-        element: <Detaillivraison />
+        element: <ProtectedRoute element={<Detaillivraison />} />
       },
+
       {
         path: '/admin/depot',
-        element: <Depot />
+        element: <ProtectedRoute element={<Depot />} />
       },
+
       {
         path: '/admin/editdepot/:iddepot',
-        element: <Editdepot />
+        element: <ProtectedRoute element={<Editdepot />} />
       },
+
       {
         path: '/admin/stockdepot',
-        element: <StockDepot />
+        element: <ProtectedRoute element={<StockDepot />} />
       },
 
       {
         path: '/admin/utilisationmateriel',
-        element: <Utilistionmateriel />
+        element: <ProtectedRoute element={<Utilistionmateriel />} />
       },
+
       {
         path: '/admin/stocktypemateriel/:iddepot',
-        element: <StocktypematerielDepot />
+        element: <ProtectedRoute element={<StocktypematerielDepot />} />
       },
 
       {
         path: '/admin/archives',
-        element: <Archives />
+        element: <ProtectedRoute element={<Archives />} />
       },
 
       {
         path: '/admin/historique',
-        element: <Historique />
+        element: <ProtectedRoute element={<Historique />} />
       }
     ]
   },

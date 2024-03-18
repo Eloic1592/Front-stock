@@ -25,12 +25,18 @@ const CustomizedTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50, 1
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  //  Supprime une ligne
+
   const handleDelete = (index) => {
     let newSavedData = savedData.filter((_, i) => i !== index);
     newSavedData = newSavedData.map((row, i) => ({ ...row, index: i }));
     setSavedData(newSavedData);
   };
+
+  // // Function to add a new row
+  // const handleAddRow = (newRowData) => {
+  //   const updatedData = [...savedData, newRowData];
+  //   setSavedData(updatedData);
+  // };
 
   useEffect(() => {
     setSavedData(indexedData);

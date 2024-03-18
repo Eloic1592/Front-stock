@@ -84,6 +84,7 @@ const LoginAdmin = () => {
             color: 'red'
           });
         } else {
+          sessionStorage.setItem('refuser', data.refuser);
           window.location.replace('/admin/depot');
         }
       }
