@@ -23,6 +23,9 @@ import { StyledTable } from 'app/views/style/style';
 import { useMfictifFunctions } from 'app/views/admin/mouvementstock/fictif/fictiffunctions';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate, colorType } from 'app/utils/utils';
+import Decharge from './Decharge';
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
 
 const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -41,11 +44,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     naturemouvement: [],
     etudiants: []
   });
-  const [editedIdmouvement, setEditedIdmouvement] = useState('');
-  const [editdatemouvement, setEditdatemouvement] = useState('');
-  const [editnatmouvement, setEditnatmouvement] = useState(['1']);
-  const [editidetudiant, setEditidetudiant] = useState('1');
-  const [edittypemouvement, setEdittypemouvement] = useState(['1']);
 
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -56,6 +54,12 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
   // Modification(Update)
   const handleEdit = (idmouvementstock) => {
     window.location.replace('/admin/editmouvementfictif/' + idmouvementstock);
+  };
+
+  // Modification(Update)
+  const generatedischarge = async (idmouvementstock) => {
+    const blob = await renderPdf(<Decharge idmouvementstock={idmouvementstock} />).toBlob();
+    saveAs(blob, "Decharge d'emprunt.pdf");
   };
 
   const {
@@ -80,43 +84,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     handleSelectColumn,
     sortedData
   } = useMfictifFunctions(data);
-
-  const handleupdate = () => {
-    let mouvementstock = {
-      idmouvementstock: editedIdmouvement,
-      datedepot: editdatemouvement,
-      typemouvement: edittypemouvement,
-      idetudiant: editidetudiant,
-      idnaturemouvement: editnatmouvement,
-      statut: 0
-    };
-
-    let url = baseUrl + '/mouvementstock/createstockfictif';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(mouvementstock),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
 
   //  Use effect
   useEffect(() => {
@@ -153,13 +120,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     if (!initialDataFetched) {
       fetchData();
       setInitialDataFetched(true);
-    }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idmouvementstock === selectedRowId);
-      if (selectedRow) {
-        setEditedIdmouvement(selectedRow.idmouvementstock);
-      }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
@@ -350,6 +310,15 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                               onClick={() => handleEdit(row.idmouvementstock)}
                             >
                               <Icon>edit_icon</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => generatedischarge(row.idmouvementstock)}
+                            >
+                              <Icon>insert_drive_file</Icon>
                             </IconButton>
                           </TableCell>
                         </Fragment>
