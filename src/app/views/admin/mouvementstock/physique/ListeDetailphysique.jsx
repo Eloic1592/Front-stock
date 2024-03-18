@@ -17,7 +17,7 @@ import {
   Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/dphysiquefunction';
@@ -171,7 +171,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   value={nature}
                   onChange={(event) => setNature(event.target.value)}
                 >
-                  <MenuItem value="1">Toutes natures</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Toutes natures
+                  </MenuItem>
                   {data.naturemouvements.map((row) => (
                     <MenuItem value={row.naturemouvement} key={row.naturemouvement}>
                       {row.naturemouvement}
@@ -217,7 +219,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   margin="dense"
                   onChange={(event) => setListdepot(event.target.value)}
                 >
-                  <MenuItem value="1">Tous les depots</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Tous les depots
+                  </MenuItem>
                   {data.depots.map((row) => (
                     <MenuItem value={row.iddepot} key={row.iddepot}>
                       {row.iddepot}-{row.depot}
@@ -240,7 +244,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   size="small"
                   onChange={handleSelectColumn}
                 >
-                  <MenuItem value="1">Colonne</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Colonne
+                  </MenuItem>
                   {columns.map((column, index) => (
                     <MenuItem key={index} value={column.field}>
                       {column.label}
@@ -275,7 +281,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
-                <TableRow key="TableHeadRow">
+                <TableRow key="head">
                   <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementphysiques.every((row) =>
@@ -322,9 +328,9 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <>
+                      <Fragment key={row.iddetailmouvementphysique}>
                         {/* Clé unique pour chaque fragment */}
-                        <TableRow key={`Tablerow1_${index}`}>
+                        <TableRow key={`row_${row.iddetailmouvementphysique}`}>
                           <TableCell>
                             <Checkbox
                               checked={selectedIds.includes(row.iddetailmouvementphysique)}
@@ -424,12 +430,12 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             </Collapse>
                           </TableCell>
                         </TableRow>
-                      </>
+                      </Fragment>
                     ))
                 ) : (
                   <>
-                    <TableRow key="noData">
-                      <TableCell colSpan={6}>
+                    <TableRow key="empty">
+                      <TableCell colSpan={12}>
                         <Typography variant="subtitle1" color="textSecondary">
                           Aucune donnée disponible
                         </Typography>

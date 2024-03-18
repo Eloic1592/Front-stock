@@ -17,7 +17,7 @@ import {
   Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useDFictifFunctions } from 'app/views/admin/mouvementstock/fictif/detail/dfictiffunction';
@@ -125,7 +125,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
   // Modification(Update)
   const handleEdit = (iddetailmouvementfictif) => {
-    window.location.replace('/admin/editmouvementfictif/' + iddetailmouvementfictif);
+    window.location.replace('/admin/editdetailmouvementfictif/' + iddetailmouvementfictif);
   };
 
   const {
@@ -287,7 +287,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
-                <TableRow>
+                <TableRow key="head">
                   <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.mouvementfictifs.every((row) =>
@@ -332,7 +332,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <>
+                      <Fragment key={row.iddetailmouvementfictif}>
                         <TableRow key={index}>
                           <TableCell align="center" width="5%">
                             <Checkbox
@@ -428,11 +428,11 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             </Collapse>
                           </TableCell>
                         </TableRow>
-                      </>
+                      </Fragment>
                     ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
+                  <TableRow key="empty">
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnee disponible
                       </Typography>

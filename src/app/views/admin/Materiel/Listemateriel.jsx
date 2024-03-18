@@ -17,7 +17,7 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { formatNumber, colors, signatures } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
@@ -172,7 +172,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   sx={{ mb: 3 }}
                 >
-                  <MenuItem value="0">Tous types</MenuItem>
+                  <MenuItem key="0" value="0">
+                    Tous types
+                  </MenuItem>
                   {data.typemateriels.map((row) => (
                     <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                       {row.typemateriel}
@@ -189,7 +191,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   sx={{ mb: 3 }}
                 >
-                  <MenuItem value="0">Toutes couleurs</MenuItem>
+                  <MenuItem key="0" value="0">
+                    Toutes couleurs
+                  </MenuItem>
                   {colors.map((color, index) => (
                     <MenuItem key={index} value={color}>
                       {color}
@@ -206,7 +210,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   sx={{ mb: 3 }}
                 >
-                  <MenuItem value="1">Toutes Signatures</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Toutes Signatures
+                  </MenuItem>
                   {signatures.map((signature, index) => (
                     <MenuItem key={index} value={signature}>
                       {signature}
@@ -223,9 +229,15 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   onChange={(event) => setDisponibilite(event.target.value)}
                   fullWidth
                 >
-                  <MenuItem value="0">Tous statuts</MenuItem>
-                  <MenuItem value="LIBRE">Libre</MenuItem>
-                  <MenuItem value="OCCUPE">Occupe</MenuItem>
+                  <MenuItem key="statut" value="0">
+                    Tous statuts
+                  </MenuItem>
+                  <MenuItem key="LIBRE" value="LIBRE">
+                    Libre
+                  </MenuItem>
+                  <MenuItem key="OCCUPE" value="OCCUPE">
+                    Occupe
+                  </MenuItem>
                 </Select>
               </Grid>
             </Grid>
@@ -289,7 +301,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
             </Grid>
             <StyledTable id="datatable">
               <TableHead>
-                <TableRow>
+                <TableRow key="head">
                   <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.listemateriels.every((row) =>
@@ -331,7 +343,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <>
+                      <Fragment key={row.idmateriel}>
                         <TableRow key={`row-${row.idmateriel}`}>
                           <TableCell>
                             <Checkbox
@@ -420,11 +432,11 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             </Collapse>
                           </TableCell>
                         </TableRow>
-                      </>
+                      </Fragment>
                     ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
+                  <TableRow key="empty">
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnée disponible
                       </Typography>

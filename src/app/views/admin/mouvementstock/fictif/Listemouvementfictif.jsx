@@ -17,14 +17,14 @@ import {
   Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useMfictifFunctions } from 'app/views/admin/mouvementstock/fictif/fictiffunctions';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate, colorType } from 'app/utils/utils';
 
-const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
+const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
     { label: 'Mouv stock', field: 'idmouvementstock', align: 'center' },
@@ -53,6 +53,11 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     open: false
   });
 
+  // Modification(Update)
+  const handleEdit = (idmouvementstock) => {
+    window.location.replace('/admin/editmouvementfictif/' + idmouvementstock);
+  };
+
   const {
     sortDirection,
     page,
@@ -70,8 +75,6 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     naturemouvement,
     setNaturemouvement,
     handleChangeRowsPerPage,
-    handleEdit,
-    cancelEdit,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
@@ -190,7 +193,9 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   value={mouvement}
                   onChange={(event) => setMouvement(event.target.value)}
                 >
-                  <MenuItem value="0">Tous types</MenuItem>
+                  <MenuItem key="0" value="0">
+                    Tous types
+                  </MenuItem>
                   <MenuItem value="1" key="1">
                     Entree
                   </MenuItem>
@@ -207,7 +212,9 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   value={naturemouvement}
                   onChange={(event) => setNaturemouvement(event.target.value)}
                 >
-                  <MenuItem value="0">Toutes natures</MenuItem>
+                  <MenuItem key="0" value="0">
+                    Toutes natures
+                  </MenuItem>
                   {data.naturemouvement.map((row) => (
                     <MenuItem key={row.idnaturemouvement} value={row.idnaturemouvement}>
                       {row.naturemouvement}
@@ -230,7 +237,9 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   onChange={handleSelectColumn}
                 >
-                  <MenuItem value="1">Colonne</MenuItem>
+                  <MenuItem key="0" value="1">
+                    Colonne
+                  </MenuItem>
                   {columns.map((column, index) => (
                     <MenuItem key={index} value={column.field}>
                       {column.label}
@@ -265,7 +274,7 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
             <StyledTable>
               <TableHead>
-                <TableRow>
+                <TableRow key="head">
                   <TableCell width="5%">
                     <Checkbox
                       checked={data.mouvementStocks.every((row) =>
@@ -314,135 +323,41 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             onChange={(event) => handleSelection(event, row.idmouvementstock)}
                           />
                         </TableCell>
-                        {isEditClicked && row.idmouvementstock === selectedRowId ? (
-                          <>
-                            <TableCell key={row.idmouvementstock}>
-                              <TextField
-                                value={editedIdmouvement}
-                                onChange={(event) => setEditedIdmouvement(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                type="date"
-                                value={editdatemouvement}
-                                onChange={(event) => setEditdatemouvement(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={edittypemouvement}
-                                onChange={(event) => setEdittypemouvement(event.target.value)}
-                              >
-                                <MenuItem value="1" key="1">
-                                  Entree
-                                </MenuItem>
-                                <MenuItem value="-1" key="-1">
-                                  Sortie
-                                </MenuItem>
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editidetudiant}
-                                onChange={(event) => setEditidetudiant(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Etudiant
-                                </MenuItem>
-                                {data.etudiants.map((row) => (
-                                  <MenuItem value={row.idetudiant} key={row.idetudiant}>
-                                    {row.idetudiant}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                            <TableCell>
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editnatmouvement}
-                                onChange={(event) => setEditnatmouvement(event.target.value)}
-                              >
-                                <MenuItem value="1" disabled>
-                                  Nature
-                                </MenuItem>
-                                {data.naturemouvement.map((row) => (
-                                  <MenuItem
-                                    key={row.idnaturemouvement}
-                                    value={row.idnaturemouvement}
-                                  >
-                                    {row.naturemouvement}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center">{row.idmouvementstock}</TableCell>
-                            <TableCell align="center">{converttodate(row.datedepot)}</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }} align="center">
-                              {colorType(row.mouvement)}
-                            </TableCell>
-                            <TableCell align="center">{row.idetudiant}</TableCell>
-                            <TableCell align="center">{row.naturemouvement}</TableCell>
+                        <Fragment key={row.idarticle}>
+                          <TableCell align="center">{row.idmouvementstock}</TableCell>
+                          <TableCell align="center">{converttodate(row.datedepot)}</TableCell>
+                          <TableCell style={{ fontWeight: 'bold' }} align="center">
+                            {colorType(row.mouvement)}
+                          </TableCell>
+                          <TableCell align="center">{row.idetudiant}</TableCell>
+                          <TableCell align="center">{row.naturemouvement}</TableCell>
 
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => getInfo(row.idmouvementstock)}
-                              >
-                                <Icon>info</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-                        {isEditClicked && row.idmouvementstock === selectedRowId && (
-                          <>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleupdate()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
+                          <TableCell align="center" width="15%">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => getInfo(row.idmouvementstock)}
+                            >
+                              <Icon>info</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idmouvementstock)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </Fragment>
                       </TableRow>
                     ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
+                  <TableRow key="empty">
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnée disponible
                       </Typography>
@@ -479,4 +394,4 @@ const Listestockfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   );
 };
 
-export default Listestockfictif;
+export default Listemouvementfictif;

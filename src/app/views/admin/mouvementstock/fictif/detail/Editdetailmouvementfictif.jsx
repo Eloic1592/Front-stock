@@ -17,7 +17,7 @@ import { formatDate } from 'app/utils/utils';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useParams } from 'react-router-dom';
 import Datalistmateriel from 'app/views/admin/Datagrid/Datalistmateriel';
-const Editmouvementfictif = () => {
+const Editdetailmouvementfictif = () => {
   const iddetailmouvementfictif = useParams();
 
   // Input
@@ -300,4 +300,4 @@ const Editmouvementfictif = () => {
   );
 };
 
-export default Editmouvementfictif;
+export default Editdetailmouvementfictif;

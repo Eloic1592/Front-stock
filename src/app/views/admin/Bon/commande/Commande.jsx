@@ -288,7 +288,7 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={6}>
+                      <TableCell colSpan={12}>
                         <Typography variant="subtitle1" color="textSecondary">
                           Aucune donnee disponible
                         </Typography>

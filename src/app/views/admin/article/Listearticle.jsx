@@ -16,7 +16,7 @@ import {
   Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListeArticlefunctions } from 'app/views/admin/article/function';
@@ -166,7 +166,9 @@ const ListeArticle = () => {
                   onChange={(event) => setTypemateriel(event.target.value)}
                   sx={{ mb: 3 }}
                 >
-                  <MenuItem value="1">Tous types</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Tous types
+                  </MenuItem>
                   {data.typemateriels.map((row) => (
                     <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                       {row.typemateriel}
@@ -190,7 +192,9 @@ const ListeArticle = () => {
                   size="small"
                   onChange={handleSelectColumn}
                 >
-                  <MenuItem value="1">Colonne</MenuItem>
+                  <MenuItem key="1" value="1">
+                    Colonne
+                  </MenuItem>
                   {columns.map((column, index) => (
                     <MenuItem key={index} value={column.field}>
                       {column.label}
@@ -224,7 +228,7 @@ const ListeArticle = () => {
             </Grid>
             <StyledTable>
               <TableHead>
-                <TableRow>
+                <TableRow key="head">
                   <TableCell align="center" key="depliant" width="5%"></TableCell>
                   <TableCell width="8%" key="idarticle">
                     idarticle
@@ -249,8 +253,8 @@ const ListeArticle = () => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
-                      <>
-                        <TableRow key={row.idarticle || index}>
+                      <Fragment key={row.idarticle}>
+                        <TableRow key={`row-${row.idarticle}`}>
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
@@ -307,11 +311,11 @@ const ListeArticle = () => {
                             </Collapse>
                           </TableCell>
                         </TableRow>
-                      </>
+                      </Fragment>
                     ))
                 ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
+                  <TableRow key="empty">
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnée disponible
                       </Typography>

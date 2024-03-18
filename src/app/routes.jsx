@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import AuthGuard from './auth/AuthGuard';
-// import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
@@ -63,7 +62,11 @@ const Stockfictif = Loadable(
 );
 
 const Editmouvementfictif = Loadable(
-  lazy(() => import('app/views/admin/mouvementstock/fictif/detail/Editmouvementfictif'))
+  lazy(() => import('app/views/admin/mouvementstock/fictif/Editmouvementfictif'))
+);
+
+const Editdetailmouvementfictif = Loadable(
+  lazy(() => import('app/views/admin/mouvementstock/fictif/detail/Editdetailmouvementfictif'))
 );
 
 const Materiel = Loadable(lazy(() => import('app/views/admin/materiel/Materiel')));
@@ -204,8 +207,12 @@ const routes = [
         element: <Detailfictif />
       },
       {
-        path: '/admin/editmouvementfictif/:iddetailmouvementfictif',
+        path: '/admin/editmouvementfictif/:idmouvementstock',
         element: <Editmouvementfictif />
+      },
+      {
+        path: '/admin/editdetailmouvementfictif/:iddetailmouvementfictif',
+        element: <Editdetailmouvementfictif />
       },
       {
         path: '/admin/listemateriel',
@@ -322,8 +329,12 @@ const routes = [
     element: <Editmouvementphysique />
   },
   {
-    path: '/admin/editmouvementfictif/:iddetailmouvementfictif',
+    path: '/admin/editmouvementfictif/:idmouvementstock',
     element: <Editmouvementfictif />
+  },
+  {
+    path: '/admin/editdetailmouvementfictif/:iddetailmouvementfictif',
+    element: <Editdetailmouvementfictif />
   },
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },

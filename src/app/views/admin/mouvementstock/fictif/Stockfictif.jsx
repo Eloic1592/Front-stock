@@ -15,7 +15,7 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import Button from '@mui/material/Button';
-import Listestockfictif from './Listestockfictif';
+import Listemouvementfictif from './Listemouvementfictif';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistmateriel from '../../Datagrid/Datalistmateriel';
@@ -522,7 +522,7 @@ const Stockfictif = () => {
         </Alert>
       </Snackbar>
       {/* Liste des donnees */}
-      <Listestockfictif />
+      <Listemouvementfictif />
     </Container>
   );
 };
