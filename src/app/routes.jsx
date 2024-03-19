@@ -5,6 +5,7 @@ import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 import ProtectedRoute from './views/ProtectedRoute';
+import Decharge from './views/admin/mouvementstock/fictif/Decharge';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -306,6 +307,11 @@ const routes = [
       {
         path: '/admin/historique',
         element: <ProtectedRoute element={<Historique />} />
+      },
+
+      {
+        path: '/admin/decharge/:idmouvementstock',
+        element: <ProtectedRoute element={<Decharge />} />
       }
     ]
   },
@@ -358,6 +364,7 @@ const routes = [
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
+  { path: '/admin/decharge/:idmouvementstock', element: <Decharge /> },
 
   { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }

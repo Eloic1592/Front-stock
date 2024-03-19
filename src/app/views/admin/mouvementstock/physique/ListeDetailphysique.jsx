@@ -386,7 +386,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
-                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                             <Collapse
                               in={openRows[row.iddetailmouvementphysique]}
                               timeout="auto"
