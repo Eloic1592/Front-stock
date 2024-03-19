@@ -26,61 +26,32 @@ const Decharge = ({ idmouvementstock }) => {
       id: 0,
       idmouvementstock: '',
       datedepot: 0,
+      typemouvement: 0,
+      idnaturemouvement: '',
       idetudiant: '',
+      statut: 0,
+      type: 1,
+      mouvement: '',
+      naturemouvement: '',
       nom: '',
       prenom: '',
       mail: '',
       contact: '',
-      adresse: '',
-      statut: 0
+      adresse: ''
     },
     mouvementfictifs: []
   });
-  console.log(data.mouvementstock);
+  console.log('mouvementstock:', data.mouvementstock);
+  console.log('mouvementfictifs:', data.mouvementfictifs);
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const dischargeLetter = `
-    ${data.mouvementstock.nom.toString()} ${data.mouvementstock.prenom}
-    ${data.mouvementstock.adresse}
-    101,Antananarivo
-    ${data.mouvementstock.mail}
-    ${data.mouvementstock.contact}
+  const [dischargeLetter, setDischargeLetter] = useState('');
 
-    ${converttodate(data.mouvementstock.datedepot)}
-
-    IT University
-    102,Antananarivo Antsimodrano
-
-    Objet : Décharge de Responsabilité pour l'emprunt de matériel(s)
-
-    Madame, Monsieur,
-
-    Je soussigné(e),${data.mouvementstock.nom} ${data.mouvementstock.prenom},ETU ${
-    data.mouvementstock.idetudiant
-  }, étudiant(e) à l'IT University, déclare avoir emprunté le(s) matériel(s) suivant(s) :
-
-    ${data.mouvementfictifs.map((row) => row.marque)}
-
-    J'accepte de retourner le matériel dans un état satisfaisant et de payer les éventuels dommages.
-
-    Je vous remercie de bien vouloir prendre en compte cette décharge de responsabilité concernant l'emprunt du matériel mentionné ci-dessus.
-
-    Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
-
-    ${data.mouvementstock.nom}
-    ${converttodate(data.mouvementstock.datedepot)}
-    Signature de l'etudiant
-
-
-    
-    Nom du responsable
-    ${converttodate(data.mouvementstock.datedepot)}
-    Signature du responsable
- `;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -101,22 +72,63 @@ const Decharge = ({ idmouvementstock }) => {
 
         const responseData = await response.json();
 
-        const newData = {
+        setData({
           mouvementstock: responseData.mouvementstock || null,
           mouvementfictifs: responseData.mouvementfictifs || []
-        };
-
-        setData(newData);
-      } catch (error) {
-        setMessage({
-          text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
-          severity: 'error',
-          open: true
         });
+      } catch (error) {
+        console.error(error);
+        // Gérer l'erreur ici
       }
     };
+
     fetchData();
   }, [idmouvementstock]);
+
+  useEffect(() => {
+    const generateLetter = () => {
+      const letter = `
+        ${data.mouvementstock.nom} ${data.mouvementstock.prenom}
+        ${data.mouvementstock.adresse}
+        101, Antananarivo
+        ${data.mouvementstock.mail}
+        ${data.mouvementstock.contact}
+
+        ${converttodate(data.mouvementstock.datedepot)}
+
+        IT University
+        102, Antananarivo Antsimodrano
+
+        Objet : Décharge de Responsabilité pour l'emprunt de matériel(s)
+
+        Madame, Monsieur,
+
+        Je soussigné(e),${data.mouvementstock.nom} ${data.mouvementstock.prenom}, ETU ${
+        data.mouvementstock.idetudiant
+      }, étudiant(e) à l'IT University, déclare avoir emprunté le(s) matériel(s) suivant(s) :
+
+        ${data.mouvementfictifs.map((row) => row.marque)}
+
+        J'accepte de retourner le matériel dans un état satisfaisant et de payer les éventuels dommages.
+
+        Je vous remercie de bien vouloir prendre en compte cette décharge de responsabilité concernant l'emprunt du matériel mentionné ci-dessus.
+
+        Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
+
+        ${data.mouvementstock.nom}
+        ${converttodate(data.mouvementstock.datedepot)}
+        Signature de l'étudiant
+
+
+        Nom du responsable
+        ${converttodate(data.mouvementstock.datedepot)}
+        Signature du responsable
+      `;
+      setDischargeLetter(letter);
+    };
+
+    generateLetter();
+  }, [data]);
 
   return (
     <Document>
