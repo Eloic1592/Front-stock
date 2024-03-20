@@ -67,10 +67,10 @@ const Bilan = () => {
       <Box sx={{ py: '12px' }} />
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <SimpleCard title="ENTREE"></SimpleCard>
+          <SimpleCard title="Total articles en entree"></SimpleCard>
         </Grid>
         <Grid item xs={6}>
-          <SimpleCard title="SORTIE"></SimpleCard>
+          <SimpleCard title="Total articles en sortie"></SimpleCard>
         </Grid>
       </Grid>
       <Box sx={{ py: '12px' }} />

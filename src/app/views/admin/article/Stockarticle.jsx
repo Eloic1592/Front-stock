@@ -181,7 +181,7 @@ const Stockarticle = () => {
           </Grid>
 
           <Grid item>
-            <SimpleCard title="Stock des articles">
+            <SimpleCard title="Stock actuels des articles">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
