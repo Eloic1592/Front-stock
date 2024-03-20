@@ -143,7 +143,7 @@ const Article = () => {
             </Grid>
             <Grid item>
               <Button variant="contained" /*onClick={handleFileClickOpen}*/ color="inherit">
-                Importer CSV
+                Importer donnees
               </Button>
             </Grid>
           </Grid>

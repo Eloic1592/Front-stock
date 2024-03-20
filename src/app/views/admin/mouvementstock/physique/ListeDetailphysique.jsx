@@ -374,7 +374,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             >
                               <Icon>edit</Icon>
                             </IconButton>
-                            <IconButton
+                            {/* <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
@@ -382,7 +382,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                               onClick={() => cancelEdit(row)}
                             >
                               <Icon>cancel</Icon>
-                            </IconButton>
+                            </IconButton> */}
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>

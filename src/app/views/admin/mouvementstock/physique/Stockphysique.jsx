@@ -20,6 +20,7 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistarticle from '../../Datagrid/Datalistarticle';
 import InputAdornment from '@mui/material/InputAdornment';
+import * as XLSX from 'xlsx';
 
 const Stockphysique = () => {
   // Input
@@ -32,7 +33,7 @@ const Stockphysique = () => {
   const [depot, setDepot] = useState(['1']);
   const [description, setDescription] = useState('');
   const [commentaire, setCommentaire] = useState('');
-  const [file, setFile] = useState('');
+  const [csvFile, setCsvFile] = useState(null);
   const [fileOpen, setFileOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [data, setData] = useState({
@@ -64,6 +65,61 @@ const Stockphysique = () => {
   };
   const handleFileClickOpen = () => setFileOpen(true);
   const handleFileClose = () => setFileOpen(false);
+
+  // Importation csv
+  const handleChange = (event) => {
+    setCsvFile(event.target.files[0]);
+  };
+
+  const importData = () => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      const formattedData = jsonData.map((row) => ({
+        numserie: row[3],
+        marque: row[4],
+        signature: row[5],
+        prixvente: 0,
+        caution: 0,
+        disponibilite: 1,
+        statut: 0
+      }));
+
+      const url = baseUrl + '/mouvementstock/importmouvementphysique';
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(formattedData),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+
+          setMessage({
+            text: 'Information importee',
+            severity: 'success',
+            open: true
+          });
+        })
+        .catch((err) => {
+          setMessage({
+            text: 'Veuillez verifier que votre serveur est actif',
+            severity: 'error',
+            open: true
+          });
+        });
+    };
+    reader.readAsArrayBuffer(csvFile);
+  };
 
   const handleSubmit = () => {
     let params = {
@@ -177,7 +233,7 @@ const Stockphysique = () => {
               </Grid>
               <Grid item>
                 <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
-                  Importer CSV
+                  Importer donnees
                 </Button>
               </Grid>
             </Grid>
@@ -353,6 +409,8 @@ const Stockphysique = () => {
 
           <Box>
             <Dialog
+              fullWidth
+              maxWidth="md"
               open={alertOpen}
               onClose={handlecancelClose}
               aria-labelledby="form-dialog-title"
@@ -378,27 +436,22 @@ const Stockphysique = () => {
           <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
           <DialogContent>
             <TextField
+              type="file"
               variant="outlined"
               fullWidth
               label="Nom du fichier"
-              value={file}
+              onChange={handleChange}
               InputProps={{
-                readOnly: true,
-                endAdornment: (
-                  <Button variant="contained" component="label">
-                    Importer
-                    <input type="file" hidden onChange={(event) => setFile(event.target.value)} />
-                  </Button>
-                )
+                readOnly: true
               }}
             />
           </DialogContent>
 
           <DialogActions>
-            <Button variant="outlined" color="secondary" onClick={handleFileClose}>
+            <Button variant="contained" color="secondary" onClick={handleFileClose}>
               Annuler
             </Button>
-            <Button onClick={handleSubmit} color="primary">
+            <Button onClick={importData} color="primary" variant="contained">
               Valider
             </Button>
           </DialogActions>

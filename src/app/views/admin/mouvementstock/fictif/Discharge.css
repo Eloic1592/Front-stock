@@ -1,18 +1,61 @@
-/* src/Discharge.css */
+/* Decharge.css */
+/* Discharge.css */
 
-.discharge {
-  width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .discharge,
+  .discharge * {
+    visibility: visible;
+  }
+  .discharge {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 
-h2 {
+.discharge {
+  font-family: 'Times New Roman', Times, serif; /* Use a more formal font */
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  line-height: 1.6; /* Improve readability */
+}
+
+.discharge h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px; /* Make the title stand out */
+}
+
+.discharge .header {
+  text-align: right; /* Align the header to the right */
   margin-bottom: 20px;
 }
 
-pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
+.discharge .body {
+  margin-bottom: 20px;
+}
+
+.discharge .footer {
+  text-align: right; /* Align the footer to the right */
+  margin-top: 20px;
+}
+
+.discharge p {
+  margin-bottom: 5px;
+}
+
+.discharge ul {
+  list-style-type: none; /* Remove bullet points */
+  padding-left: 0;
+}
+
+.discharge ul li {
+  margin-bottom: 5px;
 }

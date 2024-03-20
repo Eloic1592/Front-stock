@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState, Fragment } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
+
 import { useMfictifFunctions } from 'app/views/admin/mouvementstock/fictif/fictiffunctions';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate, colorType } from 'app/utils/utils';
@@ -58,13 +59,22 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
 
   // Modification(Update)
   const generatedischarge = async (idmouvementstock) => {
-    const blob = await renderPdf(<Decharge idmouvementstock={idmouvementstock} />).toBlob();
-    setMessage({
-      text: 'Decharge telechargee!',
-      severity: 'success',
-      open: true
-    });
-    saveAs(blob, "Decharge d'emprunt.pdf");
+    // try {
+    //   const blob = await renderPdf(<Decharge idmouvementstock={idmouvementstock} />).toBlob();
+    //   setMessage({
+    //     text: 'Decharge telechargee!',
+    //     severity: 'success',
+    //     open: true
+    //   });
+    //   saveAs(blob, "Decharge d'emprunt.pdf");
+    // } catch (error) {
+    //   setMessage({
+    //     text: 'Erreur de telechargement!',
+    //     severity: 'error',
+    //     open: true
+    //   });
+    // }
+    window.location.replace('/admin/decharge/' + idmouvementstock);
   };
 
   const {

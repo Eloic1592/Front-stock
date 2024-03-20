@@ -64,7 +64,6 @@ export const useListematerielFunctions = (data) => {
     data.listemateriels,
     marque,
     typemateriel,
-    couleur,
     signature,
     disponibilite
   );
@@ -104,11 +103,11 @@ export const useListematerielFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setCouleur,
+    // setCouleur,
     setTypemateriel,
     setCategoriemateriel,
     categoriemateriel,
-    couleur,
+    // couleur,
     typemateriel,
     marque,
     setMarque,
@@ -120,14 +119,7 @@ export const useListematerielFunctions = (data) => {
 };
 
 // Filtre
-export function filtremateriel(
-  listemateriel,
-  filter,
-  typemateriel,
-  couleur,
-  signature,
-  disponibilite
-) {
+export function filtremateriel(listemateriel, filter, typemateriel, signature, disponibilite) {
   return listemateriel.filter((Item) => {
     const filtermatch =
       (Item.marque && Item.marque.toLowerCase().includes(filter.toLowerCase())) ||
@@ -137,10 +129,6 @@ export function filtremateriel(
     if (typemateriel !== '0') {
       typeMatch = Item.idtypemateriel === typemateriel;
     }
-    let couleurMatch = true;
-    if (couleur !== '0') {
-      couleurMatch = Item.couleur === couleur;
-    }
     let signaturematch = true;
     if (signature !== '1') {
       signaturematch = Item.signature === signature;
@@ -149,7 +137,6 @@ export function filtremateriel(
     if (disponibilite !== '0') {
       statutmatch = Item.statut === disponibilite;
     }
-
-    return filtermatch && typeMatch && couleurMatch && signaturematch && statutmatch;
+    return filtermatch && signaturematch && typeMatch;
   });
 }

@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState, Fragment } from 'react';
-import { formatNumber, colors, signatures } from 'app/utils/utils';
+import { formatNumber, signatures } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useListematerielFunctions } from 'app/views/admin/materiel/function';
@@ -74,9 +74,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     setSortDirection,
     handleChangePage,
     sortColumn,
-    setCouleur,
     setTypemateriel,
-    couleur,
     typemateriel,
     selectedIds,
     marque,
@@ -163,7 +161,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   onChange={(event) => setMarque(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -178,25 +176,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   {data.typemateriels.map((row) => (
                     <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                       {row.typemateriel}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Select
-                  fullWidth
-                  labelId="select-label"
-                  value={couleur}
-                  onChange={(event) => setCouleur(event.target.value)}
-                  size="small"
-                  sx={{ mb: 3 }}
-                >
-                  <MenuItem key="0" value="0">
-                    Toutes couleurs
-                  </MenuItem>
-                  {colors.map((color, index) => (
-                    <MenuItem key={index} value={color}>
-                      {color}
                     </MenuItem>
                   ))}
                 </Select>
@@ -220,7 +199,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Select
                   labelId="select-label"
                   sx={{ mb: 3 }}
@@ -342,7 +321,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => (
+                    .map((row) => (
                       <Fragment key={row.idmateriel}>
                         <TableRow key={`row-${row.idmateriel}`}>
                           <TableCell>
@@ -384,7 +363,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             >
                               <Icon>edit_icon</Icon>
                             </IconButton>
-                            <IconButton
+                            {/* <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
@@ -392,7 +371,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               onClick={() => cancelEdit(row.idmateriel)}
                             >
                               <Icon>cancel</Icon>
-                            </IconButton>
+                            </IconButton> */}
                           </TableCell>
                         </TableRow>
                         <TableRow key={`details-${row.idmateriel}`}>
@@ -414,9 +393,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                       <TableCell align="center" key="statut">
                                         Statut
                                       </TableCell>
-                                      <TableCell align="center" key="couleur">
-                                        Couleur
-                                      </TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
@@ -424,7 +400,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                       <TableCell align="center">{row.modele}</TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
                                       <TableCell align="center">{row.statut}</TableCell>
-                                      <TableCell align="center">{row.couleur}</TableCell>
                                     </TableRow>
                                   </TableBody>
                                 </Table>

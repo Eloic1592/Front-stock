@@ -1,6 +1,6 @@
 import { Box, TextField, Snackbar, Alert, Grid, MenuItem, Select } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
-import { colors, signatures } from 'app/utils/utils';
+import { signatures } from 'app/utils/utils';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
@@ -189,7 +189,7 @@ const Editmateriel = () => {
                 rows={4}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Select
                 labelId="select-label"
                 sx={{ mb: 3 }}
@@ -203,24 +203,6 @@ const Editmateriel = () => {
                 {data.typemateriels.map((row) => (
                   <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                     {row.typemateriel}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Grid>
-            <Grid item xs={6}>
-              <Select
-                fullWidth
-                labelId="select-label"
-                value={couleur}
-                onChange={(event) => setCouleur(event.target.value)}
-                sx={{ mb: 3 }}
-              >
-                <MenuItem value="1" disabled>
-                  Choisir une couleur
-                </MenuItem>
-                {colors.map((color, index) => (
-                  <MenuItem key={index} value={color}>
-                    {color}
                   </MenuItem>
                 ))}
               </Select>

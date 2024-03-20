@@ -17,9 +17,8 @@ import Button from '@mui/material/Button';
 import Listemateriel from './Listemateriel';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { colors } from 'app/utils/utils';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import * as XLSX from 'xlsx';
 const Materiel = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -27,7 +26,6 @@ const Materiel = () => {
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
 
-  const [couleur, setCouleur] = useState(['1']);
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [typemateriel, setTypemateriel] = useState(['1']);
@@ -38,7 +36,7 @@ const Materiel = () => {
   const [caution, setCaution] = useState(0);
   const [disponibilite, setDisponibilite] = useState('2');
   const [signature, setSignature] = useState('1');
-  const [file, setFile] = useState('');
+  const [csvFile, setCsvFile] = useState(null);
   const [filetypemateriel, setFiletypemateriel] = useState(['1']);
   const [fileOpen, setFileOpen] = useState(false);
   const handleFileClickOpen = () => setFileOpen(true);
@@ -65,8 +63,7 @@ const Materiel = () => {
       disponibilite === 1 ||
       !numserie ||
       !prixvente ||
-      !caution ||
-      couleur === 1
+      !caution
     ) {
       setMessage({
         text: 'Les champs suivants sont obligatoires : typemateriel,marque, modele, article, numserie, prixvente, caution, couleur,disponibilite',
@@ -83,7 +80,6 @@ const Materiel = () => {
       numserie: numserie,
       prixvente: prixvente,
       caution: caution,
-      couleur: couleur,
       description: description,
       statut: disponibilite,
       signature: signature
@@ -116,37 +112,68 @@ const Materiel = () => {
       });
   };
 
-  const importData = () => {
-    let materielParams = {
-      idtypemateriel: typemateriel,
-      filename: file
-    };
-    // let url = baseUrl + '/materiel/importmateriel';
-    // fetch(url, {
-    //   crossDomain: true,
-    //   method: 'POST',
-    //   body: JSON.stringify(materielParams),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setTimeout(() => {
-    //       window.location.reload();
-    //     }, 2000);
+  // Importation csv
+  const handleChange = (event) => {
+    setCsvFile(event.target.files[0]);
+  };
 
-    //     setMessage({
-    //       text: 'Information importee',
-    //       severity: 'success',
-    //       open: true
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     setMessage({
-    //       text: 'Veuillez verifier que votre serveur est actif',
-    //       severity: 'error',
-    //       open: true
-    //     });
-    //   });
+  const importData = () => {
+    try {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        const formattedData = jsonData.map((row) => ({
+          numserie: row[3],
+          marque: row[4],
+          signature: row[5],
+          idtypemateriel: filetypemateriel,
+          prixvente: 0,
+          caution: 0,
+          disponibilite: 1,
+          statut: 0
+        }));
+
+        const url = baseUrl + '/materiel/importmateriel';
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(formattedData),
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+
+            setMessage({
+              text: 'Information importee',
+              severity: 'success',
+              open: true
+            });
+          })
+          .catch((err) => {
+            setMessage({
+              text: 'Veuillez verifier que votre serveur est actif',
+              severity: 'error',
+              open: true
+            });
+          });
+      };
+      reader.readAsArrayBuffer(csvFile);
+    } catch {
+      setMessage({
+        text: 'Veuillez selectionner un fichier a importer et un type de materiel',
+        severity: 'error',
+        open: true
+      });
+    }
   };
 
   useEffect(() => {
@@ -208,7 +235,7 @@ const Materiel = () => {
             </Grid>
             <Grid item>
               <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
-                Importer CSV
+                Importer donnees
               </Button>
             </Grid>
           </Grid>
@@ -253,7 +280,7 @@ const Materiel = () => {
                   </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <Select
                       labelId="select-label"
                       sx={{ mb: 3 }}
@@ -267,24 +294,6 @@ const Materiel = () => {
                       {data.typemateriels.map((row) => (
                         <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
                           {row.typemateriel}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      value={couleur}
-                      onChange={(event) => setCouleur(event.target.value)}
-                      sx={{ mb: 3 }}
-                    >
-                      <MenuItem value="1" disabled>
-                        Choisir une couleur
-                      </MenuItem>
-                      {colors.map((color, index) => (
-                        <MenuItem key={index} value={color}>
-                          {color}
                         </MenuItem>
                       ))}
                     </Select>
@@ -395,7 +404,7 @@ const Materiel = () => {
           <Box>
             <Dialog
               fullWidth
-              maxWidth="xl"
+              maxWidth="md"
               open={fileOpen}
               onClose={handleFileClose}
               aria-labelledby="form-dialog-title"
@@ -407,8 +416,7 @@ const Materiel = () => {
                     <TextField
                       type="file"
                       variant="outlined"
-                      value={file}
-                      onChange={(event) => setFile(event.target.value)}
+                      onChange={handleChange}
                       fullWidth
                       InputLabelProps={{
                         shrink: true
@@ -424,6 +432,7 @@ const Materiel = () => {
                       }}
                     />
                   </Grid>
+
                   <Grid item xs={6}>
                     <Select
                       fullWidth

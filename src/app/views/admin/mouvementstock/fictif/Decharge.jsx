@@ -1,26 +1,14 @@
-// src/Discharge.js
-
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { baseUrl } from 'app/utils/constant';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { converttodate } from 'app/utils/utils';
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
-  },
-  text: {
-    fontSize: 11
-  }
-});
+import { Container } from 'app/views/style/style';
+import './Discharge.css';
+import { Button, Grid, Icon } from '@mui/material';
+const Decharge = () => {
+  const { idmouvementstock } = useParams(); // Destructure idmouvementstock directly
+  console.log(idmouvementstock);
 
-const Decharge = ({ idmouvementstock }) => {
   const [data, setData] = useState({
     mouvementstock: {
       id: 0,
@@ -41,6 +29,7 @@ const Decharge = ({ idmouvementstock }) => {
     },
     mouvementfictifs: []
   });
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -48,45 +37,48 @@ const Decharge = ({ idmouvementstock }) => {
   });
 
   const [dischargeLetter, setDischargeLetter] = useState('');
-  console.log(data.mouvementstock);
-  console.log(data.mouvementfictifs);
+
   const generateLetter = (data) => {
     const letter = `
-      ${data.mouvementstock.nom} ${data.mouvementstock.prenom}
-      ${data.mouvementstock.adresse}
-      101, Antananarivo
-      ${data.mouvementstock.mail}
-      ${data.mouvementstock.contact}
-
-      ${converttodate(data.mouvementstock.datedepot)}
-
-      IT University
-      102, Antananarivo Antsimodrano
-
-      Objet : Décharge de Responsabilité pour l'emprunt de matériel(s)
-
-      Madame, Monsieur,
-
-      Je soussigné(e),${data.mouvementstock.nom} ${data.mouvementstock.prenom}, ETU ${
+      <div class="header">
+        <p>${data.mouvementstock.adresse}</p>
+        <p>101, Antananarivo</p>
+        <p>${data.mouvementstock.mail}</p>
+        <p>${data.mouvementstock.contact}</p>
+        <p>${converttodate(data.mouvementstock.datedepot)}</p>
+      </div>
+      <div class="body">
+        <p>IT University</p>
+        <p>102, Antananarivo Antsimodrano</p>
+        <p>Objet : Décharge de Responsabilité pour l'emprunt de matériel(s)</p>
+        <p>Madame, Monsieur,</p>
+        <p>Je soussigné(e), ${data.mouvementstock.nom} ${data.mouvementstock.prenom}, ETU ${
       data.mouvementstock.idetudiant
-    }, étudiant(e) à l'IT University, déclare avoir emprunté le(s) matériel(s) suivant(s) :
-
-      ${data.mouvementfictifs.map((row) => row.marque)}
-
-      J'accepte de retourner le matériel dans un état satisfaisant et de payer les éventuels dommages.
-
-      Je vous remercie de bien vouloir prendre en compte cette décharge de responsabilité concernant l'emprunt du matériel mentionné ci-dessus.
-
-      Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
-
-      ${data.mouvementstock.nom}
-      ${converttodate(data.mouvementstock.datedepot)}
-      Signature de l'étudiant
-
-
-      Nom du responsable
-      ${converttodate(data.mouvementstock.datedepot)}
-      Signature du responsable
+    }, étudiant(e) à l'IT University, déclare avoir emprunté le(s) matériel(s) suivant(s) :</p>
+        <ul>
+          ${data.mouvementfictifs
+            .map(
+              (row) =>
+                `<li>${row.marque} - ${row.numserie} le ${converttodate(
+                  row.datedeb
+                )} jusqu\'au ${converttodate(row.datefin)}</li>`
+            )
+            .join('')}
+        </ul>
+        <p>J'accepte de retourner le matériel dans un état satisfaisant et de payer les éventuels dommages.</p>
+        <p>Je vous remercie de bien vouloir prendre en compte cette décharge de responsabilité concernant l'emprunt du matériel mentionné ci-dessus.</p>
+        <p>Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.</p>
+        <p>${data.mouvementstock.nom}</p>
+        <p>${converttodate(data.mouvementstock.datedepot)}</p>
+        <p>Signature de l'étudiant</p>
+        <p>Nom du responsable</p>
+        <p>${converttodate(data.mouvementstock.datedepot)}</p>
+        <p>Signature du responsable</p>
+      </div>
+      <div class="footer">
+        <p>IT University</p>
+        <p>102, Antananarivo Antsimodrano</p>
+      </div>
     `;
 
     setDischargeLetter(letter);
@@ -115,6 +107,7 @@ const Decharge = ({ idmouvementstock }) => {
           mouvementfictifs: responseData.mouvementfictifs || []
         };
         setData(newData);
+        generateLetter(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -124,21 +117,44 @@ const Decharge = ({ idmouvementstock }) => {
       }
     };
     fetchData();
-    generateLetter(data);
-  }, [idmouvementstock]); // Keep idmouvementstock as a dependency
+  }, [idmouvementstock]);
+
+  // Export en PDF
+  const handlePrint = () => {
+    const originalBodyClass = document.body.className;
+    document.body.className += ' print-discharge';
+    window.print();
+    document.body.className = originalBodyClass;
+  };
+
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/mouvementfictif');
+  };
 
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
+    <Container>
+      <Grid container direction="column" spacing={2}>
+        <Grid item>
+          {' '}
+          <Button variant="contained" color="inherit" onClick={redirect}>
+            <Icon>arrow_backward</Icon>
+          </Button>
+        </Grid>
+        <Grid item>
+          {' '}
           <div className="discharge">
             <h2>Décharge de Responsabilité</h2>
-            <Text style={styles.text}>{dischargeLetter}</Text>
-            <Text style={styles.text}></Text>
+            <div style={{ margin: '10px', padding: '10px', flexGrow: 1 }}>
+              <div dangerouslySetInnerHTML={{ __html: dischargeLetter }}></div>
+            </div>
+            <Button variant="contained" color="primary" onClick={handlePrint}>
+              Imprimer
+            </Button>
           </div>
-        </View>
-      </Page>
-    </Document>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
