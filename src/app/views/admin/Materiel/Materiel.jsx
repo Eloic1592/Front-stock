@@ -130,9 +130,9 @@ const Materiel = () => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
         const formattedData = jsonData.map((row) => ({
-          numserie: row[3],
-          marque: row[4],
-          signature: row[5],
+          numserie: row['NUM DE SERIE'],
+          marque: row['MARQUE'],
+          signature: row['signature'],
           idtypemateriel: filetypemateriel,
           prixvente: 0,
           caution: 0,
