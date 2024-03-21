@@ -11,8 +11,9 @@ import {
   Snackbar,
   Alert,
   Grid,
-  Button,
-  Icon
+  Icon,
+  IconButton,
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -20,19 +21,17 @@ import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { useStockdepotFunctions } from './stockdepotfunction';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { useStockmaterielFunctions } from './stockmaterielfunction';
-import PDFMouvementmateriel from './PDFMouvementmateriel';
+import PDFStockdepot from './PDFStockdepot';
 
-const Stockmaterieldepot = () => {
+const Stockarticledepot = () => {
   const columns = [
     { label: 'Depot', field: 'depot', align: 'center' },
-    { label: 'total materiels', field: 'totalmateriels', align: 'center' },
-    { label: 'materiel sutilises', field: 'materielsutilises', align: 'center' },
-    { label: 'Utilisations en %', field: 'pourcentage_utilisation', align: 'center' }
+    { label: 'Quantite', field: 'quantite', align: 'center' }
   ];
-  const [data, setData] = useState({ utilisationMateriels: [] });
+  const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
@@ -53,20 +52,18 @@ const Stockmaterieldepot = () => {
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
-  } = useStockmaterielFunctions(data);
+  } = useStockdepotFunctions(data);
 
-  // Export PDF
-  const generatemouvementmaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFMouvementmateriel dataList={data.utilisationMateriels} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Mouvement_materiel.pdf');
+  // Genere un PDF
+  const generateStockDepotPDF = async () => {
+    const blob = await renderPdf(<PDFStockdepot dataList={data} columns={columns} />).toBlob();
+    saveAs(blob, 'Liste_Stock_Depot.pdf');
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/materiel/utilisationmateriel';
+        let url = baseUrl + '/depot/stockdepot';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -83,11 +80,7 @@ const Stockmaterieldepot = () => {
         }
 
         const responseData = await response.json();
-        const newData = {
-          typemateriels: responseData.typemateriels || [],
-          utilisationMateriels: responseData.utilisationMateriels || []
-        };
-        setData(newData);
+        setData(responseData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -103,13 +96,18 @@ const Stockmaterieldepot = () => {
     }
   }, [sortedData, initialDataFetched]);
 
+  const getstock = (iddepot) => {
+    window.location.replace('/admin/stocktypemateriel/' + iddepot);
+  };
+
   // Redirect
   const getlist = () => {
     window.location.replace('/admin/depot');
   };
-  const getstockarticle = () => {
-    window.location.replace('/admin/stockdepot');
+  const getstockmateriel = () => {
+    window.location.replace('/admin/utilisationmateriel');
   };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -128,14 +126,14 @@ const Stockmaterieldepot = () => {
                 <Button variant="contained" color="primary" onClick={getlist}>
                   Liste des depots
                 </Button>
-              </Box>{' '}
+              </Box>
             </Grid>
             <Grid item>
               <Box className="breadcrumb">
-                <Button variant="contained" color="secondary" onClick={getstockarticle}>
-                  Stock des articles
+                <Button variant="contained" color="secondary" onClick={getstockmateriel}>
+                  Stock de materiels
                 </Button>
-              </Box>{' '}
+              </Box>
             </Grid>
           </Grid>
         </Grid>
@@ -143,7 +141,7 @@ const Stockmaterieldepot = () => {
           <Box width="100%" overflow="auto" key="Box1">
             <Grid container direction="column" spacing={2}>
               <Grid item>
-                <SimpleCard title="Rechercher un  depot" sx={{ marginBottom: '16px' }}>
+                <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
                   <TextField
                     fullWidth
                     size="small"
@@ -159,7 +157,7 @@ const Stockmaterieldepot = () => {
               </Grid>
 
               <Grid item>
-                <SimpleCard title="Utilisations des materiels ">
+                <SimpleCard title="Liste des depots ">
                   <Grid container spacing={2}>
                     <Grid item xs={2}>
                       <Select
@@ -195,7 +193,7 @@ const Stockmaterieldepot = () => {
                         variant="contained"
                         aria-label="Edit"
                         color="secondary"
-                        onClick={generatemouvementmaterielPDF}
+                        onClick={generateStockDepotPDF}
                       >
                         <Icon>picture_as_pdf</Icon>
                       </Button>
@@ -204,17 +202,14 @@ const Stockmaterieldepot = () => {
                   <StyledTable>
                     <TableHead>
                       <TableRow>
-                        <TableCell key="depot" align="center" width="25%">
-                          Depot
+                        <TableCell key="depot" align="center" width="50%">
+                          depot
                         </TableCell>
-                        <TableCell key="totalmateriels" align="center" width="25%">
-                          Total materiels
+                        <TableCell key="quantite" align="center" width="50%">
+                          Total article
                         </TableCell>
-                        <TableCell key="materielsutilises" align="center" width="25%">
-                          Materiels utilises
-                        </TableCell>
-                        <TableCell key="pourcentage_utilisation" align="center" width="25%">
-                          Utilisations en %
+                        <TableCell key="action" align="center" width="50%">
+                          Action
                         </TableCell>
                       </TableRow>
                     </TableHead>
@@ -228,13 +223,18 @@ const Stockmaterieldepot = () => {
                               <>
                                 <TableCell align="center">{row.depot}</TableCell>
                                 <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                                  {coloredNumber(formatNumber(row.totalmateriels))}
+                                  {coloredNumber(formatNumber(row.quantite))}
                                 </TableCell>
-                                <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                                  {coloredNumber(formatNumber(row.materielsutilises))}
-                                </TableCell>
-                                <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                                  {coloredNumber(formatNumber(row.pourcentage_utilisation))}
+                                <TableCell align="center">
+                                  <IconButton
+                                    className="button"
+                                    variant="contained"
+                                    aria-label="Edit"
+                                    color="primary"
+                                    onClick={() => getstock(row.iddepot)}
+                                  >
+                                    <Icon>info</Icon>
+                                  </IconButton>
                                 </TableCell>
                               </>
                             </TableRow>
@@ -281,4 +281,4 @@ const Stockmaterieldepot = () => {
   );
 };
 
-export default Stockmaterieldepot;
+export default Stockarticledepot;

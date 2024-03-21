@@ -5,7 +5,11 @@ export const navigations = [
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Benefices', iconText: 'SI', path: '/admin/stattypemouvement' },
+      {
+        name: 'Benefices et mouvements cycliques',
+        iconText: 'SI',
+        path: '/admin/stattypemouvement'
+      },
       {
         name: 'Mouvement de stock',
         iconText: 'arrows-right',

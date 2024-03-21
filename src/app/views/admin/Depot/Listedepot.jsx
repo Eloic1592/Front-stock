@@ -213,7 +213,7 @@ const Listedepot = () => {
                             {row.iddepot}
                           </TableCell>
                           <TableCell align="center" width="50%">
-                            <Link to={`/admin/stocktypemateriel/${row.iddepot}`}>{row.depot}</Link>
+                            {row.depot}
                           </TableCell>
                           <TableCell align="center" width="15%">
                             <IconButton

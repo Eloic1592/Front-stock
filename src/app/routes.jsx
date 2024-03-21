@@ -105,7 +105,7 @@ const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot')));
 
-const StockDepot = Loadable(lazy(() => import('app/views/admin/depot/Stockdepot')));
+const Stockarticledepot = Loadable(lazy(() => import('app/views/admin/depot/Stockarticledepot')));
 
 const Utilistionmateriel = Loadable(lazy(() => import('app/views/admin/depot/Stockmaterieldepot')));
 
@@ -286,7 +286,7 @@ const routes = [
 
       {
         path: '/admin/stockdepot',
-        element: <ProtectedRoute element={<StockDepot />} />
+        element: <ProtectedRoute element={<Stockarticledepot />} />
       },
 
       {
@@ -359,7 +359,7 @@ const routes = [
   { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/editdepot:iddepot', element: <Editdepot /> },
-  { path: '/admin/stockdepot', element: <StockDepot /> },
+  { path: '/admin/stockdepot', element: <Stockarticledepot /> },
   { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },
   { path: '/admin/archives', element: <Archives /> },
