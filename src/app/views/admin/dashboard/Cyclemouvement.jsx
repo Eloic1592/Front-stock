@@ -21,24 +21,20 @@ import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { coloredNumber } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-import PDFStatnaturemouvement from './PDFStatnaturemouvement';
 
-const Statnaturemouvement = () => {
+const Cyclemouvement = () => {
   const iddepot = useParams();
 
   const columns = [
     { label: 'Nature', field: 'naturemouvement', align: 'center' },
     { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'Gain', field: 'gain', align: 'center' },
-    { label: 'Depense', field: 'depense', align: 'center' },
-    { label: 'Benefice', field: 'depense', align: 'center' }
+    { label: 'Entree', field: 'entree', align: 'center' },
+    { label: 'Sortie', field: 'sortie', align: 'center' }
   ];
   const [filtre, setFiltre] = useState('');
   const [data, setData] = useState({
-    statnaturemouvements: []
+    cyclemouvements: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -66,7 +62,7 @@ const Statnaturemouvement = () => {
   };
 
   // Filtre
-  const filter = data.statnaturemouvements.filter(
+  const filter = data.cyclemouvements.filter(
     (stat) =>
       (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
       (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
@@ -85,12 +81,12 @@ const Statnaturemouvement = () => {
   });
 
   // Export PDF
-  const generateutilisationmaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFStatnaturemouvement dataList={data.statnaturemouvements} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Benefice par mouvement.pdf');
-  };
+  //   const generateutilisationmaterielPDF = async () => {
+  //     const blob = await renderPdf(
+  //       <PDFStatnaturemouvement dataList={data.cyclemouvements} columns={columns} />
+  //     ).toBlob();
+  //     saveAs(blob, 'Benefice par mouvement.pdf');
+  //   };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,7 +94,7 @@ const Statnaturemouvement = () => {
         let depotParams = {
           iddepot: iddepot.iddepot
         };
-        let url = baseUrl + '/naturemouvement/statnaturemouvement';
+        let url = baseUrl + '/naturemouvement/cyclenaturemouvement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -116,7 +112,7 @@ const Statnaturemouvement = () => {
 
         const responseData = await response.json();
         const newData = {
-          statnaturemouvements: responseData.statnaturemouvements || []
+          cyclemouvements: responseData.cyclemouvements || []
         };
 
         setData(newData);
@@ -223,7 +219,7 @@ const Statnaturemouvement = () => {
                       variant="contained"
                       aria-label="Edit"
                       color="secondary"
-                      onClick={generateutilisationmaterielPDF}
+                      //   onClick={generateutilisationmaterielPDF}
                     >
                       <Icon>picture_as_pdf</Icon>
                     </Button>
@@ -232,23 +228,20 @@ const Statnaturemouvement = () => {
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="naturemouvement" align="center" width="17%">
+                      <TableCell key="naturemouvement" align="center" width="20%">
                         Nature
                       </TableCell>
-                      <TableCell key="annee" align="center" width="17%">
+                      <TableCell key="annee" align="center" width="20%">
                         Annee
                       </TableCell>
-                      <TableCell key="mois" align="center" width="17%">
+                      <TableCell key="mois" align="center" width="20%">
                         Mois
                       </TableCell>
-                      <TableCell key="gain" align="center" width="17%">
-                        Gain
+                      <TableCell key="entree" align="center" width="20%">
+                        Entree
                       </TableCell>
-                      <TableCell key="depense" align="center" width="17%">
-                        Depense
-                      </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
-                        Benefice
+                      <TableCell key="sortie" align="center" width="20%">
+                        Sortie
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -270,13 +263,10 @@ const Statnaturemouvement = () => {
                                 {row.mois_nom}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.gain)}
+                                {coloredNumber(row.entree)}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.depense)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {coloredNumber(row.benefice)}
+                                {coloredNumber(row.sortie)}
                               </TableCell>
                             </>
                           </TableRow>
@@ -322,4 +312,4 @@ const Statnaturemouvement = () => {
   );
 };
 
-export default Statnaturemouvement;
+export default Cyclemouvement;

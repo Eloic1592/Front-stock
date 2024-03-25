@@ -25,6 +25,7 @@ import { saveAs } from 'file-saver';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
 import { useStockfunctions } from './stockfunction';
 import PDFStockArticle from './PDFStockArticle';
+import { months } from 'app/utils/utils';
 
 const Stockarticle = () => {
   // Colonne
@@ -33,7 +34,9 @@ const Stockarticle = () => {
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' }
+    { label: 'quantite', field: 'quantite', align: 'center' },
+    { label: 'mois', field: 'mois', align: 'center' },
+    { label: 'annee', field: 'annee', align: 'center' }
   ];
   const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -55,10 +58,10 @@ const Stockarticle = () => {
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData,
-    modele,
+    setMonth,
+    month,
     setMarque,
     marque,
-    setModele,
     typemateriel,
     setTypemateriel
   } = useStockfunctions(data);
@@ -138,7 +141,7 @@ const Stockarticle = () => {
                     size="small"
                     type="text"
                     name="marque"
-                    label="Marque"
+                    label="Marque ou modele"
                     variant="outlined"
                     value={marque}
                     onChange={(event) => setMarque(event.target.value)}
@@ -146,17 +149,22 @@ const Stockarticle = () => {
                   />
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField
+                  <Select
                     fullWidth
-                    size="small"
-                    type="text"
-                    name="modele"
-                    label="Modele"
+                    labelId="month-select-label"
                     variant="outlined"
-                    value={modele}
-                    onChange={(event) => setModele(event.target.value)}
+                    size="small"
+                    value={month}
+                    onChange={(event) => setMonth(event.target.value)}
                     sx={{ mb: 3 }}
-                  />
+                  >
+                    <MenuItem value="0">Tous les mois</MenuItem>
+                    {months.map((monthName, index) => (
+                      <MenuItem key={index + 1} value={index + 1}>
+                        {monthName}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
                 <Grid item xs={4}>
                   <Select
@@ -243,6 +251,12 @@ const Stockarticle = () => {
                     <TableCell key="quantite" width="15%" align="center">
                       quantite
                     </TableCell>
+                    <TableCell key="mois" width="15%" align="center">
+                      mois
+                    </TableCell>
+                    <TableCell key="annee" width="15%" align="center">
+                      annee
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -260,6 +274,8 @@ const Stockarticle = () => {
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
                             </TableCell>
+                            <TableCell align="center">{row.mois}</TableCell>
+                            <TableCell align="center">{row.annee}</TableCell>
                           </>
                         </TableRow>
                       ))

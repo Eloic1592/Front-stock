@@ -34,7 +34,6 @@ import { pdf as renderPdf } from '@react-pdf/renderer';
 const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
-    { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Date', field: 'datedepot', align: 'center' },
     { label: 'Mouvement', field: 'mouvement', align: 'center' },
     { label: 'Marque', field: 'marque', align: 'center' },

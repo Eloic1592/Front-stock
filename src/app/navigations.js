@@ -6,7 +6,7 @@ export const navigations = [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
       { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
       {
-        name: 'Benefices et mouvements cycliques',
+        name: 'Benefices et cycles',
         iconText: 'SI',
         path: '/admin/stattypemouvement'
       },

@@ -33,6 +33,7 @@ const Editnaturemouvement = Loadable(
 const Stattypemouvement = Loadable(
   lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
 );
+const Cyclemouvement = Loadable(lazy(() => import('app/views/admin/dashboard/Cyclemouvement')));
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 
@@ -181,6 +182,10 @@ const routes = [
       {
         path: '/admin/stattypemouvement',
         element: <ProtectedRoute element={<Stattypemouvement />} />
+      },
+      {
+        path: '/admin/cyclemouvement',
+        element: <ProtectedRoute element={<Cyclemouvement />} />
       },
 
       {

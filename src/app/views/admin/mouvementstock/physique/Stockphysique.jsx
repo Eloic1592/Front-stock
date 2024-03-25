@@ -128,7 +128,7 @@ const Stockphysique = () => {
       typemouvement: typemouvement,
       idnaturemouvement: naturemouvement,
       pu: prixunitaire,
-      quantite: quantite,
+      quantite: typemouvement * quantite,
       iddepot: depot,
       description: description,
       commentaire: commentaire,
