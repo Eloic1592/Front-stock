@@ -50,7 +50,8 @@ export const navigations = [
             iconText: 'arrows-right',
             children: [
               { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
-              { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' }
+              { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
+              { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/cyclemouvement' }
             ]
           },
           {

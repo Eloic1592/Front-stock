@@ -121,6 +121,11 @@ const Article = () => {
     window.location.replace('/admin/stocksarticle');
   };
 
+  // Rupture stock_article(Update)
+  const rupturearicle = () => {
+    window.location.replace('/admin/cyclemouvement');
+  };
+
   return (
     <Container>
       <Box className="breadcrumb">
@@ -139,6 +144,11 @@ const Article = () => {
             <Grid item>
               <Button variant="contained" onClick={getstock} color="secondary">
                 Stock article
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={rupturearicle} color="secondary">
+                Stock rupture
               </Button>
             </Grid>
             <Grid item>

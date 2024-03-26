@@ -26,16 +26,12 @@ const Cyclemouvement = () => {
   const iddepot = useParams();
 
   const columns = [
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Annee', field: 'annee', align: 'center' },
-    { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'Entree', field: 'entree', align: 'center' },
-    { label: 'Sortie', field: 'sortie', align: 'center' }
+    { label: 'Marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'taux_rupture_stock', field: 'taux_rupture_stock', align: 'center' }
   ];
   const [filtre, setFiltre] = useState('');
-  const [data, setData] = useState({
-    cyclemouvements: []
-  });
+  const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
@@ -62,11 +58,10 @@ const Cyclemouvement = () => {
   };
 
   // Filtre
-  const filter = data.cyclemouvements.filter(
-    (stat) =>
-      (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.naturemouvement && stat.naturemouvement.toLowerCase().includes(filtre.toLowerCase()))
+  const filter = data.filter(
+    (Item) =>
+      (Item.marque && Item.marque.toLowerCase().includes(filtre.toLowerCase())) ||
+      (Item.modele && Item.modele.toLowerCase().includes(filtre.toLowerCase()))
   );
 
   // Tri
@@ -91,14 +86,11 @@ const Cyclemouvement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let depotParams = {
-          iddepot: iddepot.iddepot
-        };
-        let url = baseUrl + '/naturemouvement/cyclenaturemouvement';
+        let url = baseUrl + '/article/rupturearticle';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(depotParams),
+          body: JSON.stringify(),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -111,11 +103,7 @@ const Cyclemouvement = () => {
         }
 
         const responseData = await response.json();
-        const newData = {
-          cyclemouvements: responseData.cyclemouvements || []
-        };
-
-        setData(newData);
+        setData(responseData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -129,14 +117,11 @@ const Cyclemouvement = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [iddepot.iddepot, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
-    window.location.replace('/admin/typemouvement');
-  };
-  const cyclemouvement = () => {
-    window.location.replace('/admin/cyclemouvement');
+    window.location.replace('/admin/article');
   };
 
   return (
@@ -144,8 +129,8 @@ const Cyclemouvement = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Benefice par nature', path: 'admin/stocktypemateriel' },
-            { name: 'Benefice par nature' }
+            { name: 'Stock rupture', path: 'admin/stocktypemateriel' },
+            { name: 'Stock rupture' }
           ]}
         />
       </Box>
@@ -156,11 +141,6 @@ const Cyclemouvement = () => {
             <Grid item>
               <Button variant="contained" color="inherit" onClick={redirect}>
                 <Icon>arrow_backward</Icon>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="secondary" onClick={cyclemouvement}>
-                Cycles mouvement
               </Button>
             </Grid>
           </Grid>
@@ -213,35 +193,18 @@ const Cyclemouvement = () => {
                       <MenuItem value="desc">DESC</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      aria-label="Edit"
-                      color="secondary"
-                      //   onClick={generateutilisationmaterielPDF}
-                    >
-                      <Icon>picture_as_pdf</Icon>
-                    </Button>
-                  </Grid>
                 </Grid>
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="naturemouvement" align="center" width="20%">
-                        Nature
+                      <TableCell key="annee" align="center" width="33%">
+                        Marque
                       </TableCell>
-                      <TableCell key="annee" align="center" width="20%">
-                        Annee
+                      <TableCell key="mois" align="center" width="33%">
+                        Modele
                       </TableCell>
-                      <TableCell key="mois" align="center" width="20%">
-                        Mois
-                      </TableCell>
-                      <TableCell key="entree" align="center" width="20%">
-                        Entree
-                      </TableCell>
-                      <TableCell key="sortie" align="center" width="20%">
-                        Sortie
+                      <TableCell key="entree" align="center" width="33%">
+                        Taux rupture en (%)
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -254,19 +217,13 @@ const Cyclemouvement = () => {
                           <TableRow key={index}>
                             <>
                               <TableCell align="center" width="17%">
-                                {row.naturemouvement}
+                                {row.marque}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {row.annee}
+                                {row.modele}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {row.mois_nom}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {coloredNumber(row.entree)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {coloredNumber(row.sortie)}
+                                {coloredNumber(row.taux_rupture_stock)}
                               </TableCell>
                             </>
                           </TableRow>

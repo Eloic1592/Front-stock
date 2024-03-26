@@ -274,7 +274,7 @@ const Stockarticle = () => {
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
                               {coloredNumber(formatNumber(row.quantite))}
                             </TableCell>
-                            <TableCell align="center">{row.mois}</TableCell>
+                            <TableCell align="center">{row.mois_nom}</TableCell>
                             <TableCell align="center">{row.annee}</TableCell>
                           </>
                         </TableRow>

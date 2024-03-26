@@ -164,7 +164,7 @@ const Statnaturemouvement = () => {
             </Grid>
             <Grid item>
               <Button variant="contained" color="secondary" onClick={cyclemouvement}>
-                Cycles mouvement
+                Stock rupture
               </Button>
             </Grid>
           </Grid>
@@ -242,13 +242,13 @@ const Statnaturemouvement = () => {
                         Mois
                       </TableCell>
                       <TableCell key="gain" align="center" width="17%">
-                        Gain
+                        Gain en (Ariary)
                       </TableCell>
                       <TableCell key="depense" align="center" width="17%">
-                        Depense
+                        Depense en (Ariary)
                       </TableCell>
                       <TableCell key="benefice" align="center" width="17%">
-                        Benefice
+                        Benefice en (Ariary)
                       </TableCell>
                     </TableRow>
                   </TableHead>

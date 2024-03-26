@@ -33,7 +33,7 @@ const Editnaturemouvement = Loadable(
 const Stattypemouvement = Loadable(
   lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
 );
-const Cyclemouvement = Loadable(lazy(() => import('app/views/admin/dashboard/Cyclemouvement')));
+const Cyclemouvement = Loadable(lazy(() => import('app/views/admin/article/Cyclemouvement')));
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 

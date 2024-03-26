@@ -90,7 +90,7 @@ const LoginAdmin = () => {
       }
     } catch (error) {
       setMessage({
-        message: 'Une erreur est survenue,veuillez verifier si votre serveur et actif',
+        message: 'Veuillez verifier si votre serveur est actif!',
         state: true,
         color: 'red'
       });
