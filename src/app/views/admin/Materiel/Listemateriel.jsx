@@ -64,9 +64,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const handleEdit = (idmateriel) => {
     window.location.replace('/admin/editmateriel/' + idmateriel);
   };
-
-  const cancelEdit = () => {};
-
   const {
     sortDirection,
     page,

@@ -420,7 +420,7 @@ const Stockphysique = () => {
               </DialogTitle>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+                <Button variant="contained" color="secondary" onClick={handlecancelClose}>
                   Annuler
                 </Button>
                 <Button onClick={resetData} color="primary" variant="contained">

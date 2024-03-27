@@ -61,7 +61,7 @@ const Decharge = () => {
               (row) =>
                 `<li>${row.marque} - ${row.numserie} le ${converttodate(
                   row.datedeb
-                )} jusqu\'au ${converttodate(row.datefin)}</li>`
+                )} jusqu'au ${converttodate(row.datefin)}</li>`
             )
             .join('')}
         </ul>
@@ -136,13 +136,11 @@ const Decharge = () => {
     <Container>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          {' '}
           <Button variant="contained" color="inherit" onClick={redirect}>
             <Icon>arrow_backward</Icon>
           </Button>
         </Grid>
         <Grid item>
-          {' '}
           <div className="discharge">
             <h2>Décharge de Responsabilité</h2>
             <div style={{ margin: '10px', padding: '10px', flexGrow: 1 }}>

@@ -1,13 +1,13 @@
 import { Box, TextField, Select, MenuItem, Grid } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
-
+import { months } from 'app/utils/utils';
 import { useEffect, useState } from 'react';
 import { Container } from 'app/views/style/style';
 
 const Dashboard = () => {
   // Input
   const [annee, setAnnee] = useState(0);
-  // const [mois, setMois] = useState(0);
+  const [month, setMonth] = useState('0');
 
   // // Message
   // const [message, setMessage] = useState({
@@ -49,23 +49,19 @@ const Dashboard = () => {
               <Grid item xs={6}>
                 <Select
                   fullWidth
+                  labelId="month-select-label"
+                  variant="outlined"
                   size="small"
-                  labelId="select-label"
-                  value={'1'}
-                  //  onChange={handleChange}
+                  value={month}
+                  onChange={(event) => setMonth(event.target.value)}
+                  sx={{ mb: 3 }}
                 >
-                  <MenuItem value="1">Janvier</MenuItem>
-                  <MenuItem value="2">Fevrier</MenuItem>
-                  <MenuItem value="3">Mars</MenuItem>
-                  <MenuItem value="4">Avril</MenuItem>
-                  <MenuItem value="5">Mai</MenuItem>
-                  <MenuItem value="6">Juin</MenuItem>
-                  <MenuItem value="7">Juillet</MenuItem>
-                  <MenuItem value="8">Aout</MenuItem>
-                  <MenuItem value="9">Septembre</MenuItem>
-                  <MenuItem value="10">Octobre</MenuItem>
-                  <MenuItem value="11">Novembre</MenuItem>
-                  <MenuItem value="12">Decembre</MenuItem>
+                  <MenuItem value="0">Tous les mois</MenuItem>
+                  {months.map((monthName, index) => (
+                    <MenuItem key={index + 1} value={index + 1}>
+                      {monthName}
+                    </MenuItem>
+                  ))}
                 </Select>
               </Grid>
             </Grid>

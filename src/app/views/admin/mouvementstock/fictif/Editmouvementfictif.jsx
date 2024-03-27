@@ -122,7 +122,7 @@ const Editmouvementfictif = () => {
         setNaturemouvement(newData.mouvementstock.idnaturemouvement);
         setIdetudiant(newData.mouvementstock.idetudiant);
         setDatedepot(formatDate(newData.mouvementstock.datedepot));
-        setTypemouvement(newData.mouvementstock.typemouvement);
+        setTypemouvement(newData.mouvementstock.type);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
