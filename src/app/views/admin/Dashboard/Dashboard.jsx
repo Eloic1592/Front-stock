@@ -83,7 +83,7 @@ const Dashboard = () => {
             <form>
               <div style={{ display: 'flex', gap: '16px' }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <Select
                       fullWidth
                       labelId="month-select-label"
@@ -101,7 +101,7 @@ const Dashboard = () => {
                       ))}
                     </Select>
                   </Grid>
-                  <Grid item xs={6}>
+                  {/* <Grid item xs={6}>
                     <Select
                       fullWidth
                       labelId="month-select-label"
@@ -119,7 +119,7 @@ const Dashboard = () => {
                         LIFO
                       </MenuItem>
                     </Select>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </div>
             </form>
@@ -129,10 +129,10 @@ const Dashboard = () => {
           <Rotationstock rotationstocks={data.rotationstocks} />
         </Grid>
         <Grid item>
-          <FIFO fifos={data.fifos} />
+          <FIFO fifos={data.fifos} mois={month} />
         </Grid>
         <Grid item>
-          <LIFO lifos={data.lifos} />
+          <LIFO lifos={data.lifos} mois={month} />
         </Grid>
       </Grid>
     </Container>

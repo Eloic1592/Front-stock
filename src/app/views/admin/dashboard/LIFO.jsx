@@ -12,7 +12,7 @@ import {
   Grid
 } from '@mui/material';
 
-function LIFO({ lifos }) {
+function LIFO({ lifos, mois }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState('');
@@ -26,12 +26,7 @@ function LIFO({ lifos }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const filtrelifos = lifos.filter(
-    (lifos) =>
-      (lifos.marque && lifos.marque.toLowerCase().includes(filter.toLowerCase())) ||
-      (lifos.modele && lifos.modele.toLowerCase().includes(filter.toLowerCase())) ||
-      (lifos.description && lifos.description.toLowerCase().includes(filter.toLowerCase()))
-  );
+  const filtrelifos = lifos.filter((lifos) => mois === '0' || lifos.mois === mois);
 
   return (
     <Grid container>
@@ -41,10 +36,21 @@ function LIFO({ lifos }) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell width="25%">Marque</TableCell>
-                  <TableCell width="25%">Modele</TableCell>
-                  <TableCell width="25%">Description</TableCell>
-                  <TableCell width="25%">Cout vendus</TableCell>
+                  <TableCell width="20%" align="center">
+                    Marque
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Modele
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Description
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Mois
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Cout vendus
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -53,10 +59,19 @@ function LIFO({ lifos }) {
                   : filtrelifos
                 ).map((lifos) => (
                   <TableRow key={lifos.idarticle}>
-                    <TableCell width="25%">{lifos.marque}</TableCell>
-                    <TableCell width="25%">{lifos.modele}</TableCell>
-                    <TableCell width="25%">{lifos.description}</TableCell>
-                    <TableCell width="25%">
+                    <TableCell width="20%" align="center">
+                      {lifos.marque}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
+                      {lifos.modele}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
+                      {lifos.description}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
+                      {lifos.mois}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
                       {coloredNumber(formatNumber(lifos.cout_vendu))}
                     </TableCell>
                   </TableRow>
@@ -65,7 +80,7 @@ function LIFO({ lifos }) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100, 200, { label: 'Tous', value: -1 }]}
+            rowsPerPageOptions={[10, 25, 50, 100, 200]}
             component="div"
             count={filtrelifos.length}
             rowsPerPage={rowsPerPage}

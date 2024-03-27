@@ -44,11 +44,21 @@ function Rotationstock({ rotationstocks }) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell width="20%">Marque</TableCell>
-                  <TableCell width="20%">Modele</TableCell>
-                  <TableCell width="20%">Description</TableCell>
-                  <TableCell width="20%">moyenne jour</TableCell>
-                  <TableCell width="20%">Rotation stock(en %)</TableCell>
+                  <TableCell width="20%" align="center">
+                    Marque
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Modele
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Description
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    moyenne jour
+                  </TableCell>
+                  <TableCell width="20%" align="center">
+                    Rotation stock(en %)
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -57,13 +67,19 @@ function Rotationstock({ rotationstocks }) {
                   : filtrerotationstocks
                 ).map((rotationstocks) => (
                   <TableRow key={rotationstocks.idarticle}>
-                    <TableCell width="20%">{rotationstocks.marque}</TableCell>
-                    <TableCell width="20%">{rotationstocks.modele}</TableCell>
-                    <TableCell width="20%">{rotationstocks.description}</TableCell>
-                    <TableCell width="20%">
+                    <TableCell width="20%" align="center">
+                      {rotationstocks.marque}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
+                      {rotationstocks.modele}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
+                      {rotationstocks.description}
+                    </TableCell>
+                    <TableCell width="20%" align="center">
                       {coloredNumber(formatNumber(rotationstocks.moyenne_jour))}
                     </TableCell>
-                    <TableCell width="20%">
+                    <TableCell width="20%" align="center">
                       {coloredNumber(formatNumber(rotationstocks.rotation_stock))}
                     </TableCell>
                   </TableRow>
@@ -72,7 +88,7 @@ function Rotationstock({ rotationstocks }) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100, 200, { label: 'Tous', value: -1 }]}
+            rowsPerPageOptions={[10, 25, 50, 100, 200]}
             component="div"
             count={filtrerotationstocks.length}
             rowsPerPage={rowsPerPage}

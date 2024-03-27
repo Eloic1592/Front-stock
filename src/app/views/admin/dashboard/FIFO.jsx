@@ -12,7 +12,7 @@ import {
   Grid
 } from '@mui/material';
 
-function FIFO({ fifos }) {
+function FIFO({ fifos, mois }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState('');
@@ -26,12 +26,7 @@ function FIFO({ fifos }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const filtrefifos = fifos.filter(
-    (fifos) =>
-      (fifos.marque && fifos.marque.toLowerCase().includes(filter.toLowerCase())) ||
-      (fifos.modele && fifos.modele.toLowerCase().includes(filter.toLowerCase())) ||
-      (fifos.description && fifos.description.toLowerCase().includes(filter.toLowerCase()))
-  );
+  const filtrefifos = fifos.filter((fifos) => mois === '0' || fifos.mois === mois);
 
   return (
     <Grid container>
@@ -41,14 +36,33 @@ function FIFO({ fifos }) {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell width="12%">Marque</TableCell>
-                  <TableCell width="12%">Modele</TableCell>
-                  <TableCell width="12%">Description</TableCell>
-                  <TableCell width="12%">Total achetes</TableCell>
-                  <TableCell width="12%">Total vendus</TableCell>
-                  <TableCell width="12%">Total achetes valeur</TableCell>
-                  <TableCell width="12%">Total venduts valeur</TableCell>
-                  <TableCell width="12%">Stock actuel</TableCell>
+                  <TableCell width="12%" align="center">
+                    Marque
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Modele
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Description
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Mois
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Total achetes
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Total vendus
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Total achetes valeur
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Total venduts valeur
+                  </TableCell>
+                  <TableCell width="12%" align="center">
+                    Stock actuel
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -57,22 +71,31 @@ function FIFO({ fifos }) {
                   : filtrefifos
                 ).map((fifos) => (
                   <TableRow key={fifos.idarticle}>
-                    <TableCell width="12%">{fifos.marque}</TableCell>
-                    <TableCell width="12%">{fifos.modele}</TableCell>
-                    <TableCell width="12%">{fifos.description}</TableCell>
-                    <TableCell width="12%">
+                    <TableCell width="12%" align="center">
+                      {fifos.marque}
+                    </TableCell>
+                    <TableCell width="12%" align="center">
+                      {fifos.modele}
+                    </TableCell>
+                    <TableCell width="12%" align="center">
+                      {fifos.description}
+                    </TableCell>
+                    <TableCell width="12%" align="center">
+                      {fifos.mois}
+                    </TableCell>
+                    <TableCell width="12%" align="center">
                       {coloredNumber(formatNumber(fifos.total_achetes))}
                     </TableCell>
-                    <TableCell width="12%">
+                    <TableCell width="12%" align="center">
                       {coloredNumber(formatNumber(fifos.total_vendus))}
                     </TableCell>
-                    <TableCell width="12%">
+                    <TableCell width="12%" align="center">
                       {coloredNumber(formatNumber(fifos.total_achetes_valeur))}
                     </TableCell>
-                    <TableCell width="12%">
+                    <TableCell width="12%" align="center">
                       {coloredNumber(formatNumber(fifos.total_vendus_valeur))}
                     </TableCell>
-                    <TableCell width="12%">
+                    <TableCell width="12%" align="center">
                       {coloredNumber(formatNumber(fifos.quantite_stock))}
                     </TableCell>
                   </TableRow>
@@ -81,7 +104,7 @@ function FIFO({ fifos }) {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100, 200, { label: 'Tous', value: -1 }]}
+            rowsPerPageOptions={[10, 25, 50, 100, 200]}
             component="div"
             count={filtrefifos.length}
             rowsPerPage={rowsPerPage}
