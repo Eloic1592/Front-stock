@@ -30,9 +30,6 @@ const Editnaturemouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Editnaturemouvement'))
 );
 
-const Stattypemouvement = Loadable(
-  lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
-);
 const Cyclemouvement = Loadable(lazy(() => import('app/views/admin/article/Cyclemouvement')));
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
@@ -121,6 +118,11 @@ const Historique = Loadable(lazy(() => import('app/views/admin/archives/Historiq
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
+const Statnaturemouvement = Loadable(
+  lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
+);
+
+const Stattypemateriel = Loadable(lazy(() => import('app/views/admin/dashboard/Stattypemateriel')));
 // admin page
 // const Analytics = Loadable(lazy(() => import('app/views/user/Analytics')));
 // Acceuil user
@@ -179,10 +181,6 @@ const routes = [
         element: <ProtectedRoute element={<EditTypemateriel />} />
       },
 
-      {
-        path: '/admin/stattypemouvement',
-        element: <ProtectedRoute element={<Stattypemouvement />} />
-      },
       {
         path: '/admin/cyclemouvement',
         element: <ProtectedRoute element={<Cyclemouvement />} />
@@ -317,6 +315,14 @@ const routes = [
       {
         path: '/admin/decharge/:idmouvementstock',
         element: <ProtectedRoute element={<Decharge />} />
+      },
+      {
+        path: '/admin/stattypemouvement',
+        element: <ProtectedRoute element={<Statnaturemouvement />} />
+      },
+      {
+        path: '/admin/stattypemateriel/:idnaturemouvement/:mois',
+        element: <ProtectedRoute element={<Stattypemateriel />} />
       }
     ]
   },
@@ -335,7 +341,7 @@ const routes = [
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/stockmateriel', element: <StockMateriel /> },
   { path: '/admin/editmateriel/:idmateriel', element: <Editmateriel /> },
-  { path: '/admin/stattypemouvement', element: <Stattypemouvement /> },
+
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
@@ -370,7 +376,8 @@ const routes = [
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
   { path: '/admin/decharge/:idmouvementstock', element: <Decharge /> },
-
+  { path: '/admin/stattypemouvement', element: <Statnaturemouvement /> },
+  { path: '/admin/stattypemateriel/:idnaturemouvement/:mois', element: <Stattypemateriel /> },
   { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];

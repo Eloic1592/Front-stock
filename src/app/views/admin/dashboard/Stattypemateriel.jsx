@@ -24,22 +24,20 @@ import { coloredNumber } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import PDFStatnaturemouvement from './PDFStatnaturemouvement';
 
-const Statnaturemouvement = () => {
-  const iddepot = useParams();
+const Stattypemateriel = () => {
+  const idnaturemouvement = useParams();
+  console.log(idnaturemouvement.idnaturemouvement);
 
   const columns = [
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
-    { label: 'Annee', field: 'annee', align: 'center' },
+    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
     { label: 'Gain', field: 'gain', align: 'center' },
-    { label: 'Depense', field: 'depense', align: 'center' },
-    { label: 'Benefice', field: 'depense', align: 'center' }
+    { label: 'Depense', field: 'depense', align: 'center' }
   ];
   const [filtre, setFiltre] = useState('');
   const [data, setData] = useState({
-    statnaturemouvements: []
+    stat_typemateriels: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -67,11 +65,10 @@ const Statnaturemouvement = () => {
   };
 
   // Filtre
-  const filter = data.statnaturemouvements.filter(
+  const filter = data.stat_typemateriels.filter(
     (stat) =>
-      (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
       (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.naturemouvement && stat.naturemouvement.toLowerCase().includes(filtre.toLowerCase()))
+      (stat.typmateriel && stat.typmateriel.toLowerCase().includes(filtre.toLowerCase()))
   );
 
   // Tri
@@ -86,24 +83,24 @@ const Statnaturemouvement = () => {
   });
 
   // Export PDF
-  const generateutilisationmaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFStatnaturemouvement dataList={data.statnaturemouvements} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Benefice par mouvement.pdf');
-  };
+  //   const generateutilisationmaterielPDF = async () => {
+  //     const blob = await renderPdf(
+  //       <PDFStattypemateriel dataList={data.statnaturemouvements} columns={columns} />
+  //     ).toBlob();
+  //     saveAs(blob, 'Benefice par mouvement.pdf');
+  //   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let depotParams = {
-          iddepot: iddepot.iddepot
+        let typematerielParams = {
+          idnaturemouvement: idnaturemouvement.idnaturemouvement
         };
-        let url = baseUrl + '/naturemouvement/statnaturemouvement';
+        let url = baseUrl + '/typemateriel/getstattypemateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(depotParams),
+          body: JSON.stringify(typematerielParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -117,7 +114,7 @@ const Statnaturemouvement = () => {
 
         const responseData = await response.json();
         const newData = {
-          statnaturemouvements: responseData.statnaturemouvements || []
+          stat_typemateriels: responseData.stat_typemateriels || []
         };
 
         setData(newData);
@@ -134,17 +131,11 @@ const Statnaturemouvement = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [iddepot.iddepot, sortedData, initialDataFetched]);
+  }, [idnaturemouvement.idnaturemouvement, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
-    window.location.replace('/admin/typemouvement');
-  };
-  const cyclemouvement = () => {
-    window.location.replace('/admin/cyclemouvement');
-  };
-  const getstattypemateriel = (idnaturemouvement, mois) => {
-    window.location.replace('/admin/stattypemateriel/' + idnaturemouvement + '/' + mois);
+    window.location.replace('/admin/stattypemouvement');
   };
 
   return (
@@ -164,11 +155,6 @@ const Statnaturemouvement = () => {
             <Grid item>
               <Button variant="contained" color="inherit" onClick={redirect}>
                 <Icon>arrow_backward</Icon>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="secondary" onClick={cyclemouvement}>
-                Stock rupture
               </Button>
             </Grid>
           </Grid>
@@ -227,7 +213,7 @@ const Statnaturemouvement = () => {
                       variant="contained"
                       aria-label="Edit"
                       color="secondary"
-                      onClick={generateutilisationmaterielPDF}
+                      //   onClick={generateutilisationmaterielPDF}
                     >
                       <Icon>picture_as_pdf</Icon>
                     </Button>
@@ -236,26 +222,17 @@ const Statnaturemouvement = () => {
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="naturemouvement" align="center" width="17%">
-                        Nature
+                      <TableCell key="typemateriel" align="center" width="25%">
+                        Type materiel
                       </TableCell>
-                      <TableCell key="annee" align="center" width="17%">
-                        Annee
-                      </TableCell>
-                      <TableCell key="mois" align="center" width="17%">
+                      <TableCell key="mois" align="center" width="25%">
                         Mois
                       </TableCell>
-                      <TableCell key="gain" align="center" width="17%">
+                      <TableCell key="gain" align="center" width="25%">
                         Gain en (Ariary)
                       </TableCell>
-                      <TableCell key="depense" align="center" width="17%">
+                      <TableCell key="depense" align="center" width="25%">
                         Depense en (Ariary)
-                      </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
-                        Benefice en (Ariary)
-                      </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
-                        Action
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -267,36 +244,17 @@ const Statnaturemouvement = () => {
                         .map((row, index) => (
                           <TableRow key={index}>
                             <>
-                              <TableCell align="center" width="17%">
-                                {row.naturemouvement}
+                              <TableCell align="center" width="25%">
+                                {row.typemateriel}
                               </TableCell>
-                              <TableCell align="center" width="17%">
-                                {row.annee}
+                              <TableCell align="center" width="25%">
+                                {row.mois}
                               </TableCell>
-                              <TableCell align="center" width="17%">
-                                {row.mois_nom}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
+                              <TableCell align="center" width="25%">
                                 {coloredNumber(row.gain)}
                               </TableCell>
-                              <TableCell align="center" width="17%">
+                              <TableCell align="center" width="25%">
                                 {coloredNumber(row.depense)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {coloredNumber(row.benefice)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() =>
-                                    getstattypemateriel(row.idnaturemouvement, row.mois)
-                                  }
-                                >
-                                  <Icon>info</Icon>
-                                </IconButton>
                               </TableCell>
                             </>
                           </TableRow>
@@ -342,4 +300,4 @@ const Statnaturemouvement = () => {
   );
 };
 
-export default Statnaturemouvement;
+export default Stattypemateriel;

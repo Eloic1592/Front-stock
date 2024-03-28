@@ -3,10 +3,10 @@ export const navigations = [
     name: 'Administrateur',
     icon: 'arrows-right',
     children: [
-      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/dashboard' },
-      { name: 'Bilan general', iconText: 'SI', path: '/admin/bilan' },
+      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
+      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
       {
-        name: 'Benefices et cycles',
+        name: 'Bilan des mouvements',
         iconText: 'SI',
         path: '/admin/stattypemouvement'
       },
