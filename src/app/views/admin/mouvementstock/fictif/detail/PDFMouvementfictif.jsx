@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 });
 
 const PDFMouvementfictif = ({ dataList, columns }) => {
+  console.log(dataList);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -55,7 +56,7 @@ const PDFMouvementfictif = ({ dataList, columns }) => {
               </View>
             ))}
           </View>
-          {dataList.slice(1).map((row, index) => (
+          {dataList.map((row, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.mouvement}</Text>

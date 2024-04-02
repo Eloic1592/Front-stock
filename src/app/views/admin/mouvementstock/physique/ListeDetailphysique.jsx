@@ -81,7 +81,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     sortColumn,
     selectedIds,
     marque,
-    cancelEdit,
     setMarque,
     datedepot,
     setDatedepot,
@@ -264,6 +263,18 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  className="button"
+                  fullWidth
+                  variant="contained"
+                  aria-label="Edit"
+                  color="error"
+                  disabled={selectedIds.length === 0}
+                >
+                  <Icon>delete</Icon>
+                </Button>
               </Grid>
               <Grid item xs={2}>
                 <Button

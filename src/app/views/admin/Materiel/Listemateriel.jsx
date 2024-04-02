@@ -9,7 +9,7 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
+  /* Checkbox,*/
   Select,
   MenuItem,
   Alert,
@@ -73,12 +73,12 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     sortColumn,
     setTypemateriel,
     typemateriel,
-    selectedIds,
+    /*selectedIds,*/
     marque,
     setMarque,
     handleChangeRowsPerPage,
-    handleSelectAll,
-    handleSelection,
+    /*handleSelectAll,
+    handleSelection,*/
     handleSelectColumn,
     sortedData,
     signature,
@@ -253,18 +253,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
               </Grid>
               <Grid item xs={2}>
                 <Button
-                  fullWidth
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
                   className="button"
                   variant="contained"
                   aria-label="Edit"
@@ -278,7 +266,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
             <StyledTable id="datatable">
               <TableHead>
                 <TableRow key="head">
-                  <TableCell align="center" width="5%">
+                  {/* <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.listemateriels.every((row) =>
                         selectedIds.includes(row.idmateriel)
@@ -289,7 +277,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       }
                       onChange={handleSelectAll}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="typemateriel" align="center" width="14%">
                     typemateriel
@@ -321,12 +309,12 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     .map((row) => (
                       <Fragment key={row.idmateriel}>
                         <TableRow key={`row-${row.idmateriel}`}>
-                          <TableCell>
+                          {/* <TableCell>
                             <Checkbox
                               checked={selectedIds.includes(row.idmateriel)}
                               onChange={(event) => handleSelection(event, row.idmateriel)}
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
@@ -372,7 +360,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           </TableCell>
                         </TableRow>
                         <TableRow key={`details-${row.idmateriel}`}>
-                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                             <Collapse in={openRows[row.idmateriel]} timeout="auto" unmountOnExit>
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">

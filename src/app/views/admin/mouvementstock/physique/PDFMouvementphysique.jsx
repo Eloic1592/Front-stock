@@ -49,7 +49,7 @@ const PDFMouvementphysique = ({ dataList, columns }) => {
         <Text style={styles.title}>Liste des mouvements physiques</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
-            {columns.slice(1).map((column, index) => (
+            {columns.map((column, index) => (
               <View style={styles.tableCol} key={index}>
                 <Text style={styles.tableCell}>{column.label}</Text>
               </View>

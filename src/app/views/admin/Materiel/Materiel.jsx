@@ -17,7 +17,6 @@ import Button from '@mui/material/Button';
 import Listemateriel from './Listemateriel';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import InputAdornment from '@mui/material/InputAdornment';
 import * as XLSX from 'xlsx';
 const Materiel = () => {
   // Form dialog
@@ -132,7 +131,7 @@ const Materiel = () => {
         const formattedData = jsonData.map((row) => ({
           numserie: row['NUM DE SERIE'],
           marque: row['MARQUE'],
-          signature: row['signature'],
+          signature: row['signature'] === 'Perso' ? row['signature'] : 'ITU',
           idtypemateriel: filetypemateriel,
           prixvente: 0,
           caution: 0,
@@ -420,15 +419,6 @@ const Materiel = () => {
                       fullWidth
                       InputLabelProps={{
                         shrink: true
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <Button variant="contained" color="primary" type="submit">
-                              Upload
-                            </Button>
-                          </InputAdornment>
-                        )
                       }}
                     />
                   </Grid>

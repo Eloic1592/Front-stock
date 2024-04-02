@@ -20,14 +20,12 @@ import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { coloredNumber } from 'app/utils/utils';
-import { useParams } from 'react-router-dom';
 
 const Cyclemouvement = () => {
-  const iddepot = useParams();
-
   const columns = [
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
     { label: 'taux_rupture_stock', field: 'taux_rupture_stock', align: 'center' }
   ];
   const [filtre, setFiltre] = useState('');
@@ -200,8 +198,11 @@ const Cyclemouvement = () => {
                       <TableCell key="annee" align="center" width="33%">
                         Marque
                       </TableCell>
-                      <TableCell key="mois" align="center" width="33%">
+                      <TableCell key="modele" align="center" width="33%">
                         Modele
+                      </TableCell>
+                      <TableCell key="description" align="center" width="33%">
+                        Description
                       </TableCell>
                       <TableCell key="entree" align="center" width="33%">
                         Taux rupture en (%)
@@ -221,6 +222,9 @@ const Cyclemouvement = () => {
                               </TableCell>
                               <TableCell align="center" width="17%">
                                 {row.modele}
+                              </TableCell>
+                              <TableCell align="center" width="17%">
+                                {row.description}
                               </TableCell>
                               <TableCell align="center" width="17%">
                                 {coloredNumber(row.taux_rupture_stock)}

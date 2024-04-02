@@ -7,7 +7,6 @@ import {
   TableRow,
   Icon,
   IconButton,
-  Checkbox,
   Select,
   MenuItem,
   Grid,
@@ -47,12 +46,6 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   ];
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editiddetail, setEditedIddetail] = useState('');
-  const [materiel, setMateriel] = useState(['1']);
-  const [depot, setDepot] = useState(['1']);
-  const [caution, setCaution] = useState('');
-  const [datedeb, setDatedeb] = useState('');
-  const [datefin, setDatefin] = useState('');
 
   // Collapse
   const [openRows, setOpenRows] = useState({});
@@ -78,44 +71,6 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     saveAs(blob, 'Mouvement_fictif.pdf');
   };
 
-  const handleupdate = () => {
-    let detailmouvementfictif = {
-      iddetailmouvementfictif: editiddetail,
-      idmouvement: idmouvementstock.idmouvementstock,
-      datedeb: datedeb,
-      datefin: datefin,
-      caution: caution,
-      idmateriel: materiel,
-      iddepot: depot,
-      statut: 0
-    };
-    let url = baseUrl + '/mouvementstock/createsingledetailfictif';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(detailmouvementfictif),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
-
   const handleRowClick = (iddetailmouvementfictif) => {
     setOpenRows((prevState) => ({
       ...prevState,
@@ -138,14 +93,11 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     handleChangePage,
     sortColumn,
     cancelEdit,
-    selectedIds,
     setMarque,
     marque,
     modele,
     setModele,
     handleChangeRowsPerPage,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useDFictifFunctions(data);
@@ -156,7 +108,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         let mouvementstockParams = {
           idmouvementstock: idmouvementstock.idmouvementstock
         };
-        let url = baseUrl + '/mouvementstock/detailstockfictif/';
+        let url = baseUrl + '/mouvementstock/detailstockfictif';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -189,14 +141,6 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     if (!initialDataFetched) {
       fetchData();
       setInitialDataFetched(true);
-    }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.iddetailmouvementfictif === selectedRowId);
-
-      if (selectedRow) {
-        setEditedIddetail(selectedRow.iddetailmouvementfictif);
-      }
     }
   }, [
     isEditClicked,
@@ -288,7 +232,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow key="head">
-                  <TableCell align="center" width="5%">
+                  {/* <TableCell align="center" width="5%">
                     <Checkbox
                       checked={data.mouvementfictifs.every((row) =>
                         selectedIds.includes(row.iddetailmouvementfictif)
@@ -303,7 +247,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       }
                       onChange={handleSelectAll}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
@@ -334,14 +278,14 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     .map((row, index) => (
                       <Fragment key={row.iddetailmouvementfictif}>
                         <TableRow key={index}>
-                          <TableCell align="center" width="5%">
+                          {/* <TableCell align="center" width="5%">
                             <Checkbox
                               checked={selectedIds.includes(row.iddetailmouvementfictif)}
                               onChange={(event) =>
                                 handleSelection(event, row.iddetailmouvementfictif)
                               }
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
