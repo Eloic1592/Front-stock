@@ -22,8 +22,8 @@ import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { coloredNumber } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
+// import { pdf as renderPdf } from '@react-pdf/renderer';
+// import { saveAs } from 'file-saver';
 
 const Stattypemateriel = () => {
   const idnaturemouvement = useParams();
