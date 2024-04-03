@@ -86,7 +86,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
       iddepot: row.iddepot,
       description: row.description,
       commentaire: row.commentaire,
-      statut: 1
+      statut: row.statut === 0 ? 1 : 0
     };
 
     let url = baseUrl + '/mouvementstock/createstockphysique';
@@ -135,8 +135,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     nature,
     setNature,
     handleChangeRowsPerPage,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useDphysiqueFunctions(data);
@@ -311,18 +309,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
               <Grid item xs={2}>
                 <Button
                   className="button"
-                  fullWidth
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
                   variant="contained"
                   aria-label="Edit"
                   color="secondary"
@@ -352,7 +338,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                       onChange={handleSelectAll}
                     /> */}
                   </TableCell>
-                  <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
@@ -385,14 +370,14 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                       <Fragment key={row.iddetailmouvementphysique}>
                         {/* Clé unique pour chaque fragment */}
                         <TableRow key={`row_${row.iddetailmouvementphysique}`}>
-                          <TableCell>
+                          {/* <TableCell>
                             <Checkbox
                               checked={selectedIds.includes(row.iddetailmouvementphysique)}
                               onChange={(event) =>
                                 handleSelection(event, row.iddetailmouvementphysique)
                               }
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
@@ -435,7 +420,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                               color="error"
                               onClick={() => cancel(row)}
                             >
-                              <Icon>cancel</Icon>
+                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
                             </IconButton>
                           </TableCell>
                         </TableRow>

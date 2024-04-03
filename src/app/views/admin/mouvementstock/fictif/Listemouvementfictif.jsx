@@ -67,7 +67,7 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
       idnaturemouvement: row.idnaturemouvement,
       datedepot: row.datedepot,
       idetudiant: row.idetudiant,
-      statut: 1
+      statut: row.statut === 0 ? 1 : 0
     };
 
     let url = baseUrl + '/mouvementstock/createstockfictif';
@@ -362,7 +362,7 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                               color="error"
                               onClick={() => cancel(row)}
                             >
-                              <Icon>cancel</Icon>
+                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
                             </IconButton>
                           </TableCell>
                         </Fragment>
