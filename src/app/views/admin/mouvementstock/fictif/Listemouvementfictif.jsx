@@ -54,9 +54,47 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     window.location.replace('/admin/editmouvementfictif/' + idmouvementstock);
   };
 
-  // Modification(Update)
+  // Lien generate decharge
   const generatedischarge = async (idmouvementstock) => {
     window.location.replace('/admin/decharge/' + idmouvementstock);
+  };
+
+  //Annulation
+  const cancel = (row) => {
+    let mouvementfictif = {
+      idmouvementstock: row.idmouvementstock,
+      typemouvement: row.type,
+      idnaturemouvement: row.idnaturemouvement,
+      datedepot: row.datedepot,
+      idetudiant: row.idetudiant,
+      statut: 1
+    };
+
+    let url = baseUrl + '/mouvementstock/createstockfictif';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(mouvementfictif),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
   };
 
   const {
@@ -316,6 +354,15 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                               onClick={() => generatedischarge(row.idmouvementstock)}
                             >
                               <Icon>insert_drive_file</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancel(row)}
+                            >
+                              <Icon>cancel</Icon>
                             </IconButton>
                           </TableCell>
                         </Fragment>

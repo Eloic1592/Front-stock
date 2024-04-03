@@ -83,6 +83,46 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     window.location.replace('/admin/editdetailmouvementfictif/' + iddetailmouvementfictif);
   };
 
+  const cancel = (row) => {
+    let detailmouvementfictif = {
+      iddetailmouvementfictif: row.iddetailmouvementfictif,
+      idmouvement: row.idmouvementstock,
+      datedeb: row.datedeb,
+      datefin: row.datefin,
+      caution: row.caution,
+      idmateriel: row.idmateriel,
+      iddepot: row.iddepot,
+      description: row.description,
+      commentaire: row.commentaire,
+      statut: 1
+    };
+
+    let url = baseUrl + '/mouvementstock/createsingledetailfictif';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(detailmouvementfictif),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
   const {
     sortDirection,
     page,
@@ -92,7 +132,6 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     selectedRowId,
     handleChangePage,
     sortColumn,
-    cancelEdit,
     setMarque,
     marque,
     modele,
@@ -325,7 +364,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="error"
-                              onClick={() => cancelEdit(row)}
+                              onClick={() => cancel(row)}
                             >
                               <Icon>cancel</Icon>
                             </IconButton>

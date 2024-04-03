@@ -72,6 +72,50 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     window.location.replace('/admin/editmouvementphysique/' + iddetailmouvementphysique);
   };
 
+  //Annulation
+  const cancel = (row) => {
+    let detailmouvementphysique = {
+      iddetailmouvementphysique: row.iddetailmouvementphysique,
+      typemouvement: row.typemouvement,
+      idnaturemouvement: row.idnaturemouvement,
+      datedepot: row.datedepot,
+      idarticle: row.idarticle,
+      quantite: row.quantite,
+      pu: row.pu,
+      total: row.total,
+      iddepot: row.iddepot,
+      description: row.description,
+      commentaire: row.commentaire,
+      statut: 1
+    };
+
+    let url = baseUrl + '/mouvementstock/createstockphysique';
+    fetch(url, {
+      crossDomain: true,
+      method: 'POST',
+      body: JSON.stringify(detailmouvementphysique),
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        setMessage({
+          text: 'Information modifiee',
+          severity: 'success',
+          open: true
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch(() => {
+        setMessage({
+          text: 'La modification dans la base de données a échoué',
+          severity: 'error',
+          open: true
+        });
+      });
+  };
+
   const {
     sortDirection,
     page,
@@ -293,7 +337,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                 {/* Listage de Donnees */}
                 <TableRow key="head">
                   <TableCell width="5%">
-                    <Checkbox
+                    {/* <Checkbox
                       checked={data.mouvementphysiques.every((row) =>
                         selectedIds.includes(row.iddetailmouvementphysique)
                       )}
@@ -306,7 +350,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                         )
                       }
                       onChange={handleSelectAll}
-                    />
+                    /> */}
                   </TableCell>
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
@@ -384,15 +428,15 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             >
                               <Icon>edit</Icon>
                             </IconButton>
-                            {/* <IconButton
+                            <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
                               color="error"
-                              onClick={() => cancelEdit(row)}
+                              onClick={() => cancel(row)}
                             >
                               <Icon>cancel</Icon>
-                            </IconButton> */}
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
