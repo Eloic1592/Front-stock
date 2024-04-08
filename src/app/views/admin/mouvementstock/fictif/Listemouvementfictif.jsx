@@ -11,6 +11,7 @@ import {
   TextField,
   Checkbox,
   Select,
+  Menu,
   MenuItem,
   Grid,
   Snackbar,
@@ -37,6 +38,15 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  function handleClose() {
+    setAnchorEl(null);
+  }
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
   const [data, setData] = useState({
     mouvementStocks: [],
     naturemouvement: [],
@@ -48,16 +58,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     severity: 'success',
     open: false
   });
-
-  // Modification(Update)
-  const handleEdit = (idmouvementstock) => {
-    window.location.replace('/admin/editmouvementfictif/' + idmouvementstock);
-  };
-
-  // Lien generate decharge
-  const generatedischarge = async (idmouvementstock) => {
-    window.location.replace('/admin/decharge/' + idmouvementstock);
-  };
 
   //Annulation
   const cancel = (row) => {
@@ -160,6 +160,16 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
 
   const getInfo = (idmouvementdestock) => {
     window.location.replace('/admin/detailfictif/' + idmouvementdestock);
+  };
+
+  // Modification(Update)
+  const handleEdit = (idmouvementstock) => {
+    window.location.replace('/admin/editmouvementfictif/' + idmouvementstock);
+  };
+
+  // Lien generate decharge
+  const generatedischarge = async (idmouvementstock) => {
+    window.location.replace('/admin/decharge/' + idmouvementstock);
   };
 
   return (
@@ -329,41 +339,69 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
 
                           <TableCell align="center" width="15%">
                             <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => getInfo(row.idmouvementstock)}
+                              aria-label="More"
+                              aria-owns={open ? 'long-menu' : undefined}
+                              aria-haspopup="true"
+                              onClick={handleClick}
                             >
-                              <Icon>info</Icon>
+                              <Icon>more_vert</Icon>
                             </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => handleEdit(row.idmouvementstock)}
+                            <Menu
+                              open={open}
+                              id="long-menu"
+                              anchorEl={anchorEl}
+                              onClose={handleClose}
+                              PaperProps={{ style: { maxHeight: 48 * 4.5, width: 200 } }}
                             >
-                              <Icon>edit_icon</Icon>
-                            </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => generatedischarge(row.idmouvementstock)}
-                            >
-                              <Icon>insert_drive_file</Icon>
-                            </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="error"
-                              onClick={() => cancel(row)}
-                            >
-                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
-                            </IconButton>
+                              <MenuItem key="Edit">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="primary"
+                                  onClick={() => handleEdit(row.idmouvementstock)}
+                                >
+                                  <Icon>edit_icon</Icon>
+                                </IconButton>
+                                Modifier
+                              </MenuItem>
+                              <MenuItem key="Info">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="primary"
+                                  onClick={() => getInfo(row.idmouvementstock)}
+                                >
+                                  <Icon>info</Icon>
+                                </IconButton>
+                                Voir details
+                              </MenuItem>
+                              <MenuItem key="Discharge">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="primary"
+                                  onClick={() => generatedischarge(row.idmouvementstock)}
+                                >
+                                  <Icon>insert_drive_file</Icon>
+                                </IconButton>
+                                Decharge
+                              </MenuItem>
+                              <MenuItem key="Delete">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="error"
+                                  onClick={() => cancel(row)}
+                                >
+                                  <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
+                                </IconButton>
+                                Supprimer
+                              </MenuItem>
+                            </Menu>
                           </TableCell>
                         </Fragment>
                       </TableRow>

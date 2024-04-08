@@ -8,13 +8,13 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
   Grid,
   Snackbar,
   Alert,
-  Button
+  Button,
+  Menu
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState, Fragment } from 'react';
@@ -59,6 +59,14 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
 
   // Collapse
   const [openRows, setOpenRows] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  function handleClose() {
+    setAnchorEl(null);
+  }
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
 
   const handleRowClick = (iddetailmouvementphysique) => {
     setOpenRows((prevState) => ({
@@ -403,25 +411,47 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                             {formatNumber(row.quantite)}
                           </TableCell>
                           <TableCell align="center">{row.depot}</TableCell>
-                          <TableCell align="center">
+                          <TableCell align="center" width="15%">
                             <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => handleEdit(row.iddetailmouvementphysique)}
+                              aria-label="More"
+                              aria-owns={open ? 'long-menu' : undefined}
+                              aria-haspopup="true"
+                              onClick={handleClick}
                             >
-                              <Icon>edit</Icon>
+                              <Icon>more_vert</Icon>
                             </IconButton>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="error"
-                              onClick={() => cancel(row)}
+                            <Menu
+                              open={open}
+                              id="long-menu"
+                              anchorEl={anchorEl}
+                              onClose={handleClose}
+                              PaperProps={{ style: { maxHeight: 48 * 4.5, width: 200 } }}
                             >
-                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
-                            </IconButton>
+                              <MenuItem key="Edit">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="primary"
+                                  onClick={() => handleEdit(row.iddetailmouvementphysique)}
+                                >
+                                  <Icon>edit_icon</Icon>
+                                </IconButton>
+                                Modifier
+                              </MenuItem>
+                              <MenuItem key="Delete">
+                                <IconButton
+                                  className="button"
+                                  variant="contained"
+                                  aria-label="Edit"
+                                  color="error"
+                                  onClick={() => cancel(row)}
+                                >
+                                  <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
+                                </IconButton>
+                                Supprimer
+                              </MenuItem>
+                            </Menu>
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>
