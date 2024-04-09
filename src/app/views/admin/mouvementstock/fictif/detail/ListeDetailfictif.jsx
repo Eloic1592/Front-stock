@@ -29,7 +29,7 @@ import { formatNumber, converttodate, colorType } from 'app/utils/utils';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
 import { saveAs } from 'file-saver';
-
+import * as XLSX from 'xlsx';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import PDFMouvementfictif from './PDFMouvementfictif';
 

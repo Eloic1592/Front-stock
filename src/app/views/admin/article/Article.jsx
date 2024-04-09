@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import ListeArticle from './Listearticle';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
+import * as XLSX from 'xlsx';
 
 const Article = () => {
   // Form dialog
@@ -38,6 +39,10 @@ const Article = () => {
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [description, setDescription] = useState('');
+  const [csvFile, setCsvFile] = useState(null);
+  const [fileOpen, setFileOpen] = useState(false);
+  const handleFileClickOpen = () => setFileOpen(true);
+  const handleFileClose = () => setFileOpen(false);
 
   const handleSubmit = () => {
     if (!marque || typemateriel === '1') {
@@ -82,6 +87,69 @@ const Article = () => {
           open: true
         });
       });
+  };
+  // Importation csv
+  const handleChange = (event) => {
+    setCsvFile(event.target.files[0]);
+  };
+
+  const importData = () => {
+    try {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        const formattedData = jsonData.map((row) => ({
+          // numserie: row['NUM DE SERIE'],
+          // marque: row['MARQUE'],
+          // signature: row['signature'] === 'Perso' ? row['signature'] : 'ITU',
+          // idtypemateriel: filetypemateriel,
+          // prixvente: 0,
+          // caution: 0,
+          // disponibilite: 1,
+          // statut: 0
+        }));
+
+        const url = baseUrl + '/materiel/importmateriel';
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(formattedData),
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then((response) => response.json())
+          .then((response) => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+
+            setMessage({
+              text: 'Information importee',
+              severity: 'success',
+              open: true
+            });
+          })
+          .catch((err) => {
+            setMessage({
+              text: 'Veuillez verifier que votre serveur est actif',
+              severity: 'error',
+              open: true
+            });
+          });
+      };
+      reader.readAsArrayBuffer(csvFile);
+    } catch {
+      setMessage({
+        text: 'Veuillez selectionner un fichier a importer et un type de materiel',
+        severity: 'error',
+        open: true
+      });
+    }
   };
 
   useEffect(() => {
@@ -152,7 +220,7 @@ const Article = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" /*onClick={handleFileClickOpen}*/ color="inherit">
+              <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
                 Importer donnees
               </Button>
             </Grid>
@@ -235,6 +303,41 @@ const Article = () => {
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">
+                  Valider
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+          <Box>
+            <Dialog
+              fullWidth
+              maxWidth="md"
+              open={fileOpen}
+              onClose={handleFileClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title">Importer des donnees</DialogTitle>
+              <DialogContent>
+                <Grid container direction="column" spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      type="file"
+                      variant="outlined"
+                      onChange={handleChange}
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </DialogContent>
+
+              <DialogActions>
+                <Button variant="contained" color="secondary" onClick={handleFileClose}>
+                  Annuler
+                </Button>
+                <Button onClick={importData} color="primary" variant="contained">
                   Valider
                 </Button>
               </DialogActions>
