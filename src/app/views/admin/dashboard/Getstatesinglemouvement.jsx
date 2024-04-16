@@ -27,7 +27,7 @@ import { saveAs } from 'file-saver';
 import PDFStatnaturemouvement from './PDFStatnaturemouvement';
 import { Link } from 'react-router-dom';
 
-const Statnaturemouvement = () => {
+const Getstatesinglemouvement = () => {
   const iddepot = useParams();
 
   const columns = [
@@ -176,30 +176,18 @@ const Statnaturemouvement = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree">
-                    <Typography
-                      variant="body1"
-                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
-                    >
-                      <Link
-                        to="/admin/mouvementphysique"
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        {data.totalentree} articles
+                    <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+                      <Link to="/votre-chemin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        {coloredNumber(data.totalentree)}
                       </Link>
                     </Typography>
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en sortie">
-                    <Typography
-                      variant="body1"
-                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
-                    >
-                      <Link
-                        to="/admin/mouvementphysique"
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        {data.totalsortie * -1} articles
+                    <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+                      <Link to="/votre-chemin" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        {coloredNumber(data.totalsortie)}
                       </Link>
                     </Typography>
                   </SimpleCard>
@@ -222,7 +210,7 @@ const Statnaturemouvement = () => {
               </SimpleCard>
             </Grid>
             <Grid item>
-              <SimpleCard title="Benefice par mouvement de la periode actuelle">
+              <SimpleCard title="Benefice par mouvement">
                 <Grid container spacing={2}>
                   <Grid item xs={2}>
                     <Select
@@ -373,4 +361,4 @@ const Statnaturemouvement = () => {
   );
 };
 
-export default Statnaturemouvement;
+export default Getstatesinglemouvement;

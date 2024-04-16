@@ -40,7 +40,8 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
   const [data, setData] = useState({
     typemateriels: [],
-    stockmateriels: []
+    stockmateriels: [],
+    count_materiel: 0
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -87,7 +88,8 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         const responseData = await response.json();
         const newData = {
           typemateriels: responseData.typemateriels || [],
-          stockmateriels: responseData.stockmateriels || []
+          stockmateriels: responseData.stockmateriels || [],
+          count_materiel: responseData.count_materiel || 0
         };
         setData(newData);
       } catch (error) {
@@ -128,6 +130,20 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <SimpleCard title="Total materiels">
+                  <Typography
+                    variant="body1"
+                    style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                  >
+                    {data.count_materiel} materiels
+                  </Typography>
+                </SimpleCard>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item>
             <SimpleCard title="Rechercher un materiel" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
@@ -150,6 +166,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
               </Grid>
             </SimpleCard>
           </Grid>
+
           <Grid item>
             <SimpleCard title="Stock des materiels">
               {/* Tri de tables */}
