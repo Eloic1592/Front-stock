@@ -73,7 +73,7 @@ const Statnaturemouvement = () => {
   const filter = data.statnaturemouvements.filter(
     (stat) =>
       (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
+      (stat.mois && stat.mois_nom.toLowerCase().includes(filtre.toLowerCase())) ||
       (stat.naturemouvement && stat.naturemouvement.toLowerCase().includes(filtre.toLowerCase()))
   );
 

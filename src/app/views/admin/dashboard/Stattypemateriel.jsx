@@ -26,7 +26,7 @@ import { useParams } from 'react-router-dom';
 
 const Stattypemateriel = () => {
   const idnaturemouvement = useParams();
-  console.log(idnaturemouvement.idnaturemouvement);
+  const mois = useParams();
 
   const columns = [
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
@@ -93,7 +93,8 @@ const Stattypemateriel = () => {
     const fetchData = async () => {
       try {
         let typematerielParams = {
-          idnaturemouvement: idnaturemouvement.idnaturemouvement
+          idnaturemouvement: idnaturemouvement.idnaturemouvement,
+          mois: mois.mois
         };
         let url = baseUrl + '/typemateriel/getstattypemateriel';
         const response = await fetch(url, {
@@ -130,7 +131,7 @@ const Stattypemateriel = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [idnaturemouvement.idnaturemouvement, sortedData, initialDataFetched]);
+  }, [idnaturemouvement.idnaturemouvement, mois.mois, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {

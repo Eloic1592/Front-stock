@@ -1,81 +1,75 @@
 export const navigations = [
+  { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
+  { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
   {
-    name: 'Administrateur',
-    icon: 'arrows-right',
+    name: 'Bilan des mouvements',
+    iconText: 'SI',
+    path: '/admin/stattypemouvement'
+  },
+  {
+    name: 'Mouvement de stock',
+    iconText: 'arrows-right',
     children: [
-      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
+      { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
       {
-        name: 'Bilan des mouvements',
+        name: 'Mouvements des articles',
         iconText: 'SI',
-        path: '/admin/stattypemouvement'
+        path: '/admin/mouvementphysique'
       },
+      { name: 'Mouvements des materiels', iconText: 'SI', path: '/admin/mouvementfictif' }
+    ]
+  },
+  {
+    name: 'Demande',
+    iconText: 'arrows-right',
+    children: [
+      { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
+      { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
       {
-        name: 'Mouvement de stock',
+        name: 'Proforma',
         iconText: 'arrows-right',
         children: [
-          { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
-          {
-            name: 'Mouvements des articles',
-            iconText: 'SI',
-            path: '/admin/mouvementphysique'
-          },
-          { name: 'Mouvements des materiels', iconText: 'SI', path: '/admin/mouvementfictif' }
+          { name: 'Tous les proformas', iconText: 'SI', path: '/admin/proforma' },
+          { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
+        ]
+      },
+      { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
+      { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
+    ]
+  },
+  {
+    name: 'Articles et materiels',
+    iconText: 'arrows-right',
+    children: [
+      {
+        name: 'Articles',
+        iconText: 'arrows-right',
+        children: [
+          { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
+          { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
+          { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/cyclemouvement' }
         ]
       },
       {
-        name: 'Demande',
+        name: 'Materiels',
         iconText: 'arrows-right',
         children: [
-          { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
-          { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
-          {
-            name: 'Proforma',
-            iconText: 'arrows-right',
-            children: [
-              { name: 'Tous les proformas', iconText: 'SI', path: '/admin/proforma' },
-              { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
-            ]
-          },
-          { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
-          { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
+          { name: 'Liste des materiels', iconText: 'SI', path: '/admin/listemateriel' },
+          { name: 'Stock des materiels', iconText: 'SI', path: '/admin/stockmateriel' }
         ]
       },
-      {
-        name: 'Articles et materiels',
-        iconText: 'arrows-right',
-        children: [
-          {
-            name: 'Articles',
-            iconText: 'arrows-right',
-            children: [
-              { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
-              { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
-              { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/cyclemouvement' }
-            ]
-          },
-          {
-            name: 'Materiels',
-            iconText: 'arrows-right',
-            children: [
-              { name: 'Liste des materiels', iconText: 'SI', path: '/admin/listemateriel' },
-              { name: 'Stock des materiels', iconText: 'SI', path: '/admin/stockmateriel' }
-            ]
-          },
-          { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
-          { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
-        ]
-      },
+      { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
+      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
+    ]
+  },
 
-      {
-        name: 'Depot',
-        iconText: 'arrows-right',
-        children: [
-          { name: 'Liste des depots', iconText: 'SI', path: '/admin/depot' },
-          { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
-          { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
-        ]
-      }
+  {
+    name: 'Depot',
+    iconText: 'arrows-right',
+    children: [
+      { name: 'Liste des depots', iconText: 'SI', path: '/admin/depot' },
+      { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
+      { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
     ]
   },
 
