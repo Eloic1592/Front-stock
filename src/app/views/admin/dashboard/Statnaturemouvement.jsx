@@ -285,7 +285,7 @@ const Statnaturemouvement = () => {
                       <TableCell key="benefice" align="center" width="17%">
                         Benefice en (Ariary)
                       </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
+                      <TableCell key="action" align="center" width="17%">
                         Action
                       </TableCell>
                     </TableRow>

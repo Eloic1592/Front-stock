@@ -47,7 +47,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginAdmin = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [message, setMessage] = useState({
     message: '',
     state: false,
