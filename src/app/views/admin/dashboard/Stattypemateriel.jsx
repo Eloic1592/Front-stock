@@ -27,6 +27,7 @@ import { useParams } from 'react-router-dom';
 const Stattypemateriel = () => {
   const idnaturemouvement = useParams();
   const mois = useParams();
+  const annee = useParams();
 
   const columns = [
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
@@ -34,10 +35,12 @@ const Stattypemateriel = () => {
     { label: 'Gain', field: 'gain', align: 'center' },
     { label: 'Depense', field: 'depense', align: 'center' }
   ];
-  const [filtre, setFiltre] = useState('');
+  const [typemateriel, setTypemateriel] = useState('0');
   const [data, setData] = useState({
-    stat_typemateriels: []
+    stat_typemateriels: [],
+    listetypemateriels: []
   });
+
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
@@ -64,11 +67,11 @@ const Stattypemateriel = () => {
   };
 
   // Filtre
-  const filter = data.stat_typemateriels.filter(
-    (stat) =>
-      (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.typmateriel && stat.typmateriel.toLowerCase().includes(filtre.toLowerCase()))
-  );
+  const filter = data.stat_typemateriels.filter((stat) => {
+    const typematerielmatch =
+      stat.idtypemateriel && stat.idtypemateriel.toLowerCase().includes(typemateriel.toLowerCase());
+    return typematerielmatch;
+  });
 
   // Tri
   const sortedData = filter.sort((a, b) => {
@@ -94,7 +97,8 @@ const Stattypemateriel = () => {
       try {
         let typematerielParams = {
           idnaturemouvement: idnaturemouvement.idnaturemouvement,
-          mois: mois.mois
+          mois: mois.mois,
+          annee: annee.annee
         };
         let url = baseUrl + '/typemateriel/getstattypemateriel';
         const response = await fetch(url, {
@@ -114,7 +118,8 @@ const Stattypemateriel = () => {
 
         const responseData = await response.json();
         const newData = {
-          stat_typemateriels: responseData.stat_typemateriels || []
+          stat_typemateriels: responseData.stat_typemateriels || [],
+          listetypemateriels: responseData.listetypemateriels || []
         };
 
         setData(newData);
@@ -163,17 +168,27 @@ const Stattypemateriel = () => {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="materielfiltre"
-                  label="Filtre"
-                  variant="outlined"
-                  value={filtre}
-                  onChange={(event) => setFiltre(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={typemateriel}
+                      onChange={(event) => setTypemateriel(event.target.value)}
+                      size="small"
+                      sx={{ mb: 3 }}
+                    >
+                      <MenuItem key="0" value="0">
+                        Tous les types
+                      </MenuItem>
+                      {data.listetypemateriels.map((row, index) => (
+                        <MenuItem key={index} value={row.idtypemateriel}>
+                          {row.typemateriel}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
               </SimpleCard>
             </Grid>
             <Grid item>

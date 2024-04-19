@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { coloredNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import {
   Table,
@@ -77,10 +77,10 @@ function Rotationstock({ rotationstocks }) {
                       {rotationstocks.description}
                     </TableCell>
                     <TableCell width="20%" align="center">
-                      {coloredNumber(formatNumber(rotationstocks.moyenne_jour))}
+                      {coloredNumber(rotationstocks.moyenne_jour)}
                     </TableCell>
                     <TableCell width="20%" align="center">
-                      {coloredNumber(formatNumber(rotationstocks.rotation_stock))}
+                      {coloredNumber(rotationstocks.rotation_stock)}
                     </TableCell>
                   </TableRow>
                 ))}

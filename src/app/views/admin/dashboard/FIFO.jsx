@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
+import { coloredNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import {
   Table,
@@ -84,19 +84,19 @@ function FIFO({ fifos, mois }) {
                       {fifos.mois}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(formatNumber(fifos.total_achetes))}
+                      {coloredNumber(fifos.total_achetes)}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(formatNumber(fifos.total_vendus))}
+                      {coloredNumber(fifos.total_vendus)}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(formatNumber(fifos.total_achetes_valeur))}
+                      {coloredNumber(fifos.total_achetes_valeur)}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(formatNumber(fifos.total_vendus_valeur))}
+                      {coloredNumber(fifos.total_vendus_valeur)}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(formatNumber(fifos.quantite_stock))}
+                      {coloredNumber(fifos.quantite_stock)}
                     </TableCell>
                   </TableRow>
                 ))}

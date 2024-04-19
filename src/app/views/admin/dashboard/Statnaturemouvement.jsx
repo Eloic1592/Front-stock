@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { coloredNumber } from 'app/utils/utils';
+import { coloredNumber, months } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
@@ -38,7 +38,8 @@ const Statnaturemouvement = () => {
     { label: 'Depense', field: 'depense', align: 'center' },
     { label: 'Benefice', field: 'depense', align: 'center' }
   ];
-  const [filtre, setFiltre] = useState('');
+  const [annee, setAnnee] = useState('');
+  const [mois, setMois] = useState(0);
   const [data, setData] = useState({
     statnaturemouvements: [],
     totalentree: 0,
@@ -70,12 +71,12 @@ const Statnaturemouvement = () => {
   };
 
   // Filtre
-  const filter = data.statnaturemouvements.filter(
-    (stat) =>
-      (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.mois && stat.mois_nom.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.naturemouvement && stat.naturemouvement.toLowerCase().includes(filtre.toLowerCase()))
-  );
+  const filter = data.statnaturemouvements.filter((stat) => {
+    const anneeMatch = stat.annee && stat.annee.toLowerCase().includes(annee.toLowerCase());
+    const moisMatch = mois === 0 || (stat.mois && stat.mois === mois);
+
+    return anneeMatch && moisMatch;
+  });
 
   // Tri
   const sortedData = filter.sort((a, b) => {
@@ -145,8 +146,8 @@ const Statnaturemouvement = () => {
   const redirect = () => {
     window.location.replace('/admin/typemouvement');
   };
-  const getstattypemateriel = (idnaturemouvement, mois) => {
-    window.location.replace('/admin/stattypemateriel/' + idnaturemouvement + '/' + mois);
+  const getstattypemateriel = (idnaturemouvement, mois, an) => {
+    window.location.replace('/admin/stattypemateriel/' + idnaturemouvement + '/' + mois + '/' + an);
   };
 
   return (
@@ -175,7 +176,7 @@ const Statnaturemouvement = () => {
             <Grid item>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en entree">
+                  <SimpleCard title="Total articles en entree pour ce mois">
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
@@ -190,7 +191,7 @@ const Statnaturemouvement = () => {
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en sortie">
+                  <SimpleCard title="Total articles en entree pour ce mois">
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
@@ -208,17 +209,40 @@ const Statnaturemouvement = () => {
             </Grid>
             <Grid item>
               <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="materielfiltre"
-                  label="Filtre"
-                  variant="outlined"
-                  value={filtre}
-                  onChange={(event) => setFiltre(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
+                <Grid container spacing={1}>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="text"
+                      name="annee"
+                      label="annee"
+                      variant="outlined"
+                      value={annee}
+                      onChange={(event) => setAnnee(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={mois}
+                      onChange={(event) => setMois(event.target.value)}
+                      size="small"
+                      sx={{ mb: 3 }}
+                    >
+                      <MenuItem key="0" value="0">
+                        Tous les mois
+                      </MenuItem>
+                      {months.map((row, index) => (
+                        <MenuItem key={index} value={index + 1}>
+                          {row}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                </Grid>
               </SimpleCard>
             </Grid>
             <Grid item>
@@ -323,7 +347,7 @@ const Statnaturemouvement = () => {
                                   aria-label="Edit"
                                   color="primary"
                                   onClick={() =>
-                                    getstattypemateriel(row.idnaturemouvement, row.mois)
+                                    getstattypemateriel(row.idnaturemouvement, row.mois, row.annee)
                                   }
                                 >
                                   <Icon>info</Icon>

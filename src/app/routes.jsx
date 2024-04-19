@@ -321,7 +321,7 @@ const routes = [
         element: <ProtectedRoute element={<Statnaturemouvement />} />
       },
       {
-        path: '/admin/stattypemateriel/:idnaturemouvement/:mois',
+        path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
         element: <ProtectedRoute element={<Stattypemateriel />} />
       }
     ]
@@ -377,7 +377,10 @@ const routes = [
   { path: '/admin/historique', element: <Historique /> },
   { path: '/admin/decharge/:idmouvementstock', element: <Decharge /> },
   { path: '/admin/stattypemouvement', element: <Statnaturemouvement /> },
-  { path: '/admin/stattypemateriel/:idnaturemouvement/:mois', element: <Stattypemateriel /> },
+  {
+    path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
+    element: <Stattypemateriel />
+  },
   { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];
