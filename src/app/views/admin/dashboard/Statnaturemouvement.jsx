@@ -38,12 +38,26 @@ const Statnaturemouvement = () => {
     { label: 'Depense', field: 'depense', align: 'center' },
     { label: 'Benefice', field: 'depense', align: 'center' }
   ];
-  const [annee, setAnnee] = useState('');
-  const [mois, setMois] = useState(0);
+
+  const currentDate = new Date();
+  const [annee, setAnnee] = useState(currentDate.getFullYear());
+  const [mois, setMois] = useState(currentDate.getMonth());
   const [data, setData] = useState({
     statnaturemouvements: [],
-    totalentree: 0,
-    totalsortie: 0
+    getcurrentsommearticleentree: {
+      id: 0,
+      total: 0,
+      mois: 0,
+      annee: 0,
+      nom_mois: ''
+    },
+    getcurrentsommearticlesortie: {
+      id: 0,
+      total: 0,
+      mois: 0,
+      annee: 0,
+      nom_mois: ''
+    }
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -100,14 +114,15 @@ const Statnaturemouvement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let depotParams = {
-          iddepot: iddepot.iddepot
+        let naturemouvementParams = {
+          mois: mois,
+          annee: annee
         };
         let url = baseUrl + '/naturemouvement/statnaturemouvement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(depotParams),
+          body: JSON.stringify(naturemouvementParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -122,8 +137,8 @@ const Statnaturemouvement = () => {
         const responseData = await response.json();
         const newData = {
           statnaturemouvements: responseData.statnaturemouvements || [],
-          totalentree: responseData.totatentree || 0,
-          totalsortie: responseData.totalsortie || 0
+          getcurrentsommearticleentree: responseData.getcurrentsommearticleentree || null,
+          getcurrentsommearticlesortie: responseData.getcurrentsommearticlesortie || null
         };
 
         setData(newData);
@@ -140,7 +155,7 @@ const Statnaturemouvement = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [iddepot.iddepot, sortedData, initialDataFetched]);
+  }, [iddepot.iddepot, mois, annee, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
@@ -221,6 +236,7 @@ const Statnaturemouvement = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree pour ce mois">
+                    Mois de {data.getcurrentsommearticleentree.nom_mois}
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
@@ -229,13 +245,14 @@ const Statnaturemouvement = () => {
                         to="/admin/mouvementphysique"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
-                        {data.totalentree} articles
+                        {data.getcurrentsommearticleentree.total} articles
                       </Link>
                     </Typography>
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree pour ce mois">
+                    Mois de {data.getcurrentsommearticlesortie.nom_mois}
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
@@ -244,7 +261,7 @@ const Statnaturemouvement = () => {
                         to="/admin/mouvementphysique"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
-                        {data.totalsortie * -1} articles
+                        {data.getcurrentsommearticlesortie.total * -1} articles
                       </Link>
                     </Typography>
                   </SimpleCard>
