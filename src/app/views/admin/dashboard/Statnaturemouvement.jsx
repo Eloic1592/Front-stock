@@ -174,6 +174,50 @@ const Statnaturemouvement = () => {
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
+              {' '}
+              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
+                <Grid container spacing={1}>
+                  <Grid item xs={4}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="text"
+                      name="annee"
+                      label="annee"
+                      variant="outlined"
+                      value={annee}
+                      onChange={(event) => setAnnee(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Select
+                      fullWidth
+                      labelId="select-label"
+                      value={mois}
+                      onChange={(event) => setMois(event.target.value)}
+                      size="small"
+                      sx={{ mb: 3 }}
+                    >
+                      <MenuItem key="0" value="0">
+                        Tous les mois
+                      </MenuItem>
+                      {months.map((row, index) => (
+                        <MenuItem key={index} value={index + 1}>
+                          {row}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button color="primary" variant="contained">
+                      Rechercher
+                    </Button>
+                  </Grid>
+                </Grid>
+              </SimpleCard>
+            </Grid>
+            <Grid item>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree pour ce mois">
@@ -206,44 +250,6 @@ const Statnaturemouvement = () => {
                   </SimpleCard>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-                <Grid container spacing={1}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      size="small"
-                      type="text"
-                      name="annee"
-                      label="annee"
-                      variant="outlined"
-                      value={annee}
-                      onChange={(event) => setAnnee(event.target.value)}
-                      sx={{ mb: 3 }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      value={mois}
-                      onChange={(event) => setMois(event.target.value)}
-                      size="small"
-                      sx={{ mb: 3 }}
-                    >
-                      <MenuItem key="0" value="0">
-                        Tous les mois
-                      </MenuItem>
-                      {months.map((row, index) => (
-                        <MenuItem key={index} value={index + 1}>
-                          {row}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                </Grid>
-              </SimpleCard>
             </Grid>
             <Grid item>
               <SimpleCard title="Benefice par mouvement de la periode actuelle">
