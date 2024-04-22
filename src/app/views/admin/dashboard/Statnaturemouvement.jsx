@@ -39,11 +39,12 @@ const Statnaturemouvement = () => {
     { label: 'Benefice', field: 'depense', align: 'center' }
   ];
 
-  const currentDate = new Date();
-  const [annee, setAnnee] = useState(currentDate.getFullYear());
-  const [mois, setMois] = useState(currentDate.getMonth());
+  const [annee, setAnnee] = useState(0);
+  const [mois, setMois] = useState(0);
   const [data, setData] = useState({
     statnaturemouvements: [],
+    totalentree: 0,
+    totalsortie: 0,
     getcurrentsommearticleentree: {
       id: 0,
       total: 0,
@@ -86,7 +87,7 @@ const Statnaturemouvement = () => {
 
   // Filtre
   const filter = data.statnaturemouvements.filter((stat) => {
-    const anneeMatch = stat.annee && stat.annee.toLowerCase().includes(annee.toLowerCase());
+    const anneeMatch = annee === 0 || (stat.annee && stat.annee === annee);
     const moisMatch = mois === 0 || (stat.mois && stat.mois === mois);
 
     return anneeMatch && moisMatch;
@@ -114,15 +115,15 @@ const Statnaturemouvement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let naturemouvementParams = {
-          mois: mois,
-          annee: annee
-        };
+        // let naturemouvementParams = {
+        //   mois: mois,
+        //   annee: annee
+        // };
         let url = baseUrl + '/naturemouvement/statnaturemouvement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(naturemouvementParams),
+          body: JSON.stringify(),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -138,7 +139,9 @@ const Statnaturemouvement = () => {
         const newData = {
           statnaturemouvements: responseData.statnaturemouvements || [],
           getcurrentsommearticleentree: responseData.getcurrentsommearticleentree || null,
-          getcurrentsommearticlesortie: responseData.getcurrentsommearticlesortie || null
+          getcurrentsommearticlesortie: responseData.getcurrentsommearticlesortie || null,
+          totalentree: responseData.totalentree || 0,
+          totalsortie: responseData.totalsortie || 0
         };
 
         setData(newData);
@@ -189,7 +192,6 @@ const Statnaturemouvement = () => {
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
-              {' '}
               <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
                 <Grid container spacing={1}>
                   <Grid item xs={4}>
@@ -236,7 +238,6 @@ const Statnaturemouvement = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree pour ce mois">
-                    Mois de {data.getcurrentsommearticleentree.nom_mois}
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
@@ -245,14 +246,13 @@ const Statnaturemouvement = () => {
                         to="/admin/mouvementphysique"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
-                        {data.getcurrentsommearticleentree.total} articles
+                        {data.totalentree} articles
                       </Link>
                     </Typography>
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
                   <SimpleCard title="Total articles en entree pour ce mois">
-                    Mois de {data.getcurrentsommearticlesortie.nom_mois}
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
@@ -261,7 +261,7 @@ const Statnaturemouvement = () => {
                         to="/admin/mouvementphysique"
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
-                        {data.getcurrentsommearticlesortie.total * -1} articles
+                        {data.totalsortie * -1} articles
                       </Link>
                     </Typography>
                   </SimpleCard>
