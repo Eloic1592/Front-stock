@@ -25,13 +25,14 @@ import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { formatNumber, converttodate, colorType } from 'app/utils/utils';
+import { formatNumber, converttodate, colorType, convertmillistodate } from 'app/utils/utils';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
 import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import PDFMouvementfictif from './PDFMouvementfictif';
+// import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { CSVLink } from 'react-csv';
 
 const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idmouvementstock = useParams();
@@ -65,6 +66,21 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     depots: [],
     mouvementfictifs: []
   });
+  // Csv/PDF data
+  // Récupérer uniquement les trois dernières colonnes de chaque objet de données
+  const filteredData = data.mouvementfictifs.map((item) => ({
+    mouvement: item.mouvement,
+    naturemouvement: item.naturemouvement,
+    marque: item.marque,
+    modele: item.modele,
+    description: item.description,
+    commentaire: item.commentaire,
+    numserie: item.numserie,
+    datedebut: convertmillistodate(item.datedeb),
+    datefin: convertmillistodate(item.datefin),
+    depot: item.depot,
+    statut: item.statut
+  }));
 
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -264,7 +280,7 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} container justifyContent="center" alignItems="center">
                 <Button
                   className="button"
                   variant="contained"
@@ -273,6 +289,18 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   onClick={generateMouvementPDF}
                 >
                   <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button className="button" variant="contained" aria-label="Edit" color="success">
+                  <CSVLink
+                    data={filteredData}
+                    filename="Mouvements_fictifs.csv"
+                    headers={columns.label}
+                    separator=";"
+                  >
+                    Export CSV
+                  </CSVLink>
                 </Button>
               </Grid>
             </Grid>

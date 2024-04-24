@@ -30,6 +30,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
+// import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { CSVLink } from 'react-csv';
 
 const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
@@ -57,6 +59,21 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     typemateriels: [],
     listemateriels: []
   });
+
+  // Csv/PDF data
+  // Récupérer uniquement les trois dernières colonnes de chaque objet de données
+  const filteredData = data.listemateriels.map((item) => ({
+    typemateriel: item.typemateriel,
+    marque: item.marque,
+    modele: item.modele,
+    numserie: item.numserie,
+    description: item.description,
+    prixvente: item.prixvente,
+    caution: item.caution,
+    signature: item.signature,
+    statut: item.statut
+  }));
+
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
 
@@ -73,12 +90,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     sortColumn,
     setTypemateriel,
     typemateriel,
-    /*selectedIds,*/
     marque,
     setMarque,
     handleChangeRowsPerPage,
-    /*handleSelectAll,
-    handleSelection,*/
     handleSelectColumn,
     sortedData,
     signature,
@@ -251,7 +265,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} container justifyContent="center" alignItems="center">
                 <Button
                   className="button"
                   variant="contained"
@@ -260,6 +274,18 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   onClick={generateMaterielPDF}
                 >
                   <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button className="button" variant="contained" aria-label="Edit" color="success">
+                  <CSVLink
+                    data={filteredData}
+                    filename="Liste_materiels.csv"
+                    headers={columns.label}
+                    separator=";"
+                  >
+                    Export CSV
+                  </CSVLink>
                 </Button>
               </Grid>
             </Grid>

@@ -181,6 +181,15 @@ export function converttodate(timestamp) {
   return formattedDate;
 }
 
+export function convertmillistodate(milliseconds) {
+  const date = new Date(milliseconds);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month indexes start from 0
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 // export function converttodate(timestamp) {
 //   const date = new Date(timestamp);
 //   const today = new Date();

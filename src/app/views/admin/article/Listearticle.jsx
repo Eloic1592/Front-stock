@@ -28,6 +28,8 @@ import { saveAs } from 'file-saver';
 import PDFArticle from './PDFListeArticle';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
+// import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { CSVLink } from 'react-csv';
 
 const ListeArticle = () => {
   // Colonne
@@ -45,6 +47,15 @@ const ListeArticle = () => {
     severity: 'success',
     open: false
   });
+
+  // Csv/PDF data
+  // Récupérer uniquement les trois dernières colonnes de chaque objet de données
+  const filteredData = data.articles.map((item) => ({
+    typemateriel: item.typemateriel,
+    marque: item.marque,
+    modele: item.modele,
+    description: item.description
+  }));
 
   // Collapse
   const [openRows, setOpenRows] = useState({});
@@ -214,7 +225,7 @@ const ListeArticle = () => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} container justifyContent="center" alignItems="center">
                 <Button
                   className="button"
                   variant="contained"
@@ -223,6 +234,18 @@ const ListeArticle = () => {
                   onClick={generateArticlePDF}
                 >
                   <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button className="button" variant="contained" aria-label="Edit" color="success">
+                  <CSVLink
+                    data={filteredData}
+                    filename="Liste_article.csv"
+                    headers={columns.label}
+                    separator=";"
+                  >
+                    Export CSV
+                  </CSVLink>
                 </Button>
               </Grid>
             </Grid>

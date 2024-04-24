@@ -39,8 +39,8 @@ const Statnaturemouvement = () => {
     { label: 'Benefice', field: 'depense', align: 'center' }
   ];
 
-  const [annee, setAnnee] = useState(0);
-  const [mois, setMois] = useState(0);
+  const [annee, setAnnee] = useState('');
+  const [mois, setMois] = useState('0');
   const [data, setData] = useState({
     statnaturemouvements: [],
     totalentree: 0,
@@ -87,10 +87,10 @@ const Statnaturemouvement = () => {
 
   // Filtre
   const filter = data.statnaturemouvements.filter((stat) => {
-    const anneeMatch = annee === 0 || (stat.annee && stat.annee === annee);
-    const moisMatch = mois === 0 || (stat.mois && stat.mois === mois);
+    const anneeMatch = annee === '' || (stat.annee && stat.annee === parseInt(annee, 10));
+    const moisMatch = mois === '0' || (stat.mois && stat.mois === mois);
 
-    return anneeMatch && moisMatch;
+    return moisMatch && anneeMatch;
   });
 
   // Tri
@@ -115,10 +115,6 @@ const Statnaturemouvement = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // let naturemouvementParams = {
-        //   mois: mois,
-        //   annee: annee
-        // };
         let url = baseUrl + '/naturemouvement/statnaturemouvement';
         const response = await fetch(url, {
           crossDomain: true,

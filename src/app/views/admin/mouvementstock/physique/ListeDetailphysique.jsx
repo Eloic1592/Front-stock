@@ -22,7 +22,13 @@ import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
 import { useDphysiqueFunctions } from 'app/views/admin/mouvementstock/physique/dphysiquefunction';
 import { baseUrl } from 'app/utils/constant';
-import { formatNumber, coloredNumber, colorType, converttodate } from 'app/utils/utils';
+import {
+  formatNumber,
+  coloredNumber,
+  colorType,
+  converttodate,
+  convertmillistodate
+} from 'app/utils/utils';
 import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -30,6 +36,8 @@ import Table from '@mui/material/Table';
 import { saveAs } from 'file-saver';
 import PDFMouvementphysique from './PDFMouvementphysique';
 import { pdf as renderPdf } from '@react-pdf/renderer';
+// import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { CSVLink } from 'react-csv';
 
 const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -51,6 +59,24 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     mouvementphysiques: [],
     naturemouvements: []
   });
+
+  // Csv/PDF data
+  // Récupérer uniquement les trois dernières colonnes de chaque objet de données
+  const filteredData = data.mouvementphysiques.map((item) => ({
+    mouvement: item.mouvement,
+    naturemouvement: item.naturemouvement,
+    marque: item.marque,
+    modele: item.modele,
+    description: item.description,
+    commentaire: item.commentaire,
+    pu: item.pu,
+    quantite: item.quantite,
+    total: item.total,
+    datedepot: convertmillistodate(item.datedepot),
+    depot: item.depot,
+    statut: item.statut
+  }));
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -131,7 +157,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     setSortDirection,
     handleChangePage,
     sortColumn,
-    selectedIds,
     marque,
     setMarque,
     datedepot,
@@ -314,7 +339,7 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={2} container justifyContent="center" alignItems="center">
                 <Button
                   className="button"
                   variant="contained"
@@ -323,6 +348,18 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   onClick={generateMouvementPDF}
                 >
                   <Icon>picture_as_pdf</Icon>
+                </Button>
+              </Grid>
+              <Grid item xs={2}>
+                <Button className="button" variant="contained" aria-label="Edit" color="success">
+                  <CSVLink
+                    data={filteredData}
+                    filename="Mouvements_physiques.csv"
+                    headers={columns.label}
+                    separator=";"
+                  >
+                    Export CSV
+                  </CSVLink>
                 </Button>
               </Grid>
             </Grid>
