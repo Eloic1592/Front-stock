@@ -14,7 +14,6 @@ const Dashboard = () => {
   const [datemin, setDatemin] = useState('');
   const [datemax, setDatemax] = useState('');
   const [month, setMonth] = useState('0');
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -67,11 +66,7 @@ const Dashboard = () => {
         });
       }
     };
-
-    if (!initialDataFetched) {
-      fetchData();
-      setInitialDataFetched(true);
-    }
+    fetchData();
   }, []);
 
   return (
