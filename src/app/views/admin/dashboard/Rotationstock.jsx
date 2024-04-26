@@ -12,10 +12,9 @@ import {
   Grid
 } from '@mui/material';
 
-function Rotationstock({ rotationstocks }) {
+function Rotationstock({ rotationstocks, mois }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [filter, setFilter] = useState('');
 
   //   Pagination
   const handleChangePage = (_, newPage) => {
@@ -26,38 +25,30 @@ function Rotationstock({ rotationstocks }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const filtrerotationstocks = rotationstocks.filter(
-    (rotationstocks) =>
-      (rotationstocks.marque &&
-        rotationstocks.marque.toLowerCase().includes(filter.toLowerCase())) ||
-      (rotationstocks.modele &&
-        rotationstocks.modele.toLowerCase().includes(filter.toLowerCase())) ||
-      (rotationstocks.description &&
-        rotationstocks.description.toLowerCase().includes(filter.toLowerCase()))
-  );
+  const filtrerotationstocks = rotationstocks.filter((stat) => {
+    const moisMatch = mois === '0' || (stat.mois && stat.mois === mois);
+    return moisMatch;
+  });
 
   return (
     <Grid container>
       <Grid item>
-        <SimpleCard title="Rotation de stock">
+        <SimpleCard title="ROTATION DE STOCK">
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell width="20%" align="center">
-                    Marque
+                  <TableCell width="25%" align="center">
+                    Annee
                   </TableCell>
-                  <TableCell width="20%" align="center">
-                    Modele
+                  <TableCell width="25%" align="center">
+                    Mois
                   </TableCell>
-                  <TableCell width="20%" align="center">
-                    Description
+                  <TableCell width="25%" align="center">
+                    Stock moyen (Quantite)
                   </TableCell>
-                  <TableCell width="20%" align="center">
-                    moyenne jour
-                  </TableCell>
-                  <TableCell width="20%" align="center">
-                    Rotation stock(en %)
+                  <TableCell width="25%" align="center">
+                    Valeur moyenne en stock(en Ariary)
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -67,20 +58,17 @@ function Rotationstock({ rotationstocks }) {
                   : filtrerotationstocks
                 ).map((rotationstocks) => (
                   <TableRow key={rotationstocks.idarticle}>
-                    <TableCell width="20%" align="center">
-                      {rotationstocks.marque}
+                    <TableCell width="25%" align="center">
+                      {rotationstocks.annee}
                     </TableCell>
-                    <TableCell width="20%" align="center">
-                      {rotationstocks.modele}
+                    <TableCell width="25%" align="center">
+                      {rotationstocks.nommois}
                     </TableCell>
-                    <TableCell width="20%" align="center">
-                      {rotationstocks.description}
+                    <TableCell width="25%" align="center">
+                      {coloredNumber(rotationstocks.rotationstockquantite)}
                     </TableCell>
-                    <TableCell width="20%" align="center">
-                      {coloredNumber(rotationstocks.moyenne_jour)}
-                    </TableCell>
-                    <TableCell width="20%" align="center">
-                      {coloredNumber(rotationstocks.rotation_stock)}
+                    <TableCell width="25%" align="center">
+                      {coloredNumber(rotationstocks.rotationstockvaleur)}
                     </TableCell>
                   </TableRow>
                 ))}
