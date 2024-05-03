@@ -7,13 +7,10 @@ import {
   TableRow,
   TextField,
   Grid,
-  Icon,
-  Button,
   Snackbar,
   Alert,
   Select,
-  MenuItem,
-  IconButton
+  MenuItem
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
@@ -21,7 +18,6 @@ import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { coloredNumber, months } from 'app/utils/utils';
-import { Link } from 'react-router-dom';
 
 const Cyclenaturemouvement = () => {
   const columns = [
@@ -69,7 +65,7 @@ const Cyclenaturemouvement = () => {
       naturemouvement === '0' ||
       (stat.idnaturemouvement && stat.idnaturemouvement === naturemouvement);
 
-    return moisMatch && anneeMatch && naturematch;
+    return anneeMatch && moisMatch && naturematch;
   });
 
   // Tri
@@ -130,7 +126,7 @@ const Cyclenaturemouvement = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Entree et sortie par nature', path: 'admin/stocktypemateriel' },
+            { name: 'Entree et sortie par nature', path: 'admin/cyclemouvement' },
             { name: 'Entree et sortie par nature' }
           ]}
         />
@@ -140,7 +136,7 @@ const Cyclenaturemouvement = () => {
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
-              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
+              <SimpleCard title="Rechercher un mouvement">
                 <Grid container spacing={1}>
                   <Grid item xs={4}>
                     <TextField
@@ -231,7 +227,7 @@ const Cyclenaturemouvement = () => {
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="annee" align="center" width="17%">
+                      <TableCell key="annee" align="center" width="20%">
                         Annee
                       </TableCell>
                       <TableCell key="mois" align="center" width="20%">
@@ -245,9 +241,6 @@ const Cyclenaturemouvement = () => {
                       </TableCell>
                       <TableCell key="sortie" align="center" width="20%">
                         Sortie
-                      </TableCell>
-                      <TableCell key="action" align="center" width="20%">
-                        Action
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -263,7 +256,7 @@ const Cyclenaturemouvement = () => {
                                 {row.annee}
                               </TableCell>
                               <TableCell align="center" width="20%">
-                                {row.mois}
+                                {row.mois_nom}
                               </TableCell>
                               <TableCell align="center" width="20%">
                                 {row.naturemouvement}
