@@ -29,8 +29,11 @@ const TypeMouvement = Loadable(
 const Editnaturemouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Editnaturemouvement'))
 );
+const Cyclenaturemouvement = Loadable(
+  lazy(() => import('app/views/admin/naturemouvement/Cyclenaturemouvement'))
+);
 
-const Cyclemouvement = Loadable(lazy(() => import('app/views/admin/article/Cyclemouvement')));
+const Rupturearticle = Loadable(lazy(() => import('app/views/admin/article/Rupturearticle')));
 
 const TypeMateriel = Loadable(lazy(() => import('app/views/admin/typemateriel/Typemateriel')));
 
@@ -170,6 +173,10 @@ const routes = [
         path: '/admin/editnaturemouvement/:idnaturemouvement',
         element: <ProtectedRoute element={<Editnaturemouvement />} />
       },
+      {
+        path: '/admin/cyclenaturemouvement/',
+        element: <ProtectedRoute element={<Cyclenaturemouvement />} />
+      },
 
       {
         path: '/admin/typemateriel',
@@ -182,8 +189,8 @@ const routes = [
       },
 
       {
-        path: '/admin/cyclemouvement',
-        element: <ProtectedRoute element={<Cyclemouvement />} />
+        path: '/admin/rupturearticle',
+        element: <ProtectedRoute element={<Rupturearticle />} />
       },
 
       {
@@ -343,6 +350,8 @@ const routes = [
   { path: '/admin/editmateriel/:idmateriel', element: <Editmateriel /> },
 
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
+
+  { path: '/admin/cyclemouvement', element: <Cyclenaturemouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
   { path: '/admin/editcategoriemateriel/:idcategoriemateriel', element: <Editcategoriemateriel /> },

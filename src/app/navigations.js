@@ -10,7 +10,12 @@ export const navigations = [
     name: 'Mouvement de stock',
     iconText: 'arrows-right',
     children: [
-      { name: 'Type de mouvement', iconText: 'SI', path: '/admin/typemouvement' },
+      {
+        name: 'Type de mouvement',
+        iconText: 'SI',
+        path: '/admin/typemouvement',
+        children: [{ name: 'Cycle des mouvements', iconText: 'SI', path: '/admin/cyclemouvement' }]
+      },
       {
         name: 'Mouvements des articles',
         iconText: 'SI',
@@ -47,7 +52,7 @@ export const navigations = [
         children: [
           { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
           { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
-          { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/cyclemouvement' }
+          { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/rupturearticle' }
         ]
       },
       {
