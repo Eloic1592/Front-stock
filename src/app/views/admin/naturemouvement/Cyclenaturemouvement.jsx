@@ -138,15 +138,6 @@ const Cyclenaturemouvement = () => {
 
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Grid container direction="row" spacing={2}>
-            <Grid item>
-              <Button variant="contained" color="inherit" onClick={redirect}>
-                <Icon>arrow_backward</Icon>
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
               <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
