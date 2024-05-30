@@ -1,9 +1,7 @@
-import { chunk } from 'lodash';
-
 export const navigations = [
   {
     name: 'Statistiques',
-    iconText: 'arrows-right',
+    icon: 'trending_up',
     children: [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
       { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
@@ -17,7 +15,7 @@ export const navigations = [
 
   {
     name: 'Mouvement de stock',
-    iconText: 'arrows-right',
+    icon: 'receipt',
     children: [
       {
         name: 'Type de mouvement',
@@ -35,7 +33,7 @@ export const navigations = [
   },
   {
     name: 'Commandes',
-    iconText: 'arrows-right',
+    icon: 'shopping_cart',
     children: [
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
       { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
@@ -53,23 +51,23 @@ export const navigations = [
   },
   {
     name: 'Articles et materiels',
-    iconText: 'arrows-right',
+    icon: 'build',
     children: [
       {
         name: 'Articles',
         iconText: 'arrows-right',
         children: [
-          { name: 'Liste des articles', iconText: 'SI', path: '/admin/article' },
-          { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
-          { name: 'Ruptures des articles', iconText: 'SI', path: '/admin/rupturearticle' }
+          { name: 'Liste', iconText: 'SI', path: '/admin/article' },
+          { name: 'Stock', iconText: 'SI', path: '/admin/stocksarticle' },
+          { name: 'Rupture', iconText: 'SI', path: '/admin/rupturearticle' }
         ]
       },
       {
         name: 'Materiels',
         iconText: 'arrows-right',
         children: [
-          { name: 'Liste des materiels', iconText: 'SI', path: '/admin/listemateriel' },
-          { name: 'Stock des materiels', iconText: 'SI', path: '/admin/stockmateriel' }
+          { name: 'Liste', iconText: 'SI', path: '/admin/listemateriel' },
+          { name: 'Stock', iconText: 'SI', path: '/admin/stockmateriel' }
         ]
       },
       { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
@@ -79,9 +77,9 @@ export const navigations = [
 
   {
     name: 'Depot',
-    iconText: 'arrows-right',
+    icon: 'home',
     children: [
-      { name: 'Liste des depots', iconText: 'SI', path: '/admin/depot' },
+      { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
       { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
       { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
     ]
