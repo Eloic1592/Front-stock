@@ -24,7 +24,6 @@ import { StyledTable } from 'app/views/style/style';
 import { useMfictifFunctions } from 'app/views/admin/mouvementstock/fictif/fictiffunctions';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate, colorType } from 'app/utils/utils';
-// import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -243,7 +242,7 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                   onChange={handleSelectColumn}
                   multiple
                 >
-                  <MenuItem key="0" value="1">
+                  <MenuItem key="0" value="1" disabled>
                     Colonne
                   </MenuItem>
                   {columns.map((column, index) => (
@@ -264,17 +263,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="error"
-                  disabled={selectedIds.length === 0}
-                >
-                  <Icon>delete</Icon>
-                </Button>
               </Grid>
             </Grid>
 

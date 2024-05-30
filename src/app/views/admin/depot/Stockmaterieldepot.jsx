@@ -213,7 +213,7 @@ const Stockmaterieldepot = () => {
                           Materiels utilises
                         </TableCell>
                         <TableCell key="pourcentage_utilisation" align="center" width="25%">
-                          Utilisations en %
+                          Utilisations (en %)
                         </TableCell>
                       </TableRow>
                     </TableHead>

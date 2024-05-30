@@ -132,6 +132,7 @@ const Stockphysique = () => {
       iddepot: depot,
       description: description,
       commentaire: commentaire,
+      total: quantite * prixunitaire,
       statut: 0
     };
 
