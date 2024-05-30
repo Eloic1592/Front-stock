@@ -126,9 +126,8 @@ const Statnaturemouvement = Loadable(
 );
 
 const Stattypemateriel = Loadable(lazy(() => import('app/views/admin/dashboard/Stattypemateriel')));
-// admin page
-// const Analytics = Loadable(lazy(() => import('app/views/user/Analytics')));
-// Acceuil user
+
+const Aide = Loadable(lazy(() => import('app/views/admin/aide/Aide')));
 
 const routes = [
   {
@@ -330,6 +329,10 @@ const routes = [
       {
         path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
         element: <ProtectedRoute element={<Stattypemateriel />} />
+      },
+      {
+        path: '/admin/aide',
+        element: <ProtectedRoute element={<Aide />} />
       }
     ]
   },
@@ -390,6 +393,11 @@ const routes = [
     path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
     element: <Stattypemateriel />
   },
+  {
+    path: '/admin/aide',
+    element: <Aide />
+  },
+
   { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];

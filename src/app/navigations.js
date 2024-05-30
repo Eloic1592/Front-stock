@@ -86,6 +86,11 @@ export const navigations = [
       { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
     ]
   },
+  {
+    name: 'Aide',
+    icon: 'help',
+    path: '/admin/aide'
+  },
 
   {
     name: 'Components',
