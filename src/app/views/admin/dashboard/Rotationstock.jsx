@@ -48,7 +48,7 @@ function Rotationstock({ rotationstocks, mois }) {
                     Stock moyen (Quantite)
                   </TableCell>
                   <TableCell width="25%" align="center">
-                    Valeur moyenne en stock(en Ariary)
+                    Valeur moyenne (Ariary)
                   </TableCell>
                 </TableRow>
               </TableHead>

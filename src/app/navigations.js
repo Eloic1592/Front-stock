@@ -1,11 +1,20 @@
+import { chunk } from 'lodash';
+
 export const navigations = [
-  { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
-  { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
   {
-    name: 'Bilan des mouvements',
-    iconText: 'SI',
-    path: '/admin/stattypemouvement'
+    name: 'Statistiques',
+    iconText: 'arrows-right',
+    children: [
+      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
+      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
+      {
+        name: 'Bilan des mouvements',
+        iconText: 'SI',
+        path: '/admin/stattypemouvement'
+      }
+    ]
   },
+
   {
     name: 'Mouvement de stock',
     iconText: 'arrows-right',
@@ -25,7 +34,7 @@ export const navigations = [
     ]
   },
   {
-    name: 'Demande',
+    name: 'Commandes',
     iconText: 'arrows-right',
     children: [
       { name: 'Factures', iconText: 'SI', path: '/admin/facture' },

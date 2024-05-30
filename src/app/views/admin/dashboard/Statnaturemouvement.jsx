@@ -320,13 +320,13 @@ const Statnaturemouvement = () => {
                         Mois
                       </TableCell>
                       <TableCell key="gain" align="center" width="17%">
-                        Gain en (Ariary)
+                        Gain
                       </TableCell>
                       <TableCell key="depense" align="center" width="17%">
-                        Depense en (Ariary)
+                        Depense
                       </TableCell>
                       <TableCell key="benefice" align="center" width="17%">
-                        Benefice en (Ariary)
+                        Benefice
                       </TableCell>
                       <TableCell key="action" align="center" width="17%">
                         Action
