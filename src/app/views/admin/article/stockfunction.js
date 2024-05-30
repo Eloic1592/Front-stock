@@ -44,11 +44,13 @@ export const useStockfunctions = (data) => {
   };
   const filtredata = filtrearticle(data.stockarticles, marque, month, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });

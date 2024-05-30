@@ -62,11 +62,13 @@ export const useMfictifFunctions = (data) => {
 
   const filtredata = filtrestockfictif(data.mouvementStocks, datedepot, mouvement, naturemouvement);
   const sortedData = filtredata.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });

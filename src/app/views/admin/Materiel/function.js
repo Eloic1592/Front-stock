@@ -34,7 +34,7 @@ export const useListematerielFunctions = (data) => {
     setIsEditClicked(false);
   };
 
-  const handleSave = (value, id, field) => {
+  const handleSave = () => {
     setEditingId(null);
   };
 
@@ -67,11 +67,13 @@ export const useListematerielFunctions = (data) => {
     disponibilite
   );
   const sortedData = filtredata.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });
