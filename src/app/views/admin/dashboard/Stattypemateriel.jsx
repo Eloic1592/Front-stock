@@ -203,7 +203,9 @@ const Stattypemateriel = () => {
                       onChange={handleSelectColumn}
                       multiple
                     >
-                      <MenuItem value="1">Colonne</MenuItem>
+                      <MenuItem value="1" disabled>
+                        Colonne
+                      </MenuItem>
                       {columns.map((column) => (
                         <MenuItem key={column.field} value={column.field}>
                           {column.label}

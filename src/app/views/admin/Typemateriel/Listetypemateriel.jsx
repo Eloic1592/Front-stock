@@ -23,10 +23,10 @@ import { baseUrl } from 'app/utils/constant';
 
 const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
-
   const columns = [
     { label: 'Idtypemateriel', field: 'idtypemateriel', align: 'center' },
-    { label: 'type materiel', field: 'typemateriel', align: 'center' }
+    { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Categorie materiel', field: 'categoriemateriel', align: 'center' }
   ];
   const [data, setData] = useState({
     typemateriels: [],
@@ -212,7 +212,9 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   multiple
                   sx={{ mb: 3 }}
                 >
-                  <MenuItem value="1">Colonne</MenuItem>
+                  <MenuItem value="1" disabled>
+                    Colonne
+                  </MenuItem>
                   {columns.map((column, index) => (
                     <MenuItem key={index} value={column.field}>
                       {column.label}
@@ -240,7 +242,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                 {/* Listage de Donnees */}
                 <TableRow>
                   <TableCell key="idtypemateriel" align="center" width="15%">
-                    idtypemateriel
+                    ID
                   </TableCell>
                   <TableCell key="typemateriel" align="center" width="40%">
                     typemateriel

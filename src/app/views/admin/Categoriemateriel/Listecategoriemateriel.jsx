@@ -181,7 +181,9 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                   onChange={handleSelectColumn}
                   multiple
                 >
-                  <MenuItem value="1">Colonne</MenuItem>
+                  <MenuItem value="1" disabled>
+                    Colonne
+                  </MenuItem>
                   {columns.map((column, index) => (
                     <MenuItem key={index} value={column.field}>
                       {column.label}
