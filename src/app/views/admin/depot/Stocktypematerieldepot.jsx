@@ -172,6 +172,7 @@ const Stocktypematerieldepot = () => {
                     value={sortColumn}
                     size="small"
                     onChange={handleSelectColumn}
+                    multiple
                   >
                     <MenuItem value="1">Colonne</MenuItem>
                     {columns.map((column) => (

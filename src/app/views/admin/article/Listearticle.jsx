@@ -202,6 +202,8 @@ const ListeArticle = () => {
                   value={sortColumn}
                   size="small"
                   onChange={handleSelectColumn}
+                  multiple
+                  multiple
                 >
                   <MenuItem key="1" value="1">
                     Colonne

@@ -99,6 +99,7 @@ const PaginationTable = ({ columns, data, rowsPerPageOptions = [5, 10, 25, 50, 1
             value={sortColumn}
             size="small"
             onChange={handleSelectColumn}
+            multiple
           >
             <MenuItem value="1">Colonne</MenuItem>
             {columns.map((column) => (

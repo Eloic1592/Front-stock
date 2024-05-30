@@ -126,6 +126,7 @@ const Listehistorique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   value={sortColumn}
                   size="small"
                   onChange={handleSelectColumn}
+                  multiple
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column) => (

@@ -241,6 +241,7 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                   value={sortColumn}
                   size="small"
                   onChange={handleSelectColumn}
+                  multiple
                 >
                   <MenuItem key="0" value="1">
                     Colonne
