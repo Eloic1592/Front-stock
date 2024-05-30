@@ -228,7 +228,6 @@ const Listedetaildevis = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   onChange={handleSelectColumn}
                   multiple
-                  multiple
                 >
                   <MenuItem value="1">Colonne</MenuItem>
                   {columns.map((column, index) => (

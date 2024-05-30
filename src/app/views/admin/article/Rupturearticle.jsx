@@ -171,7 +171,6 @@ const Rupturearticle = () => {
                       size="small"
                       onChange={handleSelectColumn}
                       multiple
-                      multiple
                     >
                       <MenuItem value="1">Colonne</MenuItem>
                       {columns.map((column) => (
