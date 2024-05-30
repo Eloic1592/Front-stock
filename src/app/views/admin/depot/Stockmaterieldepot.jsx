@@ -124,18 +124,14 @@ const Stockmaterieldepot = () => {
         <Grid item>
           <Grid container direction="row" spacing={2}>
             <Grid item>
-              <Box className="breadcrumb">
-                <Button variant="contained" color="primary" onClick={getlist}>
-                  Liste des depots
-                </Button>
-              </Box>{' '}
+              <Button variant="contained" color="primary" onClick={getlist}>
+                Liste des depots
+              </Button>
             </Grid>
             <Grid item>
-              <Box className="breadcrumb">
-                <Button variant="contained" color="secondary" onClick={getstockarticle}>
-                  Stock des articles
-                </Button>
-              </Box>{' '}
+              <Button variant="contained" color="secondary" onClick={getstockarticle}>
+                Stock des articles
+              </Button>
             </Grid>
           </Grid>
         </Grid>
