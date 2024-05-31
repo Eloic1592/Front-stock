@@ -84,6 +84,11 @@ export const useListecategoriematerielFunctions = (data) => {
 // Filtre
 export function filtercategoriemateriel(listecategoriemateriel, categoriemateriel) {
   return listecategoriemateriel.filter((Item) => {
-    return Item.categoriemateriel.toLowerCase().includes(categoriemateriel.toLowerCase());
+    const categoriematch =
+      !categoriemateriel ||
+      Item.categoriemateriel.toLowerCase().includes(categoriemateriel.toLowerCase());
+    const codematch =
+      !categoriemateriel || Item.val.toLowerCase().includes(categoriemateriel.toLowerCase());
+    return categoriematch || codematch;
   });
 }

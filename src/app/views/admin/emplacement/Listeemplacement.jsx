@@ -12,74 +12,71 @@ import {
   MenuItem,
   Snackbar,
   Alert,
-  Grid,
-  Menu
+  Grid
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListedepotFunctions } from 'app/views/admin/depot/function';
+import { useEmplacementfunctions } from 'app/views/admin/emplacement/function';
 import { baseUrl } from 'app/utils/constant';
 import { formatNumber } from 'app/utils/utils';
+import { useParams } from 'react-router-dom';
 
-const Listedepot = () => {
+const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
+  const iddepot = useParams();
+  // Colonne
   const columns = [
-    { label: 'Iddepot', field: 'iddepot', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' },
-    { label: 'Code depot', field: 'codedepot', align: 'center' },
-    { label: 'Capacite', field: 'capacite', align: 'center' }
+    { label: 'ID', field: 'idemplacement', align: 'center' },
+    { label: 'Code Emplacement', field: 'codeemp', align: 'center' },
+    { label: 'capacite', field: 'capacite', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' }
   ];
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    listeemplacements: []
+  });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  // Collapse
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  function handleClose() {
-    setAnchorEl(null);
-  }
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
+  const [isEditClicked, setIsEditClicked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const handleAlertClose = () => setMessage({ open: false });
 
-  // Update
-  const handleEdit = (iddepot) => {
-    window.location.replace('/admin/editdepot/' + iddepot);
-  };
-  // Emplacement
-  const emplacement = (iddepot) => {
-    window.location.replace('/admin/emplacement/' + iddepot);
+  // Modification(Update)
+  const handleEdit = (idemplacement) => {
+    window.location.replace('/admin/editemplacement/' + idemplacement);
   };
 
   const {
+    sortColumn,
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
-    setNomdepot,
-    nomdepot,
+    codeemp,
+    setCodeemp,
     handleChangePage,
-    sortColumn,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
-  } = useListedepotFunctions(data);
+  } = useEmplacementfunctions(data);
 
+  //  Use effect
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/depot/listdepot';
+        let emplacementParams = {
+          iddepot: iddepot.iddepot
+        };
+        let url = baseUrl + '/emplacement/getlistemplacementdepot';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify({}),
+          body: JSON.stringify(emplacementParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -92,7 +89,11 @@ const Listedepot = () => {
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          listeemplacements: responseData.listeemplacements || []
+        };
+
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -106,29 +107,34 @@ const Listedepot = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [sortedData, initialDataFetched]);
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
-    <Box width="100%" overflow="auto" key="Box1">
+    <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="materielfiltre"
-              label="Nom du depot ou code du depot"
-              variant="outlined"
-              value={nomdepot}
-              onChange={(event) => setNomdepot(event.target.value)}
-              sx={{ mb: 3 }}
-            />
+          <SimpleCard title="Rechercher un type de materiel">
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="typemateriel"
+                  label="Code de l'emplacement"
+                  variant="outlined"
+                  value={codeemp}
+                  onChange={(event) => setCodeemp(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des depots ">
+          <SimpleCard title="Liste des types de materiel">
+            {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -138,12 +144,13 @@ const Listedepot = () => {
                   size="small"
                   onChange={handleSelectColumn}
                   multiple
+                  sx={{ mb: 3 }}
                 >
                   <MenuItem value="1" disabled>
                     Colonne
                   </MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem key={column.field} value={column.field}>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
                       {column.label}
                     </MenuItem>
                   ))}
@@ -156,6 +163,7 @@ const Listedepot = () => {
                   value={sortDirection}
                   size="small"
                   onChange={(event) => setSortDirection(event.target.value)}
+                  sx={{ mb: 3 }}
                 >
                   <MenuItem value="asc">ASC</MenuItem>
                   <MenuItem value="desc">DESC</MenuItem>
@@ -165,18 +173,19 @@ const Listedepot = () => {
 
             <StyledTable>
               <TableHead>
+                {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="iddepot" align="center" width="15%">
-                    iddepot
+                  <TableCell key="idemplacement" align="center" width="15%">
+                    ID
                   </TableCell>
-                  <TableCell key="depot" align="center" width="50%">
-                    depot
+                  <TableCell key="codeemp" align="center" width="40%">
+                    Code emplacement
                   </TableCell>
-                  <TableCell key="codedep" align="center" width="50%">
-                    code depot
+                  <TableCell key="depot" align="center" width="40%">
+                    Depot
                   </TableCell>
-                  <TableCell key="capacite" align="center" width="50%">
-                    capacite (unite)
+                  <TableCell key="capacite" align="center" width="40%">
+                    Capacite (Unite)
                   </TableCell>
                   <TableCell align="center" width="15%">
                     Action
@@ -188,61 +197,30 @@ const Listedepot = () => {
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
-                      <TableRow key={row.iddepot}>
+                      <TableRow key={row.idemplacement}>
                         <>
-                          <TableCell key="iddepot" align="center" width="15%">
-                            {row.iddepot}
+                          <TableCell key="idemplacement" align="center" width="15%">
+                            {row.idemplacement}
                           </TableCell>
-                          <TableCell key="depot" align="center" width="50%">
-                            {row.depot}
+                          <TableCell key="codeemp" align="center" width="40%">
+                            {row.codeemp}
                           </TableCell>
-                          <TableCell key="codedep" align="center" width="50%">
-                            {row.codedep}
+                          <TableCell key="depot" align="center" width="40%">
+                            {row.depot} - {row.codedep}
                           </TableCell>
-                          <TableCell key="capacite" align="center" width="50%">
+                          <TableCell key="capacite" align="center" width="40%">
                             {formatNumber(row.capacite)}
                           </TableCell>
                           <TableCell align="center" width="15%">
                             <IconButton
-                              aria-label="More"
-                              aria-owns={open ? 'long-menu' : undefined}
-                              aria-haspopup="true"
-                              onClick={handleClick}
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idemplacement)}
                             >
-                              <Icon>more_vert</Icon>
+                              <Icon>edit_icon</Icon>
                             </IconButton>
-                            <Menu
-                              open={open}
-                              id="long-menu"
-                              anchorEl={anchorEl}
-                              onClose={handleClose}
-                              PaperProps={{ style: { maxHeight: 48 * 4.5, width: 200 } }}
-                            >
-                              <MenuItem key="Edit">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="inherit"
-                                  onClick={() => emplacement(row.iddepot)}
-                                >
-                                  <Icon>receipt</Icon>
-                                </IconButton>
-                                Voir emplacement
-                              </MenuItem>
-                              <MenuItem key="Edit">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => handleEdit(row.iddepot)}
-                                >
-                                  <Icon>edit_icon</Icon>
-                                </IconButton>
-                                Modifier
-                              </MenuItem>
-                            </Menu>
                           </TableCell>
                         </>
                       </TableRow>
@@ -258,6 +236,7 @@ const Listedepot = () => {
                 )}
               </TableBody>
             </StyledTable>
+
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TablePagination
@@ -267,7 +246,7 @@ const Listedepot = () => {
                   rowsPerPage={rowsPerPage}
                   count={sortedData.length}
                   onPageChange={handleChangePage}
-                  rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
+                  rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                   backIconButtonProps={{ 'aria-label': 'Page precedente' }}
@@ -286,4 +265,4 @@ const Listedepot = () => {
   );
 };
 
-export default Listedepot;
+export default Listemplacement;

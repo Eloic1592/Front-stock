@@ -87,8 +87,9 @@ export const useListedepotFunctions = (data) => {
 };
 
 export function filtredepot(listedepot, depot) {
-  const filtre = listedepot.filter(
-    (listedepot) => listedepot.depot && listedepot.depot.toLowerCase().includes(depot.toLowerCase())
-  );
-  return filtre;
+  return listedepot.filter((Item) => {
+    const depotmatch = !depot || Item.depot.toLowerCase().includes(depot.toLowerCase());
+    const codematch = !depot || Item.codedep.toLowerCase().includes(depot.toLowerCase());
+    return depotmatch || codematch;
+  });
 }

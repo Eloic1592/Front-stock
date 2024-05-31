@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Init
-export const useListetypematerielFunctions = (data) => {
+export const useEmplacementfunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingId, setEditingId] = useState(null);
@@ -10,8 +10,7 @@ export const useListetypematerielFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [typemateriel, setTypemateriel] = useState('');
-  const [categoriemateriel, setCategoriemateriel] = useState('1');
+  const [codeemp, setCodeemp] = useState('');
   // Pagination
   // Pagination
   const handleChangePage = (_, newPage) => {
@@ -33,7 +32,7 @@ export const useListetypematerielFunctions = (data) => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.typemateriels.map((row) => row.idtypemateriel));
+      setSelectedIds(data.listeemplacements.map((row) => row.idemplacement));
     } else {
       setSelectedIds([]);
     }
@@ -43,7 +42,7 @@ export const useListetypematerielFunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtretypemateriel(data.typemateriels, typemateriel, categoriemateriel);
+  const filtredata = filtreemplacement(data.listeemplacements, codeemp);
   const sortedData = filtredata.sort((a, b) => {
     for (let column of sortColumn) {
       if (a[column] < b[column]) {
@@ -75,29 +74,22 @@ export const useListetypematerielFunctions = (data) => {
     setIsEditClicked,
     selectedRowId,
     setSelectedRowId,
-    typemateriel,
-    setTypemateriel,
+    codeemp,
+    setCodeemp,
     handleChangePage,
     handleChangeRowsPerPage,
     handleSelection,
     handleSelectAll,
     handleSelectColumn,
-    sortedData,
-    categoriemateriel,
-    setCategoriemateriel
+    sortedData
   };
 };
 
 //  Filtre de recherche
-export function filtretypemateriel(listetypemateriel, typemateriel, categoriemateriel) {
-  return listetypemateriel.filter((Item) => {
-    const typematch =
-      !typemateriel || Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase());
-    const codematch = !typemateriel || Item.val.toLowerCase().includes(typemateriel.toLowerCase());
-    let categoriematch = true;
-    if (categoriemateriel !== '1') {
-      categoriematch = Item.idcategoriemateriel === categoriemateriel;
-    }
-    return typematch || (codematch && categoriematch);
+export function filtreemplacement(listeemplacements, codeemp) {
+  return listeemplacements.filter((Item) => {
+    const typematch = !codeemp || Item.codeemp.toLowerCase().includes(codeemp.toLowerCase());
+
+    return typematch;
   });
 }

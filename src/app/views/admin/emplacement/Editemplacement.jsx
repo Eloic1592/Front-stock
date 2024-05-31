@@ -1,4 +1,4 @@
-import { Box, TextField, Snackbar, Alert, Grid } from '@mui/material';
+import { Box, TextField, Snackbar, Alert, Grid, MenuItem, Select } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
@@ -6,34 +6,30 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 
-const Editcategoriemateriel = () => {
-  const idcategoriemateriel = useParams();
+const Editemplacement = () => {
+  const idemplacement = useParams();
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
+  const [data, setData] = useState({ depot: [] });
 
   // Input
-  const [categoriemateriel, setCategoriemateriel] = useState('');
-  const [val, setVal] = useState('');
+
+  const [depot, setDepot] = useState('1');
+  const [codeemp, setCodeemp] = useState('');
+  const [capacite, setCapacite] = useState(0);
 
   const handleSubmit = () => {
-    if (!categoriemateriel) {
-      setMessage({
-        text: 'Veuillez remplir tous les champs obligatoires.',
-        severity: 'error',
-        open: true
-      });
-      return;
-    }
     let params = {
-      idcategoriemateriel: idcategoriemateriel.idcategoriemateriel,
-      categoriemateriel: categoriemateriel,
-      val: val
+      idemplacement: idemplacement.idemplacement,
+      codeemp: codeemp,
+      iddepot: depot,
+      capacite: capacite
     };
-    let url = baseUrl + '/categoriemateriel/createcategoriemateriel';
+    let url = baseUrl + '/emplacement/createemplacement';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -66,14 +62,14 @@ const Editcategoriemateriel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let categoriematerielParams = {
-          idcategoriemateriel: idcategoriemateriel.idcategoriemateriel
+        let emplacementParams = {
+          idemplacement: idemplacement.idemplacement
         };
-        let url = baseUrl + '/categoriemateriel/getcategoriemateriel';
+        let url = baseUrl + '/emplacement/getemplacement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(categoriematerielParams),
+          body: JSON.stringify(emplacementParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -82,8 +78,10 @@ const Editcategoriemateriel = () => {
         }
 
         const responseData = await response.json();
-        setCategoriemateriel(responseData.categoriemateriel);
-        setVal(responseData.val);
+        setData(responseData);
+        setCodeemp(responseData.emplacement.codeemp);
+        setCapacite(responseData.emplacement.capacite);
+        setDepot(responseData.emplacement.iddepot);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -93,10 +91,10 @@ const Editcategoriemateriel = () => {
       }
     };
     fetchData();
-  }, [idcategoriemateriel.idcategoriemateriel]);
+  }, [idemplacement.idemplacement]);
 
-  const handleCancel = () => {
-    window.location.replace('/admin/categoriemateriel');
+  const handleCancel = (iddepot) => {
+    window.location.replace('/admin/emplacement/' + iddepot);
   };
 
   return (
@@ -104,33 +102,52 @@ const Editcategoriemateriel = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'categoriemateriel', path: 'admin/categoriemateriel' },
-            { name: 'categoriemateriel' }
+            { name: 'typemateriel', path: 'admin/typemateriel' },
+            { name: 'typemateriel' }
           ]}
         />
       </Box>
-      <SimpleCard title="Modifier categoriemateriel">
+      <SimpleCard title="Modifier typemateriel">
         <Box>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Categorie materiel"
-                variant="outlined"
-                value={categoriemateriel}
-                onChange={(e) => setCategoriemateriel(e.target.value)}
+                type="text"
+                name="val"
+                label="code emplacement"
+                placeholder="EX: TI1-L1-C1-INF"
+                value={codeemp}
+                onChange={(event) => setCodeemp(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Code"
-                variant="outlined"
-                value={val}
-                onChange={(e) => setVal(e.target.value)}
+                type="text"
+                name="capacite"
+                label="capacite"
+                value={capacite}
+                onChange={(event) => setCapacite(event.target.value)}
               />
             </Grid>
-
+            <Grid item xs={12}>
+              <Select
+                labelId="select-label"
+                value={depot}
+                onChange={(event) => setDepot(event.target.value)}
+                fullWidth
+              >
+                <MenuItem value="1" disabled>
+                  Choisir un depot
+                </MenuItem>
+                {data.depot.map((row) => (
+                  <MenuItem key={row.iddepot} value={row.iddepot}>
+                    {row.depot} - {row.codedep}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Grid>
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>
               <Grid item>
                 <Button variant="contained" color="secondary" onClick={handleCancel}>
@@ -155,4 +172,4 @@ const Editcategoriemateriel = () => {
   );
 };
 
-export default Editcategoriemateriel;
+export default Editemplacement;

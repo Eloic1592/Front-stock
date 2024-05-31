@@ -26,6 +26,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'Idtypemateriel', field: 'idtypemateriel', align: 'center' },
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Code', field: 'val', align: 'center' },
     { label: 'Categorie materiel', field: 'categoriemateriel', align: 'center' }
   ];
   const [data, setData] = useState({
@@ -51,12 +52,6 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     window.location.replace('/admin/edittypemateriel/' + idtypemateriel);
   };
 
-  const cancelEdit = () => {
-    setEditedIdtypemateriel('');
-    setEditedTypemateriel('');
-    setIsEditClicked(false);
-  };
-
   const {
     sortColumn,
     sortDirection,
@@ -72,39 +67,6 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     categoriemateriel,
     setCategoriemateriel
   } = useListetypematerielFunctions(data);
-
-  const handleSubmit = () => {
-    let typemateriel = {
-      idtypemateriel: editedIdtypemateriel,
-      typemateriel: editedTypemateriel,
-      idcategoriemateriel: editedCategoriemateriel
-    };
-    let url = baseUrl + '/typemateriel/createtypemateriel';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(typemateriel),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
 
   //  Use effect
   useEffect(() => {
@@ -169,7 +131,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   size="small"
                   type="text"
                   name="typemateriel"
-                  label="type de materiel"
+                  label="type de materiel ou code du type"
                   variant="outlined"
                   value={typemateriel}
                   onChange={(event) => setTypemateriel(event.target.value)}
@@ -189,7 +151,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="1">Toutes colonnes</MenuItem>
                   {data.categoriemateriels.map((row) => (
                     <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                      {row.categoriemateriel}
+                      {row.categoriemateriel} - {row.val}
                     </MenuItem>
                   ))}
                 </Select>
@@ -245,7 +207,10 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     ID
                   </TableCell>
                   <TableCell key="typemateriel" align="center" width="40%">
-                    typemateriel
+                    type materiel
+                  </TableCell>
+                  <TableCell key="val" align="center" width="40%">
+                    code
                   </TableCell>
                   <TableCell key="categoriemateriel" align="center" width="40%">
                     categoriemateriel
@@ -313,7 +278,10 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               {row.typemateriel}
                             </TableCell>
                             <TableCell align="center" width="40%">
-                              {row.categoriemateriel}
+                              {row.val}
+                            </TableCell>
+                            <TableCell align="center" width="40%">
+                              {row.categoriemateriel} - {row.codecat}
                             </TableCell>
                             <TableCell align="center" width="15%">
                               <IconButton
@@ -324,31 +292,6 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                 onClick={() => handleEdit(row.idtypemateriel)}
                               >
                                 <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-
-                        {isEditClicked && row.idtypemateriel === selectedRowId && (
-                          <>
-                            <TableCell align="center">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleSubmit()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
                               </IconButton>
                             </TableCell>
                           </>

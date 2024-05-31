@@ -27,6 +27,7 @@ const Edittypemateriel = () => {
   // Input
   const [typemateriel, settypemateriel] = useState('');
   const [categoriemateriel, setCategoriemateriel] = useState('');
+  const [val, setVal] = useState('');
 
   const handleSubmit = () => {
     if (!typemateriel) {
@@ -40,6 +41,7 @@ const Edittypemateriel = () => {
     let params = {
       idtypemateriel: idtypemateriel.idtypemateriel,
       typemateriel: typemateriel,
+      val: val,
       idcategoriemateriel: categoriemateriel
     };
     let url = baseUrl + '/typemateriel/createtypemateriel';
@@ -91,13 +93,10 @@ const Edittypemateriel = () => {
         }
 
         const responseData = await response.json();
-        const newData = {
-          categoriemateriels: responseData.categoriemateriels || [],
-          typemateriel: responseData.typemateriel || null
-        };
-        setData(newData);
-        settypemateriel(newData.typemateriel.typemateriel);
-        setCategoriemateriel(newData.typemateriel.idcategoriemateriel);
+        setData(responseData);
+        settypemateriel(responseData.typemateriel.typemateriel);
+        setVal(responseData.typemateriel.val);
+        setCategoriemateriel(responseData.typemateriel.idcategoriemateriel);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -129,10 +128,21 @@ const Edittypemateriel = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Type de materiel"
+                label="type de materiel"
                 variant="outlined"
                 value={typemateriel}
                 onChange={(e) => settypemateriel(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                type="text"
+                name="val"
+                label="code"
+                placeholder="EX: LAP,CHR ou autre..."
+                value={val}
+                onChange={(event) => setVal(event.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -147,7 +157,7 @@ const Edittypemateriel = () => {
                 <MenuItem value="1">Selectionner une categorie de materiel</MenuItem>
                 {data.categoriemateriels.map((row) => (
                   <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                    {row.categoriemateriel}
+                    {row.categoriemateriel} - {row.val}
                   </MenuItem>
                 ))}
               </Select>

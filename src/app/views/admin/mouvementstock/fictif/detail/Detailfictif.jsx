@@ -134,6 +134,11 @@ const Detailfictif = () => {
     { label: 'depot', field: 'iddepot', align: 'center' }
   ];
 
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/mouvementfictif');
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -168,11 +173,6 @@ const Detailfictif = () => {
     };
     fetchData();
   }, []);
-
-  //Retour page retour
-  const redirect = () => {
-    window.location.replace('/admin/mouvementfictif');
-  };
 
   return (
     <Container>

@@ -26,7 +26,8 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
   // Colonne
   const columns = [
     { label: 'idcategoriemateriel', field: 'idcategoriemateriel', align: 'center' },
-    { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' }
+    { label: 'categorie materiel', field: 'categoriemateriel', align: 'center' },
+    { label: 'code', field: 'val', align: 'center' }
   ];
 
   const [data, setData] = useState([]);
@@ -48,12 +49,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
     window.location.replace('/admin/editcategoriemateriel/' + idcategoriemateriel);
   };
 
-  const cancelEdit = () => {
-    setEditedIdCategorieMateriel('');
-    setEditedCategorieMateriel('');
-    setIsEditClicked(false);
-  };
-
   const {
     sortDirection,
     page,
@@ -68,38 +63,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
     sortedData
   } = useListecategoriematerielFunctions(data);
 
-  // Update
-  const handleSubmit = () => {
-    let categoriemateriel = {
-      idcategoriemateriel: editedIdCategorieMateriel,
-      categoriemateriel: editedCategorieMateriel
-    };
-    let url = baseUrl + '/categoriemateriel/createcategoriemateriel';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(categoriemateriel),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
   //  Use effect
   useEffect(() => {
     const fetchData = async () => {
@@ -214,6 +177,9 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                   <TableCell key="categoriemateriel" align="center" width="50%">
                     categoriemateriel
                   </TableCell>
+                  <TableCell key="val" align="center" width="50%">
+                    code
+                  </TableCell>
                   <TableCell key="action" align="center" width="15%">
                     Action
                   </TableCell>
@@ -252,9 +218,16 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                           </>
                         ) : (
                           <>
-                            <TableCell align="center">{row.idcategoriemateriel}</TableCell>
-                            <TableCell align="center">{row.categoriemateriel}</TableCell>
-                            <TableCell align="center">
+                            <TableCell align="center" width="15%">
+                              {row.idcategoriemateriel}
+                            </TableCell>
+                            <TableCell align="center" width="50%">
+                              {row.categoriemateriel}
+                            </TableCell>
+                            <TableCell align="center" width="50%">
+                              {row.val}
+                            </TableCell>
+                            <TableCell align="center" width="15%">
                               <IconButton
                                 className="button"
                                 variant="contained"
@@ -263,31 +236,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                                 onClick={() => handleEdit(row.idcategoriemateriel)}
                               >
                                 <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-
-                        {isEditClicked && row.idcategoriemateriel === selectedRowId && (
-                          <>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleSubmit()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
                               </IconButton>
                             </TableCell>
                           </>

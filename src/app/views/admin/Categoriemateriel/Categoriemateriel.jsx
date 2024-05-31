@@ -22,12 +22,14 @@ const Categoriemateriel = () => {
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleAlertClose = () => setMessage({ open: false });
-  const [categoriemateriel, setCategoriemateriel] = useState('');
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
+
+  const [categoriemateriel, setCategoriemateriel] = useState('');
+  const [val, setVal] = useState('');
 
   // Validation form
   const handleSubmit = () => {
@@ -40,7 +42,8 @@ const Categoriemateriel = () => {
       return;
     }
     let params = {
-      categoriemateriel: categoriemateriel
+      categoriemateriel: categoriemateriel,
+      val: val
     };
     let url = baseUrl + '/categoriemateriel/createcategoriemateriel';
     fetch(url, {
@@ -92,19 +95,45 @@ const Categoriemateriel = () => {
         </Grid>
         <Grid item>
           <Box>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              fullWidth
+              maxWidth="md"
+            >
               <DialogTitle id="form-dialog-title">Nouvelle categorie de materiel</DialogTitle>
               <DialogContent>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="categoriemateriel"
-                  label="categorie de materiel"
-                  variant="outlined"
-                  value={categoriemateriel}
-                  onChange={(event) => setCategoriemateriel(event.target.value)}
-                />
+                <Grid container direction="column" spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="categoriemateriel"
+                      type="text"
+                      name="categoriemateriel"
+                      margin="dense"
+                      label="categorie de materiel"
+                      placeholder="Bureautique,informatique ou autre..."
+                      value={categoriemateriel}
+                      onChange={(event) => setCategoriemateriel(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="code"
+                      type="text"
+                      margin="dense"
+                      label="code"
+                      name="code"
+                      placeholder="EX: INF, BUR..."
+                      value={val}
+                      onChange={(event) => setVal(event.target.value)}
+                    />
+                  </Grid>
+                </Grid>
               </DialogContent>
 
               <DialogActions>

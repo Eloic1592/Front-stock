@@ -9,16 +9,18 @@ import {
   Dialog,
   Grid,
   MenuItem,
-  Select
+  Select,
+  Icon
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import Listetypemateriel from './Listetypemateriel';
 import { Container } from 'app/views/style/style';
+import Listemplacement from './Listeemplacement';
 import { baseUrl } from 'app/utils/constant';
-
-const Typemateriel = () => {
+import { useParams } from 'react-router-dom';
+const Emplacement = () => {
+  const iddepot = useParams();
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
@@ -32,30 +34,26 @@ const Typemateriel = () => {
   });
 
   const [data, setData] = useState({
-    categoriemateriels: []
+    depot: []
   });
 
-  const [typemateriel, setTypemateriel] = useState('');
-  const [categoriemateriel, setCategoriemateriel] = useState('1');
-  const [val, setVal] = useState('');
+  const [depot, setDepot] = useState('1');
+  const [codeemp, setCodeemp] = useState('');
+  const [capacite, setCapacite] = useState(0);
+
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/depot');
+  };
 
   // Validation form
   const handleSubmit = () => {
-    if (!typemateriel) {
-      setMessage({
-        text: 'Veuillez saisir un nom de type.',
-        severity: 'error',
-        open: true
-      });
-      return;
-    }
-
     let params = {
-      typemateriel: typemateriel,
-      val: val,
-      idcategoriemateriel: categoriemateriel
+      codeemp: codeemp,
+      iddepot: depot,
+      capacite: capacite
     };
-    let url = baseUrl + '/typemateriel/createtypemateriel';
+    let url = baseUrl + '/emplacement/createemplacement';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
@@ -88,7 +86,7 @@ const Typemateriel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/typemateriel/contenttypemateriel';
+        let url = baseUrl + '/emplacement/contentemplacement';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -103,10 +101,11 @@ const Typemateriel = () => {
         const responseData = await response.json();
 
         const newData = {
-          categoriemateriels: responseData.categoriemateriels || []
+          depot: responseData.depot || []
         };
 
         setData(newData);
+        setDepot(iddepot.iddepot);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -123,18 +122,25 @@ const Typemateriel = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Type de materiel', path: 'admin/typemateriel' },
+            { name: 'Type de materiel', path: 'admin/emplacement' },
             { name: 'Type de materiel' }
           ]}
         />
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Box>
-            <Button variant="contained" onClick={handleClickOpen} color="primary">
-              Nouveau type de materiel
-            </Button>
-          </Box>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="inherit" onClick={redirect}>
+                <Icon>arrow_backward</Icon>
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={handleClickOpen} color="primary">
+                Nouvel emplacement
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Box>
@@ -145,44 +151,44 @@ const Typemateriel = () => {
               onClose={handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
+              <DialogTitle id="form-dialog-title">Nouvel emplacement</DialogTitle>
               <DialogContent>
                 <Grid container direction="column" spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      name="typemateriel"
-                      label="type de materiel"
-                      value={typemateriel}
-                      onChange={(event) => setTypemateriel(event.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <TextField
                       fullWidth
                       type="text"
                       name="val"
-                      label="code"
-                      placeholder="EX: LAP,CHR ou autre..."
-                      value={val}
-                      onChange={(event) => setVal(event.target.value)}
+                      label="code emplacement"
+                      placeholder="EX: TI1-L1-C1-INF"
+                      value={codeemp}
+                      onChange={(event) => setCodeemp(event.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      type="text"
+                      name="capacite"
+                      label="capacite"
+                      value={capacite}
+                      onChange={(event) => setCapacite(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     <Select
                       labelId="select-label"
-                      sx={{ mb: 3 }}
-                      value={categoriemateriel}
-                      onChange={(event) => setCategoriemateriel(event.target.value)}
+                      value={depot}
+                      onChange={(event) => setDepot(event.target.value)}
                       fullWidth
+                      disabled
                     >
                       <MenuItem value="1" disabled>
-                        Choisir une categorie
+                        Choisir un depot
                       </MenuItem>
-                      {data.categoriemateriels.map((row) => (
-                        <MenuItem key={row.idcategoriemateriel} value={row.idcategoriemateriel}>
-                          {row.categoriemateriel} - {row.val}
+                      {data.depot.map((row) => (
+                        <MenuItem key={row.iddepot} value={row.iddepot}>
+                          {row.depot} - {row.codedep}
                         </MenuItem>
                       ))}
                     </Select>
@@ -207,9 +213,9 @@ const Typemateriel = () => {
           {message.text}
         </Alert>
       </Snackbar>
-      <Listetypemateriel />
+      <Listemplacement />
     </Container>
   );
 };
 
-export default Typemateriel;
+export default Emplacement;

@@ -3,4 +3,4 @@ export const sideNavWidth = 260;
 export const navbarHeight = 60;
 export const sidenavCompactWidth = 80;
 export const containedLayoutWidth = 1200;
-export const baseUrl = 'http://172.30.1.8:8087/clean-apj';
+export const baseUrl = 'http://192.168.0.105:8087/clean-apj';

@@ -28,6 +28,8 @@ const Depot = () => {
   });
 
   const [depot, setDepot] = useState('');
+  const [codedep, setCodedep] = useState('');
+  const [capacite, setCapacite] = useState(0);
 
   const handleSubmit = () => {
     if (!depot) {
@@ -40,7 +42,9 @@ const Depot = () => {
     }
 
     let params = {
-      depot: depot
+      depot: depot,
+      codedep: codedep,
+      capacite: capacite
     };
     let url = baseUrl + '/depot/createdepot';
     fetch(url, {
@@ -114,17 +118,48 @@ const Depot = () => {
             >
               <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
               <DialogContent>
-                <TextField
-                  fullWidth
-                  autoFocus
-                  id="depot"
-                  type="text"
-                  margin="dense"
-                  label="depot"
-                  name="depot"
-                  value={depot}
-                  onChange={(event) => setDepot(event.target.value)}
-                />
+                <Grid container direction="column" spacing={2}>
+                  <Grid item xs={12}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="depot"
+                      type="text"
+                      margin="dense"
+                      label="depot"
+                      name="depot"
+                      value={depot}
+                      onChange={(event) => setDepot(event.target.value)}
+                    />
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        autoFocus
+                        id="codedep"
+                        type="text"
+                        margin="dense"
+                        label="codedep"
+                        name="codedep"
+                        value={codedep}
+                        placeholder="Ex: S1"
+                        onChange={(event) => setCodedep(event.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        autoFocus
+                        id="capacite"
+                        type="text"
+                        margin="dense"
+                        label="capacite"
+                        name="capacite"
+                        value={capacite}
+                        onChange={(event) => setCapacite(event.target.value)}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
               </DialogContent>
 
               <DialogActions>

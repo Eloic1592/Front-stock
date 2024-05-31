@@ -106,6 +106,10 @@ const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot')));
 
+const Emplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Emplacement')));
+
+const Editemplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Editemplacement')));
+
 const Stockarticledepot = Loadable(lazy(() => import('app/views/admin/depot/Stockarticledepot')));
 
 const Utilistionmateriel = Loadable(lazy(() => import('app/views/admin/depot/Stockmaterieldepot')));
@@ -294,6 +298,16 @@ const routes = [
       },
 
       {
+        path: '/admin/emplacement/:iddepot',
+        element: <ProtectedRoute element={<Emplacement />} />
+      },
+
+      {
+        path: '/admin/editemplacement/:idemplacement',
+        element: <ProtectedRoute element={<Editemplacement />} />
+      },
+
+      {
         path: '/admin/stockdepot',
         element: <ProtectedRoute element={<Stockarticledepot />} />
       },
@@ -351,9 +365,7 @@ const routes = [
   { path: '/admin/listemateriel', element: <Materiel /> },
   { path: '/admin/stockmateriel', element: <StockMateriel /> },
   { path: '/admin/editmateriel/:idmateriel', element: <Editmateriel /> },
-
   { path: '/admin/typemouvement', element: <TypeMouvement /> },
-
   { path: '/admin/cyclemouvement', element: <Cyclenaturemouvement /> },
   { path: '/admin/typemateriel', element: <TypeMateriel /> },
   { path: '/admin/categoriemateriel', element: <Categoriemateriel /> },
@@ -382,6 +394,8 @@ const routes = [
   { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/editdepot:iddepot', element: <Editdepot /> },
+  { path: '/admin/emplacement/:iddepot', element: <Emplacement /> },
+  { path: '/admin/editemplacement/:idemplacement', element: <Editemplacement /> },
   { path: '/admin/stockdepot', element: <Stockarticledepot /> },
   { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },

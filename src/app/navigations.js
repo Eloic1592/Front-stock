@@ -76,7 +76,7 @@ export const navigations = [
   },
 
   {
-    name: 'Depot',
+    name: 'Depot et emplacements',
     icon: 'home',
     children: [
       { name: 'Depots', iconText: 'SI', path: '/admin/depot' },

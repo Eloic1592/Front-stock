@@ -17,6 +17,8 @@ const Editdepot = () => {
 
   // Input
   const [depot, setDepot] = useState('');
+  const [codedep, setCodedep] = useState('');
+  const [capacite, setCapacite] = useState(0);
 
   const handleSubmit = () => {
     if (!depot) {
@@ -29,7 +31,9 @@ const Editdepot = () => {
     }
     let params = {
       iddepot: iddepot.iddepot,
-      depot: depot
+      depot: depot,
+      codedep: codedep,
+      capacite: capacite
     };
     let url = baseUrl + '/depot/createdepot';
     fetch(url, {
@@ -81,6 +85,8 @@ const Editdepot = () => {
 
         const responseData = await response.json();
         setDepot(responseData.depot);
+        setCodedep(responseData.codedep);
+        setCapacite(responseData.capacite);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -111,6 +117,33 @@ const Editdepot = () => {
                 variant="outlined"
                 value={depot}
                 onChange={(e) => setDepot(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="codedep"
+                type="text"
+                margin="dense"
+                label="codedep"
+                name="codedep"
+                value={codedep}
+                placeholder="Ex: S1"
+                onChange={(event) => setCodedep(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="capacite"
+                type="text"
+                margin="dense"
+                label="capacite"
+                name="capacite"
+                value={capacite}
+                onChange={(event) => setCapacite(event.target.value)}
               />
             </Grid>
 
