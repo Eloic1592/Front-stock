@@ -37,6 +37,7 @@ export const navigations = [
     children: [
       { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
       { name: 'Reception', iconText: 'SI', path: '/admin/reception' },
+      { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },
       { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
       { name: 'Inventaire', iconText: 'SI', path: '/admin/inventaire' }
     ]

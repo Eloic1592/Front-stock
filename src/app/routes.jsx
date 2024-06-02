@@ -92,6 +92,27 @@ const Editdetailcommande = Loadable(
 
 const Reception = Loadable(lazy(() => import('app/views/admin/demande/reception/Reception')));
 
+const Editreception = Loadable(
+  lazy(() => import('app/views/admin/demande/reception/Editreception'))
+);
+
+const Distribution = Loadable(
+  lazy(() => import('app/views/admin/demande/distribution/Distribution'))
+);
+
+const Editdistribution = Loadable(
+  lazy(() => import('app/views/admin/demande/distribution/Editdistribution'))
+);
+const Stockage = Loadable(lazy(() => import('app/views/admin/demande/stockage/Stockage')));
+
+const Editstockage = Loadable(lazy(() => import('app/views/admin/demande/stockage/Editstockage')));
+
+const Inventaire = Loadable(lazy(() => import('app/views/admin/demande/inventaire/Inventaire')));
+
+const Editinventaire = Loadable(
+  lazy(() => import('app/views/admin/demande/inventaire/Editinventaire'))
+);
+
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot')));
@@ -254,6 +275,35 @@ const routes = [
         element: <ProtectedRoute element={<Reception />} />
       },
       {
+        path: '/admin/editreception/:idreception',
+        element: <ProtectedRoute element={<Editreception />} />
+      },
+      {
+        path: '/admin/stockage',
+        element: <ProtectedRoute element={<Stockage />} />
+      },
+      {
+        path: '/admin/editstockage/:idstockage',
+        element: <ProtectedRoute element={<Editstockage />} />
+      },
+      {
+        path: '/admin/distribution',
+        element: <ProtectedRoute element={<Distribution />} />
+      },
+      {
+        path: '/admin/editdistribution/:iddistribution',
+        element: <ProtectedRoute element={<Editdistribution />} />
+      },
+      {
+        path: '/admin/inventaire',
+        element: <ProtectedRoute element={<Inventaire />} />
+      },
+      {
+        path: '/admin/editinventaire/:idinventaire',
+        element: <ProtectedRoute element={<Editinventaire />} />
+      },
+
+      {
         path: '/admin/depot',
         element: <ProtectedRoute element={<Depot />} />
       },
@@ -356,6 +406,11 @@ const routes = [
   { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
   { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
   { path: '/admin/reception', element: <Reception /> },
+  { path: '/admin/editreception/:idreception', element: <Editreception /> },
+  { path: '/admin/stockage', element: <Stockage /> },
+  { path: '/admin/editstockage/:idstockage', element: <Editstockage /> },
+  { path: '/admin/distribution', element: <Distribution /> },
+  { path: '/admin/editdistribution/:iddistribution', element: <Editdistribution /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/editdepot/:iddepot', element: <Editdepot /> },
   { path: '/admin/emplacement/:iddepot', element: <Emplacement /> },

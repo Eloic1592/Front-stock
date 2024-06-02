@@ -43,11 +43,7 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   });
 
   const handleEdit = (idreception) => {
-    window.location.replace('/admin/editcommande/' + idreception);
-  };
-
-  const getInfo = (idreception) => {
-    window.location.replace('/admin/detailcommande/' + idreception);
+    window.location.replace('/admin/editreception/' + idreception);
   };
 
   const {
@@ -71,7 +67,7 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/commande/getreception';
+        let url = baseUrl + '/commande/listreception';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -177,16 +173,18 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idreception" align="center" width="15%">
+                    <TableCell key="idreception" align="center" width="25%">
                       Numero Reception
                     </TableCell>
-                    <TableCell key="idcommande" align="center" width="30%">
+                    <TableCell key="idcommande" align="center" width="25%">
                       Numero commande
                     </TableCell>
-                    <TableCell key="datereception" align="center" width="15%">
+                    <TableCell key="datereception" align="center" width="25%">
                       Date reception
                     </TableCell>
-                    <TableCell width="15%">Action</TableCell>
+                    <TableCell align="center" width="25%">
+                      Action
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -197,20 +195,17 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell align="center">{row.idreception}</TableCell>
-                            <TableCell align="center">{row.idcommande}</TableCell>
-                            <TableCell align="center">{converttodate(row.datereception)}</TableCell>
+                            <TableCell align="center" width="25%">
+                              {row.idreception}
+                            </TableCell>
+                            <TableCell align="center" width="25%">
+                              {row.idcommande}
+                            </TableCell>
+                            <TableCell align="center" width="25%">
+                              {converttodate(row.datereception)}
+                            </TableCell>
 
-                            <TableCell>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => getInfo(row.idreception)}
-                              >
-                                <Icon>info</Icon>
-                              </IconButton>
+                            <TableCell align="center" width="25%">
                               <IconButton
                                 className="button"
                                 variant="contained"
