@@ -398,7 +398,7 @@ const Stockphysique = () => {
                 <Button onClick={handlecancelOpen} color="inherit" variant="contained">
                   Reinitialiser
                 </Button>
-                <Button variant="contained" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="error" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">
@@ -421,9 +421,9 @@ const Stockphysique = () => {
               </DialogTitle>
 
               <DialogActions>
-                <Button variant="contained" color="secondary" onClick={handlecancelClose}>
+                {/* <Button variant="contained" color="secondary" onClick={handlecancelClose}>
                   Annuler
-                </Button>
+                </Button> */}
                 <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>

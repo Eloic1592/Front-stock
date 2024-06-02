@@ -334,7 +334,7 @@ const Detailfictif = () => {
                 <Button onClick={handlecancelOpen} color="inherit" variant="contained">
                   Reinitialiser
                 </Button>
-                <Button variant="contained" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="error" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button onClick={handleSubmit} color="primary" variant="contained">
@@ -355,7 +355,7 @@ const Detailfictif = () => {
               </DialogTitle>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+                <Button variant="contained" color="error" onClick={handlecancelClose}>
                   Annuler
                 </Button>
                 <Button onClick={resetData} color="primary" variant="contained">
