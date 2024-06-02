@@ -79,9 +79,9 @@ function Datalistarticle({ articles, state, handleClose, setArticle }) {
                 <TableHead>
                   <TableRow>
                     <TableCell width="25%"></TableCell>
-                    <TableCell width="25%">Marque</TableCell>
-                    <TableCell width="25%">Modele</TableCell>
-                    <TableCell width="50%">Description</TableCell>
+                    <TableCell width="25%">Marque-Modele</TableCell>
+                    <TableCell width="25%">Code article</TableCell>
+                    <TableCell width="25%">Description</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -99,9 +99,11 @@ function Datalistarticle({ articles, state, handleClose, setArticle }) {
                           inputProps={{ 'aria-label': `Row ${article.idarticle}` }}
                         />
                       </TableCell>
-                      <TableCell width="25%">{article.marque}</TableCell>
-                      <TableCell width="25%">{article.modele}</TableCell>
-                      <TableCell width="50%">{article.description}</TableCell>
+                      <TableCell width="25%">
+                        {article.marque} {article.modele}
+                      </TableCell>
+                      <TableCell width="25%">{article.codearticle}</TableCell>
+                      <TableCell width="25%">{article.description}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

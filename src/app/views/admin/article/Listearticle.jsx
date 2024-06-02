@@ -37,6 +37,7 @@ const ListeArticle = () => {
     { label: 'ID article', field: 'idarticle', align: 'center' },
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
+    { label: 'Code article', field: 'codearticle', align: 'center' },
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
     { label: 'description', field: 'description', align: 'center' },
     { label: 'prix', field: 'prix', align: 'center' },
@@ -78,10 +79,10 @@ const ListeArticle = () => {
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData,
-    modele,
+    codearticle,
+    setCodearticle,
     setMarque,
     marque,
-    setModele,
     typemateriel,
     setTypemateriel
   } = useListeArticlefunctions(data);
@@ -162,10 +163,10 @@ const ListeArticle = () => {
                   size="small"
                   type="text"
                   name="modele"
-                  label="Modele"
+                  label="code article"
                   variant="outlined"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
+                  value={codearticle}
+                  onChange={(event) => setCodearticle(event.target.value)}
                   sx={{ mb: 3 }}
                 />
               </Grid>
@@ -262,8 +263,8 @@ const ListeArticle = () => {
                   <TableCell width="16.6%" key="marque" align="center">
                     marque
                   </TableCell>
-                  <TableCell width="16.6%" key="modele" align="center">
-                    modele
+                  <TableCell width="16.6%" key="codearticle" align="center">
+                    Code article
                   </TableCell>
                   <TableCell width="16.6%" key="typemateriel" align="center">
                     type materiel
@@ -303,7 +304,7 @@ const ListeArticle = () => {
 
                           <TableCell align="center"> {row.idarticle}</TableCell>
                           <TableCell align="center">{row.marque}</TableCell>
-                          <TableCell align="center">{row.modele}</TableCell>
+                          <TableCell align="center">{row.codearticle}</TableCell>
                           <TableCell align="center">
                             {row.typemateriel} - {row.val}
                           </TableCell>
@@ -331,13 +332,17 @@ const ListeArticle = () => {
                                 <Table aria-label="purchases">
                                   <TableHead>
                                     <TableRow key="detailcolumn">
+                                      <TableCell align="center" key="modele">
+                                        Modele
+                                      </TableCell>
                                       <TableCell align="center" key="description">
                                         Description
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
                                   <TableBody>
-                                    <TableRow key={row.idarticle || index}>
+                                    <TableRow key="description">
+                                      <TableCell align="center">{row.modele}</TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
                                     </TableRow>
                                   </TableBody>

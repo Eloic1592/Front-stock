@@ -9,7 +9,7 @@ export const useListeArticlefunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [typemateriel, setTypemateriel] = useState('1');
-  const [modele, setModele] = useState('');
+  const [codearticle, setCodearticle] = useState('');
   const [marque, setMarque] = useState('');
 
   // Pagination
@@ -42,7 +42,7 @@ export const useListeArticlefunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrearticle(data.articles, marque, modele, typemateriel);
+  const filtredata = filtrearticle(data.articles, marque, codearticle, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     for (let column of sortColumn) {
       if (a[column] < b[column]) {
@@ -78,8 +78,8 @@ export const useListeArticlefunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    modele,
-    setModele,
+    codearticle,
+    setCodearticle,
     marque,
     setMarque,
     typemateriel,
@@ -87,16 +87,17 @@ export const useListeArticlefunctions = (data) => {
   };
 };
 
-export function filtrearticle(listearticle, marque, modele, typemateriel) {
+export function filtrearticle(listearticle, marque, codearticle, typemateriel) {
   return listearticle.filter((Item) => {
     const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
-    const modelematch =
-      !modele || (Item.modele && Item.modele.toLowerCase().includes(modele.toLowerCase()));
+    const codearticlematch =
+      !codearticle ||
+      (Item.codearticle && Item.codearticle.toLowerCase().includes(codearticle.toLowerCase()));
 
     let typematch = true;
     if (typemateriel !== '1') {
       typematch = Item.idtypemateriel === typemateriel;
     }
-    return modelematch && marquematch && typematch;
+    return codearticlematch && marquematch && typematch;
   });
 }

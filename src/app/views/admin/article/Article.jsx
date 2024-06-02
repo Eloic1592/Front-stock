@@ -38,6 +38,7 @@ const Article = () => {
   const [typemateriel, setTypemateriel] = useState('1');
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
+  const [codearticle, setCodearticle] = useState('');
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
   const [quantitestock, setQuantitestock] = useState(0);
@@ -58,6 +59,7 @@ const Article = () => {
     let params = {
       marque: marque,
       modele: modele,
+      codearticle: codearticle,
       idtypemateriel: typemateriel,
       description: description,
       prix: prix,
@@ -266,6 +268,20 @@ const Article = () => {
                       name="modele"
                       value={modele}
                       onChange={(event) => setModele(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="codearticle"
+                      type="text"
+                      margin="dense"
+                      label="Code article"
+                      name="codearticle"
+                      placeholder="Ex: NEC-MOD"
+                      value={codearticle}
+                      onChange={(event) => setCodearticle(event.target.value)}
                     />
                   </Grid>
                   <Grid item xs={6}>
