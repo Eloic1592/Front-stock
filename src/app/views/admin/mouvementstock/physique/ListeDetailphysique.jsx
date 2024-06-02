@@ -416,14 +416,6 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                       <Fragment key={row.iddetailmouvementphysique}>
                         {/* Clé unique pour chaque fragment */}
                         <TableRow key={`row_${row.iddetailmouvementphysique}`}>
-                          {/* <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(row.iddetailmouvementphysique)}
-                              onChange={(event) =>
-                                handleSelection(event, row.iddetailmouvementphysique)
-                              }
-                            />
-                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"

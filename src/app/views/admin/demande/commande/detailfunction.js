@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useDetaildevisFunctions = (data) => {
+export const useListedetailcommandeFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingId, setEditingId] = useState(null);
@@ -10,7 +10,6 @@ export const useDetaildevisFunctions = (data) => {
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -23,37 +22,37 @@ export const useDetaildevisFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.iddetaildevis);
+    setEditingId(row.iddetailcommande);
     setIsEditClicked(true);
-    setSelectedRowId(row.iddetaildevis);
+    setSelectedRowId(row.iddetailcommande);
   };
   const cancelEdit = () => {
     setEditingId(null);
     setIsEditClicked(false);
   };
 
-  const handleSave = (value, id, field) => {
+  const handleSave = () => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, iddetaildevis) => {
+  const handleSelection = (event, iddetailcommande) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, iddetaildevis]);
+      setSelectedIds([...selectedIds, iddetailcommande]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== iddetaildevis));
+      setSelectedIds(selectedIds.filter((i) => i !== iddetailcommande));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.detaildevis.map((row) => row.iddetaildevis));
+      setSelectedIds(data.detailcommandeviews.map((row) => row.iddetailcommande));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtredetaildevis(data.detaildevis, marque, modele);
+  const filtredata = filtredetailcommande(data.detailcommandeviews, marque);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -97,21 +96,19 @@ export const useDetaildevisFunctions = (data) => {
     handleSelectColumn,
     sortedData,
     marque,
-    setMarque,
-    modele,
-    setModele
+    setMarque
   };
 };
 
-export function filtredetaildevis(listedetaildevis, marque, modele) {
-  return listedetaildevis.filter((detail) => {
+export function filtredetailcommande(listedetailcommande, filtre) {
+  return listedetailcommande.filter((detail) => {
     // Vérifier si la date du devis correspond à la date spécifiée
-    const marquematch = !marque || detail.marque.toLowerCase().includes(marque.toLowerCase());
+    const marquematch = !filtre || detail.marque.toLowerCase().includes(filtre.toLowerCase());
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const modeleMatch = !modele || detail.modele.toLowerCase().includes(modele.toLowerCase());
+    const modeleMatch = !filtre || detail.modele.toLowerCase().includes(filtre.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return marquematch && modeleMatch;
+    return marquematch || modeleMatch;
   });
 }

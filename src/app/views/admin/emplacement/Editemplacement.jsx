@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 
 const Editemplacement = () => {
   const idemplacement = useParams();
+  const iddepot = useParams();
   const handleAlertClose = () => setMessage({ open: false });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -93,8 +94,8 @@ const Editemplacement = () => {
     fetchData();
   }, [idemplacement.idemplacement]);
 
-  const handleCancel = (iddepot) => {
-    window.location.replace('/admin/emplacement/' + iddepot);
+  const handleCancel = () => {
+    window.location.replace('/admin/emplacement/' + iddepot.iddepot);
   };
 
   return (

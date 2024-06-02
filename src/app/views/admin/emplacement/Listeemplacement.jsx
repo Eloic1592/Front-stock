@@ -47,8 +47,8 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
-  const handleEdit = (idemplacement) => {
-    window.location.replace('/admin/editemplacement/' + idemplacement);
+  const handleEdit = (idemplacement, iddepot) => {
+    window.location.replace('/admin/editemplacement/' + idemplacement + '/' + iddepot);
   };
 
   const {
@@ -113,7 +113,7 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un type de materiel">
+          <SimpleCard title="Rechercher un emplacement">
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <TextField
@@ -133,7 +133,7 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des types de materiel">
+          <SimpleCard title="Liste des emplacements">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -217,7 +217,7 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row.idemplacement)}
+                              onClick={() => handleEdit(row.idemplacement, row.iddepot)}
                             >
                               <Icon>edit_icon</Icon>
                             </IconButton>

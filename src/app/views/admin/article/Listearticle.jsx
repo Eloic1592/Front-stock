@@ -28,7 +28,7 @@ import { saveAs } from 'file-saver';
 import PDFArticle from './PDFListeArticle';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
-// import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { formatNumber } from 'app/utils/utils';
 import { CSVLink } from 'react-csv';
 
 const ListeArticle = () => {
@@ -38,7 +38,9 @@ const ListeArticle = () => {
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
     { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'description', field: 'description', align: 'center' }
+    { label: 'description', field: 'description', align: 'center' },
+    { label: 'prix', field: 'prix', align: 'center' },
+    { label: 'quantite en stock', field: 'quantitestock', align: 'center' }
   ];
   const [data, setData] = useState({ articles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -264,7 +266,13 @@ const ListeArticle = () => {
                     modele
                   </TableCell>
                   <TableCell width="16.6%" key="typemateriel" align="center">
-                    Type materiel
+                    type materiel
+                  </TableCell>
+                  <TableCell width="16.6%" key="prix" align="center">
+                    prix
+                  </TableCell>
+                  <TableCell width="16.6%" key="typemateriel" align="center">
+                    quantite stock
                   </TableCell>
                   <TableCell align="center" key="action" width="16.6%">
                     Action
@@ -296,8 +304,11 @@ const ListeArticle = () => {
                           <TableCell align="center"> {row.idarticle}</TableCell>
                           <TableCell align="center">{row.marque}</TableCell>
                           <TableCell align="center">{row.modele}</TableCell>
-                          <TableCell align="center">{row.typemateriel}</TableCell>
-
+                          <TableCell align="center">
+                            {row.typemateriel} - {row.val}
+                          </TableCell>
+                          <TableCell align="center">{formatNumber(row.prix)}</TableCell>
+                          <TableCell align="center">{formatNumber(row.quantitestock)}</TableCell>
                           <TableCell align="center">
                             <IconButton
                               className="button"
@@ -311,7 +322,7 @@ const ListeArticle = () => {
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${row.idarticle}_${index}`}>
-                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                             <Collapse in={openRows[row.idarticle]} timeout="auto" unmountOnExit>
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">

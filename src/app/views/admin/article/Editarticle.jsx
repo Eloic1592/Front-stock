@@ -32,6 +32,8 @@ const Editarticle = () => {
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [description, setDescription] = useState('');
+  const [prix, setPrix] = useState(0);
+  const [quantitestock, setQuantitestock] = useState(0);
 
   const handleSubmit = () => {
     if (!marque || typemateriel === '1') {
@@ -47,7 +49,9 @@ const Editarticle = () => {
       marque: marque,
       modele: modele,
       idtypemateriel: typemateriel,
-      description: description
+      description: description,
+      prix: prix,
+      quantitestock: quantitestock
     };
     let url = baseUrl + '/article/createarticle';
     fetch(url, {
@@ -108,6 +112,8 @@ const Editarticle = () => {
         setTypemateriel(newData.article.idtypemateriel);
         setModele(newData.article.modele);
         setDescription(newData.article.description);
+        setPrix(newData.article.prix);
+        setQuantitestock(newData.article.quantitestock);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -174,10 +180,36 @@ const Editarticle = () => {
                 <MenuItem value="1">Selectionner un type de materiel</MenuItem>
                 {data.typemateriels.map((row) => (
                   <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                    {row.typemateriel}
+                    {row.typemateriel} - {row.val}
                   </MenuItem>
                 ))}
               </Select>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="prix"
+                type="text"
+                margin="prix"
+                label="Prix"
+                name="prix"
+                value={prix}
+                onChange={(event) => setPrix(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="quantitestock"
+                type="text"
+                margin="dense"
+                label="Quantite en stock"
+                name="quantitestock"
+                value={quantitestock}
+                onChange={(event) => setQuantitestock(event.target.value)}
+              />
             </Grid>
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>
               <Grid item>

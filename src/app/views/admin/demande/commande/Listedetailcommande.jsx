@@ -5,51 +5,63 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Icon,
+  IconButton,
   Select,
   MenuItem,
   Grid,
   Snackbar,
-  Button,
-  Icon,
-  Alert
+  Alert,
+  TextField
 } from '@mui/material';
-import { SimpleCard } from 'app/components';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useDetaildevisFunctions } from 'app/views/admin/demande/commande/detailfunction';
-import { useState, useEffect } from 'react';
+import { useListedetailcommandeFunctions } from 'app/views/admin/demande/commande/detailfunction';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 import { formatNumber } from 'app/utils/utils';
-import PDFproforma from './PDFproforma';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-import { useFetchProformaDetails } from 'app/views/admin/demande/proforma/proformafunction';
 
-const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
-  const iddevis = useParams();
+const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
+  const idcommande = useParams();
   // Colonne
   const columns = [
-    { label: 'ID', field: 'iddetaildevis', align: 'center' },
-    { label: 'Marque', field: 'marque', align: 'center' },
-    { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
+    { label: 'ID', field: 'iddetailcommande', align: 'center' },
+    { label: 'Numero Commande', field: 'idcommande', align: 'center' },
+    { label: 'Article', field: 'marque', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
   ];
-  const [data, setData] = useState({ detaildevis: [], total: 0 });
+  const [data, setData] = useState({
+    detailcommandeviews: [],
+    articles: []
+  });
+
+  const handleEdit = (iddetailcommande) => {
+    window.location.replace('/admin/editdetailcommande/' + iddetailcommande);
+  };
+
   const {
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
+    isEditClicked,
+    selectedRowId,
     handleChangePage,
     sortColumn,
+    selectedIds,
     handleChangeRowsPerPage,
+    handleSelectAll,
     handleSelectColumn,
-    sortedData
-  } = useDetaildevisFunctions(data);
+    sortedData,
+    marque,
+    setMarque,
+    modele,
+    setModele
+  } = useListedetailcommandeFunctions(data);
 
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -57,36 +69,30 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     open: false
   });
   const handleAlertClose = () => setMessage({ open: false });
-
-  const proformaData = useFetchProformaDetails(iddevis.iddevis);
-  const generateProformaPDF = async () => {
-    const blob = await renderPdf(
-      <PDFproforma dataList={proformaData} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Proforma.pdf');
-  };
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let devisParams = {
-          iddevis: iddevis.iddevis
+        let commandeParams = {
+          idcommande: idcommande.idcommande
         };
-        let url = baseUrl + '/proforma/detailproforma';
+        let url = baseUrl + '/commande/detailcontentpage';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(devisParams),
+          body: JSON.stringify(commandeParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) {
           throw new Error(`Request failed with status: ${response.status}`);
         }
+
         const responseData = await response.json();
         const newData = {
-          detaildevis: responseData.detaildevis || [],
-          total: responseData.somme || 0
+          detailcommandeviews: responseData.detailcommandeviews || [],
+          articles: responseData.articles || []
         };
 
         setData(newData);
@@ -98,19 +104,48 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
         });
       }
     };
-    fetchData();
-  }, [iddevis.iddevis]);
-
-  //Retour page retour
-  const redirect = () => {
-    window.location.replace('/admin/proforma');
-  };
+    if (!initialDataFetched) {
+      fetchData();
+      setInitialDataFetched(true);
+    }
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched, idcommande.idcommande]);
 
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Details du proforma">
+          <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="text"
+                  name="marque"
+                  variant="outlined"
+                  label="Marque"
+                  value={marque}
+                  onChange={(event) => setMarque(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  id="nomclient"
+                  size="small"
+                  type="text"
+                  name="nomclient"
+                  label="Modele"
+                  value={modele}
+                  onChange={(event) => setModele(event.target.value)}
+                />
+              </Grid>
+            </Grid>
+          </SimpleCard>
+        </Grid>
+        <Grid item>
+          <SimpleCard title="Details du devis">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -144,43 +179,30 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2}>
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  onClick={generateProformaPDF}
-                >
-                  <Icon>picture_as_pdf</Icon>
-                </Button>
-              </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="iddetaildevis" align="center">
+                  <TableCell key="iddetailcommande" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="marque" align="center">
-                    Marque
+                  <TableCell key="numerocommande" align="center" width="30%">
+                    Numero commande
                   </TableCell>
-                  <TableCell key="modele" align="center">
-                    Modele
+                  <TableCell key="marque" align="center" width="30%">
+                    Article
                   </TableCell>
-                  <TableCell key="description" align="center">
-                    Description
-                  </TableCell>
-                  <TableCell key="quantite" align="center">
+                  <TableCell key="quantite" align="center" width="30%">
                     Quantite
                   </TableCell>
-                  <TableCell key="pu" align="center">
+                  <TableCell key="pu" align="center" width="30%">
                     Prix unitaire
                   </TableCell>
-                  <TableCell key="total" align="center">
+                  <TableCell key="total" align="center" width="30%">
                     Total
                   </TableCell>
+                  <TableCell width="15%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -190,13 +212,33 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={index}>
-                        <TableCell align="center">{row.iddetaildevis}</TableCell>
-                        <TableCell align="center">{row.marque}</TableCell>
-                        <TableCell align="center">{row.modele}</TableCell>
-                        <TableCell align="center">{row.description}</TableCell>
-                        <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
-                        <TableCell align="center">{formatNumber(row.pu)}</TableCell>
-                        <TableCell align="center">{formatNumber(row.total)}</TableCell>
+                        <>
+                          <TableCell align="center">{row.iddetailcommande}</TableCell>
+                          <TableCell align="center">{row.idcommande}</TableCell>
+                          <TableCell align="center">
+                            {row.marque}-{row.modele}
+                          </TableCell>
+                          <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
+                          <TableCell align="center">{formatNumber(row.pu)}</TableCell>
+                          <TableCell align="center">{formatNumber(row.total)}</TableCell>
+
+                          <TableCell>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.iddetailcommande)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </>
+                        {isEditClicked && row.idcommande === selectedRowId && (
+                          <>
+                            <TableCell></TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
@@ -210,14 +252,8 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                 )}
               </TableBody>
             </StyledTable>
-
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={6}>
-                <span style={{ fontSize: '1 em', color: 'green' }}>
-                  SOMME: {formatNumber(data.total)}
-                </span>
-              </Grid>
-              <Grid item xs={6}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <TablePagination
                   sx={{ px: 2 }}
                   page={page}
@@ -234,13 +270,6 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
             </Grid>
           </SimpleCard>
         </Grid>
-        <Grid item>
-          <Box>
-            <Button variant="contained" color="primary" onClick={redirect}>
-              <Icon>arrow_backward</Icon>
-            </Button>
-          </Box>
-        </Grid>
       </Grid>
       <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
         <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
@@ -251,4 +280,4 @@ const Listedetailproforma = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   );
 };
 
-export default Listedetailproforma;
+export default Listedetailcommande;

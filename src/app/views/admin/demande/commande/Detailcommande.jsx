@@ -8,8 +8,7 @@ import {
   DialogTitle,
   Dialog,
   Grid,
-  Select,
-  MenuItem
+  Icon
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -17,12 +16,13 @@ import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
-import Listedetaildevis from './Listedetaildevis';
 import { useParams } from 'react-router-dom';
+import Listedetailcommande from './Listedetailcommande';
+import Datalistarticle from '../../Datagrid/Datalistarticle';
 
-const Detaildevis = () => {
-  const iddevis = useParams();
-  console.log(iddevis.iddevis);
+const Detailcommande = () => {
+  const idcommande = useParams();
+  console.log(idcommande.idcommande);
 
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -31,14 +31,18 @@ const Detaildevis = () => {
   const handleAlertClose = () => setMessage({ open: false });
   const handlecancelOpen = () => setAlertOpen(true);
   const handlecancelClose = () => setAlertOpen(false);
-  // const [fileOpen, setFileOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [opendatagrid, setOpendatagrid] = useState(false);
+  const handleClickOpendatagrid = () => setOpendatagrid(true);
+  const handleCloseOpendatagrid = () => {
+    setOpendatagrid(false);
+  };
 
   // Data
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [description, setDescription] = useState('');
-  const [article, setArticle] = useState(['1']);
+  const [article, setArticle] = useState('');
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
     articles: []
@@ -58,7 +62,7 @@ const Detaildevis = () => {
       return;
     }
     const newData = {
-      iddevis: iddevis.iddevis,
+      idcommande: idcommande.idcommande,
       idarticle: article,
       quantite: quantite,
       pu: prixunitaire,
@@ -71,7 +75,7 @@ const Detaildevis = () => {
 
   // Validation form
   const handleSubmit = () => {
-    let url = baseUrl + '/devis/createdetaildevis';
+    let url = baseUrl + '/commande/createdetailcommande';
     if (formData.length !== 0) {
       fetch(url, {
         crossDomain: true,
@@ -105,10 +109,14 @@ const Detaildevis = () => {
       open: true
     });
   };
+  //Retour page retour
+  const redirect = () => {
+    window.location.replace('/admin/commande');
+  };
 
   // Reset data to null
   const resetData = () => {
-    setArticle(['1']);
+    setArticle('');
     setQuantite(0);
     setPrixunitaire(0);
     setDescription('');
@@ -126,7 +134,7 @@ const Detaildevis = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/devis/contentform';
+        let url = baseUrl + '/commande/detailcontentpage';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -153,15 +161,29 @@ const Detaildevis = () => {
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Devis', path: 'admin/devis' }, { name: 'Devis' }]} />
+        <Breadcrumb
+          routeSegments={[
+            { name: 'Details commande', path: 'admin/detailcommande' },
+            { name: 'Details commande' }
+          ]}
+        />
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <Box>
-            <Button variant="contained" onClick={handleClickOpen} color="primary">
-              Nouveau detail
-            </Button>
-          </Box>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <Button variant="contained" color="inherit" onClick={redirect}>
+                <Icon>arrow_backward</Icon>
+              </Button>
+            </Grid>
+            <Grid item>
+              <Box>
+                <Button variant="contained" onClick={handleClickOpen} color="primary">
+                  Nouveau detail
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item>
           <Box>
@@ -174,22 +196,30 @@ const Detaildevis = () => {
             >
               <DialogContent>
                 <Grid container direction="column" spacing={1}>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      margin="dense"
-                      label="Article"
-                      value={article}
-                      onChange={(event) => setArticle(event.target.value)}
-                    >
-                      <MenuItem value="1">Choisir un article</MenuItem>
-                      {data.articles.map((row, index) => (
-                        <MenuItem key={index} value={row.idarticle}>
-                          {row.modele}/{row.codearticle}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                  <Grid item container xs={12} spacing={1}>
+                    <Grid item xs={11}>
+                      <TextField
+                        fullWidth
+                        type="text"
+                        name="article"
+                        label="Article"
+                        variant="outlined"
+                        value={article}
+                        onChange={setArticle}
+                        InputProps={{ readOnly: true }}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Datalistarticle
+                        articles={data.articles}
+                        state={opendatagrid}
+                        handleClose={handleCloseOpendatagrid}
+                        setArticle={setArticle}
+                      />
+                      <Button color="inherit" variant="contained" onClick={handleClickOpendatagrid}>
+                        ...
+                      </Button>
+                    </Grid>
                   </Grid>
                   <Grid item xs={4}>
                     <TextField
@@ -248,7 +278,7 @@ const Detaildevis = () => {
                 <Button onClick={handlecancelOpen} color="inherit" variant="contained">
                   Reinitialiser
                 </Button>
-                <Button variant="contained" color="secondary" onClick={handleClose}>
+                <Button variant="contained" color="error" onClick={handleClose}>
                   Annuler
                 </Button>
                 <Button variant="contained" onClick={handleSubmit} color="primary">
@@ -268,7 +298,7 @@ const Detaildevis = () => {
               </DialogTitle>
 
               <DialogActions>
-                <Button variant="outlined" color="secondary" onClick={handlecancelClose}>
+                <Button variant="contained" color="error" onClick={handlecancelClose}>
                   Annuler
                 </Button>
                 <Button onClick={resetData} color="primary" variant="contained">
@@ -284,9 +314,9 @@ const Detaildevis = () => {
           {message.text}
         </Alert>
       </Snackbar>
-      <Listedetaildevis />
+      <Listedetailcommande />
     </Container>
   );
 };
 
-export default Detaildevis;
+export default Detailcommande;

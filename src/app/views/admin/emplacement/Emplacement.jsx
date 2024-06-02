@@ -122,8 +122,8 @@ const Emplacement = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Type de materiel', path: 'admin/emplacement' },
-            { name: 'Type de materiel' }
+            { name: 'Emplacement', path: 'admin/emplacement' },
+            { name: 'Emplacement' }
           ]}
         />
       </Box>

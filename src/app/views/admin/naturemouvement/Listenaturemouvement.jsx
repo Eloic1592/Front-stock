@@ -342,7 +342,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                     ))
                 ) : (
                   <TableRow key="no-data">
-                    <TableCell colSpan={3}>
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnee disponible
                       </Typography>

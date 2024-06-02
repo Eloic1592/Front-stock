@@ -12,13 +12,13 @@ import {
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import Listedevis from './Listedevis';
+import Listecommande from './Listecommande';
 import { Container } from 'app/views/style/style';
 import CustomizedTable from 'app/views/material-kit/tables/CustomizedTable';
 import { baseUrl } from 'app/utils/constant';
 import Datalistclient from '../../Datagrid/Datalistclient';
 import Datalistarticle from '../../Datagrid/Datalistarticle';
-const Devis = () => {
+const Commande = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => setOpen(true);
@@ -39,13 +39,16 @@ const Devis = () => {
   };
 
   // Data
-  const [datedevis, setDatedevis] = useState('');
+  // Commande
+  const [datecommande, setDatecommande] = useState('');
+  const [client, setClient] = useState('');
   const [libelle, setLibelle] = useState('');
+
+  // Detail commande
+  const [article, setArticle] = useState('');
   const [quantite, setQuantite] = useState(0);
   const [prixunitaire, setPrixunitaire] = useState(0);
   const [description, setDescription] = useState('');
-  const [article, setArticle] = useState('');
-  const [client, setClient] = useState('');
   const [formData, setFormData] = useState([]);
   const [data, setData] = useState({
     clients: [],
@@ -72,28 +75,28 @@ const Devis = () => {
 
   // Validation form
   const handleSubmit = () => {
-    if (!datedevis || !client || !libelle) {
+    if (!datecommande || !client || !libelle) {
       setMessage({
-        text: 'Les champs suivants sont obligatoires : datedevis, client, libelle',
+        text: 'Les champs suivants sont obligatoires : datecommande, client, libelle',
         severity: 'error',
         open: true
       });
       return;
     }
 
-    let params = {
+    let commande = {
       idclient: client,
-      datedevis: datedevis,
+      datecommande: datecommande,
       statut: 0,
       libelle: libelle,
-      detaildevis: formData
+      detailcommandes: formData
     };
 
-    let url = baseUrl + '/devis/createdevis';
+    let url = baseUrl + '/commande/createcommande';
     fetch(url, {
       crossDomain: true,
       method: 'POST',
-      body: JSON.stringify(params),
+      body: JSON.stringify(commande),
       headers: { 'Content-Type': 'application/json' }
     })
       .then((response) => response.json())
@@ -119,8 +122,8 @@ const Devis = () => {
 
   // Reset data to null
   const resetData = () => {
-    setArticle(['1']);
-    setClient(['1']);
+    setArticle('');
+    setClient('');
     setQuantite(0);
     setPrixunitaire(0);
     setDescription('');
@@ -166,24 +169,19 @@ const Devis = () => {
     };
     fetchData();
   }, []);
-  // const handleClientChange = (event, newValue) => {
-  //   if (newValue) {
-  //     setClient(newValue.idClient);
-  //   } else {
-  //     setClient(null);
-  //   }
-  // };
 
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Devis', path: 'admin/devis' }, { name: 'Devis' }]} />
+        <Breadcrumb
+          routeSegments={[{ name: 'Commande', path: 'admin/commande' }, { name: 'Commande' }]}
+        />
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <Box>
             <Button variant="contained" onClick={handleClickOpen} color="primary">
-              Nouveau devis
+              Nouvelle Commande
             </Button>
           </Box>
         </Grid>
@@ -196,19 +194,17 @@ const Devis = () => {
               fullWidth
               maxWidth="xl"
             >
-              <DialogTitle id="form-dialog-title">Nouveau devis</DialogTitle>
+              <DialogTitle id="form-dialog-title"> Nouvelle Commande</DialogTitle>
               <DialogContent>
-                {' '}
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
-                    {' '}
                     <TextField
                       fullWidth
-                      id="datedevis"
+                      id="datecommande"
                       type="date"
-                      name="datedevis"
-                      value={datedevis}
-                      onChange={(event) => setDatedevis(event.target.value)}
+                      name="datecommande"
+                      value={datecommande}
+                      onChange={(event) => setDatecommande(event.target.value)}
                     />
                   </Grid>
                   <Grid item container spacing={1} xs={4}>
@@ -239,7 +235,7 @@ const Devis = () => {
                   <Grid item xs={4}>
                     <TextField
                       fullWidth
-                      id="datedevis"
+                      id="datecommande"
                       type="text"
                       name="libelle"
                       label="Libelle"
@@ -308,7 +304,7 @@ const Devis = () => {
                   <Grid item xs={3}>
                     <Button
                       fullWidth
-                      variant="outlined"
+                      variant="contained"
                       color="secondary"
                       sx={{ mb: 3 }}
                       onClick={handledetails}
@@ -322,7 +318,7 @@ const Devis = () => {
                     <TextField
                       fullWidth
                       multiline
-                      rows={10}
+                      rows={9}
                       variant="outlined"
                       label="Description"
                       value={description}
@@ -379,9 +375,9 @@ const Devis = () => {
         </Alert>
       </Snackbar>
 
-      <Listedevis />
+      <Listecommande />
     </Container>
   );
 };
 
-export default Devis;
+export default Commande;

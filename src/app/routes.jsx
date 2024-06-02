@@ -80,27 +80,19 @@ const StockMateriel = Loadable(lazy(() => import('app/views/admin/materiel/Stock
 
 const Facture = Loadable(lazy(() => import('app/views/admin/facture/Facture')));
 
-const Devis = Loadable(lazy(() => import('app/views/admin/demande/devis/Devis')));
+const Commande = Loadable(lazy(() => import('app/views/admin/demande/commande/Commande')));
 
-const Detaildevis = Loadable(lazy(() => import('app/views/admin/demande/devis/Detaildevis')));
+const Editcommande = Loadable(lazy(() => import('app/views/admin/demande/commande/Editcommande')));
 
-const Proforma = Loadable(lazy(() => import('app/views/admin/demande/proforma/Proforma')));
-
-const Detailproforma = Loadable(
-  lazy(() => import('app/views/admin/demande/proforma/Detailproforma'))
+const Detailcommande = Loadable(
+  lazy(() => import('app/views/admin/demande/commande/Detailcommande'))
 );
 
-const Commande = Loadable(lazy(() => import('app/views/admin/Bon/commande/Commande')));
-
-const DetailCommande = Loadable(
-  lazy(() => import('app/views/admin/Bon/commande/detail/Listedetailcommande'))
+const Editdetailcommande = Loadable(
+  lazy(() => import('app/views/admin/demande/commande/Editdetailcommande'))
 );
 
 const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/livraison/Livraison')));
-
-const Detaillivraison = Loadable(
-  lazy(() => import('app/views/admin/Bon/livraison/Detaillivraison'))
-);
 
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
@@ -248,43 +240,25 @@ const routes = [
       },
 
       {
-        path: '/admin/devis',
-        element: <ProtectedRoute element={<Devis />} />
-      },
-
-      {
-        path: '/admin/detaildevis/:iddevis',
-        element: <ProtectedRoute element={<Detaildevis />} />
-      },
-
-      {
-        path: '/admin/proforma',
-        element: <ProtectedRoute element={<Proforma />} />
-      },
-
-      {
-        path: '/admin/detailproforma/:iddevis',
-        element: <ProtectedRoute element={<Detailproforma />} />
-      },
-
-      {
         path: '/admin/commande',
         element: <ProtectedRoute element={<Commande />} />
       },
-
       {
-        path: '/admin/detailcommande/:idproforma',
-        element: <ProtectedRoute element={<DetailCommande />} />
+        path: '/admin/editcommande/:idcommande',
+        element: <ProtectedRoute element={<Editcommande />} />
       },
 
+      {
+        path: '/admin/detailcommande/:idcommande',
+        element: <ProtectedRoute element={<Detailcommande />} />
+      },
+      {
+        path: '/admin/editdetailcommande/:iddetailcommande',
+        element: <ProtectedRoute element={<Editdetailcommande />} />
+      },
       {
         path: '/admin/livraison',
         element: <ProtectedRoute element={<Livraison />} />
-      },
-
-      {
-        path: '/admin/detaillivraison/:idproforma',
-        element: <ProtectedRoute element={<Detaillivraison />} />
       },
 
       {
@@ -303,7 +277,7 @@ const routes = [
       },
 
       {
-        path: '/admin/editemplacement/:idemplacement',
+        path: '/admin/editemplacement/:idemplacement/:iddepot',
         element: <ProtectedRoute element={<Editemplacement />} />
       },
 
@@ -386,16 +360,14 @@ const routes = [
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },
   { path: '/admin/facture', element: <Facture /> },
-  { path: '/admin/devis', element: <Devis /> },
-  { path: '/admin/detaildevis/:iddevis', element: <Detaildevis /> },
-  { path: '/admin/proforma', element: <Proforma /> },
-  { path: '/admin/detailproforma/:iddevis', element: <Detailproforma /> },
-  { path: '/admin/detailcommande/:idproforma', element: <DetailCommande /> },
-  { path: '/admin/detaillivraison/:idproforma', element: <Detaillivraison /> },
+  { path: '/admin/commande', element: <Commande /> },
+  { path: '/admin/editcommande/:idcommande', element: <Editcommande /> },
+  { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
+  { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
   { path: '/admin/depot', element: <Depot /> },
-  { path: '/admin/editdepot:iddepot', element: <Editdepot /> },
+  { path: '/admin/editdepot/:iddepot', element: <Editdepot /> },
   { path: '/admin/emplacement/:iddepot', element: <Emplacement /> },
-  { path: '/admin/editemplacement/:idemplacement', element: <Editemplacement /> },
+  { path: '/admin/editemplacement/:idemplacement/:iddepot', element: <Editemplacement /> },
   { path: '/admin/stockdepot', element: <Stockarticledepot /> },
   { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },
   { path: '/admin/stocktypemateriel', element: <StocktypematerielDepot /> },

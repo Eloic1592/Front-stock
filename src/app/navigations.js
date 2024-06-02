@@ -35,18 +35,9 @@ export const navigations = [
     name: 'Commandes',
     icon: 'shopping_cart',
     children: [
-      { name: 'Factures', iconText: 'SI', path: '/admin/facture' },
-      { name: 'Devis', iconText: 'SI', path: '/admin/devis' },
-      {
-        name: 'Proforma',
-        iconText: 'arrows-right',
-        children: [
-          { name: 'Tous les proformas', iconText: 'SI', path: '/admin/proforma' },
-          { name: 'Archives des stocks', iconText: 'SI', path: '/admin/archives' }
-        ]
-      },
-      { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
-      { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
+      { name: 'Commande', iconText: 'SI', path: '/admin/commande' }
+      // { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
+      // { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
     ]
   },
   {

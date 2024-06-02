@@ -39,6 +39,8 @@ const Article = () => {
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [description, setDescription] = useState('');
+  const [prix, setPrix] = useState(0);
+  const [quantitestock, setQuantitestock] = useState(0);
   const [csvFile, setCsvFile] = useState(null);
   const [fileOpen, setFileOpen] = useState(false);
   const handleFileClickOpen = () => setFileOpen(true);
@@ -57,7 +59,9 @@ const Article = () => {
       marque: marque,
       modele: modele,
       idtypemateriel: typemateriel,
-      description: description
+      description: description,
+      prix: prix,
+      quantitestock: quantitestock
     };
     let url = baseUrl + '/article/createarticle';
     fetch(url, {
@@ -291,10 +295,36 @@ const Article = () => {
                       <MenuItem value="1">Selectionner un type</MenuItem>
                       {data.typemateriels.map((row) => (
                         <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                          {row.typemateriel}
+                          {row.typemateriel} - {row.val}
                         </MenuItem>
                       ))}
                     </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="prix"
+                      type="text"
+                      margin="prix"
+                      label="Prix"
+                      name="prix"
+                      value={prix}
+                      onChange={(event) => setPrix(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="quantitestock"
+                      type="text"
+                      margin="dense"
+                      label="Quantite en stock"
+                      name="quantitestock"
+                      value={quantitestock}
+                      onChange={(event) => setQuantitestock(event.target.value)}
+                    />
                   </Grid>
                 </Grid>
               </DialogContent>

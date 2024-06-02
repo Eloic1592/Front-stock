@@ -10,41 +10,46 @@ import {
   TextField,
   Select,
   MenuItem,
+  Grid,
   Snackbar,
-  Alert,
-  Grid
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { useListedepotFunctions } from 'app/views/admin/depot/function';
+import { useListecommandeFunctions } from 'app/views/admin/demande/commande/function';
 import { baseUrl } from 'app/utils/constant';
-import { formatNumber } from 'app/utils/utils';
+import { converttodate } from 'app/utils/utils';
 
-const Listedepot = () => {
+const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
+  // Colonne
   const columns = [
-    { label: 'Iddepot', field: 'iddepot', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' },
-    { label: 'Code depot', field: 'codedepot', align: 'center' },
-    { label: 'Capacite', field: 'capacite', align: 'center' }
+    { label: 'ID', field: 'idcommande', align: 'center' },
+    { label: 'Nom client', field: 'nom', align: 'center' },
+    { label: 'Date devis', field: 'datedevis', align: 'center' },
+    { label: 'Libele', field: 'libelle', align: 'center' }
   ];
-  const [data, setData] = useState([]);
-  const [initialDataFetched, setInitialDataFetched] = useState(false);
+
   const handleAlertClose = () => setMessage({ open: false });
+  const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [data, setData] = useState({
+    vueCommandes: [],
+    clients: [],
+    articles: []
+  });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  // Update
-  const handleEdit = (iddepot) => {
-    window.location.replace('/admin/editdepot/' + iddepot);
+  const handleEdit = (idcommande) => {
+    window.location.replace('/admin/editcommande/' + idcommande);
   };
-  // Emplacement
-  const emplacement = (iddepot) => {
-    window.location.replace('/admin/emplacement/' + iddepot);
+
+  const getInfo = (idcommande) => {
+    window.location.replace('/admin/detailcommande/' + idcommande);
   };
 
   const {
@@ -52,19 +57,23 @@ const Listedepot = () => {
     page,
     rowsPerPage,
     setSortDirection,
-    setNomdepot,
-    nomdepot,
+    isEditClicked,
+    selectedRowId,
     handleChangePage,
     sortColumn,
+    numerocommande,
+    setNumerocommande,
+    datecommande,
+    setDatecommande,
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData
-  } = useListedepotFunctions(data);
+  } = useListecommandeFunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/depot/listdepot';
+        let url = baseUrl + '/commande/commandecontentpage';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -73,15 +82,16 @@ const Listedepot = () => {
         });
 
         if (!response.ok) {
-          setMessage({
-            text: "Il y a un probleme, aucune donnee n'a ete recuperee",
-            severity: 'error',
-            open: true
-          });
+          throw new Error(`Request failed with status: ${response.status}`);
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          vueCommandes: responseData.vueCommandes || [],
+          clients: responseData.clients || [],
+          articles: responseData.articles || []
+        };
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -95,29 +105,44 @@ const Listedepot = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [sortedData, initialDataFetched]);
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
   return (
-    <Box width="100%" overflow="auto" key="Box1">
+    <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
-            <TextField
-              fullWidth
-              size="small"
-              type="text"
-              name="materielfiltre"
-              label="Nom du depot ou code du depot"
-              variant="outlined"
-              value={nomdepot}
-              onChange={(event) => setNomdepot(event.target.value)}
-              sx={{ mb: 3 }}
-            />
+          <SimpleCard title="Rechercher une commande" sx={{ marginBottom: '16px' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  id="numerocommande"
+                  size="small"
+                  type="text"
+                  name="numerocommande"
+                  label="ID de la commande"
+                  value={numerocommande}
+                  onChange={(event) => setNumerocommande(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="date"
+                  name="datecommande"
+                  variant="outlined"
+                  value={datecommande}
+                  onChange={(event) => setDatecommande(event.target.value)}
+                  sx={{ mb: 3 }}
+                />
+              </Grid>
+            </Grid>
           </SimpleCard>
         </Grid>
-
         <Grid item>
-          <SimpleCard title="Liste des depots ">
+          <SimpleCard title="Liste des commandes">
+            {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select
@@ -131,8 +156,8 @@ const Listedepot = () => {
                   <MenuItem value="1" disabled>
                     Colonne
                   </MenuItem>
-                  {columns.map((column) => (
-                    <MenuItem key={column.field} value={column.field}>
+                  {columns.map((column, index) => (
+                    <MenuItem key={index} value={column.field}>
                       {column.label}
                     </MenuItem>
                   ))}
@@ -151,25 +176,23 @@ const Listedepot = () => {
                 </Select>
               </Grid>
             </Grid>
-
             <StyledTable>
               <TableHead>
+                {/* Listage de Donnees */}
                 <TableRow>
-                  <TableCell key="iddepot" align="center" width="15%">
-                    iddepot
+                  <TableCell key="idcommande" align="center" width="15%">
+                    Numero commande
                   </TableCell>
-                  <TableCell key="depot" align="center" width="50%">
-                    depot
+                  <TableCell key="nom" align="center" width="30%">
+                    Client
                   </TableCell>
-                  <TableCell key="codedep" align="center" width="50%">
-                    code depot
+                  <TableCell key="datedevis" align="center" width="15%">
+                    Date devis
                   </TableCell>
-                  <TableCell key="capacite" align="center" width="50%">
-                    capacite (unite)
+                  <TableCell key="libelle" align="center" width="30%">
+                    Libele
                   </TableCell>
-                  <TableCell align="center" width="15%">
-                    Action
-                  </TableCell>
+                  <TableCell width="15%">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -177,46 +200,44 @@ const Listedepot = () => {
                 {sortedData && sortedData.length > 0 ? (
                   sortedData
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => (
-                      <TableRow key={row.iddepot} align="center" width="15%">
+                    .map((row, index) => (
+                      <TableRow key={index}>
                         <>
-                          <TableCell align="center" width="15%">
-                            {row.iddepot}
-                          </TableCell>
-                          <TableCell align="center" width="50%">
-                            {row.depot}
-                          </TableCell>
-                          <TableCell align="center" width="50%">
-                            {row.codedep}
-                          </TableCell>
-                          <TableCell align="center" width="50%">
-                            {formatNumber(row.capacite)}
-                          </TableCell>
-                          <TableCell align="center" width="15%">
+                          <TableCell align="center">{row.idcommande}</TableCell>
+                          <TableCell align="center">{row.nom}</TableCell>
+                          <TableCell align="center">{converttodate(row.datecommande)}</TableCell>
+                          <TableCell align="center">{row.libelle}</TableCell>
+
+                          <TableCell>
                             <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
                               color="primary"
-                              onClick={() => handleEdit(row.iddepot)}
+                              onClick={() => getInfo(row.idcommande)}
                             >
-                              <Icon>edit_icon</Icon>
+                              <Icon>info</Icon>
                             </IconButton>
                             <IconButton
                               className="button"
                               variant="contained"
-                              aria-label="Detail"
-                              color="inherit"
-                              onClick={() => emplacement(row.iddepot)}
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idcommande)}
                             >
-                              <Icon>receipt</Icon>
+                              <Icon>edit_icon</Icon>
                             </IconButton>
                           </TableCell>
                         </>
+                        {isEditClicked && row.idcommande === selectedRowId && (
+                          <>
+                            <TableCell></TableCell>
+                          </>
+                        )}
                       </TableRow>
                     ))
                 ) : (
-                  <TableRow key="no-data">
+                  <TableRow>
                     <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnee disponible
@@ -235,7 +256,7 @@ const Listedepot = () => {
                   rowsPerPage={rowsPerPage}
                   count={sortedData.length}
                   onPageChange={handleChangePage}
-                  rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
+                  rowsPerPageOptions={rowsPerPageOptions}
                   onRowsPerPageChange={handleChangeRowsPerPage}
                   nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                   backIconButtonProps={{ 'aria-label': 'Page precedente' }}
@@ -254,4 +275,4 @@ const Listedepot = () => {
   );
 };
 
-export default Listedepot;
+export default Listecommande;

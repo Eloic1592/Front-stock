@@ -32,8 +32,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
 
   const [data, setData] = useState([]);
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editedIdCategorieMateriel, setEditedIdCategorieMateriel] = useState(null);
-  const [editedCategorieMateriel, setEditedCategorieMateriel] = useState(null);
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
@@ -100,11 +99,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
     }
     if (isEditClicked && selectedRowId !== null) {
       const selectedRow = sortedData.find((row) => row.idcategoriemateriel === selectedRowId);
-
-      if (selectedRow) {
-        setEditedIdCategorieMateriel(selectedRow.idcategoriemateriel);
-        setEditedCategorieMateriel((prev) => (prev != null ? prev : selectedRow.categoriemateriel));
-      }
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
@@ -192,59 +186,33 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
                       <TableRow key={row.idcategoriemateriel} align="center" width="15%">
-                        {isEditClicked && row.idcategoriemateriel === selectedRowId ? (
-                          <>
-                            <TableCell key={row.idcategoriemateriel}>
-                              <TextField
-                                value={editedIdCategorieMateriel}
-                                onChange={(event) =>
-                                  setEditedIdCategorieMateriel(event.target.value)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell align="center" width="50%">
-                              <TextField
-                                value={editedCategorieMateriel}
-                                onChange={(event) => setEditedCategorieMateriel(event.target.value)}
-                                onBlur={() =>
-                                  setEditedCategorieMateriel(
-                                    editedCategorieMateriel.trim() !== ''
-                                      ? editedCategorieMateriel
-                                      : row.categoriemateriel
-                                  )
-                                }
-                              />
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center" width="15%">
-                              {row.idcategoriemateriel}
-                            </TableCell>
-                            <TableCell align="center" width="50%">
-                              {row.categoriemateriel}
-                            </TableCell>
-                            <TableCell align="center" width="50%">
-                              {row.val}
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row.idcategoriemateriel)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
+                        <>
+                          <TableCell align="center" width="15%">
+                            {row.idcategoriemateriel}
+                          </TableCell>
+                          <TableCell align="center" width="50%">
+                            {row.categoriemateriel}
+                          </TableCell>
+                          <TableCell align="center" width="50%">
+                            {row.val}
+                          </TableCell>
+                          <TableCell align="center" width="15%">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idcategoriemateriel)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </>
                       </TableRow>
                     ))
                 ) : (
                   <TableRow key="no-data">
-                    <TableCell colSpan={3}>
+                    <TableCell colSpan={12}>
                       <Typography variant="subtitle1" color="textSecondary">
                         Aucune donnee disponible
                       </Typography>

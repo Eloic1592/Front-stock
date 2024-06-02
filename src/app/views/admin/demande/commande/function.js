@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { formatDate } from 'app/utils/utils';
 
-export const useListedevisFunctions = (data) => {
+export const useListecommandeFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingId, setEditingId] = useState(null);
@@ -10,9 +10,8 @@ export const useListedevisFunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [libelle, setLibelle] = useState('');
-  const [datedevis, setDatedevis] = useState('');
-  const [client, setClient] = useState('');
+  const [datecommande, setDatecommande] = useState('');
+  const [numerocommande, setNumerocommande] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -25,9 +24,9 @@ export const useListedevisFunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.iddevis);
+    setEditingId(row.idcommande);
     setIsEditClicked(true);
-    setSelectedRowId(row.iddevis);
+    setSelectedRowId(row.idcommande);
   };
   const cancelEdit = () => {
     setEditingId(null);
@@ -49,13 +48,13 @@ export const useListedevisFunctions = (data) => {
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.clientdevis.map((row) => row.iddevis));
+      setSelectedIds(data.vueCommandes.map((row) => row.idcommande));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtredevis(data.clientdevis, datedevis, client, libelle);
+  const filtredata = filtrecommande(data.vueCommandes, numerocommande, datecommande);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -98,27 +97,26 @@ export const useListedevisFunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setClient,
-    setDatedevis,
-    datedevis,
-    libelle,
-    setLibelle,
-    client
+    numerocommande,
+    setNumerocommande,
+    setDatecommande,
+    datecommande
   };
 };
 
-export function filtredevis(listedevis, datedevis, nomclient) {
-  return listedevis.filter((devis) => {
-    // Vérifier si la date du devis correspond à la date spécifiée
-    const dateDevisMatch =
-      !datedevis ||
-      new Date(new Date(formatDate(devis.datedevis)).getTime()).getTime() ===
-        new Date(datedevis).getTime();
+export function filtrecommande(vueCommandes, numerocommande, datecommande) {
+  return vueCommandes.filter((commande) => {
+    // Vérifier si la date du commande correspond à la date spécifiée
+    const datecommandematch =
+      !datecommande ||
+      new Date(new Date(formatDate(commande.datecommande)).getTime()).getTime() ===
+        new Date(datecommande).getTime();
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const nomClientMatch = !nomclient || devis.nom.toLowerCase().includes(nomclient.toLowerCase());
+    const numeromatch =
+      !numerocommande || commande.idcommande.toLowerCase().includes(numerocommande.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return dateDevisMatch && nomClientMatch;
+    return numeromatch && datecommandematch;
   });
 }
