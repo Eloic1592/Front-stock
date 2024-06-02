@@ -106,9 +106,10 @@ export function filtredetailcommande(listedetailcommande, filtre) {
     const marquematch = !filtre || detail.marque.toLowerCase().includes(filtre.toLowerCase());
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const modeleMatch = !filtre || detail.modele.toLowerCase().includes(filtre.toLowerCase());
+    const codearticleMatch =
+      !filtre || detail.codearticle.toLowerCase().includes(filtre.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return marquematch || modeleMatch;
+    return marquematch || codearticleMatch;
   });
 }

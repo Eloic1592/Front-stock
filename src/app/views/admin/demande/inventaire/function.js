@@ -112,9 +112,11 @@ export function filtreinventaires(vuesinventaires, codearticle, dateinventaire) 
       new Date(new Date(formatDate(inventaire.dateinventaire)).getTime()).getTime() ===
         new Date(dateinventaire).getTime();
 
-    const numeromatch =
+    const marquematch =
       !codearticle || inventaire.marque.toLowerCase().includes(codearticle.toLowerCase());
+    const codearticlematch =
+      !codearticle || inventaire.codearticle.toLowerCase().includes(codearticle.toLowerCase());
 
-    return numeromatch && dateinventairematch;
+    return (marquematch || codearticlematch) && dateinventairematch;
   });
 }

@@ -29,7 +29,7 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
   const columns = [
     { label: 'ID', field: 'iddetailcommande', align: 'center' },
     { label: 'Numero Commande', field: 'idcommande', align: 'center' },
-    { label: 'Article', field: 'marque', align: 'center' },
+    { label: 'Code article', field: 'codearticle', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
     { label: 'Prix unitaire', field: 'pu', align: 'center' },
     { label: 'Total', field: 'total', align: 'center' }
@@ -52,15 +52,11 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
     selectedRowId,
     handleChangePage,
     sortColumn,
-    selectedIds,
     handleChangeRowsPerPage,
-    handleSelectAll,
     handleSelectColumn,
     sortedData,
     marque,
-    setMarque,
-    modele,
-    setModele
+    setMarque
   } = useListedetailcommandeFunctions(data);
 
   const [message, setMessage] = useState({
@@ -116,29 +112,17 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
         <Grid item>
           <SimpleCard title="Rechercher un detail precis" sx={{ marginBottom: '16px' }}>
             <Grid container spacing={3}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   fullWidth
                   size="small"
                   type="text"
                   name="marque"
                   variant="outlined"
-                  label="Marque"
+                  label="Marque ou code l'article"
                   value={marque}
                   onChange={(event) => setMarque(event.target.value)}
                   sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="nomclient"
-                  size="small"
-                  type="text"
-                  name="nomclient"
-                  label="Modele"
-                  value={modele}
-                  onChange={(event) => setModele(event.target.value)}
                 />
               </Grid>
             </Grid>
@@ -190,8 +174,8 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <TableCell key="numerocommande" align="center" width="30%">
                     Numero commande
                   </TableCell>
-                  <TableCell key="marque" align="center" width="30%">
-                    Article
+                  <TableCell key="codearticle" align="center" width="30%">
+                    Code article
                   </TableCell>
                   <TableCell key="quantite" align="center" width="30%">
                     Quantite
@@ -215,9 +199,7 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                         <>
                           <TableCell align="center">{row.iddetailcommande}</TableCell>
                           <TableCell align="center">{row.idcommande}</TableCell>
-                          <TableCell align="center">
-                            {row.marque}-{row.modele}
-                          </TableCell>
+                          <TableCell align="center">{row.codearticle}</TableCell>
                           <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
                           <TableCell align="center">{formatNumber(row.pu)}</TableCell>
                           <TableCell align="center">{formatNumber(row.total)}</TableCell>

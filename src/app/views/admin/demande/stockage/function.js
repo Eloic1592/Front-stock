@@ -113,10 +113,12 @@ export function filtrestockage(vuestockages, codearticle, datestockage) {
         new Date(datestockage).getTime();
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const numeromatch =
+    const filtrematch =
       !codearticle || stockage.marque.toLowerCase().includes(codearticle.toLowerCase());
+    const codematch =
+      !codearticle || stockage.codearticle.toLowerCase().includes(codearticle.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return numeromatch && datestockagematch;
+    return (filtrematch || codematch) && datestockagematch;
   });
 }

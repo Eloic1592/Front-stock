@@ -120,8 +120,10 @@ export function filtredistributions(vuedistributions, codearticle, datedistribut
       new Date(new Date(formatDate(distribution.datedistribution)).getTime()).getTime() ===
         new Date(datedistribution).getTime();
 
-    const numeromatch =
+    const marquematch =
       !codearticle || distribution.marque.toLowerCase().includes(codearticle.toLowerCase());
+    const codearticlematch =
+      !codearticle || distribution.codearticle.toLowerCase().includes(codearticle.toLowerCase());
 
     // Vérifier si le nom du client correspond au nom spécifié
     const depotmatch =
@@ -129,6 +131,8 @@ export function filtredistributions(vuedistributions, codearticle, datedistribut
     const codedepmatch =
       !codedepot || distribution.codedep.toLowerCase().includes(codedepot.toLowerCase());
     // Retourner true si les deux conditions sont remplies
-    return numeromatch && datedistributionmatch && (codedepmatch || depotmatch);
+    return (
+      (marquematch || codearticlematch) && datedistributionmatch && (codedepmatch || depotmatch)
+    );
   });
 }

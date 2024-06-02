@@ -220,7 +220,7 @@ const Listedistribution = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             {converttodate(row.datedistribution)}
                           </TableCell>
                           <TableCell align="center">
-                            {row.marque} - {row.modele}
+                            {row.marque} - {row.modele} / {row.codearticle}
                           </TableCell>
                           <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
                           <TableCell align="center">

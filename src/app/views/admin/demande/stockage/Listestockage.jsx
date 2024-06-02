@@ -200,7 +200,7 @@ const Listestockage = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">{row.idstockage}</TableCell>
                           <TableCell align="center">{converttodate(row.datestockage)}</TableCell>
                           <TableCell align="center">
-                            {row.marque} - {row.modele}
+                            {row.marque} - {row.modele} /{row.codearticle}
                           </TableCell>
                           <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
 
