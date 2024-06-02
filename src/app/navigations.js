@@ -35,9 +35,10 @@ export const navigations = [
     name: 'Commandes',
     icon: 'shopping_cart',
     children: [
-      { name: 'Commande', iconText: 'SI', path: '/admin/commande' }
-      // { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
-      // { name: 'Livraison', iconText: 'SI', path: '/admin/livraison' }
+      { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
+      { name: 'Reception', iconText: 'SI', path: '/admin/reception' },
+      { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
+      { name: 'Inventaire', iconText: 'SI', path: '/admin/inventaire' }
     ]
   },
   {

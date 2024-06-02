@@ -78,8 +78,6 @@ const Editmateriel = Loadable(lazy(() => import('app/views/admin/materiel/Editma
 
 const StockMateriel = Loadable(lazy(() => import('app/views/admin/materiel/Stockmateriel')));
 
-const Facture = Loadable(lazy(() => import('app/views/admin/facture/Facture')));
-
 const Commande = Loadable(lazy(() => import('app/views/admin/demande/commande/Commande')));
 
 const Editcommande = Loadable(lazy(() => import('app/views/admin/demande/commande/Editcommande')));
@@ -92,7 +90,7 @@ const Editdetailcommande = Loadable(
   lazy(() => import('app/views/admin/demande/commande/Editdetailcommande'))
 );
 
-const Livraison = Loadable(lazy(() => import('app/views/admin/Bon/livraison/Livraison')));
+const Reception = Loadable(lazy(() => import('app/views/admin/demande/reception/Reception')));
 
 const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
@@ -235,11 +233,6 @@ const routes = [
       },
 
       {
-        path: '/admin/facture',
-        element: <ProtectedRoute element={<Facture />} />
-      },
-
-      {
         path: '/admin/commande',
         element: <ProtectedRoute element={<Commande />} />
       },
@@ -257,10 +250,9 @@ const routes = [
         element: <ProtectedRoute element={<Editdetailcommande />} />
       },
       {
-        path: '/admin/livraison',
-        element: <ProtectedRoute element={<Livraison />} />
+        path: '/admin/reception',
+        element: <ProtectedRoute element={<Reception />} />
       },
-
       {
         path: '/admin/depot',
         element: <ProtectedRoute element={<Depot />} />
@@ -359,11 +351,11 @@ const routes = [
   },
   { path: '/admin/mouvementfictif', element: <Stockfictif /> },
   { path: '/admin/detailfictif/:idmouvementstock', element: <Detailfictif /> },
-  { path: '/admin/facture', element: <Facture /> },
   { path: '/admin/commande', element: <Commande /> },
   { path: '/admin/editcommande/:idcommande', element: <Editcommande /> },
   { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
   { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
+  { path: '/admin/reception', element: <Reception /> },
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/editdepot/:iddepot', element: <Editdepot /> },
   { path: '/admin/emplacement/:iddepot', element: <Emplacement /> },

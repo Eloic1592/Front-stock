@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { formatDate } from 'app/utils/utils';
 
-export const Commandefunctions = (data) => {
+export const useReceptionFunctions = (data) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editingId, setEditingId] = useState(null);
@@ -9,9 +10,8 @@ export const Commandefunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [libelle, setLibelle] = useState('');
-  const [datecommande, setDatecommande] = useState('');
-  const [client, setClient] = useState('');
+  const [datereception, setDatereception] = useState('');
+  const [numerocommande, setNumerocommande] = useState('');
 
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
@@ -24,37 +24,37 @@ export const Commandefunctions = (data) => {
 
   // Active la modification
   const handleEdit = (row) => {
-    setEditingId(row.idboncommande);
+    setEditingId(row.idreception);
     setIsEditClicked(true);
-    setSelectedRowId(row.idboncommande);
+    setSelectedRowId(row.idreception);
   };
   const cancelEdit = () => {
     setEditingId(null);
     setIsEditClicked(false);
   };
 
-  const handleSave = (value, id, field) => {
+  const handleSave = () => {
     setEditingId(null);
   };
 
-  const handleSelection = (event, idboncommande) => {
+  const handleSelection = (event, id) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, idboncommande]);
+      setSelectedIds([...selectedIds, id]);
     } else {
-      setSelectedIds(selectedIds.filter((i) => i !== idboncommande));
+      setSelectedIds(selectedIds.filter((i) => i !== id));
     }
   };
 
   //Select  toutes les checkboxes de la liste
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedIds(data.map((row) => row.idboncommande));
+      setSelectedIds(data.vuereceptions.map((row) => row.idreception));
     } else {
       setSelectedIds([]);
     }
   };
 
-  const filtredata = filtrecommande(data, datecommande, client);
+  const filtredata = filtrecommande(data.vuereceptions, numerocommande, datereception);
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
@@ -97,27 +97,26 @@ export const Commandefunctions = (data) => {
     handleSelectAll,
     handleSelectColumn,
     sortedData,
-    setClient,
-    setDatecommande,
-    datecommande,
-    libelle,
-    setLibelle,
-    client
+    numerocommande,
+    setNumerocommande,
+    setDatereception,
+    datereception
   };
 };
 
-export function filtrecommande(listeboncommande, datecommande, nomclient) {
-  return listeboncommande.filter((commande) => {
-    // Vérifier si la date du devis correspond à la date spécifiée
-    const dateMatch =
-      !datecommande ||
-      new Date(commande.dateboncommande).getTime() === new Date(datecommande).getTime();
+export function filtrecommande(vuereceptions, numerocommande, datereception) {
+  return vuereceptions.filter((commande) => {
+    // Vérifier si la date du commande correspond à la date spécifiée
+    const datereceptionmatch =
+      !datereception ||
+      new Date(new Date(formatDate(commande.datereception)).getTime()).getTime() ===
+        new Date(datereception).getTime();
 
     // Vérifier si le nom du client correspond au nom spécifié
-    const nomClientMatch =
-      !nomclient || commande.nom.toLowerCase().includes(nomclient.toLowerCase());
+    const numeromatch =
+      !numerocommande || commande.idcommande.toLowerCase().includes(numerocommande.toLowerCase());
 
     // Retourner true si les deux conditions sont remplies
-    return dateMatch && nomClientMatch;
+    return numeromatch && datereceptionmatch;
   });
 }

@@ -8,72 +8,46 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
   Grid,
   Snackbar,
-  Alert,
-  Button
+  Alert
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { SimpleCard, Breadcrumb } from 'app/components';
-import { StyledTable, Container } from 'app/views/style/style';
-import { Commandefunctions } from 'app/views/admin/Bon/commande/Commandefunction';
+import { SimpleCard } from 'app/components';
+import { StyledTable } from 'app/views/style/style';
+import { useReceptionFunctions } from 'app/views/admin/demande/reception/function';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
+import { Container } from 'app/views/style/style';
 
-const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
+const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
-    { label: 'ID Bon commande', field: 'idboncommande', align: 'center' },
-    { label: 'Date commande', field: 'dateboncommande', align: 'center' },
-    { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'proforma', field: 'idproforma', align: 'center' }
+    { label: 'ID', field: 'idreception', align: 'center' },
+    { label: 'Numero commande', field: 'idcommande', align: 'center' },
+    { label: 'Date reception', field: 'datereception', align: 'center' }
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    vuereceptions: []
+  });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const handleSubmit = () => {
-    let livraison = [];
-    livraison = selectedIds.map((id) => ({
-      idboncommande: id,
-      datebonlivraison: new Date()
-    }));
+  const handleEdit = (idreception) => {
+    window.location.replace('/admin/editcommande/' + idreception);
+  };
 
-    let url = baseUrl + '/bonlivraison/createlivraison';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(livraison),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
+  const getInfo = (idreception) => {
+    window.location.replace('/admin/detailcommande/' + idreception);
   };
 
   const {
@@ -85,22 +59,19 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     selectedRowId,
     handleChangePage,
     sortColumn,
-    selectedIds,
-    setClient,
-    client,
-    setDatecommande,
-    datecommande,
+    numerocommande,
+    setNumerocommande,
+    datereception,
+    setDatereception,
     handleChangeRowsPerPage,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
-  } = Commandefunctions(data);
+  } = useReceptionFunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/boncommande/listcommande';
+        let url = baseUrl + '/commande/getreception';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -113,7 +84,10 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         }
 
         const responseData = await response.json();
-        setData(responseData);
+        const newData = {
+          vuereceptions: responseData.vuereceptions || []
+        };
+        setData(newData);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -127,29 +101,10 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       fetchData();
       setInitialDataFetched(true);
     }
-
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idboncommande === selectedRowId);
-
-      if (selectedRow) {
-        // setEditedIdDepot(selectedrow.idboncommandedepot);
-      }
-    }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
-  const getInfo = (idproforma) => {
-    window.location.replace('/admin/detailcommande/' + idproforma);
-  };
   return (
     <Container>
-      <Box className="breadcrumb">
-        <Breadcrumb
-          routeSegments={[
-            { name: 'Commande', path: 'admin/commande' },
-            { name: 'Bon de commande' }
-          ]}
-        />
-      </Box>
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
@@ -158,32 +113,32 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
+                    id="numerocommande"
                     size="small"
-                    type="date"
-                    name="datedevis"
-                    variant="outlined"
-                    value={datecommande}
-                    onChange={(event) => setDatecommande(event.target.value)}
-                    sx={{ mb: 3 }}
+                    type="text"
+                    name="numerocommande"
+                    label="ID de la commande"
+                    value={numerocommande}
+                    onChange={(event) => setNumerocommande(event.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
                     fullWidth
-                    id="nomclient"
                     size="small"
-                    type="text"
-                    name="nomclient"
-                    label="Nom du client"
-                    value={client}
-                    onChange={(event) => setClient(event.target.value)}
+                    type="date"
+                    name="datecommande"
+                    variant="outlined"
+                    value={datereception}
+                    onChange={(event) => setDatereception(event.target.value)}
+                    sx={{ mb: 3 }}
                   />
                 </Grid>
               </Grid>
             </SimpleCard>
           </Grid>
           <Grid item>
-            <SimpleCard title="Liste des commandes">
+            <SimpleCard title="Liste des commandes recues">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -217,46 +172,21 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
                 </Grid>
-                <Grid item xs={2}>
-                  <Button
-                    className="button"
-                    variant="contained"
-                    aria-label="Edit"
-                    color="secondary"
-                    disabled={selectedIds.length === 0}
-                    onClick={handleSubmit}
-                  >
-                    Generer bon de livraison
-                  </Button>
-                </Grid>
               </Grid>
               <StyledTable>
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell width="5%">
-                      <Checkbox
-                        checked={data.every((row) => selectedIds.includes(row.idboncommande))}
-                        indeterminate={
-                          data.some((row) => selectedIds.includes(row.idboncommande)) &&
-                          !data.every((row) => selectedIds.includes(row.idboncommande))
-                        }
-                        onChange={handleSelectAll}
-                      />
+                    <TableCell key="idreception" align="center" width="15%">
+                      Numero Reception
                     </TableCell>
-                    <TableCell key="idboncommande" align="center" width="15%">
-                      Bon commande
+                    <TableCell key="idcommande" align="center" width="30%">
+                      Numero commande
                     </TableCell>
-                    <TableCell key="nom" align="center" width="30%">
-                      Nom client
+                    <TableCell key="datereception" align="center" width="15%">
+                      Date reception
                     </TableCell>
-                    <TableCell key="dateboncommande" align="center" width="15%">
-                      Date commande
-                    </TableCell>
-                    <TableCell key="idproforma" align="center" width="15%">
-                      Proforma
-                    </TableCell>
-                    <TableCell width="5%">Action</TableCell>
+                    <TableCell width="15%">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -266,27 +196,32 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => (
                         <TableRow key={index}>
-                          <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(row.idboncommande)}
-                              onChange={(event) => handleSelection(event, row.idboncommande)}
-                            />
-                          </TableCell>
-                          <TableCell align="center">{row.idboncommande}</TableCell>
-                          <TableCell align="center">{row.nom}</TableCell>
-                          <TableCell align="center">{converttodate(row.dateboncommande)}</TableCell>
-                          <TableCell align="center">{row.idproforma}</TableCell>
-                          <TableCell>
-                            <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="primary"
-                              onClick={() => getInfo(row.idproforma)}
-                            >
-                              <Icon>info</Icon>
-                            </IconButton>
-                          </TableCell>
+                          <>
+                            <TableCell align="center">{row.idreception}</TableCell>
+                            <TableCell align="center">{row.idcommande}</TableCell>
+                            <TableCell align="center">{converttodate(row.datereception)}</TableCell>
+
+                            <TableCell>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => getInfo(row.idreception)}
+                              >
+                                <Icon>info</Icon>
+                              </IconButton>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row.idreception)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
+                            </TableCell>
+                          </>
                         </TableRow>
                       ))
                   ) : (
@@ -318,7 +253,7 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
               </Grid>
             </SimpleCard>
           </Grid>
-        </Grid>{' '}
+        </Grid>
         <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
           <Alert severity={message.severity} sx={{ width: '100%' }} variant="filled">
             {message.text}
@@ -329,4 +264,4 @@ const Commande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   );
 };
 
-export default Commande;
+export default Reception;

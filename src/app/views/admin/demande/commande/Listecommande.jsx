@@ -28,7 +28,7 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     { label: 'ID', field: 'idcommande', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
     { label: 'Date devis', field: 'datedevis', align: 'center' },
-    { label: 'Libele', field: 'libelle', align: 'center' }
+    { label: 'Libelle', field: 'libelle', align: 'center' }
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -190,7 +190,7 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     Date devis
                   </TableCell>
                   <TableCell key="libelle" align="center" width="30%">
-                    Libele
+                    Libelle
                   </TableCell>
                   <TableCell width="15%">Action</TableCell>
                 </TableRow>
