@@ -90,6 +90,10 @@ const Editdetailcommande = Loadable(
   lazy(() => import('app/views/admin/demande/commande/Editdetailcommande'))
 );
 
+const Validercommande = Loadable(
+  lazy(() => import('app/views/admin/demande/commande/Validationcommande'))
+);
+
 const Reception = Loadable(lazy(() => import('app/views/admin/demande/reception/Reception')));
 
 const Editreception = Loadable(
@@ -271,6 +275,10 @@ const routes = [
         element: <ProtectedRoute element={<Editdetailcommande />} />
       },
       {
+        path: '/admin/validercommande/:idcommande',
+        element: <ProtectedRoute element={<Validercommande />} />
+      },
+      {
         path: '/admin/reception',
         element: <ProtectedRoute element={<Reception />} />
       },
@@ -405,6 +413,7 @@ const routes = [
   { path: '/admin/editcommande/:idcommande', element: <Editcommande /> },
   { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
   { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
+  { path: '/admin/validercommande/:idcommande', element: <Validercommande /> },
   { path: '/admin/reception', element: <Reception /> },
   { path: '/admin/editreception/:idreception', element: <Editreception /> },
   { path: '/admin/stockage', element: <Stockage /> },

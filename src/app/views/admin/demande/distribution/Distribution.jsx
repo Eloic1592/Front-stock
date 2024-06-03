@@ -36,6 +36,7 @@ const Distribution = () => {
   const [article, setArticle] = useState('');
   const [quantite, setQuantite] = useState(0);
   const [depot, setDepot] = useState(['1']);
+  const [etatdistribue, setEtatdistribue] = useState('2');
   const [data, setData] = useState({
     articles: [],
     depots: []
@@ -64,6 +65,7 @@ const Distribution = () => {
       datedistribution: datedistribution,
       quantite: quantite,
       iddepot: depot,
+      etatdistribue: etatdistribue,
       statut: 0
     };
 
@@ -212,22 +214,42 @@ const Distribution = () => {
                         onChange={(event) => setQuantite(event.target.value)}
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <Select
-                        fullWidth
-                        labelId="select-label"
-                        value={depot}
-                        onChange={(event) => setDepot(event.target.value)}
-                      >
-                        <MenuItem key="1" value="1">
-                          Selectionner un depot
-                        </MenuItem>
-                        {data.depots.map((row, index) => (
-                          <MenuItem key={index} value={row.iddepot}>
-                            {row.depot} - {row.codedep}
+                    <Grid item container xs={12} spacing={1}>
+                      <Grid item xs={12}>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          value={etatdistribue}
+                          onChange={(event) => setEtatdistribue(event.target.value)}
+                        >
+                          <MenuItem key="2" value="2">
+                            Selectionner un etat
                           </MenuItem>
-                        ))}
-                      </Select>
+                          <MenuItem key="0" value="0">
+                            Abime
+                          </MenuItem>
+                          <MenuItem key="1" value="1">
+                            Bon etat
+                          </MenuItem>
+                        </Select>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          value={depot}
+                          onChange={(event) => setDepot(event.target.value)}
+                        >
+                          <MenuItem key="1" value="1">
+                            Selectionner un depot
+                          </MenuItem>
+                          {data.depots.map((row, index) => (
+                            <MenuItem key={index} value={row.iddepot}>
+                              {row.depot} - {row.codedep}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>

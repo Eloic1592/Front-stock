@@ -28,7 +28,8 @@ const Listestockage = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     { label: 'ID', field: 'idstockage', align: 'center' },
     { label: 'Date stockage', field: 'datestockage', align: 'center' },
     { label: 'Article', field: 'article', align: 'center' },
-    { label: 'Quantite', field: 'quantite', align: 'center' }
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Etat', field: 'etat', align: 'center' }
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -186,7 +187,12 @@ const Listestockage = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="Quantite" align="center" width="30%">
                     Quantite
                   </TableCell>
-                  <TableCell width="15%">Action</TableCell>
+                  <TableCell key="etat" align="center" width="30%">
+                    Etat
+                  </TableCell>
+                  <TableCell width="15%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -203,8 +209,8 @@ const Listestockage = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             {row.marque} - {row.modele} /{row.codearticle}
                           </TableCell>
                           <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
-
-                          <TableCell>
+                          <TableCell align="center">{row.etat}</TableCell>
+                          <TableCell align="center">
                             <IconButton
                               className="button"
                               variant="contained"

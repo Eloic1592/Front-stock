@@ -1,4 +1,4 @@
-import { Box, TextField, Snackbar, Alert, Grid } from '@mui/material';
+import { Box, TextField, Snackbar, Alert, Grid, Select, MenuItem } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
@@ -22,6 +22,7 @@ const Editstockage = () => {
   const [datestockage, setDatestockage] = useState('');
   const [article, setArticle] = useState('');
   const [quantite, setQuantite] = useState(0);
+  const [etatstocke, setEtatstocke] = useState('2');
   const [data, setData] = useState({
     articles: []
   });
@@ -48,6 +49,7 @@ const Editstockage = () => {
       idarticle: article,
       datestockage: datestockage,
       quantite: quantite,
+      etatstocke: etatstocke,
       statut: 0
     };
 
@@ -105,6 +107,7 @@ const Editstockage = () => {
         setQuantite(responseData.stockage.quantite);
         setDatestockage(formatDate(responseData.stockage.datestockage));
         setArticle(responseData.stockage.idarticle);
+        setEtatstocke(responseData.stockage.etatstocke);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -177,6 +180,24 @@ const Editstockage = () => {
                 value={quantite}
                 onChange={(event) => setQuantite(event.target.value)}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Select
+                fullWidth
+                labelId="select-label"
+                value={etatstocke}
+                onChange={(event) => setEtatstocke(event.target.value)}
+              >
+                <MenuItem key="2" value="2">
+                  Selectionner un etat
+                </MenuItem>
+                <MenuItem key="0" value="0">
+                  Abime
+                </MenuItem>
+                <MenuItem key="1" value="1">
+                  Bon etat
+                </MenuItem>
+              </Select>
             </Grid>
 
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>

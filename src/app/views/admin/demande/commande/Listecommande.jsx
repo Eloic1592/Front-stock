@@ -33,6 +33,7 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+
   const [data, setData] = useState({
     vueCommandes: [],
     clients: [],
@@ -50,6 +51,10 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
   const getInfo = (idcommande) => {
     window.location.replace('/admin/detailcommande/' + idcommande);
+  };
+
+  const receptioncommande = (idcommande) => {
+    window.location.replace('/admin/validercommande/' + idcommande);
   };
 
   const {
@@ -192,7 +197,9 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="libelle" align="center" width="30%">
                     Libelle
                   </TableCell>
-                  <TableCell width="15%">Action</TableCell>
+                  <TableCell width="15%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -207,13 +214,12 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">{row.nom}</TableCell>
                           <TableCell align="center">{converttodate(row.datecommande)}</TableCell>
                           <TableCell align="center">{row.libelle}</TableCell>
-
-                          <TableCell>
+                          <TableCell align="center">
                             <IconButton
                               className="button"
                               variant="contained"
                               aria-label="Edit"
-                              color="primary"
+                              color="inherit"
                               onClick={() => getInfo(row.idcommande)}
                             >
                               <Icon>info</Icon>
@@ -227,13 +233,17 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             >
                               <Icon>edit_icon</Icon>
                             </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="default"
+                              onClick={() => receptioncommande(row.idcommande)}
+                            >
+                              <Icon>assignment_returned</Icon>
+                            </IconButton>
                           </TableCell>
                         </>
-                        {isEditClicked && row.idcommande === selectedRowId && (
-                          <>
-                            <TableCell></TableCell>
-                          </>
-                        )}
                       </TableRow>
                     ))
                 ) : (

@@ -29,7 +29,8 @@ const Listedistribution = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     { label: 'Date distribution', field: 'datedistribution', align: 'center' },
     { label: 'Article', field: 'article', align: 'center' },
     { label: 'Quantite', field: 'quantite', align: 'center' },
-    { label: 'Depot', field: 'depot', align: 'center' }
+    { label: 'Depot', field: 'depot', align: 'center' },
+    { label: 'Etat', field: 'etat', align: 'center' }
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -201,10 +202,15 @@ const Listedistribution = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="Quantite" align="center" width="30%">
                     Quantite
                   </TableCell>
+                  <TableCell key="etat" align="center" width="30%">
+                    Etat
+                  </TableCell>
                   <TableCell key="depot" align="center" width="30%">
                     Depot
                   </TableCell>
-                  <TableCell width="15%">Action</TableCell>
+                  <TableCell width="15%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -223,11 +229,12 @@ const Listedistribution = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             {row.marque} - {row.modele} / {row.codearticle}
                           </TableCell>
                           <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
+                          <TableCell align="center">{row.etat}</TableCell>
                           <TableCell align="center">
                             {row.depot} - {row.codedep}
                           </TableCell>
 
-                          <TableCell>
+                          <TableCell align="center">
                             <IconButton
                               className="button"
                               variant="contained"

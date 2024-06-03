@@ -186,7 +186,9 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <TableCell key="total" align="center" width="30%">
                     Total
                   </TableCell>
-                  <TableCell width="15%">Action</TableCell>
+                  <TableCell width="15%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

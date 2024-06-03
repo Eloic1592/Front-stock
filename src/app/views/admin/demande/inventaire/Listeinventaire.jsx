@@ -190,7 +190,9 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="quantitetheorique" align="center" width="30%">
                     Quantite theorique
                   </TableCell>
-                  <TableCell width="15%">Action</TableCell>
+                  <TableCell width="15%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -210,7 +212,7 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">
                             {formatNumber(row.quantitetheorique)}
                           </TableCell>
-                          <TableCell>
+                          <TableCell align="center">
                             <IconButton
                               className="button"
                               variant="contained"
