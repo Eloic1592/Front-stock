@@ -46,7 +46,7 @@ const PDFStockArticle = ({ dataList, columns }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Liste des articles</Text>
+        <Text style={styles.title}>Stock des articles</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
             {columns.slice(1).map((column, index) => (
@@ -58,19 +58,21 @@ const PDFStockArticle = ({ dataList, columns }) => {
           {dataList.slice(1).map((row, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.typemateriel}</Text>
-              </View>
-              <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.marque}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.modele}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.description}</Text>
+                <Text style={styles.tableCell}>{row.codearticle}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.quantite)}</Text>
+                <Text style={styles.tableCell}>
+                  {row.typemateriel} - {row.val}
+                </Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.quantitestock)}</Text>
               </View>
             </View>
           ))}

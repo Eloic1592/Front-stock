@@ -19,9 +19,11 @@ const Bilan = Loadable(lazy(() => import('app/views/admin/dashboard/Bilan')));
 
 const Article = Loadable(lazy(() => import('app/views/admin/article/Article')));
 
+const Detailsarticle = Loadable(lazy(() => import('app/views/admin/article/Detailstockarticle')));
+
 const Editarticle = Loadable(lazy(() => import('app/views/admin/article/Editarticle')));
 
-const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Stockarticle')));
+const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Detailstockarticle')));
 
 const TypeMouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Naturemouvement'))
@@ -182,6 +184,11 @@ const routes = [
       {
         path: '/admin/editarticle/:idarticle',
         element: <ProtectedRoute element={<Editarticle />} />
+      },
+
+      {
+        path: '/admin/detailsarticle/:idarticle',
+        element: <ProtectedRoute element={<Detailsarticle />} />
       },
       {
         path: '/admin/typemouvement',
@@ -384,6 +391,7 @@ const routes = [
   { path: '/admin/dashboard', element: <Dashboard /> },
   { path: '/admin/bilan', element: <Bilan /> },
   { path: '/admin/article', element: <Article /> },
+  { path: '/admin/detailsarticle/:idarticle', element: <Detailsarticle /> },
   { path: '/admin/stocksarticle', element: <Stockarticle /> },
   { path: '/admin/editarticle/:idarticle', element: <Editarticle /> },
   { path: '/admin/listemateriel', element: <Materiel /> },

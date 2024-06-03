@@ -69,6 +69,11 @@ const ListeArticle = () => {
     window.location.replace('/admin/editarticle/' + idarticle);
   };
 
+  // Voir details des stock des articles
+  const details = (idarticle) => {
+    window.location.replace('/admin/detailsarticle/' + idarticle);
+  };
+
   const {
     sortDirection,
     page,
@@ -319,6 +324,15 @@ const ListeArticle = () => {
                               onClick={() => handleEdit(row.idarticle)}
                             >
                               <Icon>edit_icon</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => details(row.idarticle)}
+                            >
+                              <Icon>info</Icon>
                             </IconButton>
                           </TableCell>
                         </TableRow>

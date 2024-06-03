@@ -8,8 +8,7 @@ export const useStockfunctions = (data) => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [typemateriel, setTypemateriel] = useState('1');
-  const [month, setMonth] = useState('0');
+  const [typemateriel, setTypemateriel] = useState('');
   const [marque, setMarque] = useState('');
 
   // Pagination
@@ -42,7 +41,7 @@ export const useStockfunctions = (data) => {
   const handleSelectColumn = (event) => {
     setSortColumn(event.target.value);
   };
-  const filtredata = filtrearticle(data.stockarticles, marque, month, typemateriel);
+  const filtredata = filtrearticle(data.stockarticles, marque, typemateriel);
   const sortedData = filtredata.sort((a, b) => {
     for (let column of sortColumn) {
       if (a[column] < b[column]) {
@@ -79,28 +78,22 @@ export const useStockfunctions = (data) => {
     handleSelectColumn,
     sortedData,
     marque,
-    month,
-    setMonth,
     setMarque,
     typemateriel,
     setTypemateriel
   };
 };
 
-export function filtrearticle(listearticle, marque, month, typemateriel) {
+export function filtrearticle(listearticle, marque, typemateriel) {
   return listearticle.filter((Item) => {
-    const marqueMatch =
-      (Item.marque && Item.marque.toLowerCase().includes(marque.toLowerCase())) ||
-      (Item.modele && Item.modele.toLowerCase().includes(marque.toLowerCase()));
-
-    let montmatch = true;
-    if (month !== '0') {
-      montmatch = Item.mois === month;
-    }
-    let typematch = true;
-    if (typemateriel !== '1') {
-      typematch = Item.idtypemateriel === typemateriel;
-    }
-    return marqueMatch && montmatch && typematch;
+    const marquematch = !marque || Item.marque.toLowerCase().includes(marque.toLowerCase());
+    const codearticlematch =
+      !marque || Item.codearticle.toLowerCase().includes(marque.toLowerCase());
+    const typematerielmatch =
+      !typemateriel ||
+      Item.typemateriel.toLowerCase().includes(typemateriel.toLowerCase()) ||
+      !typemateriel ||
+      Item.val.toLowerCase().includes(typemateriel.toLowerCase());
+    return (codearticlematch || marquematch) && typematerielmatch;
   });
 }

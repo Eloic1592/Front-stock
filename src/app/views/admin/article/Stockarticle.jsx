@@ -25,7 +25,6 @@ import { saveAs } from 'file-saver';
 import { formatNumber, coloredNumber } from 'app/utils/utils';
 import { useStockfunctions } from './stockfunction';
 import PDFStockArticle from './PDFStockArticle';
-import { months } from 'app/utils/utils';
 
 const Stockarticle = () => {
   // Colonne
@@ -33,10 +32,10 @@ const Stockarticle = () => {
     { label: 'ID article', field: 'idarticle', align: 'center' },
     { label: 'modele', field: 'modele', align: 'center' },
     { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
+    { label: 'code article', field: 'codearticle', align: 'center' },
+    { label: 'type materiel', field: 'typemateriel', align: 'center' },
     { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'mois', field: 'mois', align: 'center' },
-    { label: 'annee', field: 'annee', align: 'center' }
+    { label: 'etat', field: 'etat', align: 'center' }
   ];
   const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -58,8 +57,6 @@ const Stockarticle = () => {
     handleChangeRowsPerPage,
     handleSelectColumn,
     sortedData,
-    setMonth,
-    month,
     setMarque,
     marque,
     typemateriel,
@@ -135,54 +132,31 @@ const Stockarticle = () => {
           <Grid item>
             <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={1}>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                   <TextField
                     fullWidth
                     size="small"
                     type="text"
                     name="marque"
-                    label="Marque ou modele"
+                    label="Marque,modele ou code article"
                     variant="outlined"
                     value={marque}
                     onChange={(event) => setMarque(event.target.value)}
                     sx={{ mb: 3 }}
                   />
                 </Grid>
-                <Grid item xs={4}>
-                  <Select
+                <Grid item xs={6}>
+                  <TextField
                     fullWidth
-                    labelId="month-select-label"
-                    variant="outlined"
                     size="small"
-                    value={month}
-                    onChange={(event) => setMonth(event.target.value)}
-                    sx={{ mb: 3 }}
-                  >
-                    <MenuItem value="0">Tous les mois</MenuItem>
-                    {months.map((monthName, index) => (
-                      <MenuItem key={index + 1} value={index + 1}>
-                        {monthName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Grid>
-                <Grid item xs={4}>
-                  <Select
-                    fullWidth
-                    labelId="select-label"
+                    type="text"
+                    name="marque"
+                    label="Type de materiel ou code type materiel"
                     variant="outlined"
-                    size="small"
                     value={typemateriel}
                     onChange={(event) => setTypemateriel(event.target.value)}
                     sx={{ mb: 3 }}
-                  >
-                    <MenuItem value="1">Tous types</MenuItem>
-                    {data.typemateriels.map((row) => (
-                      <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                        {row.typemateriel}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  />
                 </Grid>
               </Grid>
             </SimpleCard>
@@ -248,17 +222,17 @@ const Stockarticle = () => {
                     <TableCell key="modele" width="15%" align="center">
                       modele
                     </TableCell>
+                    <TableCell key="codearticle" width="15%" align="center">
+                      code article
+                    </TableCell>
                     <TableCell key="typemateriel" width="15%" align="center">
-                      typemateriel
+                      type materiel
                     </TableCell>
                     <TableCell key="quantite" width="15%" align="center">
-                      quantite
+                      quantite en stock
                     </TableCell>
-                    <TableCell key="mois" width="15%" align="center">
-                      mois
-                    </TableCell>
-                    <TableCell key="annee" width="15%" align="center">
-                      annee
+                    <TableCell key="etat" width="15%" align="center">
+                      Etat
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -273,12 +247,14 @@ const Stockarticle = () => {
                             <TableCell> {row.idarticle}</TableCell>
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center">{row.typemateriel}</TableCell>
-                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.quantite))}
+                            <TableCell align="center">{row.codearticle}</TableCell>
+                            <TableCell align="center">
+                              {row.typemateriel} - {row.val}
                             </TableCell>
-                            <TableCell align="center">{row.mois_nom}</TableCell>
-                            <TableCell align="center">{row.annee}</TableCell>
+                            <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                              {coloredNumber(formatNumber(row.quantitestock))}
+                            </TableCell>
+                            <TableCell align="center">{row.etat}</TableCell>
                           </>
                         </TableRow>
                       ))

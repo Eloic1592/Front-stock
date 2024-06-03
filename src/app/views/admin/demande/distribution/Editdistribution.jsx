@@ -1,4 +1,15 @@
-import { Box, TextField, Snackbar, Alert, Grid, Select, MenuItem } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Snackbar,
+  Alert,
+  Grid,
+  Select,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  FormControlLabel
+} from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
@@ -24,9 +35,12 @@ const Editdistribution = () => {
   const [quantite, setQuantite] = useState(0);
   const [depot, setDepot] = useState(['1']);
   const [etatdistribue, setEtatdistribue] = useState('2');
+  const [emplacement, setEmplacement] = useState('1');
+  const [choix, setChoix] = useState('depot');
   const [data, setData] = useState({
     depots: [],
-    articles: []
+    articles: [],
+    listeemplacements: []
   });
 
   // Message
@@ -51,7 +65,8 @@ const Editdistribution = () => {
       idarticle: article,
       datedistribution: datedistribution,
       quantite: quantite,
-      iddepot: depot,
+      iddepot: depot === '1' ? '' : depot,
+      idemplacement: emplacement === '1' ? '' : emplacement,
       etatdistribue: etatdistribue,
       statut: 0
     };
@@ -105,13 +120,17 @@ const Editdistribution = () => {
         const responseData = await response.json();
         const newData = {
           articles: responseData.articles || [],
-          depots: responseData.depots || []
+          depots: responseData.depots || [],
+          listeemplacements: responseData.listeemplacements || []
         };
         setData(newData);
         setQuantite(responseData.distribution.quantite);
         setDatedistribution(formatDate(responseData.distribution.datedistribution));
         setArticle(responseData.distribution.idarticle);
-        setDepot(responseData.distribution.iddepot);
+        setDepot(!responseData.distribution.iddepot ? '1' : responseData.distribution.iddepot);
+        setEmplacement(
+          !responseData.distribution.idemplacement ? '1' : responseData.distribution.idemplacement
+        );
         setEtatdistribue(responseData.distribution.etatdistribue);
       } catch (error) {
         setMessage({
@@ -209,6 +228,18 @@ const Editdistribution = () => {
                 </Select>
               </Grid>
               <Grid item xs={12}>
+                <RadioGroup
+                  row
+                  aria-label="option"
+                  name="option"
+                  value={choix}
+                  onChange={(event) => setChoix(event.target.value)}
+                >
+                  <FormControlLabel value="depot" control={<Radio />} label="Depot" />
+                  <FormControlLabel value="emplacement" control={<Radio />} label="Emplacement" />
+                </RadioGroup>
+              </Grid>
+              <Grid item xs={12}>
                 <Select
                   fullWidth
                   labelId="select-label"
@@ -221,6 +252,24 @@ const Editdistribution = () => {
                   {data.depots.map((row, index) => (
                     <MenuItem key={index} value={row.iddepot}>
                       {row.depot} - {row.codedep}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Grid>
+              <Grid item xs={12}>
+                <Select
+                  fullWidth
+                  labelId="select-label"
+                  value={emplacement}
+                  onChange={(event) => setEmplacement(event.target.value)}
+                  disabled={choix !== 'emplacement'}
+                >
+                  <MenuItem key="1" value="1">
+                    Selectionner un emplacement precis
+                  </MenuItem>
+                  {data.listeemplacements.map((row, index) => (
+                    <MenuItem key={index} value={row.idemplacement}>
+                      {row.codeemp}
                     </MenuItem>
                   ))}
                 </Select>

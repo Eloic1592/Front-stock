@@ -9,7 +9,10 @@ import {
   Dialog,
   Grid,
   Select,
-  MenuItem
+  MenuItem,
+  Radio,
+  RadioGroup,
+  FormControlLabel
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -35,11 +38,14 @@ const Distribution = () => {
   const [datedistribution, setDistribution] = useState('');
   const [article, setArticle] = useState('');
   const [quantite, setQuantite] = useState(0);
-  const [depot, setDepot] = useState(['1']);
+  const [depot, setDepot] = useState('1');
+  const [emplacement, setEmplacement] = useState('1');
   const [etatdistribue, setEtatdistribue] = useState('2');
+  const [choix, setChoix] = useState('depot');
   const [data, setData] = useState({
     articles: [],
-    depots: []
+    depots: [],
+    listeemplacements: []
   });
 
   // Message
@@ -64,7 +70,8 @@ const Distribution = () => {
       idarticle: article,
       datedistribution: datedistribution,
       quantite: quantite,
-      iddepot: depot,
+      iddepot: depot === '1' ? '' : depot,
+      idemplacement: emplacement === '1' ? '' : emplacement,
       etatdistribue: etatdistribue,
       statut: 0
     };
@@ -115,7 +122,8 @@ const Distribution = () => {
         const responseData = await response.json();
         const newData = {
           articles: responseData.articles || [],
-          depots: responseData.depots || []
+          depots: responseData.depots || [],
+          listeemplacements: responseData.listeemplacements || []
         };
         setData(newData);
       } catch (error) {
@@ -234,11 +242,28 @@ const Distribution = () => {
                         </Select>
                       </Grid>
                       <Grid item xs={12}>
+                        <RadioGroup
+                          row
+                          aria-label="option"
+                          name="option"
+                          value={choix}
+                          onChange={(event) => setChoix(event.target.value)}
+                        >
+                          <FormControlLabel value="depot" control={<Radio />} label="Depot" />
+                          <FormControlLabel
+                            value="emplacement"
+                            control={<Radio />}
+                            label="Emplacement"
+                          />
+                        </RadioGroup>
+                      </Grid>
+                      <Grid item xs={12}>
                         <Select
                           fullWidth
                           labelId="select-label"
                           value={depot}
                           onChange={(event) => setDepot(event.target.value)}
+                          disabled={choix !== 'depot'}
                         >
                           <MenuItem key="1" value="1">
                             Selectionner un depot
@@ -246,6 +271,24 @@ const Distribution = () => {
                           {data.depots.map((row, index) => (
                             <MenuItem key={index} value={row.iddepot}>
                               {row.depot} - {row.codedep}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          value={emplacement}
+                          onChange={(event) => setEmplacement(event.target.value)}
+                          disabled={choix !== 'emplacement'}
+                        >
+                          <MenuItem key="1" value="1">
+                            Selectionner un emplacement precis
+                          </MenuItem>
+                          {data.listeemplacements.map((row, index) => (
+                            <MenuItem key={index} value={row.idemplacement}>
+                              {row.codeemp}
                             </MenuItem>
                           ))}
                         </Select>
