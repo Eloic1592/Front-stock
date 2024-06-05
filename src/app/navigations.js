@@ -6,9 +6,9 @@ export const navigations = [
       { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
       { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
       {
-        name: 'Bilan des mouvements',
+        name: 'Etat des stocks',
         iconText: 'SI',
-        path: '/admin/stattypemouvement'
+        path: '/admin/etatstock'
       }
     ]
   },
@@ -35,7 +35,12 @@ export const navigations = [
     name: 'Commandes',
     icon: 'shopping_cart',
     children: [
-      { name: 'Commande', iconText: 'SI', path: '/admin/commande' },
+      {
+        name: 'Commande',
+        iconText: 'SI',
+        path: '/admin/commande',
+        children: [{ name: 'Etat des commandes', path: '/admin/statcommande', iconText: 'receipt' }]
+      },
       { name: 'Reception', iconText: 'SI', path: '/admin/reception' },
       { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },
       { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },

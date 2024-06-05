@@ -234,28 +234,30 @@ const ListeArticle = () => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2} container justifyContent="center" alignItems="center">
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  onClick={generateArticlePDF}
-                >
-                  <Icon>picture_as_pdf</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button className="button" variant="contained" aria-label="Edit" color="success">
-                  <CSVLink
-                    data={filteredData}
-                    filename="Liste_article.csv"
-                    headers={columns.label}
-                    separator=";"
+              <Grid item xs={2} container spacing={1}>
+                <Grid item>
+                  <Button
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="secondary"
+                    onClick={generateArticlePDF}
                   >
-                    Export CSV
-                  </CSVLink>
-                </Button>
+                    <Icon>picture_as_pdf</Icon>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button className="button" variant="contained" color="success">
+                    <CSVLink
+                      data={filteredData}
+                      filename="Liste_article.csv"
+                      headers={columns.label}
+                      separator=";"
+                    >
+                      Export CSV
+                    </CSVLink>
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
             <StyledTable>

@@ -33,7 +33,7 @@ export const useListecommandeFunctions = (data) => {
     setIsEditClicked(false);
   };
 
-  const handleSave = (value, id, field) => {
+  const handleSave = () => {
     setEditingId(null);
   };
 

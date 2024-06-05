@@ -7,7 +7,9 @@ import {
   DialogActions,
   DialogTitle,
   Dialog,
-  Grid
+  Grid,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
@@ -34,7 +36,7 @@ const Inventaire = () => {
   const [article, setArticle] = useState('');
   const [quantitereel, setQuantitereel] = useState(0);
   const [quantitetheorique, setQuantitetheorique] = useState(0);
-
+  const [etatinventaire, setEtatinventaire] = useState('2');
   const [data, setData] = useState({
     articles: []
   });
@@ -62,6 +64,7 @@ const Inventaire = () => {
       dateinventaire: dateinventaire,
       quantitereel: quantitereel,
       quantitetheorique: quantitetheorique,
+      etatinventaire: etatinventaire,
       statut: 0
     };
 
@@ -218,6 +221,24 @@ const Inventaire = () => {
                         value={quantitetheorique}
                         onChange={(event) => setQuantitetheorique(event.target.value)}
                       />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Select
+                        fullWidth
+                        labelId="select-label"
+                        value={etatinventaire}
+                        onChange={(event) => setEtatinventaire(event.target.value)}
+                      >
+                        <MenuItem key="2" value="2">
+                          Selectionner un etat
+                        </MenuItem>
+                        <MenuItem key="0" value="0">
+                          Abime
+                        </MenuItem>
+                        <MenuItem key="1" value="1">
+                          Bon etat
+                        </MenuItem>
+                      </Select>
                     </Grid>
                   </Grid>
                 </Grid>

@@ -20,45 +20,27 @@ import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { coloredNumber, months } from 'app/utils/utils';
-import { useParams } from 'react-router-dom';
 import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import PDFStatnaturemouvement from './PDFStatnaturemouvement';
-import { Link } from 'react-router-dom';
+import { formatNumber } from 'app/utils/utils';
+import PDFEtatstock from './PDFEtatstock';
 
 const Statnaturemouvement = () => {
-  const iddepot = useParams();
-
   const columns = [
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
     { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'Gain', field: 'gain', align: 'center' },
-    { label: 'Depense', field: 'depense', align: 'center' },
-    { label: 'Benefice', field: 'depense', align: 'center' }
+    { label: 'Qt.abime', field: 'articleabime', align: 'center' },
+    { label: 'Qt.bon etat', field: 'articlebonetat', align: 'center' },
+    { label: 'Total prix abime', field: 'totalprixabime', align: 'center' },
+    { label: 'Total prix bon etat', field: 'totalprixbonetat', align: 'center' },
+    { label: 'Quantite totale', field: 'quantitetotale', align: 'center' }
   ];
 
-  const [annee, setAnnee] = useState('');
-  const [mois, setMois] = useState('0');
+  const [annee, setAnnee] = useState(new Date().getFullYear());
   const [data, setData] = useState({
-    statnaturemouvements: [],
-    totalentree: 0,
-    totalsortie: 0,
-    getcurrentsommearticleentree: {
-      id: 0,
-      total: 0,
-      mois: 0,
-      annee: 0,
-      nom_mois: ''
-    },
-    getcurrentsommearticlesortie: {
-      id: 0,
-      total: 0,
-      mois: 0,
-      annee: 0,
-      nom_mois: ''
-    }
+    etatstockannee: [],
+    pourcentagebonetatstock: 0,
+    pourcentageabimestock: 0
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -86,20 +68,21 @@ const Statnaturemouvement = () => {
   };
 
   // Filtre
-  const filter = data.statnaturemouvements.filter((stat) => {
+  const filter = data.etatstockannee.filter((stat) => {
     const anneeMatch = annee === '' || (stat.annee && stat.annee === parseInt(annee, 10));
-    const moisMatch = mois === '0' || (stat.mois && stat.mois === mois);
 
-    return moisMatch && anneeMatch;
+    return anneeMatch;
   });
 
   // Tri
   const sortedData = filter.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });
@@ -107,19 +90,60 @@ const Statnaturemouvement = () => {
   // Export PDF
   const generateutilisationmaterielPDF = async () => {
     const blob = await renderPdf(
-      <PDFStatnaturemouvement dataList={data.statnaturemouvements} columns={columns} />
+      <PDFEtatstock dataList={data.etatstockannee} columns={columns} annee={annee} />
     ).toBlob();
-    saveAs(blob, 'Benefice par mouvement.pdf');
+    saveAs(blob, 'Etat de stock' + annee + '.pdf');
+  };
+
+  const handleSubmit = async () => {
+    try {
+      let dashboardParams = {
+        annee: annee
+      };
+      let url = baseUrl + '/dashboard/etatstockannee';
+      const response = await fetch(url, {
+        crossDomain: true,
+        method: 'POST',
+        body: JSON.stringify(dashboardParams),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        setMessage({
+          text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+          severity: 'error',
+          open: true
+        });
+      }
+
+      const responseData = await response.json();
+      const newData = {
+        etatstockannee: responseData.etatstockannee || [],
+        pourcentageabimestock: responseData.pourcentageabimestock || 0,
+        pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0
+      };
+
+      setData(newData);
+    } catch (error) {
+      setMessage({
+        text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
+        severity: 'error',
+        open: true
+      });
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/naturemouvement/statnaturemouvement';
+        let dashboardParams = {
+          annee: annee
+        };
+        let url = baseUrl + '/dashboard/etatstockannee';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(),
+          body: JSON.stringify(dashboardParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -133,11 +157,9 @@ const Statnaturemouvement = () => {
 
         const responseData = await response.json();
         const newData = {
-          statnaturemouvements: responseData.statnaturemouvements || [],
-          getcurrentsommearticleentree: responseData.getcurrentsommearticleentree || null,
-          getcurrentsommearticlesortie: responseData.getcurrentsommearticlesortie || null,
-          totalentree: responseData.totalentree || 0,
-          totalsortie: responseData.totalsortie || 0
+          etatstockannee: responseData.etatstockannee || [],
+          pourcentageabimestock: responseData.pourcentageabimestock || 0,
+          pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0
         };
 
         setData(newData);
@@ -154,14 +176,14 @@ const Statnaturemouvement = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [iddepot.iddepot, mois, annee, sortedData, initialDataFetched]);
+  }, [annee, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
     window.location.replace('/admin/typemouvement');
   };
-  const getstattypemateriel = (idnaturemouvement, mois, an) => {
-    window.location.replace('/admin/stattypemateriel/' + idnaturemouvement + '/' + mois + '/' + an);
+  const getdetailetatstock = (an, mois) => {
+    window.location.replace('/admin/detailetatstock/' + an + '/' + mois);
   };
 
   return (
@@ -169,8 +191,8 @@ const Statnaturemouvement = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Benefice par nature', path: 'admin/stocktypemateriel' },
-            { name: 'Benefice par nature' }
+            { name: 'Etat de stock', path: 'admin/etatstock' },
+            { name: 'Etat de stock' }
           ]}
         />
       </Box>
@@ -188,9 +210,9 @@ const Statnaturemouvement = () => {
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
-              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
+              <SimpleCard title="Rechercher l'annee" sx={{ marginBottom: '16px' }}>
                 <Grid container spacing={1}>
-                  <Grid item xs={4}>
+                  <Grid item xs={10}>
                     <TextField
                       fullWidth
                       size="small"
@@ -203,27 +225,8 @@ const Statnaturemouvement = () => {
                       sx={{ mb: 3 }}
                     />
                   </Grid>
-                  <Grid item xs={4}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      value={mois}
-                      onChange={(event) => setMois(event.target.value)}
-                      size="small"
-                      sx={{ mb: 3 }}
-                    >
-                      <MenuItem key="0" value="0">
-                        Tous les mois
-                      </MenuItem>
-                      {months.map((row, index) => (
-                        <MenuItem key={index} value={index + 1}>
-                          {row}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button color="primary" variant="contained">
+                  <Grid item xs={2}>
+                    <Button color="primary" variant="contained" onClick={handleSubmit}>
                       Rechercher
                     </Button>
                   </Grid>
@@ -233,39 +236,29 @@ const Statnaturemouvement = () => {
             <Grid item>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en entree pour ce mois">
+                  <SimpleCard title="TOTAL ARTICLES EN BON ETAT ">
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
                     >
-                      <Link
-                        to="/admin/mouvementphysique"
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        {data.totalentree} articles
-                      </Link>
+                      {data.pourcentagebonetatstock} articles
                     </Typography>
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en entree pour ce mois">
+                  <SimpleCard title="TOTAL ARTICLES ABIMES ">
                     <Typography
                       variant="body1"
                       style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
                     >
-                      <Link
-                        to="/admin/mouvementphysique"
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        {data.totalsortie * -1} articles
-                      </Link>
+                      {data.pourcentageabimestock} articles
                     </Typography>
                   </SimpleCard>
                 </Grid>
               </Grid>
             </Grid>
             <Grid item>
-              <SimpleCard title="Benefice par mouvement de la periode actuelle">
+              <SimpleCard title="Depense annuelle des articles par mois">
                 <Grid container spacing={2}>
                   <Grid item xs={2}>
                     <Select
@@ -313,9 +306,6 @@ const Statnaturemouvement = () => {
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="naturemouvement" align="center" width="17%">
-                        Nature
-                      </TableCell>
                       <TableCell key="annee" align="center" width="17%">
                         Annee
                       </TableCell>
@@ -323,13 +313,19 @@ const Statnaturemouvement = () => {
                         Mois
                       </TableCell>
                       <TableCell key="gain" align="center" width="17%">
-                        Gain
+                        Quantite totale
                       </TableCell>
-                      <TableCell key="depense" align="center" width="17%">
-                        Depense
+                      <TableCell key="articleabime" align="center" width="17%">
+                        Article abime(quantite)
                       </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
-                        Benefice
+                      <TableCell key="totalprixabime" align="center" width="17%">
+                        Total prix abime
+                      </TableCell>
+                      <TableCell key="articlebonetat" align="center" width="17%">
+                        Article bon etat(quantite)
+                      </TableCell>
+                      <TableCell key="totalprixbonetat" align="center" width="17%">
+                        Total prix bon etat
                       </TableCell>
                       <TableCell key="action" align="center" width="17%">
                         Action
@@ -345,22 +341,33 @@ const Statnaturemouvement = () => {
                           <TableRow key={index}>
                             <>
                               <TableCell align="center" width="17%">
-                                {row.naturemouvement}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
                                 {row.annee}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {row.mois_nom}
+                                {row.moisnom}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.gain)}
+                                {formatNumber(row.quantitetotale)}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.depense)}
+                                {formatNumber(row.articleabime)}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'red' }}
+                              >
+                                {formatNumber(row.totalprixabime)}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.benefice)}
+                                {formatNumber(row.articlebonetat)}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'green' }}
+                              >
+                                {formatNumber(row.totalprixbonetat)}
                               </TableCell>
                               <TableCell align="center" width="17%">
                                 <IconButton
@@ -368,9 +375,7 @@ const Statnaturemouvement = () => {
                                   variant="contained"
                                   aria-label="Edit"
                                   color="primary"
-                                  onClick={() =>
-                                    getstattypemateriel(row.idnaturemouvement, row.mois, row.annee)
-                                  }
+                                  onClick={() => getdetailetatstock(row.annee, row.mois)}
                                 >
                                   <Icon>info</Icon>
                                 </IconButton>

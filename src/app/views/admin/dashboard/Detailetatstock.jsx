@@ -5,40 +5,40 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
   Grid,
   Icon,
   Button,
   Snackbar,
   Alert,
   Select,
-  MenuItem
+  MenuItem,
+  TextField
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { coloredNumber } from 'app/utils/utils';
+import { formatNumber } from 'app/utils/utils';
 import { useParams } from 'react-router-dom';
-// import { pdf as renderPdf } from '@react-pdf/renderer';
-// import { saveAs } from 'file-saver';
 
-const Stattypemateriel = () => {
-  const idnaturemouvement = useParams();
+const Detailetatstock = () => {
   const mois = useParams();
   const annee = useParams();
 
   const columns = [
-    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
+    { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'Gain', field: 'gain', align: 'center' },
-    { label: 'Depense', field: 'depense', align: 'center' }
+    { label: 'Qt.abime', field: 'articleabime', align: 'center' },
+    { label: 'Qt.bon etat', field: 'articlebonetat', align: 'center' },
+    { label: 'Total prix abime', field: 'totalprixabime', align: 'center' },
+    { label: 'Total prix bon etat', field: 'totalprixbonetat', align: 'center' },
+    { label: 'Quantite totale', field: 'quantitetotale', align: 'center' }
   ];
-  const [typemateriel, setTypemateriel] = useState('0');
+  const [codetypemateriel, setCodetypemateriel] = useState('');
   const [data, setData] = useState({
-    stat_typemateriels: [],
-    listetypemateriels: []
+    etatdetailstockannee: []
   });
 
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -67,19 +67,24 @@ const Stattypemateriel = () => {
   };
 
   // Filtre
-  const filter = data.stat_typemateriels.filter((stat) => {
-    const typematerielmatch =
-      stat.idtypemateriel && stat.idtypemateriel.toLowerCase().includes(typemateriel.toLowerCase());
-    return typematerielmatch;
+  const filter = data.etatdetailstockannee.filter((stat) => {
+    const codetypematerielmatch =
+      !codetypemateriel ||
+      stat.val.toLowerCase().includes(codetypemateriel.toLowerCase()) ||
+      !codetypemateriel ||
+      stat.typemateriel.toLowerCase().includes(codetypemateriel.toLowerCase());
+    return codetypematerielmatch;
   });
 
   // Tri
   const sortedData = filter.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });
@@ -87,24 +92,23 @@ const Stattypemateriel = () => {
   // Export PDF
   //   const generateutilisationmaterielPDF = async () => {
   //     const blob = await renderPdf(
-  //       <PDFStattypemateriel dataList={data.statnaturemouvements} columns={columns} />
+  //       <PDFDetailetatstock dataList={data.statnaturemouvements} columns={columns} />
   //     ).toBlob();
-  //     saveAs(blob, 'Benefice par mouvement.pdf');
+  //     saveAs(blob, 'Detail etat de stock.pdf');
   //   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let typematerielParams = {
-          idnaturemouvement: idnaturemouvement.idnaturemouvement,
-          mois: mois.mois,
-          annee: annee.annee
+        let dashboardParams = {
+          annee: annee.annee,
+          mois: mois.mois
         };
-        let url = baseUrl + '/typemateriel/getstattypemateriel';
+        let url = baseUrl + '/dashboard/etatdetailstockannee';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(typematerielParams),
+          body: JSON.stringify(dashboardParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -118,8 +122,7 @@ const Stattypemateriel = () => {
 
         const responseData = await response.json();
         const newData = {
-          stat_typemateriels: responseData.stat_typemateriels || [],
-          listetypemateriels: responseData.listetypemateriels || []
+          etatdetailstockannee: responseData.etatdetailstockannee || []
         };
 
         setData(newData);
@@ -136,11 +139,11 @@ const Stattypemateriel = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [idnaturemouvement.idnaturemouvement, mois.mois, sortedData, initialDataFetched]);
+  }, [annee.annee, mois.mois, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
-    window.location.replace('/admin/stattypemouvement');
+    window.location.replace('/admin/etatstock');
   };
 
   return (
@@ -148,8 +151,8 @@ const Stattypemateriel = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Benefice par nature', path: 'admin/stocktypemateriel' },
-            { name: 'Benefice par nature' }
+            { name: 'Detail etat de stock', path: '/admin/etatstock' },
+            { name: 'Detail etat de stock' }
           ]}
         />
       </Box>
@@ -167,32 +170,26 @@ const Stattypemateriel = () => {
         <Grid item>
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
+              <SimpleCard title="Rechercher un type de materiel" sx={{ marginBottom: '16px' }}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <Select
+                    <TextField
                       fullWidth
-                      labelId="select-label"
-                      value={typemateriel}
-                      onChange={(event) => setTypemateriel(event.target.value)}
                       size="small"
+                      type="text"
+                      name="val"
+                      label="Type code type materiel"
+                      variant="outlined"
+                      value={codetypemateriel}
+                      onChange={(event) => setCodetypemateriel(event.target.value)}
                       sx={{ mb: 3 }}
-                    >
-                      <MenuItem key="0" value="0">
-                        Tous les types
-                      </MenuItem>
-                      {data.listetypemateriels.map((row, index) => (
-                        <MenuItem key={index} value={row.idtypemateriel}>
-                          {row.typemateriel}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    />
                   </Grid>
                 </Grid>
               </SimpleCard>
             </Grid>
             <Grid item>
-              <SimpleCard title="Benefice par mouvement">
+              <SimpleCard title="Detail etat de stock">
                 <Grid container spacing={2}>
                   <Grid item xs={2}>
                     <Select
@@ -225,7 +222,7 @@ const Stattypemateriel = () => {
                       <MenuItem value="desc">DESC</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
+                  {/* <Grid item xs={2}>
                     <Button
                       className="button"
                       variant="contained"
@@ -235,22 +232,34 @@ const Stattypemateriel = () => {
                     >
                       <Icon>picture_as_pdf</Icon>
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="typemateriel" align="center" width="25%">
-                        Type materiel
+                      <TableCell key="typematriel" align="center" width="17%">
+                        Type materiel - Code
                       </TableCell>
-                      <TableCell key="mois" align="center" width="25%">
+                      <TableCell key="annee" align="center" width="17%">
+                        Annee
+                      </TableCell>
+                      <TableCell key="mois" align="center" width="17%">
                         Mois
                       </TableCell>
-                      <TableCell key="gain" align="center" width="25%">
-                        Gain en (Ariary)
+                      <TableCell key="gain" align="center" width="17%">
+                        Quantite totale
                       </TableCell>
-                      <TableCell key="depense" align="center" width="25%">
-                        Depense en (Ariary)
+                      <TableCell key="articleabime" align="center" width="17%">
+                        Article abime(quantite)
+                      </TableCell>
+                      <TableCell key="totalprixabime" align="center" width="17%">
+                        Total prix abime
+                      </TableCell>
+                      <TableCell key="articlebonetat" align="center" width="17%">
+                        Article bon etat(quantite)
+                      </TableCell>
+                      <TableCell key="totalprixbonetat" align="center" width="17%">
+                        Total prix bon etat
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -262,17 +271,37 @@ const Stattypemateriel = () => {
                         .map((row, index) => (
                           <TableRow key={index}>
                             <>
-                              <TableCell align="center" width="25%">
-                                {row.typemateriel}
+                              <TableCell align="center" width="17%">
+                                {row.typemateriel} - {row.val}
                               </TableCell>
-                              <TableCell align="center" width="25%">
-                                {row.mois}
+                              <TableCell align="center" width="17%">
+                                {row.annee}
                               </TableCell>
-                              <TableCell align="center" width="25%">
-                                {coloredNumber(row.gain)}
+                              <TableCell align="center" width="17%">
+                                {row.moisnom}
                               </TableCell>
-                              <TableCell align="center" width="25%">
-                                {coloredNumber(row.depense)}
+                              <TableCell align="center" width="17%">
+                                {formatNumber(row.quantitetotale)}
+                              </TableCell>
+                              <TableCell align="center" width="17%">
+                                {formatNumber(row.articleabime)}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'red' }}
+                              >
+                                {formatNumber(row.totalprixabime)}
+                              </TableCell>
+                              <TableCell align="center" width="17%">
+                                {formatNumber(row.articlebonetat)}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'green' }}
+                              >
+                                {formatNumber(row.totalprixbonetat)}
                               </TableCell>
                             </>
                           </TableRow>
@@ -318,4 +347,4 @@ const Stattypemateriel = () => {
   );
 };
 
-export default Stattypemateriel;
+export default Detailetatstock;

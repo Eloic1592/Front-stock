@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   tableCol: {
-    width: '20%', //  100% divisé par le nombre de colonnes
+    width: '14.3%', //  100% divisé par le nombre de colonnes
     borderStyle: 'solid',
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const PDFStatnaturemouvement = ({ dataList, columns }) => {
+const PDFStatnaturemouvement = ({ dataList, columns, annee }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Benefice par mouvement</Text>
+        <Text style={styles.title}>Etat de stock {annee}</Text>
         <View style={styles.table}>
           <View style={styles.tableRow}>
             {columns.map((column, index) => (
@@ -58,19 +58,25 @@ const PDFStatnaturemouvement = ({ dataList, columns }) => {
           {dataList.map((row, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.naturemouvement}</Text>
+                <Text style={styles.tableCell}>{row.annee}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.mois_nom}</Text>
+                <Text style={styles.tableCell}>{row.moisnom}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.gain)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.articleabime)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.depense)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.articlebonetat)}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.benefice)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.totalprixabime)}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.totalprixbonetat)}</Text>
+              </View>
+              <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{formatNumber(row.quantitetotale)}</Text>
               </View>
             </View>
           ))}

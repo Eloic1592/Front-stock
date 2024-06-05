@@ -1,4 +1,4 @@
-import { Box, TextField, Snackbar, Alert, Grid } from '@mui/material';
+import { Box, TextField, Snackbar, Alert, Grid, Select, MenuItem } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
@@ -23,6 +23,7 @@ const Editinventaire = () => {
   const [article, setArticle] = useState('');
   const [quantitereel, setQuantitereel] = useState(0);
   const [quantitetheorique, setQuantitetheorique] = useState(0);
+  const [etatinventaire, setEtatinventaire] = useState('2');
   const [data, setData] = useState({
     articles: []
   });
@@ -50,6 +51,7 @@ const Editinventaire = () => {
       dateinventaire: dateinventaire,
       quantitereel: quantitereel,
       quantitetheorique: quantitetheorique,
+      etatinventaire: etatinventaire,
       statut: 0
     };
 
@@ -108,6 +110,7 @@ const Editinventaire = () => {
         setQuantitetheorique(responseData.inventaire.quantitetheorique);
         setDateinventaire(formatDate(responseData.inventaire.dateinventaire));
         setArticle(responseData.inventaire.idarticle);
+        setEtatinventaire(responseData.inventaire.etatinventaire);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -193,6 +196,24 @@ const Editinventaire = () => {
                 value={quantitetheorique}
                 onChange={(event) => setQuantitetheorique(event.target.value)}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <Select
+                fullWidth
+                labelId="select-label"
+                value={etatinventaire}
+                onChange={(event) => setEtatinventaire(event.target.value)}
+              >
+                <MenuItem key="2" value="2">
+                  Selectionner un etat
+                </MenuItem>
+                <MenuItem key="0" value="0">
+                  Abime
+                </MenuItem>
+                <MenuItem key="1" value="1">
+                  Bon etat
+                </MenuItem>
+              </Select>
             </Grid>
 
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>

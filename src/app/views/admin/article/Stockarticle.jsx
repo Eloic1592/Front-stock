@@ -37,7 +37,12 @@ const Stockarticle = () => {
     { label: 'quantite', field: 'quantite', align: 'center' },
     { label: 'etat', field: 'etat', align: 'center' }
   ];
-  const [data, setData] = useState({ stockarticles: [], typemateriels: [] });
+  const [data, setData] = useState({
+    stockarticles: [],
+    typemateriels: [],
+    sommebonetat: 0,
+    sommeabime: 0
+  });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -88,7 +93,9 @@ const Stockarticle = () => {
         const responseData = await response.json();
         const newData = {
           stockarticles: responseData.stockarticles || [],
-          typemateriels: responseData.typemateriels || []
+          typemateriels: responseData.typemateriels || [],
+          sommebonetat: responseData.sommebonetat || 0,
+          sommeabime: responseData.sommeabime || 0
         };
 
         setData(newData);
@@ -197,16 +204,18 @@ const Stockarticle = () => {
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
                 </Grid>
-                <Grid item xs={2}>
-                  <Button
-                    className="button"
-                    variant="contained"
-                    aria-label="Éditer"
-                    color="secondary"
-                    onClick={generateArticlePDF}
-                  >
-                    <Icon>picture_as_pdf</Icon>
-                  </Button>
+                <Grid item container spacing={1} xs={3}>
+                  <Grid item>
+                    <Button
+                      className="button"
+                      variant="contained"
+                      aria-label="Éditer"
+                      color="secondary"
+                      onClick={generateArticlePDF}
+                    >
+                      <Icon>picture_as_pdf</Icon>
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
               <StyledTable>
@@ -286,6 +295,30 @@ const Stockarticle = () => {
                 </Grid>
               </Grid>
             </SimpleCard>
+          </Grid>
+          <Grid item>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <SimpleCard title="Total articles en bon etat">
+                  <Typography
+                    variant="body1"
+                    style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                  >
+                    {data.sommebonetat} en bon etat
+                  </Typography>
+                </SimpleCard>
+              </Grid>
+              <Grid item xs={6}>
+                <SimpleCard title="Total articles abimes">
+                  <Typography
+                    variant="body1"
+                    style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
+                  >
+                    {data.sommeabime} abimes
+                  </Typography>
+                </SimpleCard>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
         <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>

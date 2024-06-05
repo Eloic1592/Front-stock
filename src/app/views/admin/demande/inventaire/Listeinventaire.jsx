@@ -29,7 +29,8 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     { label: 'Date inventaire', field: 'dateinventaire', align: 'center' },
     { label: 'Article', field: 'article', align: 'center' },
     { label: 'Quantite reelle', field: 'quantitereel', align: 'center' },
-    { label: 'Quantite theorique', field: 'quantitetheorique', align: 'center' }
+    { label: 'Quantite theorique', field: 'quantitetheorique', align: 'center' },
+    { label: 'Etat', field: 'etat', align: 'center' }
   ];
 
   const handleAlertClose = () => setMessage({ open: false });
@@ -190,6 +191,9 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="quantitetheorique" align="center" width="30%">
                     Quantite theorique
                   </TableCell>
+                  <TableCell key="etat" align="center" width="30%">
+                    Etat
+                  </TableCell>
                   <TableCell width="15%" align="center">
                     Action
                   </TableCell>
@@ -212,6 +216,7 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">
                             {formatNumber(row.quantitetheorique)}
                           </TableCell>
+                          <TableCell align="center">{formatNumber(row.etat)}</TableCell>
                           <TableCell align="center">
                             <IconButton
                               className="button"

@@ -12,37 +12,25 @@ import {
   Snackbar,
   Alert,
   Select,
-  MenuItem,
-  IconButton
+  MenuItem
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { coloredNumber } from 'app/utils/utils';
-import { useParams } from 'react-router-dom';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-import PDFStatnaturemouvement from './PDFEtatstock';
-import { Link } from 'react-router-dom';
+import { formatNumber } from 'app/utils/utils';
 
-const Getstatesinglemouvement = () => {
-  const iddepot = useParams();
-
+const Statcommande = () => {
   const columns = [
-    { label: 'Nature', field: 'naturemouvement', align: 'center' },
     { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'Gain', field: 'gain', align: 'center' },
-    { label: 'Depense', field: 'depense', align: 'center' },
-    { label: 'Benefice', field: 'depense', align: 'center' }
+    { label: 'totalcommandes', field: 'totalcommandes', align: 'center' }
   ];
-  const [filtre, setFiltre] = useState('');
+
+  const [annee, setAnnee] = useState(new Date().getFullYear());
   const [data, setData] = useState({
-    statnaturemouvements: [],
-    totalentree: 0,
-    totalsortie: 0
+    totalcommandeannees: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -62,7 +50,7 @@ const Getstatesinglemouvement = () => {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(event.target.value);
     setPage(0);
   };
   const handleSelectColumn = (event) => {
@@ -70,43 +58,72 @@ const Getstatesinglemouvement = () => {
   };
 
   // Filtre
-  const filter = data.statnaturemouvements.filter(
-    (stat) =>
-      (stat.annee && stat.annee.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.mois && stat.mois.toLowerCase().includes(filtre.toLowerCase())) ||
-      (stat.naturemouvement && stat.naturemouvement.toLowerCase().includes(filtre.toLowerCase()))
-  );
+  const filter = data.totalcommandeannees.filter((stat) => {
+    const anneeMatch = annee === '' || (stat.annee && stat.annee === parseInt(annee, 10));
+
+    return anneeMatch;
+  });
 
   // Tri
   const sortedData = filter.sort((a, b) => {
-    if (a[sortColumn] < b[sortColumn]) {
-      return sortDirection === 'asc' ? -1 : 1;
-    }
-    if (a[sortColumn] > b[sortColumn]) {
-      return sortDirection === 'asc' ? 1 : -1;
+    for (let column of sortColumn) {
+      if (a[column] < b[column]) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
     }
     return 0;
   });
 
-  // Export PDF
-  const generateutilisationmaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFStatnaturemouvement dataList={data.statnaturemouvements} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Benefice par mouvement.pdf');
+  const handleSubmit = async () => {
+    try {
+      let commandeParams = {
+        annee: annee
+      };
+      let url = baseUrl + '/commande/totalcommandeannee';
+      const response = await fetch(url, {
+        crossDomain: true,
+        method: 'POST',
+        body: JSON.stringify(commandeParams),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        setMessage({
+          text: "Il y a un probleme, aucune donnee n'a ete recuperee",
+          severity: 'error',
+          open: true
+        });
+      }
+
+      const responseData = await response.json();
+      const newData = {
+        totalcommandeannees: responseData.totalcommandeannees || []
+      };
+
+      setData(newData);
+    } catch (error) {
+      setMessage({
+        text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
+        severity: 'error',
+        open: true
+      });
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let depotParams = {
-          iddepot: iddepot.iddepot
+        let dashboardParams = {
+          annee: annee
         };
-        let url = baseUrl + '/naturemouvement/statnaturemouvement';
+        let url = baseUrl + '/commande/totalcommandeannee';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(depotParams),
+          body: JSON.stringify(dashboardParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -120,9 +137,7 @@ const Getstatesinglemouvement = () => {
 
         const responseData = await response.json();
         const newData = {
-          statnaturemouvements: responseData.statnaturemouvements || [],
-          totalentree: responseData.totatentree || 0,
-          totalsortie: responseData.totalsortie || 0
+          totalcommandeannees: responseData.totalcommandeannees || []
         };
 
         setData(newData);
@@ -139,14 +154,11 @@ const Getstatesinglemouvement = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [iddepot.iddepot, sortedData, initialDataFetched]);
+  }, [annee, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
-    window.location.replace('/admin/typemouvement');
-  };
-  const getstattypemateriel = (idnaturemouvement, mois) => {
-    window.location.replace('/admin/stattypemateriel/' + idnaturemouvement + '/' + mois);
+    window.location.replace('/admin/commande');
   };
 
   return (
@@ -154,8 +166,8 @@ const Getstatesinglemouvement = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Benefice par nature', path: 'admin/stocktypemateriel' },
-            { name: 'Benefice par nature' }
+            { name: 'Etat de stock', path: 'admin/etatstock' },
+            { name: 'Etat de stock' }
           ]}
         />
       </Box>
@@ -173,44 +185,55 @@ const Getstatesinglemouvement = () => {
         <Grid item>
           <Grid container direction="column" spacing={1}>
             <Grid item>
+              <SimpleCard title="Rechercher l'annee" sx={{ marginBottom: '16px' }}>
+                <Grid container spacing={1}>
+                  <Grid item xs={10}>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      type="text"
+                      name="annee"
+                      label="annee"
+                      variant="outlined"
+                      value={annee}
+                      onChange={(event) => setAnnee(event.target.value)}
+                      sx={{ mb: 3 }}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Button color="primary" variant="contained" onClick={handleSubmit}>
+                      Rechercher
+                    </Button>
+                  </Grid>
+                </Grid>
+              </SimpleCard>
+            </Grid>
+            <Grid item>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en entree">
-                    <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-                      <Link to="/votre-chemin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        {coloredNumber(data.totalentree)}
-                      </Link>
+                  <SimpleCard title="TOTAL ARTICLES EN BON ETAT ">
+                    <Typography
+                      variant="body1"
+                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                    >
+                      {data.pourcentagebonetatstock} articles
                     </Typography>
                   </SimpleCard>
                 </Grid>
                 <Grid item xs={6}>
-                  <SimpleCard title="Total articles en sortie">
-                    <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
-                      <Link to="/votre-chemin" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        {coloredNumber(data.totalsortie)}
-                      </Link>
+                  <SimpleCard title="TOTAL ARTICLES ABIMES ">
+                    <Typography
+                      variant="body1"
+                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
+                    >
+                      {data.pourcentageabimestock} articles
                     </Typography>
                   </SimpleCard>
                 </Grid>
               </Grid>
             </Grid>
             <Grid item>
-              <SimpleCard title="Rechercher un mouvement" sx={{ marginBottom: '16px' }}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="materielfiltre"
-                  label="Filtre"
-                  variant="outlined"
-                  value={filtre}
-                  onChange={(event) => setFiltre(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </SimpleCard>
-            </Grid>
-            <Grid item>
-              <SimpleCard title="Benefice par mouvement">
+              <SimpleCard title="Depense annuelle des articles par mois">
                 <Grid container spacing={2}>
                   <Grid item xs={2}>
                     <Select
@@ -243,7 +266,7 @@ const Getstatesinglemouvement = () => {
                       <MenuItem value="desc">DESC</MenuItem>
                     </Select>
                   </Grid>
-                  <Grid item xs={2}>
+                  {/* <Grid item xs={2}>
                     <Button
                       className="button"
                       variant="contained"
@@ -253,14 +276,11 @@ const Getstatesinglemouvement = () => {
                     >
                       <Icon>picture_as_pdf</Icon>
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
                 <StyledTable>
                   <TableHead>
                     <TableRow>
-                      <TableCell key="naturemouvement" align="center" width="17%">
-                        Nature
-                      </TableCell>
                       <TableCell key="annee" align="center" width="17%">
                         Annee
                       </TableCell>
@@ -268,15 +288,21 @@ const Getstatesinglemouvement = () => {
                         Mois
                       </TableCell>
                       <TableCell key="gain" align="center" width="17%">
-                        Gain en (Ariary)
+                        Quantite totale
                       </TableCell>
-                      <TableCell key="depense" align="center" width="17%">
-                        Depense en (Ariary)
+                      <TableCell key="articleabime" align="center" width="17%">
+                        Article abime(quantite)
                       </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
-                        Benefice en (Ariary)
+                      <TableCell key="totalprixabime" align="center" width="17%">
+                        Total prix abime
                       </TableCell>
-                      <TableCell key="benefice" align="center" width="17%">
+                      <TableCell key="articlebonetat" align="center" width="17%">
+                        Article bon etat(quantite)
+                      </TableCell>
+                      <TableCell key="totalprixbonetat" align="center" width="17%">
+                        Total prix bon etat
+                      </TableCell>
+                      <TableCell key="action" align="center" width="17%">
                         Action
                       </TableCell>
                     </TableRow>
@@ -290,36 +316,45 @@ const Getstatesinglemouvement = () => {
                           <TableRow key={index}>
                             <>
                               <TableCell align="center" width="17%">
-                                {row.naturemouvement}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
                                 {row.annee}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {row.mois_nom}
+                                {row.moisnom}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.gain)}
+                                {formatNumber(row.quantitetotale)}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.depense)}
+                                {formatNumber(row.articleabime)}
+                              </TableCell>
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'red' }}
+                              >
+                                {formatNumber(row.totalprixabime)}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.benefice)}
+                                {formatNumber(row.articlebonetat)}
                               </TableCell>
-                              <TableCell align="center" width="17%">
+                              <TableCell
+                                align="center"
+                                width="17%"
+                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'green' }}
+                              >
+                                {formatNumber(row.totalprixbonetat)}
+                              </TableCell>
+                              {/* <TableCell align="center" width="17%">
                                 <IconButton
                                   className="button"
                                   variant="contained"
                                   aria-label="Edit"
                                   color="primary"
-                                  onClick={() =>
-                                    getstattypemateriel(row.idnaturemouvement, row.mois)
-                                  }
+                                  onClick={() => getdetailetatstock(row.annee, row.mois)}
                                 >
                                   <Icon>info</Icon>
                                 </IconButton>
-                              </TableCell>
+                              </TableCell> */}
                             </>
                           </TableRow>
                         ))
@@ -364,4 +399,4 @@ const Getstatesinglemouvement = () => {
   );
 };
 
-export default Getstatesinglemouvement;
+export default Statcommande;

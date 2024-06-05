@@ -23,7 +23,7 @@ const Detailsarticle = Loadable(lazy(() => import('app/views/admin/article/Detai
 
 const Editarticle = Loadable(lazy(() => import('app/views/admin/article/Editarticle')));
 
-const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Detailstockarticle')));
+const Stockarticle = Loadable(lazy(() => import('app/views/admin/article/Stockarticle')));
 
 const TypeMouvement = Loadable(
   lazy(() => import('app/views/admin/naturemouvement/Naturemouvement'))
@@ -81,6 +81,8 @@ const Editmateriel = Loadable(lazy(() => import('app/views/admin/materiel/Editma
 const StockMateriel = Loadable(lazy(() => import('app/views/admin/materiel/Stockmateriel')));
 
 const Commande = Loadable(lazy(() => import('app/views/admin/demande/commande/Commande')));
+
+const Statcommande = Loadable(lazy(() => import('app/views/admin/demande/commande/Statcommande')));
 
 const Editcommande = Loadable(lazy(() => import('app/views/admin/demande/commande/Editcommande')));
 
@@ -142,11 +144,9 @@ const Historique = Loadable(lazy(() => import('app/views/admin/archives/Historiq
 // echart page
 const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart')));
 
-const Statnaturemouvement = Loadable(
-  lazy(() => import('app/views/admin/dashboard/Statnaturemouvement'))
-);
+const Etatstock = Loadable(lazy(() => import('app/views/admin/dashboard/Etatstock')));
 
-const Stattypemateriel = Loadable(lazy(() => import('app/views/admin/dashboard/Stattypemateriel')));
+const Detailetatstock = Loadable(lazy(() => import('app/views/admin/dashboard/Detailetatstock')));
 
 const Aide = Loadable(lazy(() => import('app/views/admin/aide/Aide')));
 
@@ -268,6 +268,11 @@ const routes = [
         path: '/admin/commande',
         element: <ProtectedRoute element={<Commande />} />
       },
+
+      {
+        path: '/admin/statcommande',
+        element: <ProtectedRoute component={<Statcommande />} />
+      },
       {
         path: '/admin/editcommande/:idcommande',
         element: <ProtectedRoute element={<Editcommande />} />
@@ -368,12 +373,12 @@ const routes = [
         element: <ProtectedRoute element={<Decharge />} />
       },
       {
-        path: '/admin/stattypemouvement',
-        element: <ProtectedRoute element={<Statnaturemouvement />} />
+        path: '/admin/etatstock',
+        element: <ProtectedRoute element={<Etatstock />} />
       },
       {
-        path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
-        element: <ProtectedRoute element={<Stattypemateriel />} />
+        path: '/admin/detailetatstock/:annee/:mois',
+        element: <ProtectedRoute element={<Detailetatstock />} />
       },
       {
         path: '/admin/aide',
@@ -422,6 +427,7 @@ const routes = [
   { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
   { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
   { path: '/admin/validercommande/:idcommande', element: <Validercommande /> },
+  { path: '/admin/statcommande/', element: <Statcommande /> },
   { path: '/admin/reception', element: <Reception /> },
   { path: '/admin/editreception/:idreception', element: <Editreception /> },
   { path: '/admin/stockage', element: <Stockage /> },
@@ -438,10 +444,10 @@ const routes = [
   { path: '/admin/archives', element: <Archives /> },
   { path: '/admin/historique', element: <Historique /> },
   { path: '/admin/decharge/:idmouvementstock', element: <Decharge /> },
-  { path: '/admin/stattypemouvement', element: <Statnaturemouvement /> },
+  { path: '/admin/etatstock', element: <Etatstock /> },
   {
-    path: '/admin/stattypemateriel/:idnaturemouvement/:mois/:annee',
-    element: <Stattypemateriel />
+    path: '/admin/detailetatstock/:annee/:mois',
+    element: <Detailetatstock />
   },
   {
     path: '/admin/aide',
