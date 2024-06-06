@@ -166,12 +166,11 @@ const Statcommande = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Etat de stock', path: 'admin/etatstock' },
-            { name: 'Etat de stock' }
+            { name: 'Etats des commandes', path: 'admin/statcommande' },
+            { name: 'Etats des commandes' }
           ]}
         />
       </Box>
-
       <Grid container direction="column" spacing={2}>
         <Grid item>
           <Grid container direction="row" spacing={2}>
@@ -209,183 +208,168 @@ const Statcommande = () => {
               </SimpleCard>
             </Grid>
             <Grid item>
-              <Grid container spacing={2}>
+              <Grid container direction="row" spacing={1}>
                 <Grid item xs={6}>
-                  <SimpleCard title="TOTAL ARTICLES EN BON ETAT ">
-                    <Typography
-                      variant="body1"
-                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
-                    >
-                      {data.pourcentagebonetatstock} articles
-                    </Typography>
+                  <SimpleCard title="Bilan des commandes">
+                    <Grid container spacing={2}>
+                      <Grid item xs={2}>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          value={sortColumn}
+                          size="small"
+                          onChange={handleSelectColumn}
+                          multiple
+                        >
+                          <MenuItem value="1" disabled>
+                            Colonne
+                          </MenuItem>
+                          {columns.map((column) => (
+                            <MenuItem key={column.field} value={column.field}>
+                              {column.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Select
+                          fullWidth
+                          labelId="select-direction-label"
+                          value={sortDirection}
+                          size="small"
+                          onChange={(event) => setSortDirection(event.target.value)}
+                        >
+                          <MenuItem value="asc">ASC</MenuItem>
+                          <MenuItem value="desc">DESC</MenuItem>
+                        </Select>
+                      </Grid>
+                    </Grid>
+                    <StyledTable>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell key="annee" align="center" width="17%">
+                            Annee
+                          </TableCell>
+                          <TableCell key="mois" align="center" width="17%">
+                            Mois
+                          </TableCell>
+                          <TableCell key="totalcommandes" align="center" width="17%">
+                            Total commandes effectues
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {/* Donnees du tableau */}
+                        {sortedData && sortedData.length > 0 ? (
+                          sortedData
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => (
+                              <TableRow key={index}>
+                                <>
+                                  <TableCell align="center" width="17%">
+                                    {row.annee}
+                                  </TableCell>
+                                  <TableCell align="center" width="17%">
+                                    {row.moisnom}
+                                  </TableCell>
+                                  <TableCell align="center" width="17%">
+                                    {formatNumber(row.totalcommandes)}
+                                  </TableCell>
+                                </>
+                              </TableRow>
+                            ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={10}>
+                              <Typography variant="subtitle1" color="textSecondary">
+                                Aucune donnee disponible
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </StyledTable>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TablePagination
+                          sx={{ px: 2 }}
+                          page={page}
+                          component="div"
+                          rowsPerPage={rowsPerPage}
+                          count={sortedData.length}
+                          onPageChange={handleChangePage}
+                          rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
+                          backIconButtonProps={{ 'aria-label': 'Page precedente' }}
+                        />
+                      </Grid>
+                    </Grid>
                   </SimpleCard>
                 </Grid>
-                <Grid item xs={6}>
-                  <SimpleCard title="TOTAL ARTICLES ABIMES ">
-                    <Typography
-                      variant="body1"
-                      style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
-                    >
-                      {data.pourcentageabimestock} articles
-                    </Typography>
-                  </SimpleCard>
+                <Grid item container xs={6} spacing={6}>
+                  <Grid item xs={12}>
+                    <SimpleCard title="ARTICLES LE PLUS COMMANDE DE L'ANNEE">
+                      <Typography
+                        variant="body1"
+                        style={{ fontWeight: 'bold', fontSize: '1.0rem', color: 'green' }}
+                      >
+                        NEC-NEC Est le produit le plus commande de l'annee
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                        >
+                          1 ER | 5012 UNITES | 70% des commandes
+                        </Typography>
+                        <hr />
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'red' }}
+                        >
+                          2 E |2000 UNITES | 25% des commandes
+                        </Typography>
+                        <hr />
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'grey' }}
+                        >
+                          3 E |1000 UNITES | 3% des commandes
+                        </Typography>
+                      </Typography>
+                    </SimpleCard>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <SimpleCard title="COMMANDES MOYENNES PAR ANNEE">
+                      <Typography
+                        variant="body1"
+                        style={{ fontWeight: 'bold', fontSize: '1.0rem', color: 'green' }}
+                      >
+                        NEC-NEC Est le produit le plus commande de l'annee
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                        >
+                          3100 UNITES | 65% des commandes
+                        </Typography>
+                        <hr />
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'red' }}
+                        >
+                          2 E |2000 UNITES | 25% des commandes
+                        </Typography>
+                        <hr />
+                        <Typography
+                          variant="body1"
+                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'grey' }}
+                        >
+                          3 E |300 UNITES | 5% des commandes
+                        </Typography>
+                      </Typography>
+                    </SimpleCard>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <SimpleCard title="Depense annuelle des articles par mois">
-                <Grid container spacing={2}>
-                  <Grid item xs={2}>
-                    <Select
-                      fullWidth
-                      labelId="select-label"
-                      value={sortColumn}
-                      size="small"
-                      onChange={handleSelectColumn}
-                      multiple
-                    >
-                      <MenuItem value="1" disabled>
-                        Colonne
-                      </MenuItem>
-                      {columns.map((column) => (
-                        <MenuItem key={column.field} value={column.field}>
-                          {column.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Select
-                      fullWidth
-                      labelId="select-direction-label"
-                      value={sortDirection}
-                      size="small"
-                      onChange={(event) => setSortDirection(event.target.value)}
-                    >
-                      <MenuItem value="asc">ASC</MenuItem>
-                      <MenuItem value="desc">DESC</MenuItem>
-                    </Select>
-                  </Grid>
-                  {/* <Grid item xs={2}>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      aria-label="Edit"
-                      color="secondary"
-                      onClick={generateutilisationmaterielPDF}
-                    >
-                      <Icon>picture_as_pdf</Icon>
-                    </Button>
-                  </Grid> */}
-                </Grid>
-                <StyledTable>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell key="annee" align="center" width="17%">
-                        Annee
-                      </TableCell>
-                      <TableCell key="mois" align="center" width="17%">
-                        Mois
-                      </TableCell>
-                      <TableCell key="gain" align="center" width="17%">
-                        Quantite totale
-                      </TableCell>
-                      <TableCell key="articleabime" align="center" width="17%">
-                        Article abime(quantite)
-                      </TableCell>
-                      <TableCell key="totalprixabime" align="center" width="17%">
-                        Total prix abime
-                      </TableCell>
-                      <TableCell key="articlebonetat" align="center" width="17%">
-                        Article bon etat(quantite)
-                      </TableCell>
-                      <TableCell key="totalprixbonetat" align="center" width="17%">
-                        Total prix bon etat
-                      </TableCell>
-                      <TableCell key="action" align="center" width="17%">
-                        Action
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {/* Donnees du tableau */}
-                    {sortedData && sortedData.length > 0 ? (
-                      sortedData
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row, index) => (
-                          <TableRow key={index}>
-                            <>
-                              <TableCell align="center" width="17%">
-                                {row.annee}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {row.moisnom}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.quantitetotale)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.articleabime)}
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                width="17%"
-                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'red' }}
-                              >
-                                {formatNumber(row.totalprixabime)}
-                              </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.articlebonetat)}
-                              </TableCell>
-                              <TableCell
-                                align="center"
-                                width="17%"
-                                style={{ fontWeight: 'bold', fontSize: '1rem', color: 'green' }}
-                              >
-                                {formatNumber(row.totalprixbonetat)}
-                              </TableCell>
-                              {/* <TableCell align="center" width="17%">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => getdetailetatstock(row.annee, row.mois)}
-                                >
-                                  <Icon>info</Icon>
-                                </IconButton>
-                              </TableCell> */}
-                            </>
-                          </TableRow>
-                        ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={10}>
-                          <Typography variant="subtitle1" color="textSecondary">
-                            Aucune donnee disponible
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </StyledTable>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TablePagination
-                      sx={{ px: 2 }}
-                      page={page}
-                      component="div"
-                      rowsPerPage={rowsPerPage}
-                      count={sortedData.length}
-                      onPageChange={handleChangePage}
-                      rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                      nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
-                      backIconButtonProps={{ 'aria-label': 'Page precedente' }}
-                    />
-                  </Grid>
-                </Grid>
-              </SimpleCard>
             </Grid>
           </Grid>
           <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>

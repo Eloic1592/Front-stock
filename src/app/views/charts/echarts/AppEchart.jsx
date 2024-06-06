@@ -49,7 +49,7 @@ const AppEchart = () => {
 
       <Box sx={{ py: '12px' }} />
 
-      <SimpleCard title="Comparison Chart">
+      <SimpleCard title="Bilan de l'annee 2024">
         <ComparisonChart
           height="350px"
           color={[theme.palette.primary.dark, theme.palette.primary.light]}

@@ -157,11 +157,17 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                       Type materiel
                     </TableCell>
                     <TableCell key="quantitestock" align="center" width="25%">
-                      Quantite
+                      Quantite actuelle
                     </TableCell>
-                    <TableCell align="center" width="25%">
+                    <TableCell key="quantitestock" align="center" width="25%">
+                      quantite minimum
+                    </TableCell>
+                    <TableCell key="quantitestock" align="center" width="25%">
+                      Stock securite
+                    </TableCell>
+                    {/* <TableCell align="center" width="25%">
                       Etat
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -187,9 +193,15 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                             <TableCell align="center" width="25%">
                               {formatNumber(row.quantitestock)}
                             </TableCell>
-                            <TableCell align="center" width="25%">
-                              {row.etat}
+                            <TableCell key="quantitestock" align="center" width="25%">
+                              0
                             </TableCell>
+                            <TableCell key="quantitestock" align="center" width="25%">
+                              10
+                            </TableCell>
+                            {/* <TableCell align="center" width="25%">
+                              {row.etat}
+                            </TableCell> */}
                           </>
                         </TableRow>
                       ))

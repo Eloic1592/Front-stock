@@ -12,13 +12,18 @@ const ComparisonChart = ({ height, color = [] }) => {
     barMaxWidth: '64px',
     dataset: {
       source: [
-        ['Month', 'Website', 'App'],
-        ['Jan', 2200, 1200],
-        ['Feb', 800, 500],
-        ['Mar', 700, 1350],
-        ['Apr', 1500, 1250],
-        ['May', 2450, 450],
-        ['June', 1700, 1250]
+        ['Janvier', 256874, 146989],
+        ['Fevrier', 262797, 5839],
+        ['Mars', 108973, 808211],
+        ['Avril', 866121, 180100],
+        ['Mai', 87543, 930735],
+        ['Juin', 420346, 921161],
+        ['Juillet', 619842, 186516],
+        ['Aout', 612971, 540340],
+        ['Septembre', 996516, 87660],
+        ['Octobre', 629946, 632974],
+        ['Novembre', 618415, 306495],
+        ['Decembre', 960206, 168686]
       ]
     },
     xAxis: {
@@ -46,7 +51,10 @@ const ComparisonChart = ({ height, color = [] }) => {
     },
     // Declare several bar series, each will be mapped
     // to a column of dataset.source by default.
-    series: [{ type: 'bar' }, { type: 'bar' }]
+    series: [
+      { type: 'bar', stack: 'This month', name: 'This month', smooth: true },
+      { type: 'bar' }
+    ]
   };
 
   return <ReactEcharts style={{ height: height }} option={{ ...option }} />;

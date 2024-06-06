@@ -1,11 +1,40 @@
 import { Box, TextField, Select, MenuItem } from '@mui/material';
 import { Breadcrumb, SimpleCard } from 'app/components';
 import { useEffect, useState } from 'react';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Container } from 'app/views/style/style';
-
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import { grey } from '@mui/material/colors';
 const Bilan = () => {
-  const [annee, setAnnee] = useState('');
+  // Utiliser moment pour les dates
+  const localizer = momentLocalizer(moment);
+  const events = [
+    {
+      id: 1,
+      title: 'Inventaire Clavier',
+      start: new Date(2024, 5, 7, 10, 0), // Date et heure de début (année, mois, jour, heure, minute)
+      end: new Date(2024, 5, 7, 12, 0), // Date et heure de fin
+      desc: "Réunion avec l'équipe de projet"
+    },
+    {
+      id: 2,
+      title: 'Inventaire Unite centrale',
+      start: new Date(2024, 5, 8, 12, 0),
+      end: new Date(2024, 5, 8, 13, 0),
+      desc: 'Déjeuner avec un client'
+    },
+    {
+      id: 3,
+      title: 'Inventaire Laptop',
+      start: new Date(2024, 5, 10, 14, 0),
+      end: new Date(2024, 5, 10, 16, 0),
+      desc: 'Inventaire Laptop'
+    }
+    // Ajoutez d'autres événements si nécessaire
+  ];
 
   useEffect(() => {}, []);
 
@@ -13,80 +42,37 @@ const Bilan = () => {
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
-          routeSegments={[
-            { name: 'Bilan general', path: 'admin/bilan' },
-            { name: 'Bilan general' }
-          ]}
+          routeSegments={[{ name: 'Inventaire', path: 'admin/bilan' }, { name: 'Inventaire' }]}
         />
       </Box>
-
-      <SimpleCard title="Rechercher dans le bilan" sx={{ marginBottom: '16px' }}>
-        <form>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  type="text"
-                  name="annee"
-                  label="Annee"
-                  variant="outlined"
-                  value={annee}
-                  onChange={(event) => setAnnee(event.target.value)}
-                  sx={{ mb: 3 }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Select
-                  fullWidth
-                  size="small"
-                  labelId="select-label"
-                  value={'1'}
-                  //  onChange={handleChange}
-                >
-                  <MenuItem value="1">Janvier</MenuItem>
-                  <MenuItem value="2">Fevrier</MenuItem>
-                  <MenuItem value="3">Mars</MenuItem>
-                  <MenuItem value="4">Avril</MenuItem>
-                  <MenuItem value="5">Mai</MenuItem>
-                  <MenuItem value="6">Juin</MenuItem>
-                  <MenuItem value="7">Juillet</MenuItem>
-                  <MenuItem value="8">Aout</MenuItem>
-                  <MenuItem value="9">Septembre</MenuItem>
-                  <MenuItem value="10">Octobre</MenuItem>
-                  <MenuItem value="11">Novembre</MenuItem>
-                  <MenuItem value="12">Decembre</MenuItem>
-                </Select>
-              </Grid>
-            </Grid>
-          </div>
-        </form>
-      </SimpleCard>
-
-      <Box sx={{ py: '12px' }} />
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <SimpleCard title="ACHAT"></SimpleCard>
+      <Grid container spacing={2} direction="row">
+        <Grid item xs={12}>
+          <SimpleCard title="Calendrier d'inventaire" sx={{ marginBottom: '16px' }}>
+            <div>
+              <Calendar
+                localizer={localizer}
+                events={events}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: 500 }} // Ajustez la hauteur selon vos besoins
+              />
+            </div>
+          </SimpleCard>
         </Grid>
-        <Grid item xs={3}>
-          <SimpleCard title="VENTE"></SimpleCard>
+        <Grid item xs={12}>
+          <Typography variant="body1" style={{ fontWeight: 'bold', fontSize: '1.0rem' }}>
+            Pour aujourd'hui
+          </Typography>{' '}
         </Grid>
-        <Grid item xs={3}>
-          <SimpleCard title="DON"></SimpleCard>
-        </Grid>
-        <Grid item xs={3}>
-          <SimpleCard title="TRANSFERT"></SimpleCard>
-        </Grid>
-      </Grid>
-
-      <Box sx={{ py: '12px' }} />
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <SimpleCard title="Total materiel en entree"></SimpleCard>
-        </Grid>
-        <Grid item xs={6}>
-          <SimpleCard title="Total materiel en sortie"></SimpleCard>
+        <Grid item xs={12}>
+          <SimpleCard title="Inventaire du 05 Juin 2024">
+            <Typography
+              variant="body1"
+              style={{ fontWeight: 'bold', fontSize: '1.0rem', color: grey, opacity: 0.8 }}
+            >
+              Inventaire laptop et clavier
+            </Typography>{' '}
+          </SimpleCard>
         </Grid>
       </Grid>
     </Container>
