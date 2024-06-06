@@ -22,15 +22,15 @@ import { useParams } from 'react-router-dom';
 
 const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const idarticle = useParams();
-  // Colonne
-  const columns = [
-    { label: 'code article', field: 'codearticle', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
-    { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'quantite', field: 'quantitestock', align: 'center' },
-    { label: 'etat', field: 'etat', align: 'center' }
-  ];
+  // // Colonne
+  // const columns = [
+  //   { label: 'code article', field: 'codearticle', align: 'center' },
+  //   { label: 'modele', field: 'modele', align: 'center' },
+  //   { label: 'marque', field: 'marque', align: 'center' },
+  //   { label: 'type materiel', field: 'typemateriel', align: 'center' },
+  //   { label: 'Quantite en stock', field: 'quantitestock', align: 'center' },
+  //   { label: 'etat', field: 'etat', align: 'center' }
+  // ];
 
   const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -157,14 +157,9 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                       Type materiel
                     </TableCell>
                     <TableCell key="quantitestock" align="center" width="25%">
-                      Quantite actuelle
+                      Quantite en stock
                     </TableCell>
-                    <TableCell key="quantitestock" align="center" width="25%">
-                      quantite minimum
-                    </TableCell>
-                    <TableCell key="quantitestock" align="center" width="25%">
-                      Stock securite
-                    </TableCell>
+
                     {/* <TableCell align="center" width="25%">
                       Etat
                     </TableCell> */}
@@ -192,12 +187,6 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                             </TableCell>
                             <TableCell align="center" width="25%">
                               {formatNumber(row.quantitestock)}
-                            </TableCell>
-                            <TableCell key="quantitestock" align="center" width="25%">
-                              0
-                            </TableCell>
-                            <TableCell key="quantitestock" align="center" width="25%">
-                              10
                             </TableCell>
                             {/* <TableCell align="center" width="25%">
                               {row.etat}

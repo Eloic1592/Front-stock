@@ -39,8 +39,6 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
     open: false
   });
 
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
@@ -97,10 +95,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
       fetchData();
       setInitialDataFetched(true);
     }
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idcategoriemateriel === selectedRowId);
-    }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">

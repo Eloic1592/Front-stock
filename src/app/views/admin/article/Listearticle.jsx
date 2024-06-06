@@ -35,12 +35,12 @@ const ListeArticle = () => {
   // Colonne
   const columns = [
     { label: 'ID article', field: 'idarticle', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
-    { label: 'marque', field: 'marque', align: 'center' },
+    { label: 'Modele', field: 'modele', align: 'center' },
+    { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Code article', field: 'codearticle', align: 'center' },
-    { label: 'typemateriel', field: 'typemateriel', align: 'center' },
-    { label: 'description', field: 'description', align: 'center' },
-    { label: 'prix', field: 'prix', align: 'center' },
+    { label: 'Type materiel', field: 'typemateriel', align: 'center' },
+    { label: 'Description', field: 'description', align: 'center' },
+    { label: 'Prix de stockage', field: 'prixstock', align: 'center' },
     { label: 'quantite en stock', field: 'quantitestock', align: 'center' }
   ];
   const [data, setData] = useState({ articles: [], typemateriels: [] });
@@ -147,7 +147,7 @@ const ListeArticle = () => {
     <Box width="100%" overflow="auto" key="Box1">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
+          <SimpleCard title="Rechercher un article">
             <Grid container spacing={1}>
               <Grid item xs={4}>
                 <TextField
@@ -276,10 +276,10 @@ const ListeArticle = () => {
                   <TableCell width="16.6%" key="typemateriel" align="center">
                     type materiel
                   </TableCell>
-                  <TableCell width="16.6%" key="prix" align="center">
+                  <TableCell width="16.6%" key="prixstock" align="center">
                     prix
                   </TableCell>
-                  <TableCell width="16.6%" key="typemateriel" align="center">
+                  <TableCell width="16.6%" key="quantitestock" align="center">
                     quantite stock
                   </TableCell>
                   <TableCell align="center" key="action" width="16.6%">

@@ -32,28 +32,17 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     naturemouvements: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
-  const [editedIdNaturemouvement, setEditedIdNaturemouvement] = useState(null);
-  const [editedNaturemouvement, setEditedNaturemouvement] = useState(null);
-  const [editedTypemouvement, setEditedTypemouvement] = useState('1');
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
   const handleEdit = (idnaturemouvement) => {
     window.location.replace('/admin/editnaturemouvement/' + idnaturemouvement);
-  };
-
-  const cancelEdit = () => {
-    setEditedIdNaturemouvement('');
-    setEditedNaturemouvement('');
-    setIsEditClicked(false);
   };
 
   const {
@@ -71,39 +60,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     handleSelectColumn,
     sortedData
   } = useListemouvementFunctions(data);
-
-  const handleSubmit = () => {
-    let naturemouvement = {
-      idnaturemouvement: editedIdNaturemouvement,
-      naturemouvement: editedNaturemouvement,
-      typemouvement: editedTypemouvement
-    };
-    let url = baseUrl + '/naturemouvement/createnatmouvement';
-    fetch(url, {
-      crossDomain: true,
-      method: 'POST',
-      body: JSON.stringify(naturemouvement),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setMessage({
-          text: 'Information modifiee',
-          severity: 'success',
-          open: true
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-      })
-      .catch(() => {
-        setMessage({
-          text: 'La modification dans la base de données a échoué',
-          severity: 'error',
-          open: true
-        });
-      });
-  };
 
   //  Use effect
   useEffect(() => {
@@ -139,15 +95,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
       fetchData();
       setInitialDataFetched(true);
     }
-    if (isEditClicked && selectedRowId !== null) {
-      const selectedRow = sortedData.find((row) => row.idnaturemouvement === selectedRowId);
-
-      if (selectedRow) {
-        setEditedIdNaturemouvement(selectedRow.idnaturemouvement);
-        setEditedNaturemouvement((prev) => (prev != null ? prev : selectedRow.naturemouvement));
-      }
-    }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">
@@ -252,92 +200,28 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => (
                       <TableRow key={row.idnaturemouvement}>
-                        {isEditClicked && row.idnaturemouvement === selectedRowId ? (
-                          <>
-                            <TableCell key={row.idnaturemouvement} align="center" width="15%">
-                              <TextField
-                                value={editedIdNaturemouvement}
-                                onChange={(event) => setEditedIdNaturemouvement(event.target.value)}
-                              />
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              <TextField
-                                value={editedNaturemouvement}
-                                onChange={(event) => setEditedNaturemouvement(event.target.value)}
-                                onBlur={() =>
-                                  setEditedNaturemouvement(
-                                    editedNaturemouvement.trim() !== ''
-                                      ? editedNaturemouvement
-                                      : row.naturemouvement
-                                  )
-                                }
-                              />
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              <Select
-                                fullWidth
-                                labelId="select-label"
-                                value={editedTypemouvement}
-                                onChange={(event) => setEditedTypemouvement(event.target.value)}
-                              >
-                                <MenuItem value="1" key="1">
-                                  Physique
-                                </MenuItem>
-                                <MenuItem value="0" key="0">
-                                  Fictif
-                                </MenuItem>
-                              </Select>
-                            </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            <TableCell align="center" width="15%">
-                              {row.idnaturemouvement}
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              {row.naturemouvement}
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              {row.typemouvement}
-                            </TableCell>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="primary"
-                                onClick={() => handleEdit(row.idnaturemouvement)}
-                              >
-                                <Icon>edit_icon</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
-
-                        {isEditClicked && row.idnaturemouvement === selectedRowId && (
-                          <>
-                            <TableCell align="center" width="15%">
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="secondary"
-                                onClick={() => handleSubmit()}
-                              >
-                                <Icon>arrow_forward</Icon>
-                              </IconButton>
-                              <IconButton
-                                className="button"
-                                variant="contained"
-                                aria-label="Edit"
-                                color="error"
-                                onClick={() => cancelEdit(row)}
-                              >
-                                <Icon>close</Icon>
-                              </IconButton>
-                            </TableCell>
-                          </>
-                        )}
+                        <>
+                          <TableCell align="center" width="15%">
+                            {row.idnaturemouvement}
+                          </TableCell>
+                          <TableCell align="center" width="15%">
+                            {row.naturemouvement}
+                          </TableCell>
+                          <TableCell align="center" width="15%">
+                            {row.typemouvement}
+                          </TableCell>
+                          <TableCell align="center" width="15%">
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idnaturemouvement)}
+                            >
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                          </TableCell>
+                        </>
                       </TableRow>
                     ))
                 ) : (

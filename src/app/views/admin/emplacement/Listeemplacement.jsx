@@ -42,8 +42,6 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     open: false
   });
 
-  const [isEditClicked, setIsEditClicked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = useState(null);
   const handleAlertClose = () => setMessage({ open: false });
 
   // Modification(Update)
@@ -107,7 +105,7 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  }, [iddepot.iddepot, sortedData, initialDataFetched]);
 
   return (
     <Box width="100%" overflow="auto">
@@ -208,7 +206,12 @@ const Listemplacement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell key="depot" align="center" width="40%">
                             {row.depot} - {row.codedep}
                           </TableCell>
-                          <TableCell key="capacite" align="center" width="40%">
+                          <TableCell
+                            key="capacite"
+                            align="center"
+                            width="40%"
+                            style={{ fontWeight: 'bold', fontSize: '1rem' }}
+                          >
                             {formatNumber(row.capacite)}
                           </TableCell>
                           <TableCell align="center" width="15%">

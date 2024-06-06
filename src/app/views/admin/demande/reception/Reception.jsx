@@ -104,7 +104,7 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
       <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher une commande" sx={{ marginBottom: '16px' }}>
+            <SimpleCard title="Rechercher une commande recue" sx={{ marginBottom: '16px' }}>
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <TextField

@@ -32,14 +32,17 @@ export const navigations = [
     ]
   },
   {
-    name: 'Commandes',
+    name: 'Commande et Stockage',
     icon: 'shopping_cart',
     children: [
       {
-        name: 'Commande',
+        name: 'Commandes',
         iconText: 'SI',
         path: '/admin/commande',
-        children: [{ name: 'Etat des commandes', path: '/admin/statcommande', iconText: 'receipt' }]
+        children: [
+          { name: 'Commandes', path: '/admin/commande', iconText: 'SI' },
+          { name: 'Bilan des commandes', path: '/admin/statcommande', iconText: 'SI' }
+        ]
       },
       { name: 'Reception', iconText: 'SI', path: '/admin/reception' },
       { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },

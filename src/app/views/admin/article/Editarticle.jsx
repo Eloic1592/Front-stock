@@ -207,7 +207,7 @@ const Editarticle = () => {
                 autoFocus
                 id="prix"
                 type="text"
-                margin="prix"
+                margin="dense"
                 label="Prix"
                 name="prix"
                 value={prix}
