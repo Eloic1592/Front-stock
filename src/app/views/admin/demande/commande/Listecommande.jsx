@@ -21,6 +21,9 @@ import { StyledTable } from 'app/views/style/style';
 import { useListecommandeFunctions } from 'app/views/admin/demande/commande/function';
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
+import PDFCommande from './PDFCommande';
+import { saveAs } from 'file-saver';
+import { pdf as renderPdf } from '@react-pdf/renderer';
 
 const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -56,7 +59,13 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const receptioncommande = (idcommande) => {
     window.location.replace('/admin/validercommande/' + idcommande);
   };
+  const generateCommandePDF = async (idcommande) => {
+    // console.log(idcommande);
+    // const blob = await renderPdf(<PDFCommande idcommande={idcommande} />).toBlob();
+    // saveAs(blob, 'Commande_N ' + idcommande + '.PDF');
 
+    window.location.replace('/admin/pdfcommande/' + idcommande);
+  };
   const {
     sortDirection,
     page,
@@ -241,6 +250,15 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               onClick={() => receptioncommande(row.idcommande)}
                             >
                               <Icon>assignment_returned</Icon>
+                            </IconButton>
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="inherit"
+                              onClick={() => generateCommandePDF(row.idcommande)}
+                            >
+                              <Icon>picture_as_pdf</Icon>
                             </IconButton>
                           </TableCell>
                         </>

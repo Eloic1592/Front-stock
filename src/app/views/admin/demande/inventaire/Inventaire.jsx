@@ -36,6 +36,7 @@ const Inventaire = () => {
   const [article, setArticle] = useState('');
   const [quantitereel, setQuantitereel] = useState(0);
   const [quantitetheorique, setQuantitetheorique] = useState(0);
+  const [description, setDescription] = useState('');
   const [etatinventaire, setEtatinventaire] = useState('2');
   const [data, setData] = useState({
     articles: []
@@ -50,7 +51,7 @@ const Inventaire = () => {
 
   // Validation form
   const handleSubmit = () => {
-    if (!dateinventaire || !article || !quantitereel || !quantitetheorique) {
+    if (!dateinventaire || !article || !quantitereel || !quantitetheorique || !etatinventaire) {
       setMessage({
         text: 'Les champs suivants sont obligatoires : dateinventaire, article, quantitereel,quantitetheorique',
         severity: 'error',
@@ -58,13 +59,13 @@ const Inventaire = () => {
       });
       return;
     }
-
     let inventaire = {
       idarticle: article,
       dateinventaire: dateinventaire,
       quantitereel: quantitereel,
       quantitetheorique: quantitetheorique,
       etatinventaire: etatinventaire,
+      description: description,
       statut: 0
     };
 
@@ -220,6 +221,18 @@ const Inventaire = () => {
                         name="quantitetheorique"
                         value={quantitetheorique}
                         onChange={(event) => setQuantitetheorique(event.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={9}
+                        variant="outlined"
+                        label="Description"
+                        value={description}
+                        onChange={(event) => setDescription(event.target.value)}
+                        sx={{ mb: 3 }}
                       />
                     </Grid>
                     <Grid item xs={12}>

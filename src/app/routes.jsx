@@ -98,6 +98,8 @@ const Validercommande = Loadable(
   lazy(() => import('app/views/admin/demande/commande/Validationcommande'))
 );
 
+const PDFCommande = Loadable(lazy(() => import('app/views/admin/demande/commande/PDFCommande')));
+
 const Reception = Loadable(lazy(() => import('app/views/admin/demande/reception/Reception')));
 
 const Editreception = Loadable(
@@ -289,6 +291,10 @@ const routes = [
       {
         path: '/admin/validercommande/:idcommande',
         element: <ProtectedRoute element={<Validercommande />} />
+      },
+      {
+        path: '/admin/pdfcommande/:idcommande',
+        element: <ProtectedRoute element={<PDFCommande />} />
       },
       {
         path: '/admin/reception',

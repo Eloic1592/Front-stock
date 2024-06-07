@@ -23,6 +23,7 @@ const Editinventaire = () => {
   const [article, setArticle] = useState('');
   const [quantitereel, setQuantitereel] = useState(0);
   const [quantitetheorique, setQuantitetheorique] = useState(0);
+  const [description, setDescription] = useState('');
   const [etatinventaire, setEtatinventaire] = useState('2');
   const [data, setData] = useState({
     articles: []
@@ -51,6 +52,7 @@ const Editinventaire = () => {
       dateinventaire: dateinventaire,
       quantitereel: quantitereel,
       quantitetheorique: quantitetheorique,
+      description: description,
       etatinventaire: etatinventaire,
       statut: 0
     };
@@ -195,6 +197,18 @@ const Editinventaire = () => {
                 name="quantitetheorique"
                 value={quantitetheorique}
                 onChange={(event) => setQuantitetheorique(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                multiline
+                rows={9}
+                variant="outlined"
+                label="Description"
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                sx={{ mb: 3 }}
               />
             </Grid>
             <Grid item xs={12}>
