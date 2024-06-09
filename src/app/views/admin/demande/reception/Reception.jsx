@@ -22,6 +22,9 @@ import { useReceptionFunctions } from 'app/views/admin/demande/reception/functio
 import { baseUrl } from 'app/utils/constant';
 import { converttodate } from 'app/utils/utils';
 import { Container } from 'app/views/style/style';
+import { saveAs } from 'file-saver';
+import { pdf as renderPdf } from '@react-pdf/renderer';
+import PDFCommande from '../commande/PDFCommande';
 
 const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
@@ -44,6 +47,58 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
 
   const handleEdit = (idreception) => {
     window.location.replace('/admin/editreception/' + idreception);
+  };
+  async function fetchDataPDF(idcommande) {
+    try {
+      let commandeParams = {
+        idcommande: idcommande
+      };
+      let url = baseUrl + '/commande/pdfcommande';
+
+      const response = await fetch(url, {
+        crossDomain: true,
+        method: 'POST',
+        body: JSON.stringify(commandeParams),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      return {
+        vueCommande: responseData.vueCommande || {},
+        detailcommandeviews: responseData.detailcommandeviews || []
+      };
+    } catch (error) {
+      setMessage({
+        text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
+        severity: 'error',
+        open: true
+      });
+    }
+  }
+
+  const generateCommandePDF = async (idcommande) => {
+    try {
+      const finaldata = await fetchDataPDF(idcommande);
+
+      // Vérification et utilisation des données récupérées
+      if (finaldata) {
+        console.log('Données pour le PDF récupérées avec succès :', finaldata.vueCommande);
+        const blob = await renderPdf(
+          <PDFCommande
+            vueCommande={finaldata.vueCommande}
+            detailcommandeviews={finaldata.detailcommandeviews}
+          />
+        ).toBlob();
+        saveAs(blob, 'Commande_N ' + idcommande + '.PDF');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF :', error);
+    }
   };
 
   const {
@@ -214,6 +269,15 @@ const Reception = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                 onClick={() => handleEdit(row.idreception)}
                               >
                                 <Icon>edit_icon</Icon>
+                              </IconButton>
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="inherit"
+                                onClick={() => generateCommandePDF(row.idcommande)}
+                              >
+                                <Icon>picture_as_pdf</Icon>
                               </IconButton>
                             </TableCell>
                           </>

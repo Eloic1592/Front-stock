@@ -15,7 +15,12 @@ const LoginAdmin = Loadable(lazy(() => import('app/views/admin/Login/LoginAdmin'
 
 const Dashboard = Loadable(lazy(() => import('app/views/admin/dashboard/Dashboard')));
 
-const Bilan = Loadable(lazy(() => import('app/views/admin/dashboard/Bilan')));
+const Calendrierinventaire = Loadable(
+  lazy(() => import('app/views/admin/demande/inventaire/Calendrierinventaire'))
+);
+const Editcalendier = Loadable(
+  lazy(() => import('app/views/admin/demande/inventaire/Editcalendrierinventaire'))
+);
 
 const Article = Loadable(lazy(() => import('app/views/admin/article/Article')));
 
@@ -98,8 +103,6 @@ const Validercommande = Loadable(
   lazy(() => import('app/views/admin/demande/commande/Validationcommande'))
 );
 
-const PDFCommande = Loadable(lazy(() => import('app/views/admin/demande/commande/PDFCommande')));
-
 const Reception = Loadable(lazy(() => import('app/views/admin/demande/reception/Reception')));
 
 const Editreception = Loadable(
@@ -172,8 +175,12 @@ const routes = [
       },
 
       {
-        path: '/admin/bilan',
-        element: <ProtectedRoute element={<Bilan />} />
+        path: '/admin/calendrierinventaire',
+        element: <ProtectedRoute element={<Calendrierinventaire />} />
+      },
+      {
+        path: '/admin/editcalendrier/:idcalendrierinventaire',
+        element: <ProtectedRoute element={<Editcalendier />} />
       },
       {
         path: '/admin/article',
@@ -270,10 +277,9 @@ const routes = [
         path: '/admin/commande',
         element: <ProtectedRoute element={<Commande />} />
       },
-
       {
         path: '/admin/statcommande',
-        element: <ProtectedRoute component={<Statcommande />} />
+        element: <ProtectedRoute element={<Statcommande />} />
       },
       {
         path: '/admin/editcommande/:idcommande',
@@ -291,10 +297,6 @@ const routes = [
       {
         path: '/admin/validercommande/:idcommande',
         element: <ProtectedRoute element={<Validercommande />} />
-      },
-      {
-        path: '/admin/pdfcommande/:idcommande',
-        element: <ProtectedRoute element={<PDFCommande />} />
       },
       {
         path: '/admin/reception',
@@ -400,7 +402,12 @@ const routes = [
   // Admin
   { path: '/admin/connexion', element: <LoginAdmin /> },
   { path: '/admin/dashboard', element: <Dashboard /> },
-  { path: '/admin/bilan', element: <Bilan /> },
+  { path: '/admin/calendrierinventaire', element: <Calendrierinventaire /> },
+  {
+    path: '/admin/editcalendrier/:idcalendrierinventaire',
+    element: <Editcalendier />
+  },
+
   { path: '/admin/article', element: <Article /> },
   { path: '/admin/detailsarticle/:idarticle', element: <Detailsarticle /> },
   { path: '/admin/stocksarticle', element: <Stockarticle /> },
@@ -433,7 +440,6 @@ const routes = [
   { path: '/admin/detailcommande/:idcommande', element: <Detailcommande /> },
   { path: '/admin/editdetailcommande/:iddetailcommande', element: <Editdetailcommande /> },
   { path: '/admin/validercommande/:idcommande', element: <Validercommande /> },
-  { path: '/admin/statcommande/', element: <Statcommande /> },
   { path: '/admin/reception', element: <Reception /> },
   { path: '/admin/editreception/:idreception', element: <Editreception /> },
   { path: '/admin/stockage', element: <Stockage /> },

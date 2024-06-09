@@ -30,7 +30,7 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   const columns = [
     { label: 'ID', field: 'idcommande', align: 'center' },
     { label: 'Nom client', field: 'nom', align: 'center' },
-    { label: 'Date devis', field: 'datedevis', align: 'center' },
+    { label: 'Date commande', field: 'datecommande', align: 'center' },
     { label: 'Libelle', field: 'libelle', align: 'center' }
   ];
 
@@ -42,30 +42,13 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     clients: [],
     articles: []
   });
+
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const handleEdit = (idcommande) => {
-    window.location.replace('/admin/editcommande/' + idcommande);
-  };
-
-  const getInfo = (idcommande) => {
-    window.location.replace('/admin/detailcommande/' + idcommande);
-  };
-
-  const receptioncommande = (idcommande) => {
-    window.location.replace('/admin/validercommande/' + idcommande);
-  };
-  const generateCommandePDF = async (idcommande) => {
-    // console.log(idcommande);
-    // const blob = await renderPdf(<PDFCommande idcommande={idcommande} />).toBlob();
-    // saveAs(blob, 'Commande_N ' + idcommande + '.PDF');
-
-    window.location.replace('/admin/pdfcommande/' + idcommande);
-  };
   const {
     sortDirection,
     page,
@@ -83,6 +66,39 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     handleSelectColumn,
     sortedData
   } = useListecommandeFunctions(data);
+
+  async function fetchDataPDF(idcommande) {
+    try {
+      let commandeParams = {
+        idcommande: idcommande
+      };
+      let url = baseUrl + '/commande/pdfcommande';
+
+      const response = await fetch(url, {
+        crossDomain: true,
+        method: 'POST',
+        body: JSON.stringify(commandeParams),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+
+      return {
+        vueCommande: responseData.vueCommande || {},
+        detailcommandeviews: responseData.detailcommandeviews || []
+      };
+    } catch (error) {
+      setMessage({
+        text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
+        severity: 'error',
+        open: true
+      });
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +137,37 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     }
   }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
 
+  const handleEdit = (idcommande) => {
+    window.location.replace('/admin/editcommande/' + idcommande);
+  };
+
+  const getInfo = (idcommande) => {
+    window.location.replace('/admin/detailcommande/' + idcommande);
+  };
+
+  const receptioncommande = (idcommande) => {
+    window.location.replace('/admin/validercommande/' + idcommande);
+  };
+
+  const generateCommandePDF = async (idcommande) => {
+    try {
+      const finaldata = await fetchDataPDF(idcommande);
+
+      // Vérification et utilisation des données récupérées
+      if (finaldata) {
+        console.log('Données pour le PDF récupérées avec succès :', finaldata.vueCommande);
+        const blob = await renderPdf(
+          <PDFCommande
+            vueCommande={finaldata.vueCommande}
+            detailcommandeviews={finaldata.detailcommandeviews}
+          />
+        ).toBlob();
+        saveAs(blob, 'Commande_N ' + idcommande + '.PDF');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF :', error);
+    }
+  };
   return (
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
@@ -198,10 +245,10 @@ const Listecommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     Numero commande
                   </TableCell>
                   <TableCell key="nom" align="center" width="30%">
-                    Client
+                    Nom client
                   </TableCell>
-                  <TableCell key="datedevis" align="center" width="15%">
-                    Date devis
+                  <TableCell key="datecommande" align="center" width="15%">
+                    Date commande
                   </TableCell>
                   <TableCell key="libelle" align="center" width="30%">
                     Libelle

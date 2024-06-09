@@ -19,18 +19,21 @@ import { useEffect, useState } from 'react';
 import { SimpleCard, Breadcrumb } from 'app/components';
 import { StyledTable, Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
-import { formatNumber } from 'app/utils/utils';
+import { formatNumber, months } from 'app/utils/utils';
 
 const Statcommande = () => {
   const columns = [
     { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
-    { label: 'totalcommandes', field: 'totalcommandes', align: 'center' }
+    { label: 'Total commande', field: 'totalcommande', align: 'center' },
+    { label: 'Commande moyenne', field: 'commandemoyenne', align: 'center' }
   ];
 
   const [annee, setAnnee] = useState(new Date().getFullYear());
+  const [mois, setMois] = useState(new Date().getMonth() + 1);
   const [data, setData] = useState({
-    totalcommandeannees: []
+    totalcommandeannees: [],
+    totalcommandearticles: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -80,7 +83,8 @@ const Statcommande = () => {
   const handleSubmit = async () => {
     try {
       let commandeParams = {
-        annee: annee
+        annee: annee,
+        mois: mois
       };
       let url = baseUrl + '/commande/totalcommandeannee';
       const response = await fetch(url, {
@@ -100,7 +104,8 @@ const Statcommande = () => {
 
       const responseData = await response.json();
       const newData = {
-        totalcommandeannees: responseData.totalcommandeannees || []
+        totalcommandeannees: responseData.totalcommandeannees || [],
+        totalcommandearticles: responseData.totalcommandearticles || []
       };
 
       setData(newData);
@@ -116,14 +121,15 @@ const Statcommande = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let dashboardParams = {
-          annee: annee
+        let commandeParams = {
+          annee: annee,
+          mois: mois
         };
         let url = baseUrl + '/commande/totalcommandeannee';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
-          body: JSON.stringify(dashboardParams),
+          body: JSON.stringify(commandeParams),
           headers: { 'Content-Type': 'application/json' }
         });
 
@@ -137,7 +143,8 @@ const Statcommande = () => {
 
         const responseData = await response.json();
         const newData = {
-          totalcommandeannees: responseData.totalcommandeannees || []
+          totalcommandeannees: responseData.totalcommandeannees || [],
+          totalcommandearticles: responseData.totalcommandearticles || []
         };
 
         setData(newData);
@@ -154,7 +161,7 @@ const Statcommande = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [annee, sortedData, initialDataFetched]);
+  }, [annee, mois, sortedData, initialDataFetched]);
 
   //   Bouton retour
   const redirect = () => {
@@ -186,7 +193,7 @@ const Statcommande = () => {
             <Grid item>
               <SimpleCard title="Rechercher l'annee" sx={{ marginBottom: '16px' }}>
                 <Grid container spacing={1}>
-                  <Grid item xs={10}>
+                  <Grid item xs={5}>
                     <TextField
                       fullWidth
                       size="small"
@@ -199,6 +206,21 @@ const Statcommande = () => {
                       sx={{ mb: 3 }}
                     />
                   </Grid>
+                  <Grid item xs={5}>
+                    <Select
+                      fullWidth
+                      labelId="select-direction-label"
+                      value={mois}
+                      size="small"
+                      onChange={(event) => setMois(event.target.value)}
+                    >
+                      {months.map((column, index) => (
+                        <MenuItem key={`${index + 1}. ${column.label}`} value={index + 1}>
+                          {column}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </Grid>
                   <Grid item xs={2}>
                     <Button color="primary" variant="contained" onClick={handleSubmit}>
                       Rechercher
@@ -209,7 +231,7 @@ const Statcommande = () => {
             </Grid>
             <Grid item>
               <Grid container direction="row" spacing={1}>
-                <Grid item xs={6}>
+                <Grid item xs={9}>
                   <SimpleCard title="Bilan des commandes">
                     <Grid container spacing={2}>
                       <Grid item xs={2}>
@@ -221,12 +243,9 @@ const Statcommande = () => {
                           onChange={handleSelectColumn}
                           multiple
                         >
-                          <MenuItem value="1" disabled>
-                            Colonne
-                          </MenuItem>
-                          {columns.map((column) => (
-                            <MenuItem key={column.field} value={column.field}>
-                              {column.label}
+                          {months.map((monthName, index) => (
+                            <MenuItem key={index + 1} value={index + 1}>
+                              {monthName}
                             </MenuItem>
                           ))}
                         </Select>
@@ -254,7 +273,10 @@ const Statcommande = () => {
                             Mois
                           </TableCell>
                           <TableCell key="totalcommandes" align="center" width="17%">
-                            Total commandes effectues
+                            Total commande(Unite)
+                          </TableCell>
+                          <TableCell key="commandesmoyennes" align="center" width="17%">
+                            Commande moyenne(Unite)
                           </TableCell>
                         </TableRow>
                       </TableHead>
@@ -272,15 +294,26 @@ const Statcommande = () => {
                                   <TableCell align="center" width="17%">
                                     {row.moisnom}
                                   </TableCell>
-                                  <TableCell align="center" width="17%">
+                                  <TableCell
+                                    align="center"
+                                    width="17%"
+                                    style={{ fontWeight: 'bold', fontSize: '1rem' }}
+                                  >
                                     {formatNumber(row.totalcommandes)}
+                                  </TableCell>
+                                  <TableCell
+                                    align="center"
+                                    width="17%"
+                                    style={{ fontWeight: 'bold', fontSize: '1rem' }}
+                                  >
+                                    {formatNumber(row.moyennecommandes)}
                                   </TableCell>
                                 </>
                               </TableRow>
                             ))
                         ) : (
                           <TableRow>
-                            <TableCell colSpan={10}>
+                            <TableCell colSpan={12}>
                               <Typography variant="subtitle1" color="textSecondary">
                                 Aucune donnee disponible
                               </Typography>
@@ -307,65 +340,49 @@ const Statcommande = () => {
                     </Grid>
                   </SimpleCard>
                 </Grid>
-                <Grid item container xs={6} spacing={6}>
+                <Grid item container spacing={2} xs={3}>
                   <Grid item xs={12}>
-                    <SimpleCard title="ARTICLES LE PLUS COMMANDE DE L'ANNEE">
-                      <Typography
-                        variant="body1"
-                        style={{ fontWeight: 'bold', fontSize: '1.0rem', color: 'green' }}
-                      >
-                        NEC-NEC Est le produit le plus commande de l'annee
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
-                        >
-                          1 ER | 5012 UNITES | 70% des commandes
-                        </Typography>
-                        <hr />
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'red' }}
-                        >
-                          2 E |2000 UNITES | 25% des commandes
-                        </Typography>
-                        <hr />
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'grey' }}
-                        >
-                          3 E |1000 UNITES | 3% des commandes
-                        </Typography>
-                      </Typography>
+                    <SimpleCard title="ARTICLES LE PLUS COMMANDES DE L'ANNEE">
+                      {data.totalcommandearticles.slice(0, 3).map((article, index) => (
+                        <div key={index} style={{ marginBottom: '15px' }}>
+                          <Typography
+                            variant="h6"
+                            style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                          >
+                            {article.marque}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            style={{ fontSize: '1.0rem', color: 'black', fontWeight: 'bold' }}
+                          >
+                            Code: {article.codearticle} | {article.typemateriel} |{' '}
+                            {formatNumber(article.quantitetotale)} Unites
+                          </Typography>
+                          <hr style={{ border: '0', height: '1px', background: '#ddd' }} />
+                        </div>
+                      ))}
                     </SimpleCard>
                   </Grid>
                   <Grid item xs={12}>
-                    <SimpleCard title="COMMANDES MOYENNES PAR ANNEE">
-                      <Typography
-                        variant="body1"
-                        style={{ fontWeight: 'bold', fontSize: '1.0rem', color: 'green' }}
-                      >
-                        NEC-NEC Est le produit le plus commande de l'annee
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
-                        >
-                          3100 UNITES | 65% des commandes
-                        </Typography>
-                        <hr />
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'red' }}
-                        >
-                          2 E |2000 UNITES | 25% des commandes
-                        </Typography>
-                        <hr />
-                        <Typography
-                          variant="body1"
-                          style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'grey' }}
-                        >
-                          3 E |300 UNITES | 5% des commandes
-                        </Typography>
-                      </Typography>
+                    <SimpleCard title="ARTICLES LE PLUS COMMANDES DU MOIS">
+                      {data.totalcommandearticles.slice(0, 3).map((article, index) => (
+                        <div key={index} style={{ marginBottom: '15px' }}>
+                          <Typography
+                            variant="h6"
+                            style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
+                          >
+                            {article.marque}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            style={{ fontSize: '1.0rem', color: 'black', fontWeight: 'bold' }}
+                          >
+                            Code: {article.codearticle} | {article.typemateriel} |{' '}
+                            {formatNumber(article.quantitetotale)} Unites
+                          </Typography>
+                          <hr style={{ border: '0', height: '1px', background: '#ddd' }} />
+                        </div>
+                      ))}
                     </SimpleCard>
                   </Grid>
                 </Grid>

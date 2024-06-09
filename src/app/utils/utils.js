@@ -358,3 +358,50 @@ export const months = [
   'Novembre',
   'Décembre'
 ];
+
+export const messages = {
+  date: 'Date',
+  time: 'Heure',
+  event: 'Événement',
+  allDay: 'Toute la journée',
+  week: 'Semaine',
+  work_week: 'Semaine de travail',
+  day: 'Jour',
+  month: 'Mois',
+  previous: 'Précédent',
+  next: 'Suivant',
+  yesterday: 'Hier',
+  tomorrow: 'Demain',
+  today: "Aujourd'hui",
+  agenda: 'Agenda',
+  noEventsInRange: 'Aucun événement dans cette période.',
+  showMore: (total) => `+ ${total} plus`
+};
+
+export const formatTimestamp = (timestamp) => {
+  // Create a new Date object using milliseconds
+  const date = new Date(timestamp);
+
+  // Obtenez les composants de la date
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
+  const year = date.getFullYear();
+  let hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+  // Soustraire trois heures
+  hours = (parseInt(hours) - 3).toString().padStart(2, '0');
+  // Return the formatted timestamp
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+};
+
+export const formattodatetimelocal = (timestamp) => {
+  return moment(timestamp).subtract(3, 'hours').format('YYYY-MM-DDTHH:mm');
+};
+
+export const formattimetolocaltime = (timestamp) => {
+  const moment = require('moment-timezone');
+  const fuseauHoraire = 'Indian/Antananarivo';
+  const heureFormatee = moment.tz(timestamp, fuseauHoraire).format('HH:mm:ss');
+  return heureFormatee;
+};

@@ -3,7 +3,7 @@ export const navigations = [
     name: 'Statistiques',
     icon: 'trending_up',
     children: [
-      { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
+      // { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
       { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
       {
         name: 'Etat des stocks',
@@ -40,7 +40,7 @@ export const navigations = [
         iconText: 'SI',
         path: '/admin/commande',
         children: [
-          { name: 'Commandes', path: '/admin/commande', iconText: 'SI' },
+          { name: 'Liste des commandes', path: '/admin/commande', iconText: 'SI' },
           { name: 'Bilan des commandes', path: '/admin/statcommande', iconText: 'SI' }
         ]
       },
@@ -84,6 +84,11 @@ export const navigations = [
       { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
       { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
     ]
+  },
+  {
+    name: 'Calendrier inventaire',
+    icon: 'event',
+    path: '/admin/calendrierinventaire'
   },
   {
     name: 'Aide',
