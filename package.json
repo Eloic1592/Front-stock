@@ -55,6 +55,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "^5.0.1",
     "shortid": "^2.2.16",
+    "sweetalert": "^2.1.2",
     "xlsx": "^0.18.5",
     "yup": "^1.0.2"
   },

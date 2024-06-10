@@ -3,6 +3,9 @@ import { Container, Typography, Box } from '@mui/material';
 import Article from 'app/img/Article.PNG';
 import Insertion_article from 'app/img/Insertion_article.PNG';
 import Stock_articles from 'app/img/Stock_articles.PNG';
+import Liste_commandes from 'app/img/Liste_commandes.PNG';
+import Etatstatistiques from 'app/img/Etatstatistiques.PNG';
+import Section_depots from 'app/img/Section_depots.PNG';
 
 const Aide = () => {
   return (
@@ -11,7 +14,6 @@ const Aide = () => {
         <Typography variant="h4" gutterBottom>
           Bienvenue dans la section Aide
         </Typography>
-
         <Typography variant="body1" gutterBottom>
           Nous sommes là pour vous aider à tirer le meilleur parti de notre plateforme. Que vous
           soyez nouveau ou utilisateur expérimenté, notre objectif est de vous fournir l'assistance
@@ -29,7 +31,6 @@ const Aide = () => {
           disponible pour répondre à vos questions et résoudre vos problèmes dans les plus brefs
           délais.
         </Typography>
-
         <Typography variant="h6" gutterBottom>
           Insertion de données
         </Typography>
@@ -56,7 +57,6 @@ const Aide = () => {
             width="70%"
           />
         </div>
-
         <Typography variant="h6" gutterBottom>
           Mouvements
         </Typography>
@@ -65,7 +65,6 @@ const Aide = () => {
           entreprise. De la réception des marchandises à leur expédition, nous vous expliquerons
           toutes les étapes.
         </Typography>
-
         <Typography variant="h6" gutterBottom>
           Stockage de matériels et des articles
         </Typography>
@@ -80,7 +79,16 @@ const Aide = () => {
             width="100%"
           />
         </div>
-
+        <Typography variant="h6" gutterBottom>
+          Depots et emplacements
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Obtenez des informations sur les depots des matériaux et des articles dans votre entrepôt
+          ou vos locaux.
+        </Typography>
+        <div>
+          <img src={Section_depots} alt="Description de la section des depots" width="100%" />
+        </div>
         <Typography variant="h6" gutterBottom>
           Les commandes
         </Typography>
@@ -89,7 +97,9 @@ const Aide = () => {
           comment suivre les commandes en attente et effectuées pour garantir une expérience client
           optimale.
         </Typography>
-
+        <div>
+          <img src={Liste_commandes} alt="Description de la section commandes" width="100%" />
+        </div>
         <Typography variant="h6" gutterBottom>
           Les statistiques
         </Typography>
@@ -98,7 +108,9 @@ const Aide = () => {
           système. Obtenez des informations précieuses sur les ventes, les stocks, les performances
           et plus encore pour prendre des décisions éclairées.
         </Typography>
-
+        <div>
+          <img src={Etatstatistiques} alt="Description de la section statistiques" width="100%" />
+        </div>
         {/* Ajoutez ici d'autres sections ou un formulaire de contact */}
       </Box>
     </Container>

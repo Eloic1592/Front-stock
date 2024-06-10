@@ -9,6 +9,8 @@ import moment from 'moment';
 import { baseUrl } from 'app/utils/constant';
 import { messages, converttodate, formatTimestamp } from 'app/utils/utils';
 import 'moment/locale/fr';
+import InventaireNotification from '../../Notification/InventaireNotification';
+
 const Calendrier = () => {
   moment.locale('fr');
   const localizer = momentLocalizer(moment);
@@ -99,41 +101,59 @@ const Calendrier = () => {
             Pour aujourd'hui
           </Typography>
         </Grid>
-        {data.calendrierinventaires.slice(startIndex, endIndex).map((inventory, index) => (
-          <Grid item xs={12} key={index}>
+        {data.calendrierinventaires.length === 0 ? (
+          <Grid item xs={12}>
             <SimpleCard>
-              <Grid container direction="row" alignItems="center">
-                {/* Section Texte */}
-                <Grid item xs={11}>
-                  <Typography
-                    variant="h5"
-                    style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
-                  >
-                    {`Inventaire du ${converttodate(inventory.datecalendrier)}`}
-                  </Typography>
-                  <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
-                    {`De ${formatTimestamp(inventory.heuredebut)}  à  ${formatTimestamp(
-                      inventory.heurefin
-                    )} `}
-                  </Typography>
-                  <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
-                    {inventory.description}
-                  </Typography>
-                </Grid>
-                {/* Section Icône */}
-                <Grid item xs={1} container justifyContent="flex-end">
-                  <IconButton
-                    aria-label="modifier"
-                    color="primary"
-                    onClick={() => handleEdit(inventory.idcalendrierinventaire)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </Grid>
-              </Grid>
+              <Typography
+                variant="h5"
+                style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+              >
+                Aucun inventaire prevu pour aujourd'hui
+              </Typography>
+              <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                Aucune donnée d'inventaire n'a été trouvée.
+              </Typography>
             </SimpleCard>
           </Grid>
-        ))}
+        ) : (
+          data.calendrierinventaires.map((inventory, index) => (
+            <Grid item xs={12} key={index}>
+              <SimpleCard>
+                <Grid container alignItems="center" justifyContent="space-between">
+                  {/* Texte principal */}
+                  <Grid item xs={11}>
+                    <div style={{ marginBottom: '10px' }}>
+                      <Typography
+                        variant="h5"
+                        style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+                      >
+                        {`Inventaire du ${converttodate(inventory.datecalendrier)}`}
+                      </Typography>
+                      <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                        {`De ${moment(inventory.heuredebut).format('HH:mm:ss')} à ${moment(
+                          inventory.heurefin
+                        ).format('HH:mm:ss')}`}
+                      </Typography>
+                    </div>
+                    <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
+                      {inventory.description}
+                    </Typography>
+                  </Grid>
+                  {/* Icône de modification */}
+                  <Grid item xs={1} container justifyContent="flex-end">
+                    <IconButton
+                      aria-label="modifier"
+                      color="primary"
+                      onClick={() => handleEdit(inventory.idcalendrierinventaire)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </SimpleCard>
+            </Grid>
+          ))
+        )}
         <Grid item xs={12}>
           <Pagination
             count={Math.ceil(data.calendrierinventaires.length / itemsPerPage)}
@@ -150,44 +170,61 @@ const Calendrier = () => {
             Les plus recents
           </Typography>
         </Grid>
-        {data.calendriercree.map((inventory, index) => (
-          <Grid item xs={12} key={index}>
+        {data.calendriercree.length === 0 ? (
+          <Grid item xs={12}>
             <SimpleCard>
-              <Grid container alignItems="center" justifyContent="space-between">
-                {/* Texte principal */}
-                <Grid item xs={11}>
-                  <div style={{ marginBottom: '10px' }}>
-                    <Typography
-                      variant="h5"
-                      style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
-                    >
-                      {`Inventaire du ${converttodate(inventory.datecalendrier)}`}
-                    </Typography>
-                    <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
-                      {`De ${moment(inventory.heuredebut).format('HH:mm:ss')}  à  ${moment(
-                        inventory.heurefin
-                      ).format('HH:mm:ss')}`}
-                    </Typography>
-                  </div>
-                  <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
-                    {inventory.description}
-                  </Typography>
-                </Grid>
-                {/* Icône de modification */}
-                <Grid item xs={1} container justifyContent="flex-end">
-                  <IconButton
-                    aria-label="modifier"
-                    color="primary"
-                    onClick={() => handleEdit(inventory.idcalendrierinventaire)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </Grid>
-              </Grid>
+              <Typography
+                variant="h5"
+                style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+              >
+                Aucun inventaire prevu pour aujourd'hui
+              </Typography>
+              <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                Aucune donnée d'inventaire n'a été trouvée.
+              </Typography>
             </SimpleCard>
           </Grid>
-        ))}
+        ) : (
+          data.calendriercree.map((inventory, index) => (
+            <Grid item xs={12} key={index}>
+              <SimpleCard>
+                <Grid container alignItems="center" justifyContent="space-between">
+                  {/* Texte principal */}
+                  <Grid item xs={11}>
+                    <div style={{ marginBottom: '10px' }}>
+                      <Typography
+                        variant="h5"
+                        style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+                      >
+                        {`Inventaire du ${converttodate(inventory.datecalendrier)}`}
+                      </Typography>
+                      <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                        {`De ${moment(inventory.heuredebut).format('HH:mm:ss')} à ${moment(
+                          inventory.heurefin
+                        ).format('HH:mm:ss')}`}
+                      </Typography>
+                    </div>
+                    <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
+                      {inventory.description}
+                    </Typography>
+                  </Grid>
+                  {/* Icône de modification */}
+                  <Grid item xs={1} container justifyContent="flex-end">
+                    <IconButton
+                      aria-label="modifier"
+                      color="primary"
+                      onClick={() => handleEdit(inventory.idcalendrierinventaire)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </SimpleCard>
+            </Grid>
+          ))
+        )}
       </Grid>
+      <InventaireNotification />
     </Box>
   );
 };

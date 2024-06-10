@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/JWTAuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import routes from './routes';
 import '../fake-db';
+import routesWithNotification from './routes';
 
 const App = () => {
   const content = useRoutes(routes);
@@ -13,7 +14,9 @@ const App = () => {
     <SettingsProvider>
       <AuthProvider>
         <MatxTheme>
-          <CssBaseline /> {content}
+          <CssBaseline />
+
+          {content}
         </MatxTheme>
       </AuthProvider>
     </SettingsProvider>

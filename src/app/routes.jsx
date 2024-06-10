@@ -6,6 +6,7 @@ import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 import ProtectedRoute from './views/ProtectedRoute';
 import Decharge from './views/admin/mouvementstock/fictif/Decharge';
+import InventaireNotification from './views/admin/Notification/InventaireNotification';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -160,6 +161,7 @@ const routes = [
     element: (
       <AuthGuard>
         <MatxLayout />
+        <InventaireNotification></InventaireNotification>
       </AuthGuard>
     ),
     children: [
@@ -208,7 +210,7 @@ const routes = [
         element: <ProtectedRoute element={<Editnaturemouvement />} />
       },
       {
-        path: '/admin/cyclenaturemouvement/',
+        path: '/admin/cyclemouvement',
         element: <ProtectedRoute element={<Cyclenaturemouvement />} />
       },
 
@@ -469,5 +471,4 @@ const routes = [
   { path: '/', element: <Navigate to="/admin/connexion" /> },
   { path: '*', element: <NotFound /> }
 ];
-
 export default routes;
