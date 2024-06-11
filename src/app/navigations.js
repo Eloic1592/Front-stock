@@ -81,7 +81,7 @@ export const navigations = [
     icon: 'home',
     children: [
       { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
-      { name: 'Stock des articles', iconText: 'SI', path: '/admin/stockdepot' },
+      { name: 'Stock des depots', iconText: 'SI', path: '/admin/stockdepot' },
       { name: 'Stock des materiels', iconText: 'SI', path: '/admin/utilisationmateriel' }
     ]
   },

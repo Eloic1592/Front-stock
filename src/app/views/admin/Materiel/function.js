@@ -11,7 +11,7 @@ export const useListematerielFunctions = (data) => {
   const [categoriemateriel, setCategoriemateriel] = useState('0');
   const [typemateriel, setTypemateriel] = useState('0');
   const [marque, setMarque] = useState('');
-  const [disponibilite, setDisponibilite] = useState('0');
+  const [disponibilite, setDisponibilite] = useState('2');
   const [signature, setSignature] = useState('1');
 
   const handleChangePage = (_, newPage) => {
@@ -132,10 +132,10 @@ export function filtremateriel(listemateriel, filter, typemateriel, signature, d
     if (signature !== '1') {
       signaturematch = Item.signature === signature;
     }
-    // let statutmatch = true;
-    // if (disponibilite !== '0') {
-    //   statutmatch = Item.statut === disponibilite;
-    // }
-    return filtermatch && signaturematch && typeMatch;
+    let statutmatch = true;
+    if (disponibilite !== '2') {
+      statutmatch = Item.statutmateriel == parseInt(disponibilite);
+    }
+    return filtermatch && signaturematch && typeMatch && statutmatch;
   });
 }

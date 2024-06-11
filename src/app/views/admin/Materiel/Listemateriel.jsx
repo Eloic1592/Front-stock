@@ -30,7 +30,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Table from '@mui/material/Table';
 import Collapse from '@mui/material/Collapse';
-// import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { CSVLink } from 'react-csv';
 
 const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
@@ -60,7 +59,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     listemateriels: []
   });
 
-  // Csv/PDF data
   // Récupérer uniquement les trois dernières colonnes de chaque objet de données
   const filteredData = data.listemateriels.map((item) => ({
     typemateriel: item.typemateriel,
@@ -219,13 +217,13 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   onChange={(event) => setDisponibilite(event.target.value)}
                   fullWidth
                 >
-                  <MenuItem key="statut" value="0">
+                  <MenuItem key="statut" value="2">
                     Tous statuts
                   </MenuItem>
-                  <MenuItem key="LIBRE" value="LIBRE">
+                  <MenuItem key="0" value="0">
                     Libre
                   </MenuItem>
-                  <MenuItem key="OCCUPE" value="OCCUPE">
+                  <MenuItem key="1" value="1">
                     Occupe
                   </MenuItem>
                 </Select>
@@ -268,45 +266,35 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2} container justifyContent="center" alignItems="center">
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  onClick={generateMaterielPDF}
-                >
-                  <Icon>picture_as_pdf</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button className="button" variant="contained" aria-label="Edit" color="success">
-                  <CSVLink
-                    data={filteredData}
-                    filename="Liste_materiels.csv"
-                    headers={columns.label}
-                    separator=";"
+              <Grid item xs={2} container spacing={1}>
+                <Grid item>
+                  <Button
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="secondary"
+                    onClick={generateMaterielPDF}
                   >
-                    Export CSV
-                  </CSVLink>
-                </Button>
+                    <Icon>picture_as_pdf</Icon>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button className="button" variant="contained" color="success">
+                    <CSVLink
+                      data={filteredData}
+                      filename="Liste_article.csv"
+                      headers={columns.label}
+                      separator=";"
+                    >
+                      Export CSV
+                    </CSVLink>
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
             <StyledTable id="datatable">
               <TableHead>
                 <TableRow key="head">
-                  {/* <TableCell align="center" width="5%">
-                    <Checkbox
-                      checked={data.listemateriels.every((row) =>
-                        selectedIds.includes(row.idmateriel)
-                      )}
-                      indeterminate={
-                        data.listemateriels.some((row) => selectedIds.includes(row.idmateriel)) &&
-                        !data.listemateriels.every((row) => selectedIds.includes(row.idmateriel))
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="typemateriel" align="center" width="14%">
                     typemateriel
@@ -317,14 +305,14 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="numserie" align="center" width="14%">
                     numserie
                   </TableCell>
-                  <TableCell key="prixvente" align="center" width="14%">
-                    prixvente
-                  </TableCell>
                   <TableCell key="caution" align="center" width="14%">
                     caution
                   </TableCell>
                   <TableCell key="signature" align="center" width="14%">
                     signature
+                  </TableCell>
+                  <TableCell key="statut" align="center" width="14%">
+                    Statut
                   </TableCell>
                   <TableCell key="action" align="center" width="14%">
                     Action
@@ -338,12 +326,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     .map((row) => (
                       <Fragment key={row.idmateriel}>
                         <TableRow key={`row-${row.idmateriel}`}>
-                          {/* <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(row.idmateriel)}
-                              onChange={(event) => handleSelection(event, row.idmateriel)}
-                            />
-                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
@@ -357,16 +339,16 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               )}
                             </IconButton>
                           </TableCell>
-                          <TableCell align="center">{row.typemateriel}</TableCell>
+                          <TableCell align="center">
+                            {row.typemateriel}-{row.val}
+                          </TableCell>
                           <TableCell align="center">{row.marque}</TableCell>
                           <TableCell align="center">{row.numserie}</TableCell>
-                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                            {formatNumber(row.prixvente)}
-                          </TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
                             {formatNumber(row.caution)}
                           </TableCell>
                           <TableCell align="center">{row.signature}</TableCell>
+                          <TableCell align="center">{row.statut}</TableCell>
                           <TableCell align="center">
                             <IconButton
                               className="button"
@@ -377,15 +359,6 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             >
                               <Icon>edit_icon</Icon>
                             </IconButton>
-                            {/* <IconButton
-                              className="button"
-                              variant="contained"
-                              aria-label="Edit"
-                              color="error"
-                              onClick={() => cancelEdit(row.idmateriel)}
-                            >
-                              <Icon>cancel</Icon>
-                            </IconButton> */}
                           </TableCell>
                         </TableRow>
                         <TableRow key={`details-${row.idmateriel}`}>
@@ -404,8 +377,8 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                       <TableCell align="center" key="description">
                                         Description
                                       </TableCell>
-                                      <TableCell align="center" key="statut">
-                                        Statut
+                                      <TableCell align="center" key="prixvente">
+                                        Prix de vente
                                       </TableCell>
                                     </TableRow>
                                   </TableHead>
@@ -413,7 +386,9 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                     <TableRow key="data">
                                       <TableCell align="center">{row.modele}</TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
-                                      <TableCell align="center">{row.statut}</TableCell>
+                                      <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                                        {formatNumber(row.prixvente)}
+                                      </TableCell>
                                     </TableRow>
                                   </TableBody>
                                 </Table>

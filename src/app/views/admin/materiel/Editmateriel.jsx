@@ -134,7 +134,7 @@ const Editmateriel = () => {
         setCaution(newData.listemateriel.caution);
         setCouleur(newData.listemateriel.couleur);
         setSignature(newData.listemateriel.signature);
-        setDisponibilite(newData.listemateriel.etat);
+        setDisponibilite(newData.listemateriel.statutmateriel);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",

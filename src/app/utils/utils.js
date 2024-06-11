@@ -341,7 +341,7 @@ export const colors = [
   'Violet'
 ];
 
-export const signatures = ['Perso', 'ITU', 'Aucun'];
+export const signatures = ['Perso', 'ITU'];
 
 // Mois
 export const months = [

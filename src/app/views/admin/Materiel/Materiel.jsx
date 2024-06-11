@@ -292,7 +292,7 @@ const Materiel = () => {
                       </MenuItem>
                       {data.typemateriels.map((row) => (
                         <MenuItem key={row.idtypemateriel} value={row.idtypemateriel}>
-                          {row.typemateriel}
+                          {row.typemateriel}-{row.val}
                         </MenuItem>
                       ))}
                     </Select>
@@ -382,7 +382,6 @@ const Materiel = () => {
                       </MenuItem>
                       <MenuItem value="Perso">Perso</MenuItem>
                       <MenuItem value="ITU">ITU</MenuItem>
-                      <MenuItem value="Aucun appartenance">Aucun appartenance</MenuItem>
                     </Select>
                   </Grid>
                 </Grid>

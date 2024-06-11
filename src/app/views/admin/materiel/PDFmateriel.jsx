@@ -1,12 +1,19 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { formatNumber } from 'app/utils/utils';
+
+// Styles améliorés pour un rendu plus esthétique
 const styles = StyleSheet.create({
+  page: {
+    padding: 20,
+    fontFamily: 'Helvetica'
+  },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
     fontWeight: 'bold',
+    color: '#333333',
     textDecoration: 'underline'
   },
   table: {
@@ -14,31 +21,49 @@ const styles = StyleSheet.create({
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderRightWidth: 0,
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    marginBottom: 20
   },
   tableRow: {
-    margin: 'auto',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: '#f8f8f8'
+  },
+  tableRowEven: {
+    backgroundColor: '#ffffff'
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#4f81bd',
+    color: '#ffffff'
   },
   tableCol: {
-    width: '12.5%', //  100% divisé par le nombre de colonnes
+    width: '12.5%',
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderLeftWidth: 0,
     borderTopWidth: 0
   },
   tableColFirst: {
-    width: '7%', // Réduisez cette valeur pour réduire la taille de la première colonne
+    width: '7%',
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderLeftWidth: 0,
     borderTopWidth: 0
   },
   tableCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 10
+    padding: 5,
+    fontSize: 10,
+    textAlign: 'center'
+  },
+  tableCellHeader: {
+    padding: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });
 
@@ -48,15 +73,18 @@ const PDFmateriel = ({ dataList, columns }) => {
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Liste des materiels</Text>
         <View style={styles.table}>
-          <View style={styles.tableRow}>
+          <View style={styles.tableHeader}>
             {columns.slice(1).map((column, index) => (
               <View style={styles.tableCol} key={index}>
-                <Text style={styles.tableCell}>{column.label}</Text>
+                <Text style={styles.tableCellHeader}>{column.label}</Text>
               </View>
             ))}
           </View>
-          {dataList.slice(1).map((row, index) => (
-            <View style={styles.tableRow} key={index}>
+          {dataList.map((row, index) => (
+            <View
+              style={[styles.tableRow, index % 2 === 0 ? styles.tableRow : styles.tableRowEven]}
+              key={index}
+            >
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.typemateriel}</Text>
               </View>

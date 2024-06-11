@@ -2,11 +2,17 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { formatNumber } from 'app/utils/utils';
 const styles = StyleSheet.create({
+  page: {
+    padding: 20,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#f4f4f9'
+  },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
     fontWeight: 'bold',
+    color: '#333333',
     textDecoration: 'underline'
   },
   table: {
@@ -14,47 +20,58 @@ const styles = StyleSheet.create({
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderRightWidth: 0,
     borderBottomWidth: 0
   },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#4f81bd',
+    color: '#ffffff'
+  },
   tableRow: {
-    margin: 'auto',
     flexDirection: 'row'
   },
   tableCol: {
-    width: '33.3%', //  100% divisé par le nombre de colonnes
+    width: '33.33%',
     borderStyle: 'solid',
     borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0
-  },
-  tableColFirst: {
-    width: '7%', // Réduisez cette valeur pour réduire la taille de la première colonne
-    borderStyle: 'solid',
-    borderWidth: 1,
+    borderColor: '#cccccc',
     borderLeftWidth: 0,
     borderTopWidth: 0
   },
   tableCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 10
+    padding: 5,
+    fontSize: 10,
+    textAlign: 'center'
+  },
+  tableCellHeader: {
+    padding: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });
 
-const PDFStockmateriel = ({ dataList, columns }) => {
+const PDFStockmateriel = ({ dataList }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Stock de materiel</Text>
+        <Text style={styles.title}>Stock de matériel</Text>
         <View style={styles.table}>
-          <View style={styles.tableRow}>
-            {columns.map((column, index) => (
-              <View style={styles.tableCol} key={index}>
-                <Text style={styles.tableCell}>{column.label}</Text>
-              </View>
-            ))}
+          {/* Table Header */}
+          <View style={styles.tableHeader}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Type de matériel</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Libre</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Occupé</Text>
+            </View>
           </View>
+          {/* Table Body */}
           {dataList.map((row, index) => (
             <View style={styles.tableRow} key={index}>
               <View style={styles.tableCol}>
