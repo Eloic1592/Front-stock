@@ -107,9 +107,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   };
 
   const generateMaterielPDF = async () => {
-    const blob = await renderPdf(
-      <PDFMateriel dataList={data.listemateriels} columns={columns} />
-    ).toBlob();
+    const blob = await renderPdf(<PDFMateriel dataList={data.listemateriels} />).toBlob();
     saveAs(blob, 'Liste_materiel.pdf');
   };
 

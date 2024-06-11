@@ -100,9 +100,7 @@ const ListeArticle = () => {
   };
 
   const generateArticlePDF = async () => {
-    const blob = await renderPdf(
-      <PDFArticle dataList={data.articles} columns={columns} />
-    ).toBlob();
+    const blob = await renderPdf(<PDFArticle dataList={data.articles} />).toBlob();
     saveAs(blob, 'Liste_article.pdf');
   };
 

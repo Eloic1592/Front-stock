@@ -16,7 +16,7 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
-import Listemplacement from './Listeemplacement';
+import Listemplacementdepot from './Listeemplacementdepot';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 const Emplacement = () => {
@@ -213,7 +213,7 @@ const Emplacement = () => {
           {message.text}
         </Alert>
       </Snackbar>
-      <Listemplacement />
+      <Listemplacementdepot />
     </Container>
   );
 };

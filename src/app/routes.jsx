@@ -133,6 +133,10 @@ const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot'))
 
 const Emplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Emplacement')));
 
+const Listeemplacement = Loadable(
+  lazy(() => import('app/views/admin/emplacement/Listeemplacement'))
+);
+
 const Editemplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Editemplacement')));
 
 const Stockarticledepot = Loadable(lazy(() => import('app/views/admin/depot/Stockarticledepot')));
@@ -349,6 +353,11 @@ const routes = [
       },
 
       {
+        path: '/admin/emplacement',
+        element: <ProtectedRoute element={<Listeemplacement />} />
+      },
+
+      {
         path: '/admin/editemplacement/:idemplacement/:iddepot',
         element: <ProtectedRoute element={<Editemplacement />} />
       },
@@ -451,6 +460,7 @@ const routes = [
   { path: '/admin/depot', element: <Depot /> },
   { path: '/admin/editdepot/:iddepot', element: <Editdepot /> },
   { path: '/admin/emplacement/:iddepot', element: <Emplacement /> },
+  { path: '/admin/emplacement', element: <Listeemplacement /> },
   { path: '/admin/editemplacement/:idemplacement/:iddepot', element: <Editemplacement /> },
   { path: '/admin/stockdepot', element: <Stockarticledepot /> },
   { path: '/admin/utilisationmateriel', element: <Utilistionmateriel /> },

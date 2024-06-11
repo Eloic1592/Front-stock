@@ -2,11 +2,11 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { formatNumber } from 'app/utils/utils';
 
-// Styles améliorés pour un rendu plus esthétique
 const styles = StyleSheet.create({
   page: {
     padding: 20,
-    fontFamily: 'Helvetica'
+    fontFamily: 'Helvetica',
+    backgroundColor: '#f4f4f9'
   },
   title: {
     fontSize: 20,
@@ -27,11 +27,13 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   tableRow: {
-    flexDirection: 'row',
-    backgroundColor: '#f8f8f8'
+    flexDirection: 'row'
   },
   tableRowEven: {
     backgroundColor: '#ffffff'
+  },
+  tableRowOdd: {
+    backgroundColor: '#f8f8f8'
   },
   tableHeader: {
     flexDirection: 'row',
@@ -67,22 +69,40 @@ const styles = StyleSheet.create({
   }
 });
 
-const PDFmateriel = ({ dataList, columns }) => {
+const PDFmateriel = ({ dataList }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>Liste des materiels</Text>
+        <Text style={styles.title}>Liste des matériels</Text>
         <View style={styles.table}>
+          {/* Table Header */}
           <View style={styles.tableHeader}>
-            {columns.slice(1).map((column, index) => (
-              <View style={styles.tableCol} key={index}>
-                <Text style={styles.tableCellHeader}>{column.label}</Text>
-              </View>
-            ))}
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Type de Matériel</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Marque</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Modèle</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Numéro de Série</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Prix de Vente</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Caution</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Signature</Text>
+            </View>
           </View>
+          {/* Table Body */}
           {dataList.map((row, index) => (
             <View
-              style={[styles.tableRow, index % 2 === 0 ? styles.tableRow : styles.tableRowEven]}
+              style={[styles.tableRow, index % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven]}
               key={index}
             >
               <View style={styles.tableCol}>
@@ -102,9 +122,6 @@ const PDFmateriel = ({ dataList, columns }) => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.caution}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.couleur}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.signature}</Text>
