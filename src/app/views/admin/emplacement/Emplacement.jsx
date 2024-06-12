@@ -16,7 +16,7 @@ import { Breadcrumb } from 'app/components';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
-import Listemplacementdepot from './Listeemplacementdepot';
+import Listemplacement from './Listeemplacement';
 import { baseUrl } from 'app/utils/constant';
 import { useParams } from 'react-router-dom';
 const Emplacement = () => {
@@ -181,11 +181,8 @@ const Emplacement = () => {
                       value={depot}
                       onChange={(event) => setDepot(event.target.value)}
                       fullWidth
-                      disabled
                     >
-                      <MenuItem value="1" disabled>
-                        Choisir un depot
-                      </MenuItem>
+                      <MenuItem value="1">Choisir un depot</MenuItem>
                       {data.depot.map((row) => (
                         <MenuItem key={row.iddepot} value={row.iddepot}>
                           {row.depot} - {row.codedep}
@@ -213,7 +210,7 @@ const Emplacement = () => {
           {message.text}
         </Alert>
       </Snackbar>
-      <Listemplacementdepot />
+      <Listemplacement />
     </Container>
   );
 };

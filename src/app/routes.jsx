@@ -131,11 +131,11 @@ const Depot = Loadable(lazy(() => import('app/views/admin/depot/Depot')));
 
 const Editdepot = Loadable(lazy(() => import('app/views/admin/depot/Editdepot')));
 
-const Emplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Emplacement')));
-
-const Listeemplacement = Loadable(
-  lazy(() => import('app/views/admin/emplacement/Listeemplacement'))
+const Emplacement = Loadable(
+  lazy(() => import('app/views/admin/emplacement/Listeemplacementdepot'))
 );
+
+const Listeemplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Emplacement')));
 
 const Editemplacement = Loadable(lazy(() => import('app/views/admin/emplacement/Editemplacement')));
 
