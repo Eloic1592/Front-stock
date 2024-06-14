@@ -40,7 +40,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
 
   const handleAlertClose = () => setMessage({ open: false });
 
-  // Modification(Update)
+  // Modification(Update)K
   const handleEdit = (idnaturemouvement) => {
     window.location.replace('/admin/editnaturemouvement/' + idnaturemouvement);
   };
@@ -53,8 +53,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     naturemouvement,
     setNaturemouvement,
     handleChangePage,
-    typemouvement,
-    setTypemouvement,
     sortColumn,
     handleChangeRowsPerPage,
     handleSelectColumn,
@@ -116,25 +114,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                   sx={{ mb: 3 }}
                 />
               </Grid>
-              <Grid item xs={6}>
-                <Select
-                  fullWidth
-                  size="small"
-                  labelId="select-label"
-                  value={typemouvement}
-                  onChange={(event) => setTypemouvement(event.target.value)}
-                >
-                  <MenuItem value="2" key="2">
-                    Tous types
-                  </MenuItem>
-                  <MenuItem value="1" key="1">
-                    Physique
-                  </MenuItem>
-                  <MenuItem value="0" key="0">
-                    Fictif
-                  </MenuItem>
-                </Select>
-              </Grid>
             </Grid>
           </SimpleCard>
         </Grid>
@@ -185,9 +164,7 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                   <TableCell key="naturemouvement" align="center" width="15%">
                     nature mouvement
                   </TableCell>
-                  <TableCell key="typemouvement" align="center" width="15%">
-                    type mouvement
-                  </TableCell>
+
                   <TableCell align="center" width="15%">
                     Action
                   </TableCell>
@@ -206,9 +183,6 @@ const Listenaturemouvement = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                           </TableCell>
                           <TableCell align="center" width="15%">
                             {row.naturemouvement}
-                          </TableCell>
-                          <TableCell align="center" width="15%">
-                            {row.typemouvement}
                           </TableCell>
                           <TableCell align="center" width="15%">
                             <IconButton

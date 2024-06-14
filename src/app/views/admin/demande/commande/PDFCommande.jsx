@@ -1,4 +1,4 @@
-import { formatNumber, converttodate } from 'app/utils/utils';
+import { formatNumber, converttodate, nombreEnLettres } from 'app/utils/utils';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 const PDFCommande = ({ vueCommande, detailcommandeviews }) => {
   const styles = StyleSheet.create({
@@ -138,10 +138,10 @@ const PDFCommande = ({ vueCommande, detailcommandeviews }) => {
                 <Text style={styles.tableCell}>{item.quantite}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(item.pu)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(item.pu.toFixed(2))}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(item.total)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(item.total.toFixed(2))}</Text>
               </View>
             </View>
           ))}
@@ -154,6 +154,9 @@ const PDFCommande = ({ vueCommande, detailcommandeviews }) => {
           </Text>
           <Text style={[styles.totalSection, styles.boldText]}>
             Total avec taxes (TTC) (20%): {formatNumber(totalTTC.toFixed(2))} Ariary
+          </Text>
+          <Text style={[styles.totalSection, styles.boldText]}>
+            Somme: {nombreEnLettres(totalHT.toFixed(2))} Ariary
           </Text>
         </View>
 

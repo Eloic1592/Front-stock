@@ -7,16 +7,16 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { baseUrl } from 'app/utils/constant';
-import { messages, converttodate, formatTimestamp } from 'app/utils/utils';
+import { messages, converttodate } from 'app/utils/utils';
 import 'moment/locale/fr';
-import InventaireNotification from '../../Notification/InventaireNotification';
 
 const Calendrier = () => {
   moment.locale('fr');
   const localizer = momentLocalizer(moment);
   const [data, setData] = useState({
     calendrierinventaires: [],
-    calendriercree: []
+    calendriercree: [],
+    allinventaires: []
   });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -24,7 +24,7 @@ const Calendrier = () => {
     open: false
   });
   // Evenements
-  const events = data.calendrierinventaires.map((event) => ({
+  const events = data.allinventaires.map((event) => ({
     id: event.calendrierinventaire,
     title: event.description,
     start: new Date(event.heuredebut),
@@ -33,8 +33,6 @@ const Calendrier = () => {
   }));
   const itemsPerPage = 3;
   const [page, setPage] = useState(1);
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = page * itemsPerPage;
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -57,7 +55,8 @@ const Calendrier = () => {
         const responseData = await response.json();
         const newData = {
           calendriercree: responseData.calendriercree || [],
-          calendrierinventaires: responseData.calendrierinventaires || []
+          calendrierinventaires: responseData.calendrierinventaires || [],
+          allinventaires: responseData.allinventaires || []
         };
         setData(newData);
       } catch (error) {
@@ -72,6 +71,12 @@ const Calendrier = () => {
     fetchData();
   }, []);
 
+  const handleSelection = ({ start, end, title }) => {
+    const startString = start ? start.toLocaleString() : 'Non défini';
+    const endString = end ? end.toLocaleString() : 'Non défini';
+    const titleString = title ? title : 'Pas de titre';
+    alert(`\nDébut: ${startString}\nFin: ${endString}\nTitre: ${titleString}`);
+  };
   const handleEdit = (idcalendrierinventaire) => {
     window.location.replace('/admin/editcalendrier/' + idcalendrierinventaire);
   };
@@ -89,6 +94,21 @@ const Calendrier = () => {
                 endAccessor="end"
                 style={{ height: 500 }}
                 messages={messages}
+                selectable
+                onSelectSlot={(slotInfo) =>
+                  handleSelection({
+                    start: slotInfo.start,
+                    end: slotInfo.end,
+                    title: 'Aucun inventaire de prevu'
+                  })
+                }
+                onSelectEvent={(event) =>
+                  handleSelection({
+                    start: event.start,
+                    end: event.end,
+                    title: event.title
+                  })
+                }
               />
             </div>
           </SimpleCard>
@@ -135,9 +155,17 @@ const Calendrier = () => {
                         ).format('HH:mm:ss')}`}
                       </Typography>
                     </div>
-                    <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
-                      {inventory.description}
-                    </Typography>
+                    <ul>
+                      {' '}
+                      <li>
+                        <Typography
+                          variant="body1"
+                          style={{ color: 'black', fontWeight: 'bold', fontSize: '1.2rem' }}
+                        >
+                          {inventory.description}
+                        </Typography>
+                      </li>
+                    </ul>
                   </Grid>
                   {/* Icône de modification */}
                   <Grid item xs={1} container justifyContent="flex-end">
@@ -167,7 +195,7 @@ const Calendrier = () => {
             variant="body1"
             style={{ fontWeight: 'bold', fontSize: '1.3rem', opacity: 0.7 }}
           >
-            Les plus recents
+            Les plus récents
           </Typography>
         </Grid>
         {data.calendriercree.length === 0 ? (
@@ -204,9 +232,17 @@ const Calendrier = () => {
                         ).format('HH:mm:ss')}`}
                       </Typography>
                     </div>
-                    <Typography variant="body1" style={{ color: 'black', fontWeight: 'bold' }}>
-                      {inventory.description}
-                    </Typography>
+                    <ul>
+                      {' '}
+                      <li>
+                        <Typography
+                          variant="body1"
+                          style={{ color: 'black', fontWeight: 'bold', fontSize: '1.2rem' }}
+                        >
+                          {inventory.description}
+                        </Typography>
+                      </li>
+                    </ul>
                   </Grid>
                   {/* Icône de modification */}
                   <Grid item xs={1} container justifyContent="flex-end">
@@ -224,7 +260,6 @@ const Calendrier = () => {
           ))
         )}
       </Grid>
-      <InventaireNotification />
     </Box>
   );
 };
