@@ -313,8 +313,12 @@ const ListeArticle = () => {
                           <TableCell align="center">
                             {row.typemateriel} - {row.val}
                           </TableCell>
-                          <TableCell align="center">{formatNumber(row.prix)}</TableCell>
-                          <TableCell align="center">{formatNumber(row.quantitestock)}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.prix.toFixed(2))}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantitestock.toFixed(2))}
+                          </TableCell>
                           <TableCell align="center">
                             <IconButton
                               className="button"

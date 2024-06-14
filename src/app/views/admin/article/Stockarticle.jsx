@@ -261,7 +261,7 @@ const Stockarticle = () => {
                               {row.typemateriel} - {row.val}
                             </TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.quantitestock))}
+                              {coloredNumber(formatNumber(row.quantitestock.toFixed(2)))}
                             </TableCell>
                             <TableCell align="center">{row.etat}</TableCell>
                           </>
@@ -314,7 +314,7 @@ const Stockarticle = () => {
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
                   >
-                    {data.sommeabime} abimes
+                    {data.sommeabime} abimés
                   </Typography>
                 </SimpleCard>
               </Grid>

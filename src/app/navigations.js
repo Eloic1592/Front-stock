@@ -28,7 +28,7 @@ export const navigations = [
         iconText: 'SI',
         path: '/admin/mouvementphysique'
       },
-      { name: 'Mouvements des materiels', iconText: 'SI', path: '/admin/mouvementfictif' }
+      { name: 'Mouvements des matériels', iconText: 'SI', path: '/admin/mouvementfictif' }
     ]
   },
   {
@@ -44,14 +44,14 @@ export const navigations = [
           { name: 'Bilan des commandes', path: '/admin/statcommande', iconText: 'SI' }
         ]
       },
-      { name: 'Reception', iconText: 'SI', path: '/admin/reception' },
+      { name: 'Recéption', iconText: 'SI', path: '/admin/reception' },
       { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },
       { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
       { name: 'Inventaire', iconText: 'SI', path: '/admin/inventaire' }
     ]
   },
   {
-    name: 'Articles et materiels',
+    name: 'Articles et matériels',
     icon: 'build',
     children: [
       {
@@ -64,15 +64,15 @@ export const navigations = [
         ]
       },
       {
-        name: 'Materiels',
+        name: 'Matériels',
         iconText: 'arrows-right',
         children: [
           { name: 'Liste', iconText: 'SI', path: '/admin/listemateriel' },
           { name: 'Stock', iconText: 'SI', path: '/admin/stockmateriel' }
         ]
       },
-      { name: 'Type de materiel', iconText: 'SI', path: '/admin/typemateriel' },
-      { name: 'Categorie de materiel ', iconText: 'SI', path: '/admin/categoriemateriel' }
+      { name: 'Type de matériel', iconText: 'SI', path: '/admin/typemateriel' },
+      { name: 'Categorie de matériel ', iconText: 'SI', path: '/admin/categoriemateriel' }
     ]
   },
 
@@ -82,7 +82,7 @@ export const navigations = [
     children: [
       { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
       { name: 'Stock des articles', iconText: 'SI', path: '/admin/stocksarticle' },
-      { name: 'Stock des materiels', iconText: 'SI', path: '/admin/stockmateriel' }
+      { name: 'Stock des matériels', iconText: 'SI', path: '/admin/stockmateriel' }
     ]
   },
   {

@@ -178,7 +178,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'black' }}
                   >
-                    {data.countmateriel} materiels
+                    {data.countmateriel} matériel(s)
                   </Typography>
                 </SimpleCard>
               </Grid>
@@ -194,7 +194,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'red' }}
                   >
-                    {data.countmaterieloccupe} occupe(s)
+                    {data.countmaterieloccupe} occupé(s)
                   </Typography>
                 </SimpleCard>
               </Grid>
@@ -297,7 +297,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             <TableCell align="center">{row.marque}</TableCell>
                             <TableCell align="center">{row.numserie}</TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {formatNumber(row.caution)}
+                              {formatNumber(row.caution.toFixed(2))}
                             </TableCell>
                             <TableCell align="center">{row.signature}</TableCell>
                             <TableCell align="center">{row.statut}</TableCell>
@@ -328,7 +328,7 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                         <TableCell align="center">{row.modele}</TableCell>
                                         <TableCell align="center">{row.description}</TableCell>
                                         <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                                          {formatNumber(row.prixvente)}
+                                          {formatNumber(row.prixvente.toFixed(2))}
                                         </TableCell>
                                       </TableRow>
                                     </TableBody>

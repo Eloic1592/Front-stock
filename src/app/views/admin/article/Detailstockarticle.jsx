@@ -150,7 +150,7 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
           </Grid>
           <Grid item>
             <Typography variant="h6" gutterBottom textAlign="center">
-              Stock reel de l'article
+              Stock réel de l'article
             </Typography>
           </Grid>
           <Grid item>
@@ -161,7 +161,7 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
                   >
-                    {data.sommebonetat} en bon etat
+                    {data.sommebonetat} en bon état
                   </Typography>
                 </SimpleCard>
               </Grid>
@@ -171,7 +171,7 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
                   >
-                    {data.sommeabime} abimes
+                    {data.sommeabime} abimés
                   </Typography>
                 </SimpleCard>
               </Grid>
@@ -225,7 +225,7 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                               width="25%"
                               style={{ fontWeight: 'bold', fontSize: '1rem' }}
                             >
-                              {formatNumber(row.quantitestock)}
+                              {formatNumber(row.quantitestock.toFixed(2))}
                             </TableCell>
                           </>
                         </TableRow>
@@ -377,7 +377,7 @@ const Detailstockarticle = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => 
                               width="25%"
                               style={{ fontWeight: 'bold', fontSize: '1rem' }}
                             >
-                              {row.quantitereel}
+                              {formatNumber(row.quantitereel.toFixed(2))}
                             </TableCell>
                             <TableCell
                               align="center"

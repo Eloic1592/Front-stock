@@ -189,8 +189,8 @@ const Listedepot = () => {
                           <TableCell align="center" width="50%">
                             {row.codedep}
                           </TableCell>
-                          <TableCell align="center" width="50%">
-                            {formatNumber(row.capacite)}
+                          <TableCell align="center" width="50%" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.capacite.toFixed(2))}
                           </TableCell>
                           <TableCell align="center" width="15%">
                             <IconButton

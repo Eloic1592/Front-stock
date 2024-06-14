@@ -231,7 +231,7 @@ const Listemplacementdepot = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                               width="40%"
                               style={{ fontWeight: 'bold', fontSize: '1rem' }}
                             >
-                              {formatNumber(row.capacite)}
+                              {formatNumber(row.capacite.toFixed(2))}
                             </TableCell>
                             <TableCell align="center" width="15%">
                               <IconButton
