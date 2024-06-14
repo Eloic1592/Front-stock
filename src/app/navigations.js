@@ -46,8 +46,7 @@ export const navigations = [
       },
       { name: 'Recéption', iconText: 'SI', path: '/admin/reception' },
       { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },
-      { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
-      { name: 'Inventaire', iconText: 'SI', path: '/admin/inventaire' }
+      { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' }
     ]
   },
   {
@@ -86,10 +85,19 @@ export const navigations = [
     ]
   },
   {
-    name: 'Calendrier inventaire',
-    icon: 'event',
-    path: '/admin/calendrierinventaire'
+    name: 'Inventaire',
+    icon: 'receipt',
+
+    children: [
+      { name: 'Inventaire', icon: 'receipt', path: '/admin/inventaire' },
+      {
+        name: 'Calendrier inventaire',
+        icon: 'event',
+        path: '/admin/calendrierinventaire'
+      }
+    ]
   },
+
   {
     name: 'Aide',
     icon: 'help',

@@ -212,9 +212,11 @@ const Listeinventaire = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">
                             {row.marque} - {row.modele} /{row.codearticle}
                           </TableCell>
-                          <TableCell align="center">{formatNumber(row.quantitereel)}</TableCell>
-                          <TableCell align="center">
-                            {formatNumber(row.quantitetheorique)}
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantitereel.toFixed(2))}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantitetheorique.toFixed(2))}
                           </TableCell>
                           <TableCell align="center">{formatNumber(row.etat)}</TableCell>
                           <TableCell align="center">

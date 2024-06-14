@@ -202,9 +202,15 @@ const Listedetailcommande = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                           <TableCell align="center">{row.iddetailcommande}</TableCell>
                           <TableCell align="center">{row.idcommande}</TableCell>
                           <TableCell align="center">{row.codearticle}</TableCell>
-                          <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
-                          <TableCell align="center">{formatNumber(row.pu)}</TableCell>
-                          <TableCell align="center">{formatNumber(row.total)}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantite.toFixed(2))}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.pu.toFixed(2))}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.total.toFixed(2))}
+                          </TableCell>
 
                           <TableCell>
                             <IconButton
