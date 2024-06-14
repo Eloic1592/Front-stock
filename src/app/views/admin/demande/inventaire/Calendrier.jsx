@@ -71,12 +71,6 @@ const Calendrier = () => {
     fetchData();
   }, []);
 
-  const handleSelection = ({ start, end, title }) => {
-    const startString = start ? start.toLocaleString() : 'Non défini';
-    const endString = end ? end.toLocaleString() : 'Non défini';
-    const titleString = title ? title : 'Pas de titre';
-    alert(`\nDébut: ${startString}\nFin: ${endString}\nTitre: ${titleString}`);
-  };
   const handleEdit = (idcalendrierinventaire) => {
     window.location.replace('/admin/editcalendrier/' + idcalendrierinventaire);
   };
@@ -95,20 +89,6 @@ const Calendrier = () => {
                 style={{ height: 500 }}
                 messages={messages}
                 selectable
-                onSelectSlot={(slotInfo) =>
-                  handleSelection({
-                    start: slotInfo.start,
-                    end: slotInfo.end,
-                    title: 'Aucun inventaire de prevu'
-                  })
-                }
-                onSelectEvent={(event) =>
-                  handleSelection({
-                    start: event.start,
-                    end: event.end,
-                    title: event.title
-                  })
-                }
               />
             </div>
           </SimpleCard>
