@@ -233,8 +233,8 @@ const Stockphysique = () => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" onClick={handleFileClickOpen} color="inherit">
-                  Importer donnees
+                <Button variant="contained" onClick={handleFileClickOpen} color="success">
+                  Import csv
                 </Button>
               </Grid>
             </Grid>
