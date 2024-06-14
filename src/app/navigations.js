@@ -1,6 +1,6 @@
 export const navigations = [
   {
-    name: 'Statistiques',
+    name: 'Tableau de bord',
     icon: 'trending_up',
     children: [
       // { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
