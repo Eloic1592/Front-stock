@@ -175,6 +175,7 @@ const Stockphysique = () => {
     setDescription('');
     setCommentaire('');
     setDepot(['1']);
+    handlecancelClose();
   };
 
   useEffect(() => {
@@ -305,7 +306,7 @@ const Stockphysique = () => {
                       <MenuItem value="1">Choisir un depot</MenuItem>
                       {data.depot.map((row) => (
                         <MenuItem value={row.iddepot} key={row.iddepot}>
-                          {row.depot}
+                          {row.depot} - {row.codedep}
                         </MenuItem>
                       ))}
                     </Select>
@@ -421,9 +422,9 @@ const Stockphysique = () => {
               </DialogTitle>
 
               <DialogActions>
-                {/* <Button variant="contained" color="secondary" onClick={handlecancelClose}>
+                <Button variant="contained" color="error" onClick={handlecancelClose}>
                   Annuler
-                </Button> */}
+                </Button>
                 <Button onClick={resetData} color="primary" variant="contained">
                   Valider
                 </Button>

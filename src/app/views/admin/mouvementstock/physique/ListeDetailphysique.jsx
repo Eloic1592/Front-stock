@@ -340,50 +340,37 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2} container justifyContent="center" alignItems="center">
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  onClick={generateMouvementPDF}
-                >
-                  <Icon>picture_as_pdf</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button className="button" variant="contained" aria-label="Edit" color="success">
-                  <CSVLink
-                    data={filteredData}
-                    filename="Mouvements_physiques.csv"
-                    headers={columns.label}
-                    separator=";"
+              <Grid item xs={2} container spacing={1}>
+                <Grid item>
+                  <Button
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="secondary"
+                    onClick={generateMouvementPDF}
                   >
-                    Export CSV
-                  </CSVLink>
-                </Button>
+                    <Icon>picture_as_pdf</Icon>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button className="button" variant="contained" color="success">
+                    <CSVLink
+                      data={filteredData}
+                      filename="Mouvement.csv"
+                      headers={columns.label}
+                      separator=";"
+                    >
+                      Export CSV
+                    </CSVLink>
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow key="head">
-                  <TableCell width="5%">
-                    {/* <Checkbox
-                      checked={data.mouvementphysiques.every((row) =>
-                        selectedIds.includes(row.iddetailmouvementphysique)
-                      )}
-                      indeterminate={
-                        data.mouvementphysiques.some((row) =>
-                          selectedIds.includes(row.iddetailmouvementphysique)
-                        ) &&
-                        !data.mouvementphysiques.every((row) =>
-                          selectedIds.includes(row.iddetailmouvementphysique)
-                        )
-                      }
-                      onChange={handleSelectAll}
-                    /> */}
-                  </TableCell>
+                  <TableCell width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
@@ -435,10 +422,12 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                           <TableCell key={`datedepot_${index}`} align="center" width="12%">
                             {converttodate(row.datedepot)}
                           </TableCell>
-                          <TableCell align="center">{row.marque}</TableCell>
+                          <TableCell align="center">
+                            {row.marque} - CODE: {row.codearticle}
+                          </TableCell>
                           <TableCell align="center">{row.naturemouvement}</TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                            {formatNumber(row.quantite)}
+                            {formatNumber(row.quantite.toFixed(2))}
                           </TableCell>
                           <TableCell align="center">{row.depot}</TableCell>
                           <TableCell align="center" width="15%">
@@ -514,11 +503,11 @@ const ListeDetailphysique = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =>
                                   </TableHead>
                                   <TableBody>
                                     <TableRow key="data">
-                                      <TableCell align="center">
-                                        {coloredNumber(formatNumber(row.pu))}
+                                      <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                                        {coloredNumber(formatNumber(row.pu.toFixed(2)))}
                                       </TableCell>
-                                      <TableCell align="center">
-                                        {coloredNumber(formatNumber(row.total))}
+                                      <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                                        {coloredNumber(formatNumber(row.total.toFixed(2)))}
                                       </TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
                                       <TableCell align="center">{row.commentaire}</TableCell>

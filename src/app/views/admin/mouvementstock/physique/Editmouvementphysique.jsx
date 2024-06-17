@@ -226,7 +226,7 @@ const Editmouvementphysique = () => {
                     <MenuItem value="1">Choisir un depot</MenuItem>
                     {data.depots.map((row) => (
                       <MenuItem value={row.iddepot} key={row.iddepot}>
-                        {row.depot}
+                        {row.depot} - {row.codedep}
                       </MenuItem>
                     ))}
                   </Select>

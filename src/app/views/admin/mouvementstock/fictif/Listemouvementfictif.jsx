@@ -268,22 +268,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
             <StyledTable>
               <TableHead>
                 <TableRow key="head">
-                  <TableCell width="5%">
-                    <Checkbox
-                      checked={data.mouvementStocks.every((row) =>
-                        selectedIds.includes(row.idmouvementstock)
-                      )}
-                      indeterminate={
-                        data.mouvementStocks.some((row) =>
-                          selectedIds.includes(row.idmouvementstock)
-                        ) &&
-                        !data.mouvementStocks.every((row) =>
-                          selectedIds.includes(row.idmouvementstock)
-                        )
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
                   <TableCell key="idmouvementdestock" align="center" width="15%">
                     ID
                   </TableCell>
@@ -310,12 +294,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
                       <TableRow key={row.idmouvementstock}>
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(row.idmouvementstock)}
-                            onChange={(event) => handleSelection(event, row.idmouvementstock)}
-                          />
-                        </TableCell>
                         <Fragment key={row.idarticle}>
                           <TableCell align="center">{row.idmouvementstock}</TableCell>
                           <TableCell align="center">{converttodate(row.datedepot)}</TableCell>

@@ -357,14 +357,6 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     .map((row, index) => (
                       <Fragment key={row.iddetailmouvementfictif}>
                         <TableRow key={index}>
-                          {/* <TableCell align="center" width="5%">
-                            <Checkbox
-                              checked={selectedIds.includes(row.iddetailmouvementfictif)}
-                              onChange={(event) =>
-                                handleSelection(event, row.iddetailmouvementfictif)
-                              }
-                            />
-                          </TableCell> */}
                           <TableCell>
                             <IconButton
                               aria-label="expand row"
