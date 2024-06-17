@@ -25,8 +25,8 @@ const Rupturearticle = () => {
   const columns = [
     { label: 'Marque', field: 'marque', align: 'center' },
     { label: 'Modele', field: 'modele', align: 'center' },
-    { label: 'Description', field: 'description', align: 'center' },
-    { label: 'taux_rupture_stock', field: 'taux_rupture_stock', align: 'center' }
+    { label: 'Code article', field: 'codearticle', align: 'center' },
+    { label: 'taux_rupture_stock', field: 'rupture_stock', align: 'center' }
   ];
   const [filtre, setFiltre] = useState('');
   const [data, setData] = useState([]);
@@ -72,14 +72,6 @@ const Rupturearticle = () => {
     }
     return 0;
   });
-
-  // Export PDF
-  //   const generateutilisationmaterielPDF = async () => {
-  //     const blob = await renderPdf(
-  //       <PDFStatnaturemouvement dataList={data.cyclemouvements} columns={columns} />
-  //     ).toBlob();
-  //     saveAs(blob, 'Benefice par mouvement.pdf');
-  //   };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -204,10 +196,10 @@ const Rupturearticle = () => {
                       <TableCell key="modele" align="center" width="33%">
                         Modele
                       </TableCell>
-                      <TableCell key="description" align="center" width="33%">
-                        Description
+                      <TableCell key="codearticle" align="center" width="33%">
+                        Code article
                       </TableCell>
-                      <TableCell key="entree" align="center" width="33%">
+                      <TableCell key="rupture_stock" align="center" width="33%">
                         Taux rupture en (%)
                       </TableCell>
                     </TableRow>
@@ -227,10 +219,10 @@ const Rupturearticle = () => {
                                 {row.modele}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {row.description}
+                                {row.codearticle}
                               </TableCell>
                               <TableCell align="center" width="17%">
-                                {coloredNumber(row.taux_rupture_stock)}
+                                {coloredNumber(row.taux_rupture_stock.toFixed(2))}
                               </TableCell>
                             </>
                           </TableRow>
