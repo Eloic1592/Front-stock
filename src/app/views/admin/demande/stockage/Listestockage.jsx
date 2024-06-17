@@ -208,7 +208,9 @@ const Listestockage = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">
                             {row.marque} - {row.modele} /{row.codearticle}
                           </TableCell>
-                          <TableCell align="center">{formatNumber(row.quantite)}</TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.quantite.toFixed(2))}
+                          </TableCell>
                           <TableCell align="center">{row.etat}</TableCell>
                           <TableCell align="center">
                             <IconButton

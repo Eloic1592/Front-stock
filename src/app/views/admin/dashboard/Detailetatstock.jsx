@@ -280,28 +280,28 @@ const Detailetatstock = () => {
                               <TableCell align="center" width="17%">
                                 {row.moisnom}
                               </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.quantitetotale)}
+                              <TableCell align="center" width="17%" style={{ fontWeight: 'bold' }}>
+                                {formatNumber(row.quantitetotale.toFixed(2))}
                               </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.articleabime)}
+                              <TableCell align="center" width="17%" style={{ fontWeight: 'bold' }}>
+                                {formatNumber(row.articleabime.toFixed(2))}
                               </TableCell>
                               <TableCell
                                 align="center"
                                 width="17%"
                                 style={{ fontWeight: 'bold', fontSize: '1rem', color: 'red' }}
                               >
-                                {formatNumber(row.totalprixabime)}
+                                {formatNumber(row.totalprixabime.toFixed(2))}
                               </TableCell>
-                              <TableCell align="center" width="17%">
-                                {formatNumber(row.articlebonetat)}
+                              <TableCell align="center" width="17%" style={{ fontWeight: 'bold' }}>
+                                {formatNumber(row.articlebonetat.toFixed(2))}
                               </TableCell>
                               <TableCell
                                 align="center"
                                 width="17%"
                                 style={{ fontWeight: 'bold', fontSize: '1rem', color: 'green' }}
                               >
-                                {formatNumber(row.totalprixbonetat)}
+                                {formatNumber(row.totalprixbonetat.toFixed(2))}
                               </TableCell>
                             </>
                           </TableRow>
