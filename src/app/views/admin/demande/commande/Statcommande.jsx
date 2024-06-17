@@ -30,7 +30,7 @@ const Statcommande = () => {
   ];
 
   const [annee, setAnnee] = useState(new Date().getFullYear());
-  const [mois, setMois] = useState(new Date().getMonth() + 1);
+  const [mois, setMois] = useState(new Date().getMonth() + 6);
   const [data, setData] = useState({
     totalcommandeannees: [],
     totalcommandearticles: []
@@ -243,9 +243,12 @@ const Statcommande = () => {
                           onChange={handleSelectColumn}
                           multiple
                         >
-                          {months.map((monthName, index) => (
-                            <MenuItem key={index + 1} value={index + 1}>
-                              {monthName}
+                          <MenuItem value="1" disabled>
+                            Colonne
+                          </MenuItem>
+                          {columns.map((column, index) => (
+                            <MenuItem key={index} value={column.field}>
+                              {column.label}
                             </MenuItem>
                           ))}
                         </Select>
