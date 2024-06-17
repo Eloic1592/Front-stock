@@ -30,7 +30,7 @@ const Statcommande = () => {
   ];
 
   const [annee, setAnnee] = useState(new Date().getFullYear());
-  const [mois, setMois] = useState(new Date().getMonth() + 6);
+  const [mois, setMois] = useState(new Date().getMonth() + 1);
   const [data, setData] = useState({
     totalcommandeannees: [],
     totalcommandearticles: []
@@ -107,6 +107,7 @@ const Statcommande = () => {
         totalcommandeannees: responseData.totalcommandeannees || [],
         totalcommandearticles: responseData.totalcommandearticles || []
       };
+      console.log(newData.totalcommandearticles);
 
       setData(newData);
     } catch (error) {
@@ -302,14 +303,14 @@ const Statcommande = () => {
                                     width="17%"
                                     style={{ fontWeight: 'bold', fontSize: '1rem' }}
                                   >
-                                    {formatNumber(row.totalcommandes)}
+                                    {formatNumber(row.totalcommandes.toFixed(2))}
                                   </TableCell>
                                   <TableCell
                                     align="center"
                                     width="17%"
                                     style={{ fontWeight: 'bold', fontSize: '1rem' }}
                                   >
-                                    {formatNumber(row.moyennecommandes)}
+                                    {formatNumber(row.moyennecommandes.toFixed(2))}
                                   </TableCell>
                                 </>
                               </TableRow>
@@ -346,7 +347,7 @@ const Statcommande = () => {
                 <Grid item container spacing={2} xs={3}>
                   <Grid item xs={12}>
                     <SimpleCard title="ARTICLES LE PLUS COMMANDES DE L'ANNEE">
-                      {data.totalcommandearticles.slice(0, 3).map((article, index) => (
+                      {data.totalcommandearticles.slice(0, 4).map((article, index) => (
                         <div key={index} style={{ marginBottom: '15px' }}>
                           <Typography
                             variant="h6"
@@ -358,8 +359,8 @@ const Statcommande = () => {
                             variant="body1"
                             style={{ fontSize: '1.0rem', color: 'black', fontWeight: 'bold' }}
                           >
-                            Code: {article.codearticle} | {article.typemateriel} |{' '}
-                            {formatNumber(article.quantitetotale)} Unites
+                            Code: {article.codearticle} | {article.typemateriel} |
+                            {formatNumber(article.quantitetotale.toFixed(2))} Unites
                           </Typography>
                           <hr style={{ border: '0', height: '1px', background: '#ddd' }} />
                         </div>
@@ -368,7 +369,7 @@ const Statcommande = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <SimpleCard title="ARTICLES LE PLUS COMMANDES DU MOIS">
-                      {data.totalcommandearticles.slice(0, 3).map((article, index) => (
+                      {data.totalcommandearticles.slice(0, 4).map((article, index) => (
                         <div key={index} style={{ marginBottom: '15px' }}>
                           <Typography
                             variant="h6"
@@ -380,8 +381,8 @@ const Statcommande = () => {
                             variant="body1"
                             style={{ fontSize: '1.0rem', color: 'black', fontWeight: 'bold' }}
                           >
-                            Code: {article.codearticle} | {article.typemateriel} |{' '}
-                            {formatNumber(article.quantitetotale)} Unites
+                            Code: {article.codearticle} | {article.typemateriel} |
+                            {formatNumber(article.quantitetotale.toFixed(2))} Unites
                           </Typography>
                           <hr style={{ border: '0', height: '1px', background: '#ddd' }} />
                         </div>
