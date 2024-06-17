@@ -20,8 +20,10 @@ export const navigations = [
       {
         name: 'Type de mouvement',
         iconText: 'SI',
-        path: '/admin/typemouvement',
-        children: [{ name: 'Cycle des mouvements', iconText: 'SI', path: '/admin/cyclemouvement' }]
+        children: [
+          { name: 'Type des mouvements', iconText: 'SI', path: '/admin/typemouvement' },
+          { name: 'Cycle des mouvements', iconText: 'SI', path: '/admin/cyclemouvement' }
+        ]
       },
       {
         name: 'Mouvements des articles',

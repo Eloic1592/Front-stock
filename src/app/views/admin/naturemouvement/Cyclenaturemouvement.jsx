@@ -59,7 +59,7 @@ const Cyclenaturemouvement = () => {
 
   // Filtre
   const filter = data.cyclemouvements.filter((stat) => {
-    const anneeMatch = annee === '' || (stat.annee && stat.annee === parseInt(annee, 10));
+    const anneeMatch = annee === '' || (stat.annee && stat.annee === annee);
     const moisMatch = mois === '0' || (stat.mois && stat.mois === mois);
     const naturematch =
       naturemouvement === '0' ||
@@ -240,10 +240,10 @@ const Cyclenaturemouvement = () => {
                         Nature
                       </TableCell>
                       <TableCell key="entree" align="center" width="20%">
-                        Entree
+                        Entree (en %)
                       </TableCell>
                       <TableCell key="sortie" align="center" width="20%">
-                        Sortie
+                        Sortie (en %)
                       </TableCell>
                     </TableRow>
                   </TableHead>

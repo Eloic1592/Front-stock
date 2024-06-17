@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { coloredNumber } from 'app/utils/utils';
+import { coloredNumber, formatNumber } from 'app/utils/utils';
 import { SimpleCard } from 'app/components';
 import {
   Table,
@@ -42,7 +42,7 @@ function Rotationstock({ rotationstocks, mois }) {
                     Annee
                   </TableCell>
                   <TableCell width="25%" align="center">
-                    Mois
+                    Cout des marchandises vendus
                   </TableCell>
                   <TableCell width="25%" align="center">
                     Stock moyen (Quantite)
@@ -61,14 +61,14 @@ function Rotationstock({ rotationstocks, mois }) {
                     <TableCell width="25%" align="center">
                       {rotationstocks.annee}
                     </TableCell>
-                    <TableCell width="25%" align="center">
-                      {rotationstocks.nommois}
+                    <TableCell width="25%" align="center" style={{ fontWeight: 'bold' }}>
+                      {formatNumber(rotationstocks.cmv.toFixed(2))}
                     </TableCell>
                     <TableCell width="25%" align="center">
-                      {coloredNumber(rotationstocks.rotationstockquantite)}
+                      {coloredNumber(rotationstocks.rotationstockquantite.toFixed(2))}
                     </TableCell>
                     <TableCell width="25%" align="center">
-                      {coloredNumber(rotationstocks.rotationstockvaleur)}
+                      {coloredNumber(rotationstocks.rotationstockvaleur.toFixed(2))}
                     </TableCell>
                   </TableRow>
                 ))}

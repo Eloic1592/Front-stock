@@ -83,19 +83,19 @@ function FIFO({ fifos, mois }) {
                       {fifos.mois}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(fifos.total_achetes)}
+                      {coloredNumber(fifos.total_achetes.toFixed(2))}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(fifos.total_vendus)}
+                      {coloredNumber(fifos.total_vendus.toFixed(2))}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(fifos.total_achetes_valeur)}
+                      {coloredNumber(fifos.total_achetes_valeur.toFixed(2))}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(fifos.total_vendus_valeur)}
+                      {coloredNumber(fifos.total_vendus_valeur.toFixed(2))}
                     </TableCell>
                     <TableCell width="12%" align="center">
-                      {coloredNumber(fifos.quantite_stock)}
+                      {coloredNumber(fifos.quantite_stock.toFixed(2))}
                     </TableCell>
                   </TableRow>
                 ))}
