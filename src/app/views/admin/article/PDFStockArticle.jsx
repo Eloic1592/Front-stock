@@ -2,11 +2,17 @@ import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import { formatNumber } from 'app/utils/utils';
 const styles = StyleSheet.create({
+  page: {
+    padding: 20,
+    fontFamily: 'Helvetica',
+    backgroundColor: '#f4f4f9'
+  },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
     fontWeight: 'bold',
+    color: '#333333',
     textDecoration: 'underline'
   },
   table: {
@@ -14,31 +20,39 @@ const styles = StyleSheet.create({
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderRightWidth: 0,
     borderBottomWidth: 0
   },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#4f81bd',
+    color: '#ffffff'
+  },
   tableRow: {
-    margin: 'auto',
     flexDirection: 'row'
   },
-  tableCol: {
-    width: '20.0%', //  100% divisé par le nombre de colonnes
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0
+  tableRowAlternate: {
+    backgroundColor: '#f2f2f2'
   },
-  tableColFirst: {
-    width: '7%', // Réduisez cette valeur pour réduire la taille de la première colonne
+  tableCol: {
+    width: '20%', // Ajusté pour correspondre au nombre de colonnes dans PDFArticle
     borderStyle: 'solid',
     borderWidth: 1,
+    borderColor: '#cccccc',
     borderLeftWidth: 0,
     borderTopWidth: 0
   },
   tableCell: {
-    margin: 'auto',
-    marginTop: 5,
-    fontSize: 10
+    padding: 5,
+    fontSize: 10,
+    textAlign: 'center'
+  },
+  tableCellHeader: {
+    padding: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 });
 
@@ -48,12 +62,22 @@ const PDFStockArticle = ({ dataList, columns }) => {
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Stock des articles</Text>
         <View style={styles.table}>
-          <View style={styles.tableRow}>
-            {columns.slice(1).map((column, index) => (
-              <View style={styles.tableCol} key={index}>
-                <Text style={styles.tableCell}>{column.label}</Text>
-              </View>
-            ))}
+          <View style={styles.tableHeader}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Marque</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Modèle</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Code Article</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Type de Matériel</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Prix</Text>
+            </View>
           </View>
           {dataList.slice(1).map((row, index) => (
             <View style={styles.tableRow} key={index}>

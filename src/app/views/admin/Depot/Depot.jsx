@@ -95,7 +95,7 @@ const Depot = () => {
           <Grid container direction="row" spacing={2}>
             <Grid item>
               <Button variant="contained" onClick={handleClickOpen} color="primary">
-                Nouveau depot
+                Nouveau dépot
               </Button>
             </Grid>
             <Grid item>
@@ -124,7 +124,7 @@ const Depot = () => {
               fullWidth
               maxWidth="md"
             >
-              <DialogTitle id="form-dialog-title">Nouveau Depot</DialogTitle>
+              <DialogTitle id="form-dialog-title">Nouveau dépot</DialogTitle>
               <DialogContent>
                 <Grid container direction="column" spacing={2}>
                   <Grid item xs={12}>
@@ -134,7 +134,7 @@ const Depot = () => {
                       id="depot"
                       type="text"
                       margin="dense"
-                      label="depot"
+                      label="Dépot"
                       name="depot"
                       value={depot}
                       onChange={(event) => setDepot(event.target.value)}

@@ -251,22 +251,22 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                 <TableHead>
                   <TableRow key="head">
                     <TableCell key="depliant" align="center" width="5%"></TableCell>
-                    <TableCell key="typemateriel" align="center" width="14%">
+                    <TableCell key="typemateriel" align="center" width="16%">
                       typemateriel
                     </TableCell>
-                    <TableCell key="marque" align="center" width="14%">
+                    <TableCell key="marque" align="center" width="16%">
                       marque
                     </TableCell>
-                    <TableCell key="numserie" align="center" width="14%">
+                    <TableCell key="numserie" align="center" width="16%">
                       numserie
                     </TableCell>
-                    <TableCell key="caution" align="center" width="14%">
+                    <TableCell key="caution" align="center" width="16%">
                       caution
                     </TableCell>
-                    <TableCell key="signature" align="center" width="14%">
+                    <TableCell key="signature" align="center" width="16%">
                       signature
                     </TableCell>
-                    <TableCell key="statut" align="center" width="14%">
+                    <TableCell key="statut" align="center" width="16%">
                       Statut
                     </TableCell>
                   </TableRow>
@@ -307,13 +307,13 @@ const Stockmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                               <Collapse in={openRows[row.idmateriel]} timeout="auto" unmountOnExit>
                                 <Box>
                                   <Typography variant="h6" gutterBottom component="div">
-                                    Details article
+                                    Details matériel
                                   </Typography>
                                   <Table aria-label="purchases">
                                     <TableHead>
                                       <TableRow key="detailcolumn">
                                         <TableCell align="center" key="modele">
-                                          Modele
+                                          Modèle
                                         </TableCell>
                                         <TableCell align="center" key="description">
                                           Description

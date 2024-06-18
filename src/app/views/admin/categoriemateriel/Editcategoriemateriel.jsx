@@ -109,13 +109,13 @@ const Editcategoriemateriel = () => {
           ]}
         />
       </Box>
-      <SimpleCard title="Modifier categoriemateriel">
+      <SimpleCard title="Modifier catégorie de materiel">
         <Box>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Categorie materiel"
+                label="Catégorie materiel"
                 variant="outlined"
                 value={categoriemateriel}
                 onChange={(e) => setCategoriemateriel(e.target.value)}

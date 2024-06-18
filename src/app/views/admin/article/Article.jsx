@@ -199,7 +199,7 @@ const Article = () => {
 
   // Rupture stock_article(Update)
   const rupturearicle = () => {
-    window.location.replace('/admin/cyclemouvement');
+    window.location.replace('/admin/rupturearticle');
   };
 
   return (

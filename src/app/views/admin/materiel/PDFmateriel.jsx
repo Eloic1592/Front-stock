@@ -87,6 +87,9 @@ const PDFmateriel = ({ dataList }) => {
               <Text style={styles.tableCellHeader}>Modèle</Text>
             </View>
             <View style={styles.tableCol}>
+              <Text style={styles.tableCellHeader}>Description</Text>
+            </View>
+            <View style={styles.tableCol}>
               <Text style={styles.tableCellHeader}>Numéro de Série</Text>
             </View>
             <View style={styles.tableCol}>
@@ -115,13 +118,16 @@ const PDFmateriel = ({ dataList }) => {
                 <Text style={styles.tableCell}>{row.modele}</Text>
               </View>
               <View style={styles.tableCol}>
+                <Text style={styles.tableCell}>{row.description}</Text>
+              </View>
+              <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.numserie}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.prixvente)}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.prixvente.toFixed(2))}</Text>
               </View>
               <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{row.caution}</Text>
+                <Text style={styles.tableCell}>{formatNumber(row.caution.toFixed(2))}</Text>
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{row.signature}</Text>

@@ -47,8 +47,30 @@ export const navigations = [
         ]
       },
       { name: 'Recéption', iconText: 'SI', path: '/admin/reception' },
-      { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' },
-      { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' }
+      { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' }
+    ]
+  },
+  {
+    name: 'Inventaire',
+    icon: 'receipt',
+
+    children: [
+      { name: 'Inventaire', icon: 'receipt', path: '/admin/inventaire' },
+      {
+        name: 'Calendrier inventaire',
+        icon: 'event',
+        path: '/admin/calendrierinventaire'
+      }
+    ]
+  },
+  {
+    name: 'Dépots et emplacements',
+    icon: 'home',
+    children: [
+      { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
+      { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
+      { name: 'Stock des articles depot', iconText: 'SI', path: '/admin/stocksarticle' },
+      { name: 'Stock des matériels depot', iconText: 'SI', path: '/admin/stockmateriel' }
     ]
   },
   {
@@ -73,32 +95,10 @@ export const navigations = [
         ]
       },
       { name: 'Type de matériel', iconText: 'SI', path: '/admin/typemateriel' },
-      { name: 'Categorie de matériel ', iconText: 'SI', path: '/admin/categoriemateriel' }
+      { name: 'Catégorie de matériel ', iconText: 'SI', path: '/admin/categoriemateriel' }
     ]
   },
 
-  {
-    name: 'Depot et emplacements',
-    icon: 'home',
-    children: [
-      { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
-      { name: 'Stock des articles depot', iconText: 'SI', path: '/admin/stocksarticle' },
-      { name: 'Stock des matériels depot', iconText: 'SI', path: '/admin/stockmateriel' }
-    ]
-  },
-  {
-    name: 'Inventaire',
-    icon: 'receipt',
-
-    children: [
-      { name: 'Inventaire', icon: 'receipt', path: '/admin/inventaire' },
-      {
-        name: 'Calendrier inventaire',
-        icon: 'event',
-        path: '/admin/calendrierinventaire'
-      }
-    ]
-  },
   {
     name: 'Réapprovisionnement',
     icon: 'inventory',

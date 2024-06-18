@@ -58,6 +58,7 @@ const ListeArticle = () => {
     typemateriel: item.typemateriel,
     marque: item.marque,
     modele: item.modele,
+    codearticle: item.codearticle,
     description: item.description
   }));
 
@@ -263,28 +264,28 @@ const ListeArticle = () => {
               <TableHead>
                 <TableRow key="head">
                   <TableCell align="center" key="depliant" width="5%"></TableCell>
-                  <TableCell width="8%" key="idarticle">
+                  <TableCell width="16%" key="idarticle">
                     idarticle
                   </TableCell>
-                  <TableCell width="16.6%" key="marque" align="center">
+                  <TableCell width="16%" key="marque" align="center">
                     marque
                   </TableCell>
-                  <TableCell width="16.6%" key="codearticle" align="center">
+                  <TableCell width="16%" key="codearticle" align="center">
                     Code article
                   </TableCell>
-                  <TableCell width="16.6%" key="typemateriel" align="center">
+                  <TableCell width="16%" key="typemateriel" align="center">
                     type materiel
                   </TableCell>
-                  <TableCell width="16.6%" key="prixstock" align="center">
+                  <TableCell width="16%" key="prixstock" align="center">
                     prix
                   </TableCell>
-                  <TableCell width="16.6%" key="quantitestock" align="center">
+                  {/* <TableCell width="16.6%" key="quantitestock" align="center">
                     quantite stock
                   </TableCell>
                   <TableCell width="16.6%" key="stocksecurite" align="center">
                     stock securité
-                  </TableCell>
-                  <TableCell align="center" key="action" width="16.6%">
+                  </TableCell> */}
+                  <TableCell align="center" key="action" width="16%">
                     Action
                   </TableCell>
                 </TableRow>
@@ -320,12 +321,12 @@ const ListeArticle = () => {
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
                             {formatNumber(row.prix.toFixed(2))}
                           </TableCell>
-                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                          {/* <TableCell align="center" style={{ fontWeight: 'bold' }}>
                             {formatNumber(row.quantitestock.toFixed(2))}
                           </TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
                             {formatNumber(row.stocksecurite.toFixed(2))}
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell align="center">
                             <IconButton
                               className="button"
@@ -358,7 +359,7 @@ const ListeArticle = () => {
                                   <TableHead>
                                     <TableRow key="detailcolumn">
                                       <TableCell align="center" key="modele">
-                                        Modele
+                                        modèle
                                       </TableCell>
                                       <TableCell align="center" key="description">
                                         Description

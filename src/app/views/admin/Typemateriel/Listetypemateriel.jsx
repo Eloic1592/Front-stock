@@ -91,7 +91,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         setData(newData);
       } catch (error) {
         setMessage({
-          text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
+          text: "Aucune donnée n 'a ete recuperee,veuillez verifier si le serveur est actif",
           severity: 'error',
           open: true
         });
@@ -108,7 +108,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un type de materiel">
+          <SimpleCard title="Rechercher un type de matériel">
             <Grid container spacing={1}>
               <Grid item xs={6}>
                 <TextField
@@ -146,7 +146,7 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des types de materiel">
+          <SimpleCard title="Liste des types de matériel">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -191,14 +191,14 @@ const Listetypemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="idtypemateriel" align="center" width="15%">
                     ID
                   </TableCell>
-                  <TableCell key="typemateriel" align="center" width="40%">
-                    type materiel
+                  <TableCell key="type matériel" align="center" width="40%">
+                    type matériel
                   </TableCell>
                   <TableCell key="val" align="center" width="40%">
                     code
                   </TableCell>
                   <TableCell key="categoriemateriel" align="center" width="40%">
-                    categoriemateriel
+                    catégorie matériel
                   </TableCell>
                   <TableCell align="center" width="15%">
                     Action

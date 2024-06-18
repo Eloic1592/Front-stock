@@ -292,15 +292,18 @@ const Stockarticle = () => {
               </Grid>
             </SimpleCard>
           </Grid>
-          <Grid item>
-            <Grid container spacing={2}>
+          <Grid item container direction="column" spacing={2}>
+            <Grid item xs={12}>
+              <SimpleCard title="ARTICLES DEJA DISTRIBUES"></SimpleCard>
+            </Grid>
+            <Grid item container spacing={2}>
               <Grid item xs={6}>
                 <SimpleCard title="Total articles en bon etat">
                   <Typography
                     variant="body1"
                     style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
                   >
-                    {data.sommebonetat} en bon etat
+                    {data.sommebonetat} en bon etat déja stockés
                   </Typography>
                 </SimpleCard>
               </Grid>

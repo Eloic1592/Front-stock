@@ -101,13 +101,13 @@ const Listedepot = () => {
     <Box width="100%" overflow="auto" key="Box1">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher un depot" sx={{ marginBottom: '16px' }}>
+          <SimpleCard title="Rechercher un dépot" sx={{ marginBottom: '16px' }}>
             <TextField
               fullWidth
               size="small"
               type="text"
               name="materielfiltre"
-              label="Nom du depot ou code du depot"
+              label="Nom du depot ou code du dépot"
               variant="outlined"
               value={nomdepot}
               onChange={(event) => setNomdepot(event.target.value)}
@@ -159,10 +159,10 @@ const Listedepot = () => {
                     iddepot
                   </TableCell>
                   <TableCell key="depot" align="center" width="50%">
-                    depot
+                    dépot
                   </TableCell>
                   <TableCell key="codedep" align="center" width="50%">
-                    code depot
+                    code dépot
                   </TableCell>
                   <TableCell key="capacite" align="center" width="50%">
                     capacite (unite)

@@ -280,7 +280,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <Button className="button" variant="contained" color="success">
                     <CSVLink
                       data={filteredData}
-                      filename="Liste_article.csv"
+                      filename="Liste_materiel.csv"
                       headers={columns.label}
                       separator=";"
                     >
@@ -364,13 +364,13 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                             <Collapse in={openRows[row.idmateriel]} timeout="auto" unmountOnExit>
                               <Box>
                                 <Typography variant="h6" gutterBottom component="div">
-                                  Details article
+                                  Details matériel
                                 </Typography>
                                 <Table aria-label="purchases">
                                   <TableHead>
                                     <TableRow key="detailcolumn">
                                       <TableCell align="center" key="modele">
-                                        Modele
+                                        Modèle
                                       </TableCell>
                                       <TableCell align="center" key="description">
                                         Description
@@ -385,7 +385,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                                       <TableCell align="center">{row.modele}</TableCell>
                                       <TableCell align="center">{row.description}</TableCell>
                                       <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                                        {formatNumber(row.prixvente)}
+                                        {formatNumber(row.prixvente.toFixed(2))}
                                       </TableCell>
                                     </TableRow>
                                   </TableBody>

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2'
   },
   tableCol: {
-    width: '14.28%', // Ajusté pour correspondre au nombre de colonnes dans PDFArticle
+    width: '16.6%', // Ajusté pour correspondre au nombre de colonnes dans PDFArticle
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#cccccc',
@@ -83,9 +83,6 @@ const PDFArticle = ({ dataList }) => {
             <View style={styles.tableCol}>
               <Text style={styles.tableCellHeader}>Prix</Text>
             </View>
-            <View style={styles.tableCol}>
-              <Text style={styles.tableCellHeader}>Quantité en Stock</Text>
-            </View>
           </View>
           {/* Table Body */}
           {dataList.map((row, index) => (
@@ -110,9 +107,6 @@ const PDFArticle = ({ dataList }) => {
               </View>
               <View style={styles.tableCol}>
                 <Text style={styles.tableCell}>{formatNumber(row.prix)}</Text>
-              </View>
-              <View style={styles.tableCol}>
-                <Text style={styles.tableCell}>{formatNumber(row.quantitestock)}</Text>
               </View>
             </View>
           ))}

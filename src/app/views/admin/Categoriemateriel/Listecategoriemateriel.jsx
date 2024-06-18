@@ -101,7 +101,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
     <Box width="100%" overflow="auto">
       <Grid container direction="column" spacing={2}>
         <Grid item>
-          <SimpleCard title="Rechercher une categorie de materiel" sx={{ marginBottom: '16px' }}>
+          <SimpleCard title="Rechercher une catégorie de materiel" sx={{ marginBottom: '16px' }}>
             <Grid container direction="column" spacing={2}>
               <Grid item>
                 <TextField
@@ -109,7 +109,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                   size="small"
                   type="text"
                   name="categoriemateriel"
-                  label="categorie de materiel"
+                  label="catégorie de materiel"
                   variant="outlined"
                   value={categoriemateriel}
                   onChange={(event) => setCategoriemateriel(event.target.value)}
@@ -121,7 +121,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des categories de materiel">
+          <SimpleCard title="Liste des catégories de materiel">
             {/* Tri de tables */}
             <Grid container spacing={2}>
               <Grid item xs={2}>
@@ -164,7 +164,7 @@ const Listecategoriemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] })
                     idcategoriemateriel
                   </TableCell>
                   <TableCell key="categoriemateriel" align="center" width="50%">
-                    categoriemateriel
+                    catégorie materiel
                   </TableCell>
                   <TableCell key="val" align="center" width="50%">
                     code

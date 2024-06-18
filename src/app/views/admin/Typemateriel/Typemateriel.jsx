@@ -123,8 +123,8 @@ const Typemateriel = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Type de materiel', path: 'admin/typemateriel' },
-            { name: 'Type de materiel' }
+            { name: 'Type de matériel', path: 'admin/typemateriel' },
+            { name: 'Type de matériel' }
           ]}
         />
       </Box>
@@ -132,7 +132,7 @@ const Typemateriel = () => {
         <Grid item>
           <Box>
             <Button variant="contained" onClick={handleClickOpen} color="primary">
-              Nouveau type de materiel
+              Nouveau type de matériel
             </Button>
           </Box>
         </Grid>
@@ -145,7 +145,7 @@ const Typemateriel = () => {
               onClose={handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <DialogTitle id="form-dialog-title">Nouveau type de materiel</DialogTitle>
+              <DialogTitle id="form-dialog-title">Nouveau type de matériel</DialogTitle>
               <DialogContent>
                 <Grid container direction="column" spacing={2}>
                   <Grid item xs={6}>

@@ -206,7 +206,7 @@ const Listedistribution = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                     Etat
                   </TableCell>
                   <TableCell key="depot" align="center" width="30%">
-                    Depot
+                    Dépot
                   </TableCell>
                   <TableCell width="15%" align="center">
                     Action

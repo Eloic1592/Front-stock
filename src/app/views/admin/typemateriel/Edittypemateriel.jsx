@@ -117,12 +117,12 @@ const Edittypemateriel = () => {
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'typemateriel', path: 'admin/typemateriel' },
-            { name: 'typemateriel' }
+            { name: 'type materiel', path: 'admin/typemateriel' },
+            { name: 'type materiel' }
           ]}
         />
       </Box>
-      <SimpleCard title="Modifier typemateriel">
+      <SimpleCard title="Modifier type de matériel">
         <Box>
           <Grid container spacing={2}>
             <Grid item xs={12}>
