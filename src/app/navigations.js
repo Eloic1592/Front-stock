@@ -108,7 +108,7 @@ export const navigations = [
     name: 'Aide',
     icon: 'help',
     path: '/admin/aide'
-  }
+  },
 
   // {
   //   name: 'Components',
@@ -131,9 +131,9 @@ export const navigations = [
   //     // { name: 'Table', path: '/material/table', iconText: 'T' }
   //   ]
   // },
-  // {
-  //   name: 'Charts',
-  //   icon: 'trending_up',
-  //   children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }]
-  // }
+  {
+    name: 'Charts',
+    icon: 'trending_up',
+    children: [{ name: 'Echarts', path: '/charts/echarts', iconText: 'E' }]
+  }
 ];

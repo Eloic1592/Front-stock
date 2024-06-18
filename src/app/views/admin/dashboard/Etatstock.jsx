@@ -24,8 +24,11 @@ import { pdf as renderPdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { formatNumber } from 'app/utils/utils';
 import PDFEtatstock from './PDFEtatstock';
+import ComparisonChart from 'app/views/charts/echarts/ComparisonChart';
+import { useTheme } from '@mui/material';
 
 const Statnaturemouvement = () => {
+  const theme = useTheme();
   const columns = [
     { label: 'Annee', field: 'annee', align: 'center' },
     { label: 'Mois', field: 'mois', align: 'center' },
@@ -245,8 +248,16 @@ const Statnaturemouvement = () => {
               </Grid>
             </Grid>
             <Grid item>
-              <SimpleCard title="Depense annuelle des articles par mois">
-                <Grid container spacing={2}>
+              <SimpleCard title="Dépenses sur les produits de l'année actuelle">
+                <ComparisonChart
+                  height="350px"
+                  color={[theme.palette.primary.dark, theme.palette.primary.light]}
+                />
+              </SimpleCard>
+            </Grid>
+            <Grid item>
+              <SimpleCard title="Etat des stock par mois">
+                <Grid item container spacing={2}>
                   <Grid item xs={2}>
                     <Select
                       fullWidth
@@ -290,6 +301,7 @@ const Statnaturemouvement = () => {
                     </Button>
                   </Grid>
                 </Grid>
+
                 <StyledTable>
                   <TableHead>
                     <TableRow>
