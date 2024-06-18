@@ -8,7 +8,6 @@ import {
   Icon,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   Menu,
   MenuItem,
@@ -104,7 +103,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     selectedRowId,
     handleChangePage,
     sortColumn,
-    selectedIds,
     datedepot,
     setDatedepot,
     mouvement,
@@ -112,8 +110,6 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
     naturemouvement,
     setNaturemouvement,
     handleChangeRowsPerPage,
-    handleSelection,
-    handleSelectAll,
     handleSelectColumn,
     sortedData
   } = useMfictifFunctions(data);

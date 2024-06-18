@@ -60,10 +60,7 @@ const ComparisonChart = ({ height, color = [], data }) => {
         }
       }
     },
-    series: [
-      { type: 'bar', stack: 'This month', name: 'This month', smooth: true },
-      { type: 'bar' }
-    ]
+    series: [{ type: 'bar', stack: 'Depenses articles', name: 'Dépense articles', smooth: true }]
   };
 
   return <ReactEcharts style={{ height: height }} option={{ ...option }} />;

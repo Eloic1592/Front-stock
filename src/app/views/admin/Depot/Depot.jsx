@@ -88,7 +88,7 @@ const Depot = () => {
   return (
     <Container>
       <Box className="breadcrumb">
-        <Breadcrumb routeSegments={[{ name: 'Depot', path: 'admin/depot' }, { name: 'Depot' }]} />
+        <Breadcrumb routeSegments={[{ name: 'Dépot', path: 'admin/depot' }, { name: 'Dépot' }]} />
       </Box>
       <Grid container direction="column" spacing={2}>
         <Grid item>

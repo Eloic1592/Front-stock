@@ -117,7 +117,7 @@ const Listedepot = () => {
         </Grid>
 
         <Grid item>
-          <SimpleCard title="Liste des depots ">
+          <SimpleCard title="Liste des dépots ">
             <Grid container spacing={2}>
               <Grid item xs={2}>
                 <Select

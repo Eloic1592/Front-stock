@@ -113,6 +113,7 @@ const Editinventaire = () => {
         setDateinventaire(formatDate(responseData.inventaire.dateinventaire));
         setArticle(responseData.inventaire.idarticle);
         setEtatinventaire(responseData.inventaire.etatinventaire);
+        setDescription(responseData.inventaire.description);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",

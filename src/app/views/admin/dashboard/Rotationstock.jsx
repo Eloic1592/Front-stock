@@ -37,17 +37,17 @@ function Rotationstock({ rotationstocks, mois }) {
           <TableContainer>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell width="25%" align="center">
+                <TableRow key="header">
+                  <TableCell width="25%" align="center" key="annee">
                     Annee
                   </TableCell>
-                  <TableCell width="25%" align="center">
+                  <TableCell width="25%" align="center" key="cmv">
                     Cout des marchandises vendus
                   </TableCell>
-                  <TableCell width="25%" align="center">
+                  <TableCell width="25%" align="center" key="stockmoyen">
                     Stock moyen (Quantite)
                   </TableCell>
-                  <TableCell width="25%" align="center">
+                  <TableCell width="25%" align="center" key="valeurmoyenne">
                     Valeur moyenne (Ariary)
                   </TableCell>
                 </TableRow>

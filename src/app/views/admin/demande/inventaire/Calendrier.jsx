@@ -16,7 +16,8 @@ const Calendrier = () => {
   const [data, setData] = useState({
     calendrierinventaires: [],
     calendriercree: [],
-    allinventaires: []
+    allinventaires: [],
+    inventairesprevus: []
   });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
@@ -56,7 +57,8 @@ const Calendrier = () => {
         const newData = {
           calendriercree: responseData.calendriercree || [],
           calendrierinventaires: responseData.calendrierinventaires || [],
-          allinventaires: responseData.allinventaires || []
+          allinventaires: responseData.allinventaires || [],
+          inventairesprevus: responseData.inventairesprevus || []
         };
         setData(newData);
       } catch (error) {
@@ -185,7 +187,7 @@ const Calendrier = () => {
                 variant="h5"
                 style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
               >
-                Aucun inventaire prevu pour aujourd'hui
+                Aucun inventaire prévu pour aujourd'hui
               </Typography>
               <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
                 Aucune donnée d'inventaire n'a été trouvée.
@@ -194,6 +196,75 @@ const Calendrier = () => {
           </Grid>
         ) : (
           data.calendriercree.map((inventory, index) => (
+            <Grid item xs={12} key={index}>
+              <SimpleCard>
+                <Grid container alignItems="center" justifyContent="space-between">
+                  {/* Texte principal */}
+                  <Grid item xs={11}>
+                    <div style={{ marginBottom: '10px' }}>
+                      <Typography
+                        variant="h5"
+                        style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+                      >
+                        {`Inventaire du ${converttodate(inventory.datecalendrier)}`}
+                      </Typography>
+                      <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                        {`De ${moment(inventory.heuredebut).format('HH:mm:ss')} à ${moment(
+                          inventory.heurefin
+                        ).format('HH:mm:ss')}`}
+                      </Typography>
+                    </div>
+                    <ul>
+                      {' '}
+                      <li>
+                        <Typography
+                          variant="body1"
+                          style={{ color: 'black', fontWeight: 'bold', fontSize: '1.2rem' }}
+                        >
+                          {inventory.description}
+                        </Typography>
+                      </li>
+                    </ul>
+                  </Grid>
+                  {/* Icône de modification */}
+                  <Grid item xs={1} container justifyContent="flex-end">
+                    <IconButton
+                      aria-label="modifier"
+                      color="primary"
+                      onClick={() => handleEdit(inventory.idcalendrierinventaire)}
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              </SimpleCard>
+            </Grid>
+          ))
+        )}
+        <Grid item xs={12}>
+          <Typography
+            variant="body1"
+            style={{ fontWeight: 'bold', fontSize: '1.3rem', opacity: 0.7 }}
+          >
+            A venir
+          </Typography>
+        </Grid>
+        {data.inventairesprevus.length === 0 ? (
+          <Grid item xs={12}>
+            <SimpleCard>
+              <Typography
+                variant="h5"
+                style={{ fontSize: '1.5rem', color: 'black', fontWeight: 'bold' }}
+              >
+                Aucun inventaire prévu pour aujourd'hui
+              </Typography>
+              <Typography variant="body1" style={{ color: '#666', marginTop: '5px' }}>
+                Aucune donnée d'inventaire n'a été trouvée.
+              </Typography>
+            </SimpleCard>
+          </Grid>
+        ) : (
+          data.inventairesprevus.map((inventory, index) => (
             <Grid item xs={12} key={index}>
               <SimpleCard>
                 <Grid container alignItems="center" justifyContent="space-between">

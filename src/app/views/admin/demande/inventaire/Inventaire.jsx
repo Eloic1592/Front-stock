@@ -66,7 +66,8 @@ const Inventaire = () => {
       quantitetheorique: quantitetheorique,
       etatinventaire: etatinventaire,
       description: description,
-      statut: 0
+      statut: 0,
+      idmateriel: ''
     };
 
     let url = baseUrl + '/inventory/createinventaire';
