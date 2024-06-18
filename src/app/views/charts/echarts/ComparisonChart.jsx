@@ -22,7 +22,20 @@ const ComparisonChart = ({ height, color = [], data }) => {
     barGap: 0,
     barMaxWidth: '64px',
     dataset: {
-      source: dataSource
+      source: [
+        ['Janvier', 3000000],
+        ['Fevrier', 2100000],
+        ['Mars', 4500000],
+        ['Avril', 5500000],
+        ['Mai', 6575000],
+        ['Juin', 8400000],
+        ['Juillet', 500000],
+        ['Aout', 300000],
+        ['Septembre', 750000],
+        ['Octobre', 400000],
+        ['Novembre', 256874],
+        ['Decembre', 256874]
+      ]
     },
     xAxis: {
       type: 'category',

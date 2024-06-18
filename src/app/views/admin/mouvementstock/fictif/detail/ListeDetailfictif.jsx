@@ -283,56 +283,42 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <MenuItem value="desc">DESC</MenuItem>
                 </Select>
               </Grid>
-              <Grid item xs={2} container justifyContent="center" alignItems="center">
-                <Button
-                  className="button"
-                  variant="contained"
-                  aria-label="Edit"
-                  color="secondary"
-                  onClick={generateMouvementPDF}
-                >
-                  <Icon>picture_as_pdf</Icon>
-                </Button>
-              </Grid>
-              <Grid item xs={2}>
-                <Button className="button" variant="contained" aria-label="Edit" color="success">
-                  <CSVLink
-                    data={filteredData}
-                    filename="Mouvements_fictifs.csv"
-                    headers={columns.label}
-                    separator=";"
+              <Grid item xs={2} container spacing={1}>
+                <Grid item>
+                  <Button
+                    className="button"
+                    variant="contained"
+                    aria-label="Edit"
+                    color="secondary"
+                    onClick={generateMouvementPDF}
                   >
-                    Export CSV
-                  </CSVLink>
-                </Button>
+                    <Icon>picture_as_pdf</Icon>
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button className="button" variant="contained" color="success">
+                    <CSVLink
+                      data={filteredData}
+                      filename="Mouvementfictif.csv"
+                      headers={columns.label}
+                      separator=";"
+                    >
+                      Export CSV
+                    </CSVLink>
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
             <StyledTable>
               <TableHead>
                 {/* Listage de Donnees */}
                 <TableRow key="head">
-                  {/* <TableCell align="center" width="5%">
-                    <Checkbox
-                      checked={data.mouvementfictifs.every((row) =>
-                        selectedIds.includes(row.iddetailmouvementfictif)
-                      )}
-                      indeterminate={
-                        data.mouvementfictifs.some((row) =>
-                          selectedIds.includes(row.iddetailmouvementfictif)
-                        ) &&
-                        !data.mouvementfictifs.every((row) =>
-                          selectedIds.includes(row.iddetailmouvementfictif)
-                        )
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell> */}
                   <TableCell key="depliant" align="center" width="5%"></TableCell>
                   <TableCell key="mouvement" align="center" width="8%">
                     Mouvement
                   </TableCell>
                   <TableCell key="numserie" align="center" width="11.1%">
-                    N serie materiel
+                    Numéro série materiel
                   </TableCell>
                   <TableCell key="marque" align="center" width="11.1%">
                     Marque
@@ -346,7 +332,9 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                   <TableCell key="depot" align="center" width="11.1%">
                     Depot
                   </TableCell>
-                  <TableCell width="11.1%">Action</TableCell>
+                  <TableCell width="11.1%" align="center">
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -382,46 +370,46 @@ const Detailfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">{converttodate(row.datefin)}</TableCell>
                           <TableCell align="center">{row.depot}</TableCell>
                           <TableCell align="center">
-                            <IconButton
+                            {/* <IconButton
                               aria-label="More"
                               aria-owns={open ? 'long-menu' : undefined}
                               aria-haspopup="true"
                               onClick={handleClick}
                             >
                               <Icon>more_vert</Icon>
-                            </IconButton>
-                            <Menu
+                            </IconButton> */}
+                            {/* <Menu
                               open={open}
                               id="long-menu"
                               anchorEl={anchorEl}
                               onClose={handleClose}
                               PaperProps={{ style: { maxHeight: 48 * 4.5, width: 200 } }}
+                            > */}
+                            {/* <MenuItem key="Edit"> */}
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.iddetailmouvementfictif)}
                             >
-                              <MenuItem key="Edit">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => handleEdit(row.iddetailmouvementfictif)}
-                                >
-                                  <Icon>edit_icon</Icon>
-                                </IconButton>
-                                Modifier
-                              </MenuItem>
-                              <MenuItem key="Delete">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="error"
-                                  onClick={() => cancel(row)}
-                                >
-                                  <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
-                                </IconButton>
-                                Supprimer
-                              </MenuItem>
-                            </Menu>
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                            {/* Modifier
+                              </MenuItem> */}
+                            {/* <MenuItem key="Delete"> */}
+                            {/* <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancel(row)}
+                            >
+                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
+                            </IconButton> */}
+                            {/* Supprimer */}
+                            {/* </MenuItem>
+                            </Menu> */}
                           </TableCell>
                         </TableRow>
                         <TableRow key={`Tablerow2_${index}`}>

@@ -3,13 +3,13 @@ export const navigations = [
     name: 'Tableau de bord',
     icon: 'trending_up',
     children: [
-      // { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
-      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' },
       {
         name: 'Etat des stocks',
         iconText: 'SI',
         path: '/admin/etatstock'
-      }
+      },
+      // { name: 'Tableau de bord', iconText: 'SI', path: '/admin/bilan' },
+      { name: 'Bilan des commandes', path: '/admin/statcommande', iconText: 'SI' }
     ]
   },
 
@@ -30,7 +30,13 @@ export const navigations = [
         iconText: 'SI',
         path: '/admin/mouvementphysique'
       },
-      { name: 'Mouvements des matériels', iconText: 'SI', path: '/admin/mouvementfictif' }
+      { name: 'Mouvements des matériels', iconText: 'SI', path: '/admin/mouvementfictif' },
+      {
+        name: 'Réapprovisionnement',
+        icon: 'inventory',
+        path: '/admin/reapprovisionnement'
+      },
+      { name: 'Rotation de stock', iconText: 'SI', path: '/admin/dashboard' }
     ]
   },
   {
@@ -41,10 +47,7 @@ export const navigations = [
         name: 'Commandes',
         iconText: 'SI',
         path: '/admin/commande',
-        children: [
-          { name: 'Liste des commandes', path: '/admin/commande', iconText: 'SI' },
-          { name: 'Bilan des commandes', path: '/admin/statcommande', iconText: 'SI' }
-        ]
+        children: [{ name: 'Liste des commandes', path: '/admin/commande', iconText: 'SI' }]
       },
       { name: 'Recéption', iconText: 'SI', path: '/admin/reception' },
       { name: 'Stockage', iconText: 'SI', path: '/admin/stockage' }
@@ -99,11 +102,6 @@ export const navigations = [
     ]
   },
 
-  {
-    name: 'Réapprovisionnement',
-    icon: 'inventory',
-    path: '/admin/reapprovisionnement'
-  },
   {
     name: 'Aide',
     icon: 'help',

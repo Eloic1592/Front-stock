@@ -104,7 +104,7 @@ const Statnaturemouvement = () => {
       let dashboardParams = {
         annee: annee
       };
-      let url = baseUrl + '/dashboard/etatstockannee';
+      let url = baseUrl + '/dashboard/etatgeneraldesstock';
       const response = await fetch(url, {
         crossDomain: true,
         method: 'POST',

@@ -300,70 +300,70 @@ const Listemouvementfictif = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) =
                           <TableCell align="center">{row.naturemouvement}</TableCell>
 
                           <TableCell align="center" width="15%">
-                            <IconButton
+                            {/* <IconButton
                               aria-label="More"
                               aria-owns={open ? 'long-menu' : undefined}
                               aria-haspopup="true"
                               onClick={handleClick}
                             >
                               <Icon>more_vert</Icon>
-                            </IconButton>
-                            <Menu
+                            </IconButton> */}
+                            {/* <Menu
                               open={open}
                               id="long-menu"
                               anchorEl={anchorEl}
                               onClose={handleClose}
                               PaperProps={{ style: { maxHeight: 48 * 4.5, width: 200 } }}
+                            > */}
+                            {/* <MenuItem key="Edit"> */}
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => handleEdit(row.idmouvementstock)}
                             >
-                              <MenuItem key="Edit">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => handleEdit(row.idmouvementstock)}
-                                >
-                                  <Icon>edit_icon</Icon>
-                                </IconButton>
-                                Modifier
-                              </MenuItem>
-                              <MenuItem key="Info">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => getInfo(row.idmouvementstock)}
-                                >
-                                  <Icon>info</Icon>
-                                </IconButton>
-                                Voir details
-                              </MenuItem>
-                              <MenuItem key="Discharge">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="primary"
-                                  onClick={() => generatedischarge(row.idmouvementstock)}
-                                >
-                                  <Icon>insert_drive_file</Icon>
-                                </IconButton>
-                                Decharge
-                              </MenuItem>
-                              <MenuItem key="Delete">
-                                <IconButton
-                                  className="button"
-                                  variant="contained"
-                                  aria-label="Edit"
-                                  color="error"
-                                  onClick={() => cancel(row)}
-                                >
-                                  <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
-                                </IconButton>
-                                Supprimer
-                              </MenuItem>
-                            </Menu>
+                              <Icon>edit_icon</Icon>
+                            </IconButton>
+                            {/* Modifier */}
+                            {/* </MenuItem> */}
+                            {/* <MenuItem key="Info"> */}
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => getInfo(row.idmouvementstock)}
+                            >
+                              <Icon>info</Icon>
+                            </IconButton>
+                            {/* Voir details
+                              </MenuItem> */}
+                            {/* <MenuItem key="Discharge"> */}
+                            <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="primary"
+                              onClick={() => generatedischarge(row.idmouvementstock)}
+                            >
+                              <Icon>insert_drive_file</Icon>
+                            </IconButton>
+                            {/* Decharge */}
+                            {/* </MenuItem> */}
+                            {/* <MenuItem key="Delete"> */}
+                            {/* <IconButton
+                              className="button"
+                              variant="contained"
+                              aria-label="Edit"
+                              color="error"
+                              onClick={() => cancel(row)}
+                            >
+                              <Icon> {row && row.statut === 0 ? 'delete' : 'cancel'}</Icon>
+                            </IconButton> */}
+                            {/* Supprimer */}
+                            {/* </MenuItem> */}
+                            {/* </Menu> */}
                           </TableCell>
                         </Fragment>
                       </TableRow>
