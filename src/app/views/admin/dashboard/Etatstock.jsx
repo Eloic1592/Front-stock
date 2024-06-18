@@ -43,7 +43,8 @@ const Statnaturemouvement = () => {
   const [data, setData] = useState({
     etatstockannee: [],
     pourcentagebonetatstock: 0,
-    pourcentageabimestock: 0
+    pourcentageabimestock: 0,
+    depensemois: []
   });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
   const handleAlertClose = () => setMessage({ open: false });
@@ -123,7 +124,8 @@ const Statnaturemouvement = () => {
       const newData = {
         etatstockannee: responseData.etatstockannee || [],
         pourcentageabimestock: responseData.pourcentageabimestock || 0,
-        pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0
+        pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0,
+        depensemois: responseData.depensemois || []
       };
 
       setData(newData);
@@ -142,7 +144,7 @@ const Statnaturemouvement = () => {
         let dashboardParams = {
           annee: annee
         };
-        let url = baseUrl + '/dashboard/etatstockannee';
+        let url = baseUrl + '/dashboard/etatgeneraldesstock';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -162,10 +164,12 @@ const Statnaturemouvement = () => {
         const newData = {
           etatstockannee: responseData.etatstockannee || [],
           pourcentageabimestock: responseData.pourcentageabimestock || 0,
-          pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0
+          pourcentagebonetatstock: responseData.pourcentagebonetatstock || 0,
+          depensemois: responseData.depensemois || []
         };
 
         setData(newData);
+        // console.log(data.depensemois);
       } catch (error) {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -252,6 +256,7 @@ const Statnaturemouvement = () => {
                 <ComparisonChart
                   height="350px"
                   color={[theme.palette.primary.dark, theme.palette.primary.light]}
+                  data={data.depensemois}
                 />
               </SimpleCard>
             </Grid>

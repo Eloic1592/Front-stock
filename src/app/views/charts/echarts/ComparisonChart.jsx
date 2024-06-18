@@ -1,36 +1,34 @@
 import { useTheme } from '@mui/material';
 import ReactEcharts from 'echarts-for-react';
 
-const ComparisonChart = ({ height, color = [] }) => {
+const ComparisonChart = ({ height, color = [], data }) => {
   const theme = useTheme();
+  const generateDataSource = (data) => {
+    const categories = ['mois_nom', 'depenses_mensuelles'];
 
+    const values = data.map((item) => {
+      categories.push(item.mois_nom);
+      return [item.mois_nom, item.depenses_mensuelles];
+    });
+
+    return [categories, ...values];
+  };
+
+  const dataSource = generateDataSource(data);
   const option = {
     grid: { top: '10%', bottom: '10%', right: '5%' },
-    legend: { show: false },
+    legend: { show: true },
     color: ['#223388', 'rgba(34, 51, 136, 0.8)'],
     barGap: 0,
     barMaxWidth: '64px',
     dataset: {
-      source: [
-        ['Janvier', 256874, 146989],
-        ['Fevrier', 262797, 5839],
-        ['Mars', 108973, 808211],
-        ['Avril', 866121, 180100],
-        ['Mai', 87543, 930735],
-        ['Juin', 420346, 921161],
-        ['Juillet', 619842, 186516],
-        ['Aout', 612971, 540340],
-        ['Septembre', 996516, 87660],
-        ['Octobre', 629946, 632974],
-        ['Novembre', 618415, 306495],
-        ['Decembre', 960206, 168686]
-      ]
+      source: dataSource
     },
     xAxis: {
       type: 'category',
-      axisLine: { show: false },
-      splitLine: { show: false },
-      axisTick: { show: false },
+      axisLine: { show: true },
+      splitLine: { show: true },
+      axisTick: { show: true },
       axisLabel: {
         fontSize: 13,
         fontFamily: 'roboto',
@@ -38,8 +36,8 @@ const ComparisonChart = ({ height, color = [] }) => {
       }
     },
     yAxis: {
-      axisLine: { show: false },
-      axisTick: { show: false },
+      axisLine: { show: true },
+      axisTick: { show: true },
       splitLine: {
         lineStyle: { color: theme.palette.text.secondary, opacity: 0.15 }
       },
@@ -47,10 +45,21 @@ const ComparisonChart = ({ height, color = [] }) => {
         fontSize: 13,
         fontFamily: 'roboto',
         color: theme.palette.text.secondary
+      },
+      tooltip: {
+        trigger: 'axis', // Afficher le tooltip au survol de la barre
+        axisPointer: {
+          // Style du pointeur
+          type: 'shadow' // Type de pointeur pour les barres
+        },
+        formatter: function (params) {
+          const mois_nom = params[0].name; // Nom du mois survolé
+          const depenses_mensuelles = params[0].value; // Valeur des dépenses mensuelles
+
+          return `Mois : ${mois_nom}<br />Dépenses mensuelles : ${depenses_mensuelles}`;
+        }
       }
     },
-    // Declare several bar series, each will be mapped
-    // to a column of dataset.source by default.
     series: [
       { type: 'bar', stack: 'This month', name: 'This month', smooth: true },
       { type: 'bar' }
