@@ -41,7 +41,8 @@ const ListeArticle = () => {
     { label: 'Type materiel', field: 'typemateriel', align: 'center' },
     { label: 'Description', field: 'description', align: 'center' },
     { label: 'Prix de stockage', field: 'prixstock', align: 'center' },
-    { label: 'quantite en stock', field: 'quantitestock', align: 'center' }
+    { label: 'quantite en stock', field: 'quantitestock', align: 'center' },
+    { label: 'stock de securite', field: 'stocksecurite', align: 'center' }
   ];
   const [data, setData] = useState({ articles: [], typemateriels: [] });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
@@ -280,6 +281,9 @@ const ListeArticle = () => {
                   <TableCell width="16.6%" key="quantitestock" align="center">
                     quantite stock
                   </TableCell>
+                  <TableCell width="16.6%" key="stocksecurite" align="center">
+                    stock securité
+                  </TableCell>
                   <TableCell align="center" key="action" width="16.6%">
                     Action
                   </TableCell>
@@ -318,6 +322,9 @@ const ListeArticle = () => {
                           </TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
                             {formatNumber(row.quantitestock.toFixed(2))}
+                          </TableCell>
+                          <TableCell align="center" style={{ fontWeight: 'bold' }}>
+                            {formatNumber(row.stocksecurite.toFixed(2))}
                           </TableCell>
                           <TableCell align="center">
                             <IconButton

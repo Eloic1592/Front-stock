@@ -21,6 +21,7 @@ import Listedistribution from './Listedistribution';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistarticle from '../../Datagrid/Datalistarticle';
+import Datalistmateriel from '../../Datagrid/Datalistmateriel';
 const Distribution = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -32,20 +33,28 @@ const Distribution = () => {
   const handleCloseOpendatagrid = () => {
     setOpendatagrid(false);
   };
+  const [opendatagrid1, setOpendatagrid1] = useState(false);
+  const handleClickOpendatagrid1 = () => setOpendatagrid1(true);
+  const handleCloseOpendatagrid1 = () => {
+    setOpendatagrid1(false);
+  };
 
   // Data
   // Distribution
   const [datedistribution, setDistribution] = useState('');
   const [article, setArticle] = useState('');
+  const [materiel, setMateriel] = useState('');
   const [quantite, setQuantite] = useState(0);
   const [depot, setDepot] = useState('1');
   const [emplacement, setEmplacement] = useState('1');
   const [etatdistribue, setEtatdistribue] = useState('2');
   const [choix, setChoix] = useState('depot');
+  const [choixmat, setChoixmat] = useState('article');
   const [data, setData] = useState({
     articles: [],
     depots: [],
-    listeemplacements: []
+    listeemplacements: [],
+    materiels: []
   });
 
   // Message
@@ -57,7 +66,7 @@ const Distribution = () => {
 
   // Validation form
   const handleSubmit = () => {
-    if (!datedistribution || !article || !quantite) {
+    if (!datedistribution || !quantite) {
       setMessage({
         text: 'Les champs suivants sont obligatoires : datedistribution, article, quantite',
         severity: 'error',
@@ -73,7 +82,8 @@ const Distribution = () => {
       iddepot: depot === '1' ? '' : depot,
       idemplacement: emplacement === '1' ? '' : emplacement,
       etatdistribue: etatdistribue,
-      statut: 0
+      statut: 0,
+      idmateriel: materiel
     };
 
     let url = baseUrl + '/inventory/createdistribution';
@@ -122,6 +132,7 @@ const Distribution = () => {
         const responseData = await response.json();
         const newData = {
           articles: responseData.articles || [],
+          materiels: responseData.materiels || [],
           depots: responseData.depots || [],
           listeemplacements: responseData.listeemplacements || []
         };
@@ -136,7 +147,9 @@ const Distribution = () => {
     };
     fetchData();
   }, []);
-
+  const redirect = () => {
+    window.location.replace('/admin/distributionmateriel');
+  };
   return (
     <Container>
       <Box className="breadcrumb">
@@ -153,6 +166,11 @@ const Distribution = () => {
             <Grid item>
               <Button variant="contained" onClick={handleClickOpen} color="primary">
                 Nouvel distribution
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={redirect} color="secondary">
+                Distribution materiel
               </Button>
             </Grid>
           </Grid>
@@ -181,32 +199,83 @@ const Distribution = () => {
                       onChange={(event) => setDistribution(event.target.value)}
                     />
                     <Grid item container xs={12} spacing={1}>
-                      <Grid item xs={11}>
-                        <TextField
-                          fullWidth
-                          type="text"
-                          name="article"
-                          label="Article"
-                          variant="outlined"
-                          value={article}
-                          onChange={setArticle}
-                          InputProps={{ readOnly: true }}
-                        />
+                      <Grid item xs={12}>
+                        <RadioGroup
+                          row
+                          aria-label="option"
+                          name="option"
+                          value={choixmat}
+                          onChange={(event) => setChoixmat(event.target.value)}
+                        >
+                          <FormControlLabel value="article" control={<Radio />} label="Article" />
+                          <FormControlLabel value="materiel" control={<Radio />} label="Materiel" />
+                        </RadioGroup>
                       </Grid>
-                      <Grid item xs={1}>
+
+                      <Grid item container xs={12} spacing={1}>
+                        <Grid item xs={11}>
+                          <TextField
+                            fullWidth
+                            type="text"
+                            name="article"
+                            label="Article"
+                            variant="outlined"
+                            value={article}
+                            onChange={setArticle}
+                            InputProps={{ readOnly: true }}
+                          />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Button
+                            color="inherit"
+                            variant="contained"
+                            onClick={handleClickOpendatagrid}
+                            disabled={choixmat !== 'article'}
+                          >
+                            ...
+                          </Button>{' '}
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
                         <Datalistarticle
                           articles={data.articles}
                           state={opendatagrid}
                           handleClose={handleCloseOpendatagrid}
                           setArticle={setArticle}
                         />
-                        <Button
-                          color="inherit"
-                          variant="contained"
-                          onClick={handleClickOpendatagrid}
-                        >
-                          ...
-                        </Button>
+                      </Grid>
+
+                      <Grid item container xs={12} spacing={1}>
+                        <Grid item xs={11}>
+                          <TextField
+                            fullWidth
+                            type="text"
+                            name="materiel"
+                            label="Materiel"
+                            variant="outlined"
+                            value={materiel}
+                            onChange={setMateriel}
+                            InputProps={{ readOnly: true }}
+                          />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Button
+                            color="inherit"
+                            variant="contained"
+                            onClick={handleClickOpendatagrid1}
+                            disabled={choixmat !== 'materiel'}
+                          >
+                            ...
+                          </Button>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Datalistmateriel
+                          Materiels={data.materiels}
+                          state={opendatagrid1}
+                          handleClose={handleCloseOpendatagrid1}
+                          setmateriel={setMateriel}
+                        />
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>

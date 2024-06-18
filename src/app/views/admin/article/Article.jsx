@@ -42,6 +42,7 @@ const Article = () => {
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
   const [quantitestock, setQuantitestock] = useState(0);
+  const [stocksecurite, setStocksecurite] = useState(0);
   const [csvFile, setCsvFile] = useState(null);
   const [fileOpen, setFileOpen] = useState(false);
   const handleFileClickOpen = () => setFileOpen(true);
@@ -63,7 +64,8 @@ const Article = () => {
       idtypemateriel: typemateriel,
       description: description,
       prix: prix,
-      quantitestock: quantitestock
+      quantitestock: quantitestock,
+      stocksecurite: stocksecurite
     };
     let url = baseUrl + '/article/createarticle';
     fetch(url, {
@@ -340,6 +342,19 @@ const Article = () => {
                       name="quantitestock"
                       value={quantitestock}
                       onChange={(event) => setQuantitestock(event.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      autoFocus
+                      id="stocksecurite"
+                      type="text"
+                      margin="dense"
+                      label="Stock securite"
+                      name="stocksecurite"
+                      value={stocksecurite}
+                      onChange={(event) => setStocksecurite(event.target.value)}
                     />
                   </Grid>
                 </Grid>

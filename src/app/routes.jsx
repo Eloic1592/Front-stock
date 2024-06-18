@@ -113,6 +113,9 @@ const Editreception = Loadable(
 const Distribution = Loadable(
   lazy(() => import('app/views/admin/demande/distribution/Distribution'))
 );
+const Distributionmateriel = Loadable(
+  lazy(() => import('app/views/admin/demande/distribution/Listedistributionmateriel'))
+);
 
 const Editdistribution = Loadable(
   lazy(() => import('app/views/admin/demande/distribution/Editdistribution'))
@@ -159,6 +162,10 @@ const Etatstock = Loadable(lazy(() => import('app/views/admin/dashboard/Etatstoc
 const Detailetatstock = Loadable(lazy(() => import('app/views/admin/dashboard/Detailetatstock')));
 
 const Aide = Loadable(lazy(() => import('app/views/admin/aide/Aide')));
+
+const Reapprovisionnement = Loadable(
+  lazy(() => import('app/views/admin/reapprovisionnement/Reapprovisionnementstock'))
+);
 
 const routes = [
   {
@@ -325,6 +332,10 @@ const routes = [
         element: <ProtectedRoute element={<Distribution />} />
       },
       {
+        path: '/admin/distributionmateriel',
+        element: <ProtectedRoute element={<Distributionmateriel />} />
+      },
+      {
         path: '/admin/editdistribution/:iddistribution',
         element: <ProtectedRoute element={<Editdistribution />} />
       },
@@ -402,6 +413,10 @@ const routes = [
       {
         path: '/admin/aide',
         element: <ProtectedRoute element={<Aide />} />
+      },
+      {
+        path: '/admin/reapprovisionnement',
+        element: <ProtectedRoute element={<Reapprovisionnement />} />
       }
     ]
   },

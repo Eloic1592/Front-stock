@@ -35,6 +35,7 @@ const Editarticle = () => {
   const [description, setDescription] = useState('');
   const [prix, setPrix] = useState(0);
   const [quantitestock, setQuantitestock] = useState(0);
+  const [stocksecurite, setStocksecurite] = useState(0);
 
   const handleSubmit = () => {
     if (!marque || typemateriel === '1') {
@@ -53,7 +54,8 @@ const Editarticle = () => {
       idtypemateriel: typemateriel,
       description: description,
       prix: prix,
-      quantitestock: quantitestock
+      quantitestock: quantitestock,
+      stocksecurite: stocksecurite
     };
     let url = baseUrl + '/article/createarticle';
     fetch(url, {
@@ -117,6 +119,7 @@ const Editarticle = () => {
         setDescription(newData.article.description);
         setPrix(newData.article.prix);
         setQuantitestock(newData.article.quantitestock);
+        setStocksecurite(newData.article.stocksecurite);
       } catch {
         setMessage({
           text: "Aucune donnee n 'a ete recuperee,veuillez verifier si le serveur est actif",
@@ -225,6 +228,19 @@ const Editarticle = () => {
                 name="quantitestock"
                 value={quantitestock}
                 onChange={(event) => setQuantitestock(event.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                autoFocus
+                id="stocksecurite"
+                type="text"
+                margin="dense"
+                label="Stock securite"
+                name="stocksecurite"
+                value={stocksecurite}
+                onChange={(event) => setStocksecurite(event.target.value)}
               />
             </Grid>
             <Grid item xs={12} container justifyContent="flex-end" alignItems="center" spacing={2}>

@@ -343,7 +343,7 @@ const Listemateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
                           <TableCell align="center">{row.marque}</TableCell>
                           <TableCell align="center">{row.numserie}</TableCell>
                           <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                            {formatNumber(row.caution)}
+                            {formatNumber(row.caution.toFixed(2))}
                           </TableCell>
                           <TableCell align="center">{row.signature}</TableCell>
                           <TableCell align="center">{row.statut}</TableCell>

@@ -1,84 +1,80 @@
 import {
   Box,
-  Button,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
   Icon,
+  IconButton,
   TextField,
   Select,
   MenuItem,
+  Grid,
   Snackbar,
   Alert,
-  Grid
+  Button
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { SimpleCard, Breadcrumb } from 'app/components';
+import { SimpleCard } from 'app/components';
+import { Breadcrumb } from 'app/components';
 import { StyledTable } from 'app/views/style/style';
-import { Container } from 'app/views/style/style';
+import { useListedistributionmaterielFunctions } from 'app/views/admin/demande/distribution/materielfunction';
 import { baseUrl } from 'app/utils/constant';
-import { pdf as renderPdf } from '@react-pdf/renderer';
-import { saveAs } from 'file-saver';
-import { formatNumber, coloredNumber } from 'app/utils/utils';
-import { useStockfunctions } from './stockfunction';
-import PDFStockArticle from './PDFStockArticle';
+import { converttodate, formatNumber } from 'app/utils/utils';
+import { Container } from 'app/views/style/style';
 
-const Stockarticle = () => {
+const Listedistributionmateriel = ({ rowsPerPageOptions = [10, 25, 50, 100, 200] }) => {
   // Colonne
   const columns = [
-    { label: 'ID article', field: 'idarticle', align: 'center' },
-    { label: 'modele', field: 'modele', align: 'center' },
-    { label: 'marque', field: 'marque', align: 'center' },
-    { label: 'code article', field: 'codearticle', align: 'center' },
-    { label: 'type materiel', field: 'typemateriel', align: 'center' },
-    { label: 'quantite', field: 'quantite', align: 'center' },
-    { label: 'etat', field: 'etat', align: 'center' }
+    { label: 'ID', field: 'iddistribution', align: 'center' },
+    { label: 'Date distribution', field: 'datedistribution', align: 'center' },
+    { label: 'Article', field: 'article', align: 'center' },
+    { label: 'Quantite', field: 'quantite', align: 'center' },
+    { label: 'Depot', field: 'depot', align: 'center' },
+    { label: 'Etat', field: 'etat', align: 'center' }
   ];
-  const [data, setData] = useState({
-    stockarticles: [],
-    typemateriels: [],
-    sommebonetat: 0,
-    sommeabime: 0
-  });
+
+  const handleAlertClose = () => setMessage({ open: false });
   const [initialDataFetched, setInitialDataFetched] = useState(false);
+  const [data, setData] = useState({
+    vuedistributionmateriels: []
+  });
   const [message, setMessage] = useState({
     text: 'Information enregistree',
     severity: 'success',
     open: false
   });
 
-  const handleAlertClose = () => setMessage({ open: false });
+  const handleEdit = (iddistribution) => {
+    window.location.replace('/admin/editdistribution/' + iddistribution);
+  };
 
   const {
     sortDirection,
     page,
     rowsPerPage,
     setSortDirection,
+    isEditClicked,
+    selectedRowId,
     handleChangePage,
     sortColumn,
+    setNumserie,
+    numserie,
+    datedistribution,
+    setDatedistribution,
+    codedepot,
+    setCodedepot,
     handleChangeRowsPerPage,
     handleSelectColumn,
-    sortedData,
-    setMarque,
-    marque,
-    typemateriel,
-    setTypemateriel
-  } = useStockfunctions(data);
-
-  const generateArticlePDF = async () => {
-    const blob = await renderPdf(
-      <PDFStockArticle dataList={data.stockarticles} columns={columns} />
-    ).toBlob();
-    saveAs(blob, 'Stock_article.pdf');
-  };
+    sortedData
+  } = useListedistributionmaterielFunctions(data);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = baseUrl + '/article/stockarticle';
+        let url = baseUrl + '/inventory/listdistributionmateriel';
         const response = await fetch(url, {
           crossDomain: true,
           method: 'POST',
@@ -92,12 +88,8 @@ const Stockarticle = () => {
 
         const responseData = await response.json();
         const newData = {
-          stockarticles: responseData.stockarticles || [],
-          typemateriels: responseData.typemateriels || [],
-          sommebonetat: responseData.sommebonetat || 0,
-          sommeabime: responseData.sommeabime || 0
+          vuedistributionmateriels: responseData.vuedistributionmateriels || []
         };
-
         setData(newData);
       } catch (error) {
         setMessage({
@@ -112,65 +104,76 @@ const Stockarticle = () => {
       fetchData();
       setInitialDataFetched(true);
     }
-  }, [sortedData, initialDataFetched]);
-
-  // Redirect
-  const getlist = () => {
-    window.location.replace('/admin/article');
+  }, [isEditClicked, selectedRowId, sortedData, initialDataFetched]);
+  const redirect = () => {
+    window.location.replace('/admin/distribution');
   };
-
   return (
     <Container>
       <Box className="breadcrumb">
         <Breadcrumb
           routeSegments={[
-            { name: 'Stock article', path: 'admin/stocksarticle' },
-            { name: 'Stock par article' }
+            { name: 'Distribution', path: 'admin/distribution' },
+            { name: 'Distribution' }
           ]}
         />
       </Box>
-      <Box className="breadcrumb">
-        <Button variant="contained" color="secondary" onClick={getlist}>
-          Liste des articles
-        </Button>
-      </Box>
-      <Box width="100%" overflow="auto" key="Box1">
+      <Box width="100%" overflow="auto">
         <Grid container direction="column" spacing={2}>
           <Grid item>
-            <SimpleCard title="Rechercher un article" sx={{ marginBottom: '16px' }}>
-              <Grid container spacing={1}>
-                <Grid item xs={6}>
+            <Grid container direction="row" spacing={2}>
+              <Grid item>
+                <Button variant="contained" onClick={redirect} color="inherit">
+                  <Icon>arrow_backward</Icon>
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <SimpleCard title="Rechercher une distribution precise" sx={{ marginBottom: '16px' }}>
+              <Grid container spacing={3}>
+                <Grid item xs={4}>
+                  <TextField
+                    fullWidth
+                    id="numserie"
+                    size="small"
+                    type="text"
+                    name="numserie"
+                    label="Numero de serie"
+                    value={numserie}
+                    onChange={(event) => setNumserie(event.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     size="small"
                     type="text"
-                    name="marque"
-                    label="Marque,modele ou code article"
+                    name="codedepot"
                     variant="outlined"
-                    value={marque}
-                    onChange={(event) => setMarque(event.target.value)}
+                    label="Code ou nom du depot"
+                    value={codedepot}
+                    onChange={(event) => setCodedepot(event.target.value)}
                     sx={{ mb: 3 }}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     fullWidth
                     size="small"
-                    type="text"
-                    name="marque"
-                    label="Type de materiel ou code type materiel"
+                    type="date"
+                    name="datedistribution"
                     variant="outlined"
-                    value={typemateriel}
-                    onChange={(event) => setTypemateriel(event.target.value)}
+                    value={datedistribution}
+                    onChange={(event) => setDatedistribution(event.target.value)}
                     sx={{ mb: 3 }}
                   />
                 </Grid>
               </Grid>
             </SimpleCard>
           </Grid>
-
           <Grid item>
-            <SimpleCard title="Stock actuels des articles">
+            <SimpleCard title="Liste des distributions">
               {/* Tri de tables */}
               <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -204,41 +207,31 @@ const Stockarticle = () => {
                     <MenuItem value="desc">DESC</MenuItem>
                   </Select>
                 </Grid>
-                <Grid item container spacing={1} xs={3}>
-                  <Grid item>
-                    <Button
-                      className="button"
-                      variant="contained"
-                      aria-label="Éditer"
-                      color="secondary"
-                      onClick={generateArticlePDF}
-                    >
-                      <Icon>picture_as_pdf</Icon>
-                    </Button>
-                  </Grid>
-                </Grid>
               </Grid>
               <StyledTable>
                 <TableHead>
                   {/* Listage de Donnees */}
                   <TableRow>
-                    <TableCell key="idarticle" width="10%">
-                      idarticle
+                    <TableCell key="iddistribution" align="center" width="15%">
+                      Numero Distribution
                     </TableCell>
-                    <TableCell key="marque" width="15%" align="center">
-                      marque
+                    <TableCell key="datedistribution" align="center" width="30%">
+                      Date distribution
                     </TableCell>
-                    <TableCell key="modele" width="15%" align="center">
-                      modele
+                    <TableCell key="materiel" align="center" width="30%">
+                      Materiel
                     </TableCell>
-                    <TableCell key="codearticle" width="15%" align="center">
-                      code article
+                    <TableCell key="Quantite" align="center" width="30%">
+                      Quantite
                     </TableCell>
-                    <TableCell key="typemateriel" width="15%" align="center">
-                      type materiel
+                    <TableCell key="etat" align="center" width="30%">
+                      Etat
                     </TableCell>
-                    <TableCell key="quantite" width="15%" align="center">
-                      quantite en stock
+                    <TableCell key="depot" align="center" width="30%">
+                      Depot
+                    </TableCell>
+                    <TableCell width="15%" align="center">
+                      Action
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -250,24 +243,45 @@ const Stockarticle = () => {
                       .map((row, index) => (
                         <TableRow key={index}>
                           <>
-                            <TableCell> {row.idarticle}</TableCell>
-                            <TableCell align="center">{row.marque}</TableCell>
-                            <TableCell align="center">{row.modele}</TableCell>
-                            <TableCell align="center">{row.codearticle}</TableCell>
+                            <TableCell align="center">{row.iddistribution}</TableCell>
                             <TableCell align="center">
-                              {row.typemateriel} - {row.val}
+                              {converttodate(row.datedistribution)}
+                            </TableCell>
+                            <TableCell align="center">
+                              {row.marque} - {row.modele} / {row.numserie}
                             </TableCell>
                             <TableCell align="center" style={{ fontWeight: 'bold' }}>
-                              {coloredNumber(formatNumber(row.quantitestock.toFixed(2)))}
+                              {formatNumber(row.quantite.toFixed(2))}
+                            </TableCell>
+                            <TableCell align="center">{row.etat}</TableCell>
+                            <TableCell align="center">
+                              {row.depot} - {row.codedep}
+                            </TableCell>
+
+                            <TableCell align="center">
+                              <IconButton
+                                className="button"
+                                variant="contained"
+                                aria-label="Edit"
+                                color="primary"
+                                onClick={() => handleEdit(row.iddistribution)}
+                              >
+                                <Icon>edit_icon</Icon>
+                              </IconButton>
                             </TableCell>
                           </>
+                          {isEditClicked && row.iddistribution === selectedRowId && (
+                            <>
+                              <TableCell></TableCell>
+                            </>
+                          )}
                         </TableRow>
                       ))
                   ) : (
                     <TableRow>
                       <TableCell colSpan={12}>
                         <Typography variant="subtitle1" color="textSecondary">
-                          Aucune donnée disponible
+                          Aucune donnee disponible
                         </Typography>
                       </TableCell>
                     </TableRow>
@@ -283,7 +297,7 @@ const Stockarticle = () => {
                     rowsPerPage={rowsPerPage}
                     count={sortedData.length}
                     onPageChange={handleChangePage}
-                    rowsPerPageOptions={[5, 10, 25, 50, 100, 200]}
+                    rowsPerPageOptions={rowsPerPageOptions}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     nextIconButtonProps={{ 'aria-label': 'Page suivante' }}
                     backIconButtonProps={{ 'aria-label': 'Page precedente' }}
@@ -291,30 +305,6 @@ const Stockarticle = () => {
                 </Grid>
               </Grid>
             </SimpleCard>
-          </Grid>
-          <Grid item>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <SimpleCard title="Total articles en bon etat">
-                  <Typography
-                    variant="body1"
-                    style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'green' }}
-                  >
-                    {data.sommebonetat} en bon etat
-                  </Typography>
-                </SimpleCard>
-              </Grid>
-              <Grid item xs={6}>
-                <SimpleCard title="Total articles abimes">
-                  <Typography
-                    variant="body1"
-                    style={{ fontWeight: 'bold', fontSize: '1.5rem', color: 'red' }}
-                  >
-                    {data.sommeabime} abimés
-                  </Typography>
-                </SimpleCard>
-              </Grid>
-            </Grid>
           </Grid>
         </Grid>
         <Snackbar open={message.open} autoHideDuration={3000} onClose={handleAlertClose}>
@@ -327,4 +317,4 @@ const Stockarticle = () => {
   );
 };
 
-export default Stockarticle;
+export default Listedistributionmateriel;

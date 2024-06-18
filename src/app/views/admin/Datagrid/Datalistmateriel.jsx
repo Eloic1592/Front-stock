@@ -50,9 +50,7 @@ function Datalistmateriel({ Materiels, state, handleClose, setmateriel }) {
     (materiel) =>
       (materiel.marque && materiel.marque.toLowerCase().includes(filter.toLowerCase())) ||
       (materiel.modele && materiel.modele.toLowerCase().includes(filter.toLowerCase())) ||
-      (materiel.numserie && materiel.numserie.toLowerCase().includes(filter.toLowerCase())) ||
-      (materiel.description && materiel.description.toLowerCase().includes(filter.toLowerCase())) ||
-      (materiel.couleur && materiel.couleur.toLowerCase().includes(filter.toLowerCase()))
+      (materiel.numserie && materiel.numserie.toLowerCase().includes(filter.toLowerCase()))
   );
 
   return (
@@ -83,7 +81,6 @@ function Datalistmateriel({ Materiels, state, handleClose, setmateriel }) {
                 <TableCell width="20%">Modele</TableCell>
                 <TableCell width="20%">Numero serie</TableCell>
                 <TableCell width="20%">Description</TableCell>
-                <TableCell width="20%">Couleur</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -105,7 +102,6 @@ function Datalistmateriel({ Materiels, state, handleClose, setmateriel }) {
                   <TableCell width="20%">{materiel.modele}</TableCell>
                   <TableCell width="20%">{materiel.numserie}</TableCell>
                   <TableCell width="20%">{materiel.description}</TableCell>
-                  <TableCell width="20%">{materiel.couleur}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
