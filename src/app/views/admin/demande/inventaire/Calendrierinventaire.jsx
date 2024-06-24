@@ -15,6 +15,7 @@ import Button from '@mui/material/Button';
 import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Calendrier from './Calendrier';
+import { formatDate, formattodatetimelocal } from 'app/utils/utils';
 
 const Calendrierinventaire = () => {
   // Form dialog
@@ -25,10 +26,10 @@ const Calendrierinventaire = () => {
 
   // Data
   // Inventaire
-  const [datecalendrier, setDatecalendrier] = useState('');
-  const [heuredebut, setHeureDebut] = useState(0);
-  const [heurefin, setHeurefin] = useState(0);
-  const [description, setDescription] = useState('');
+  const [datecalendrier, setDatecalendrier] = useState(formatDate(new Date(2024, 5, 18)));
+  const [heuredebut, setHeureDebut] = useState(formattodatetimelocal(new Date(2024, 5, 18, 9, 0)));
+  const [heurefin, setHeurefin] = useState(formattodatetimelocal(new Date(2024, 5, 18, 12, 0)));
+  const [description, setDescription] = useState('Inventaires des papiers et des cahiers');
 
   // Message
   const [message, setMessage] = useState({

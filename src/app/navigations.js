@@ -70,7 +70,7 @@ export const navigations = [
     name: 'Dépots et emplacements',
     icon: 'home',
     children: [
-      { name: 'Depots', iconText: 'SI', path: '/admin/depot' },
+      { name: 'Dépots', iconText: 'SI', path: '/admin/depot' },
       { name: 'Distribution', iconText: 'SI', path: '/admin/distribution' },
       { name: 'Stock des articles depot', iconText: 'SI', path: '/admin/stocksarticle' },
       { name: 'Stock des matériels depot', iconText: 'SI', path: '/admin/stockmateriel' }

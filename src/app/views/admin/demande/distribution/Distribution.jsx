@@ -22,6 +22,7 @@ import { Container } from 'app/views/style/style';
 import { baseUrl } from 'app/utils/constant';
 import Datalistarticle from '../../Datagrid/Datalistarticle';
 import Datalistmateriel from '../../Datagrid/Datalistmateriel';
+import { formatDate } from 'app/utils/utils';
 const Distribution = () => {
   // Form dialog
   const [open, setOpen] = useState(false);
@@ -41,10 +42,10 @@ const Distribution = () => {
 
   // Data
   // Distribution
-  const [datedistribution, setDistribution] = useState('');
+  const [datedistribution, setDistribution] = useState(formatDate(new Date()));
   const [article, setArticle] = useState('');
   const [materiel, setMateriel] = useState('');
-  const [quantite, setQuantite] = useState(0);
+  const [quantite, setQuantite] = useState(12);
   const [depot, setDepot] = useState('1');
   const [emplacement, setEmplacement] = useState('1');
   const [etatdistribue, setEtatdistribue] = useState('2');
@@ -318,7 +319,7 @@ const Distribution = () => {
                           value={choix}
                           onChange={(event) => setChoix(event.target.value)}
                         >
-                          <FormControlLabel value="depot" control={<Radio />} label="Depot" />
+                          <FormControlLabel value="depot" control={<Radio />} label="Dépot" />
                           <FormControlLabel
                             value="emplacement"
                             control={<Radio />}
@@ -335,7 +336,7 @@ const Distribution = () => {
                           disabled={choix !== 'depot'}
                         >
                           <MenuItem key="1" value="1">
-                            Selectionner un depot
+                            Selectionner un dépot
                           </MenuItem>
                           {data.depots.map((row, index) => (
                             <MenuItem key={index} value={row.iddepot}>

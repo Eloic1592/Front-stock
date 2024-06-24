@@ -36,13 +36,15 @@ const Article = () => {
 
   // Input
   const [typemateriel, setTypemateriel] = useState('1');
-  const [marque, setMarque] = useState('');
-  const [modele, setModele] = useState('');
-  const [codearticle, setCodearticle] = useState('');
-  const [description, setDescription] = useState('');
-  const [prix, setPrix] = useState(0);
-  const [quantitestock, setQuantitestock] = useState(0);
-  const [stocksecurite, setStocksecurite] = useState(0);
+  const [marque, setMarque] = useState('HP');
+  const [modele, setModele] = useState('Pavillon');
+  const [codearticle, setCodearticle] = useState('HP-PAV-15');
+  const [description, setDescription] = useState(
+    'Processeur Intel Core i7-8565U (Quad-Core 1.8 GHz / 4.6 GHz Turbo - cache 8 Mo) 8 Go de mémoire DDR4-2400 (2 x 4 Go) Ecran SVA de 15.6" anti-reflets avec résolution Full HD (1920 x 1080)'
+  );
+  const [prix, setPrix] = useState(2560000);
+  const [quantitestock, setQuantitestock] = useState(21);
+  const [stocksecurite, setStocksecurite] = useState(20);
   const [csvFile, setCsvFile] = useState(null);
   const [fileOpen, setFileOpen] = useState(false);
   const handleFileClickOpen = () => setFileOpen(true);
